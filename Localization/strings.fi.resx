@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="No_Internet_Access_Message" xml:space="preserve">
+    <value>Yritettiin noutaa tiedostoluetteloa verkkopalvelimelta. Tarkista Internet-yhteys ja varmista, että sovelluksella on Internet-yhteys</value>
+  </data>
+  <data name="Download_Directory_Does_Not_Exist_Message" xml:space="preserve">
+    <value>Tiedostokansiota johon yrität ladata ei ole, valitse toinen kohde.</value>
+  </data>
+  <data name="Sync_Version_Requires_Downgrade_Message" xml:space="preserve">
+    <value>SYNC-versiosi on uudempi mitä uudelleen formatointi tukee.
+FordSyncDownloader voi valita automaattisesti tiedoston jota voit käyttää uudelleen formatointiin.
+Kun olet päivittänyt synkronointiversiosi aikaisempaan versioon, voit aloittaa alusta valitsemalla &apos;Any other SYNC Version&apos; ja valitsemalla haluamasi uuden version.
+Vaihtoehtoisesti voit käyttää &apos;Manuaalinen määritys&apos; -tilaa, jonka avulla voit luoda yksinkertaisia ​​päivityspaketteja yksittäisille paketeille, esim. APPS.
+Napsauta Kyllä, jos haluat valita aikaisemman version jota uudelleen formatointi tukee. Muussa tapauksessa napsauta Ei, jos aiot käyttää manuaalista määritystä tai jos tiedät tarvitsemasi päivityspaketin!</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Huomautuksia:</value>
+    <comment>Translated word for Notes with semi colon e.g Notes:</comment>
+  </data>
+  <data name="btnDisclaimerContinue.Text" xml:space="preserve">
+    <value>Jatkuu</value>
+  </data>
+  <data name="btnCommunityForumlink.Text" xml:space="preserve">
+    <value>Yhteisöfoorumi</value>
+  </data>
+  <data name="btnDonate.Text" xml:space="preserve">
+    <value>Lahjoita</value>
+  </data>
+  <data name="btnFormatUSB.Text" xml:space="preserve">
+    <value>Aloita</value>
+  </data>
+  <data name="btnIVSUDBLink.Text" xml:space="preserve">
+    <value>IVSU-tietokanta</value>
+  </data>
+  <data name="btnLink1.Text" xml:space="preserve">
+    <value>Verkkosivusto</value>
+  </data>
+  <data name="btnLink2.Text" xml:space="preserve">
+    <value>AsBuilt-tietokanta</value>
+  </data>
+  <data name="btnRefreshUSB.Text" xml:space="preserve">
+    <value>Lataa laitteet uudelleen</value>
+  </data>
+  <data name="btnStep1.Text" xml:space="preserve">
+    <value>Vastuuvapauslauseke</value>
+  </data>
+  <data name="btnStep2.Text" xml:space="preserve">
+    <value>Kokoonpano</value>
+  </data>
+  <data name="btnStep3.Text" xml:space="preserve">
+    <value>Tila</value>
+  </data>
+  <data name="chkDisclaimerConfirm.Text" xml:space="preserve">
+    <value>Ymmärrän ja hyväksyn yllä olevassa vastuuvapauslausekkeessa esitetyt riskit.
+Cyanlabs ei ole vastuussa tämän toimenpiteen epätoivotusta tuloksesta.</value>
+  </data>
+  <data name="chkSyncNav.Text" xml:space="preserve">
+    <value>Navigointi?</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Loki</value>
+  </data>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>Latauskansio</value>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>Nykyisen version tiedot</value>
+  </data>
+  <data name="grpNewVersion.Text" xml:space="preserve">
+    <value>Uusi versio</value>
+  </data>
+  <data name="grpUSB.Text" xml:space="preserve">
+    <value>Valitse USB-asema</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Karttaversio:</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Tätä osaa voidaan käyttää manuaalisiin &quot;automaattisiin päivityksiin&quot;. Käytä tätä osaa vain, jos tiedät mitä olet tekemässä tai jos noudatat joitain CyanLabsin verkossa lueteltuja ohjeita.
+
+Tätä osaa ei tueta, ellei se liity CyanLabs-oppaaseen.
+
+Osaa ei voi käyttää MAPS: n asentamiseen puuttuvien lisenssien vuoksi!
+
+Valitse asennettava IVSU ja paina &quot;Käynnistä&quot;
+
+</value>
+  </data>
+  <data name="lblDowngrade.Text" xml:space="preserve">
+    <value>AIKAISEMMAN VERSION ASENNUS VALITTU
+(Valitse USB asema ja paina Aloita)</value>
+  </data>
+  <data name="lblDownloadDirectory.Text" xml:space="preserve">
+    <value>Latauskansio:</value>
+  </data>
+  <data name="lblDownloadQueue.Text" xml:space="preserve">
+    <value>Jono</value>
+  </data>
+  <data name="lblDriveInfo.Text" xml:space="preserve">
+    <value>Aseman nimi:
+Aseman tunnus:
+Tiedostojärjestelmä:</value>
+  </data>
+  <data name="lblGetDetails.Text" xml:space="preserve">
+    <value>Anna oikeat tiedot varmistaaksesi, että sinulle toimitetaan oikeat tiedostot.
+Tämän tekemättä jättäminen voi tehdä järjestelmästä käyttökelvottoman, kunnes oikeat tiedostot on ladattu!</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Manuaalinen määritys</value>
+  </data>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>APUA</value>
+  </data>
+  <data name="lblIssueDesc.Text" xml:space="preserve">
+    <value>Jokin meni pieleen?  Napsauta vasemmalla puolella olevaa &quot;Discord&quot; tai &quot;Community Forum&quot; saadaksesi tukea.
+Jos olet valinnut USB-aseman kopioimme automaattisesti SyncMyRide-kansiosi sisällön autoinstall.lst ja reformat.lst leikepöydällesi. Liitä tämä vain viestiin ja odota vastausta.
+
+</value>
+  </data>
+  <data name="lblLinks.Text" xml:space="preserve">
+    <value>LINKIT</value>
+  </data>
+  <data name="lblMapVersion.Text" xml:space="preserve">
+    <value>Kartat:</value>
+  </data>
+  <data name="lblRegion.Text" xml:space="preserve">
+    <value>Alue:</value>
+  </data>
+  <data name="lblTotalDownloadProgress.Text" xml:space="preserve">
+    <value>Edistyminen </value>
+  </data>
+  <data name="lvIVSUsName.Text" xml:space="preserve">
+    <value>Nimi</value>
+  </data>
+  <data name="lvIVSUsType.Text" xml:space="preserve">
+    <value>Tyyppi</value>
+  </data>
+  <data name="lvIVSUsURL.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="lvIVSUsVersion.Text" xml:space="preserve">
+    <value>Versio</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Lataa</value>
+  </data>
+  <data name="All_Downloads_Complete_Message" xml:space="preserve">
+    <value>Kaikki lataukset valmiita!</value>
+  </data>
+  <data name="Form1_PrepareUsb_Total_Copy_Progress" xml:space="preserve">
+    <value>Kopioinnin edistyminen </value>
+  </data>
+  <data name="DriveInfo_1" xml:space="preserve">
+    <value>Aseman nimi:</value>
+  </data>
+  <data name="Move_Existing_Files_Message" xml:space="preserve">
+    <value>Haluatko siirtää olemassa olevat tiedostot
+
+</value>
+  </data>
+  <data name="Specify_Current_Version_Message" xml:space="preserve">
+    <value>Määritä nykyinen SYNC-versio ja alue!</value>
+  </data>
+  <data name="No_Release_Specified_Message" xml:space="preserve">
+    <value>Julkaisua tai karttaversiota ei ole valittu, valitse julkaisu avattavasta valikosta.</value>
+  </data>
+  <data name="Downloads_In_Progress_Message" xml:space="preserve">
+    <value>Odota, että kaikkien tiedostojen lataus on valmis, ennen kuin yrität valmistella USB-asemaa
+
+</value>
+  </data>
+  <data name="Region_Mismatch_Message" xml:space="preserve">
+    <value>Nykyinen ja valittu alue ei täsmää!
+CyanLabs ei tällä hetkellä tue tätä eikä auta avustamaan tätä menettelyä. Tutkimme kuitenkin aktiivisesti miten saisimme sen mahdolliseksi!
+
+Jos sinulla on yksikkö, joka ei ole EU:n alueelta ja haluat lahjoittaa sen tätä tarkoitusta varten, lähetä sähköpostia osoitteeseen admin@cyanlabs.net
+
+Jatka joka tapauksessa?
+
+</value>
+  </data>
+  <data name="Nav_On_Non_Nav_Message" xml:space="preserve">
+    <value>Näytät yrittävän asentaa navigoinnin ei-navigointiyksikköön!
+Tämä ei ole mahdollista ja se johtaa virheeseen!
+
+Jos olet varma, napsauta EI jatkaaksesi!</value>
+  </data>
+  <data name="No_Maps_Nav_Message" xml:space="preserve">
+    <value>Olet ilmoittanut, että sinulla on navigointiyksikkö, mutta et ole valinnut navigointia!
+Jos jatkat, laitteellesi ei asenneta karttoja
+
+Paina Kyllä ​​jatkaaksesi tai Ei peruuttaaksesi ja valitaksesi karttoja.</value>
+  </data>
+  <data name="No_USB_Selected_Message" xml:space="preserve">
+    <value>USB-asemaa ei ole valittu. Haluatko ladata vain tiedostot?</value>
+  </data>
+  <data name="USB_Format_Message_1" xml:space="preserve">
+    <value>VAROITUS, KAIKKI VALITTUN ASEMAN TIEDOT POISTETAAN</value>
+  </data>
+  <data name="Total_Download_Progress" xml:space="preserve">
+    <value>Latauksen edistyminen</value>
+  </data>
+  <data name="Manual_Mode_Message" xml:space="preserve">
+    <value>Voit käyttää manuaalista tilaa luodaksesi puoliautomaattisesti autoinstall.lst-tiedostoja tietyille &apos;julkaisun&apos; osioille
+
+Esimerkiksi voisit päivittää vain APPS-paketin versiosta 20021 versioon 20136.
+
+Jos haluat käyttää tätä toimintoa, valitse poista ja USB-asema ja napsauta sitten tätä painiketta uudelleen.</value>
+  </data>
+  <data name="Process_Complete" xml:space="preserve">
+    <value>PROSESSI VALMIS!</value>
+  </data>
+  <data name="Manual_Mode_USB_Message" xml:space="preserve">
+    <value>Puoliautomaattinen USB-päivityslaitteesi on luotu. Huomaa, että tätä toimintoa ei tällä hetkellä tueta!</value>
+  </data>
+  <data name="Process_Complete_Message" xml:space="preserve">
+    <value>Tiedostojen lataus ja kopiointi on nyt valmis. Poista tämä USB tietokoneesta ja aseta se autoosi, varmista, että moottori käy!
+
+Jos haluat lisätietoja, napsauta Kyllä avataksesi online-oppaamme suoraan auto-osioon.
+
+Jos käytit DOWNGRADE-pakettia, kun yllä olevat vaiheet on tehty, palaa tähän sovellukseen päivittääksesi haluamasi version
+
+Haluatko lisätietoja?</value>
+  </data>
+  <data name="Copying" xml:space="preserve">
+    <value>Kopio</value>
+  </data>
+  <data name="DriveInfo_2" xml:space="preserve">
+    <value>Aseman kirjain:</value>
+  </data>
+  <data name="DriveInfo_3" xml:space="preserve">
+    <value>Tiedostojärjestelmä:</value>
+  </data>
+  <data name="Move_Existing_Files_Message_2" xml:space="preserve">
+    <value>minne</value>
+  </data>
+  <data name="USB_Format_Message_2" xml:space="preserve">
+    <value>Aseman kirjain:</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versio:</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Virhe</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Onnistui</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Varoitus</value>
+  </data>
+  <data name="btnUploadLog" xml:space="preserve">
+    <value>Tiedoston lähetyslogi</value>
+  </data>
+  <data name="Main_UploadLog_Log_Uploaded_Message" xml:space="preserve">
+    <value>Logitiedosto lähetetty. Linkki kopioitu leikepöydälle. Leikkaa ja lähetä se foorumeillemme tai Discord palvelimelle.</value>
+  </data>
+  <data name="Main_UploadLog_No_Log_File_Found_message" xml:space="preserve">
+    <value>Lokitiedostoa ei löytynyt. Varmista että olet valinnut oikean USB aseman.</value>
+  </data>
+  <data name="btnCancel_text" xml:space="preserve">
+    <value></value>
+  </data>
+</root>

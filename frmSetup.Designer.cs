@@ -131,8 +131,9 @@
             this.txtCurrentSyncVersion.Name = "txtCurrentSyncVersion";
             this.txtCurrentSyncVersion.Size = new System.Drawing.Size(69, 25);
             this.txtCurrentSyncVersion.TabIndex = 26;
-            this.txtCurrentSyncVersion.Text = global::Sync3Updater.Properties.Settings.Default.CurrentSyncVersion;
+            this.txtCurrentSyncVersion.Text = "3420136";
             this.txtCurrentSyncVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtCurrentSyncVersion.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals;
             // 
             // chkCurrentSyncNav
             // 
@@ -283,6 +284,7 @@
             this.Name = "FrmSetup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cyanlabs Ford Sync Update Downloader";
+            this.Shown += new System.EventHandler(this.FrmSetup_Shown);
             this.grpDownload.ResumeLayout(false);
             this.grpDownload.PerformLayout();
             this.grpExistingDetails.ResumeLayout(false);

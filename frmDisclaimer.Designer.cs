@@ -51,6 +51,7 @@
             this.webDisclaimer.Size = new System.Drawing.Size(667, 402);
             this.webDisclaimer.TabIndex = 14;
             this.webDisclaimer.Url = new System.Uri("https://cyanlabs.net/api/FordSyncDownloader/disclaimer.php", System.UriKind.Absolute);
+            this.webDisclaimer.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webDisclaimer_DocumentCompleted);
             // 
             // panelTitleBar
             // 
@@ -83,7 +84,7 @@
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.Location = new System.Drawing.Point(651, 0);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(16, 17);
+            this.btnClose.Size = new System.Drawing.Size(16, 16);
             this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.btnClose.TabIndex = 2;
             this.btnClose.TabStop = false;
@@ -133,7 +134,7 @@
             this.btnDisclaimerContinue.UseVisualStyleBackColor = false;
             this.btnDisclaimerContinue.Click += new System.EventHandler(this.btnDisclaimerContinue_Click);
             // 
-            // frmDisclaimer
+            // FrmDisclaimer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -149,6 +150,7 @@
             this.Name = "FrmDisclaimer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cyanlabs Ford Sync Update Downloader";
+            this.Shown += new System.EventHandler(this.FrmDisclaimer_Shown);
             this.panelTitleBar.ResumeLayout(false);
             this.panelTitleBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).EndInit();

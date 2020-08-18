@@ -38,9 +38,9 @@ namespace Sync3Updater.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3420136")]
-        public string CurrentSyncVersion {
+        public int CurrentSyncVersion {
             get {
-                return ((string)(this["CurrentSyncVersion"]));
+                return ((int)(this["CurrentSyncVersion"]));
             }
             set {
                 this["CurrentSyncVersion"] = value;
@@ -92,6 +92,18 @@ namespace Sync3Updater.Properties {
             }
             set {
                 this["DownloadPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowAllReleases {
+            get {
+                return ((bool)(this["ShowAllReleases"]));
+            }
+            set {
+                this["ShowAllReleases"] = value;
             }
         }
     }

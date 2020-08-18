@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="No_Internet_Access_Message" xml:space="preserve">
+    <value>Ha ocurrido un problema intentando acceder a los archivos del servidor, por favor verifique su conexión a internet y asegúrese que la aplicación tenga acceso a internet</value>
+  </data>
+  <data name="Download_Directory_Does_Not_Exist_Message" xml:space="preserve">
+    <value>El Directorio de Descarga no existe, por favor seleccione una nueva ubicación</value>
+  </data>
+  <data name="Sync_Version_Requires_Downgrade_Message" xml:space="preserve">
+    <value>Su versión de SYNC es más alta que la soportada por la herramienta de reformateo.
+
+FordSyncDownloader puede seleccionar automáticamente el paquete de downgrade.
+
+Una vez que haya hecho downgrade a su versión de SYNC puede empezar nuevamente el proceso seleccionando &quot;Any other SYNC Version&quot; y eligiendo la nueva versión deseada.
+
+Alternativamente puede usar el modo &quot;Configuración Manual&quot; que le permitirá crear paquetes de actualización simples para paquetes individuales, como por ejemplo APPS.
+
+Seleccione Si para seleccionar el paquete de downgrade, de otra manera seleccione No si planea usar el método Manual de Configuración o si sabe lo que hace.</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notas:</value>
+    <comment>Translated word for Notes with semi colon e.g Notes:</comment>
+  </data>
+  <data name="btnDisclaimerContinue.Text" xml:space="preserve">
+    <value>Continuar</value>
+  </data>
+  <data name="btnCommunityForumlink.Text" xml:space="preserve">
+    <value>Foro</value>
+  </data>
+  <data name="btnDonate.Text" xml:space="preserve">
+    <value>Donar</value>
+  </data>
+  <data name="btnFormatUSB.Text" xml:space="preserve">
+    <value>Comenzar</value>
+  </data>
+  <data name="btnIVSUDBLink.Text" xml:space="preserve">
+    <value>Base de IVSU</value>
+  </data>
+  <data name="btnLink1.Text" xml:space="preserve">
+    <value>Página Web</value>
+  </data>
+  <data name="btnLink2.Text" xml:space="preserve">
+    <value>Base de AsBuilt</value>
+  </data>
+  <data name="btnRefreshUSB.Text" xml:space="preserve">
+    <value>Recargar Dispositivos</value>
+  </data>
+  <data name="btnStep1.Text" xml:space="preserve">
+    <value>Disclaimer</value>
+  </data>
+  <data name="btnStep2.Text" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="btnStep3.Text" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="chkDisclaimerConfirm.Text" xml:space="preserve">
+    <value>Entiendo y acepto los riesgos descritos en el Descargo de Responsabilidad (Disclaimer). Cyanlabs no se hará responsable por ningún problema que pueda surgir de esta operación</value>
+  </data>
+  <data name="chkSyncNav.Text" xml:space="preserve">
+    <value>Navegador?</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Registro</value>
+  </data>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>1. Ubicación de Descarga</value>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>2. Información de la Versión Actual</value>
+  </data>
+  <data name="grpNewVersion.Text" xml:space="preserve">
+    <value>3. Nueva Versión</value>
+  </data>
+  <data name="grpUSB.Text" xml:space="preserve">
+    <value>4. Seleccione su Dispositivo USB</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Versión Mapa</value>
+    <comment>Changed from &quot;Versión de Mapa&quot; to &quot;Versión Mapa&quot; since it was truncated</comment>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Esta sección puede ser usada para realizar &quot;autoupdates&quot; manuales, use ésta sección únicamente si sabe lo que está haciendo o si estás siguiendo instrucciones en linea de CyanLabs.
+
+Esta sección no será soportada a menos que esté asociada a una guía de CyanLabs.
+
+Esta sección no puede ser usada para instalar MAPS debido a falta de licencias!
+
+Seleccione los IVSU que quiera instalar y presione &quot;Comenzar&quot;</value>
+  </data>
+  <data name="lblDowngrade.Text" xml:space="preserve">
+    <value>MODO DOWNGRADE HABILITADO
+(Seleccione el USB y presione Comenzar)</value>
+  </data>
+  <data name="lblDownloadDirectory.Text" xml:space="preserve">
+    <value>Ubicación de Descarga:</value>
+  </data>
+  <data name="lblDownloadQueue.Text" xml:space="preserve">
+    <value>Cola</value>
+  </data>
+  <data name="lblDriveInfo.Text" xml:space="preserve">
+    <value>Nombre del Dispositivo:
+Letra del Dispositivo:
+Sistema de Archivos:</value>
+  </data>
+  <data name="lblGetDetails.Text" xml:space="preserve">
+    <value>Por favor ingrese la información correcta para asegurar que se provean los archivos correctos.
+De no hacerlo puede dejar su unidad inutilizable hasta que se descarguen los archivos correctos!</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Configuración Manual</value>
+  </data>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>AYUDA</value>
+  </data>
+  <data name="lblIssueDesc.Text" xml:space="preserve">
+    <value>Algo no está yendo según lo planificado?. Seleccione &quot;Discord&quot; o &quot;Foro&quot; en la izquierda para obtener soporte.
+Si tiene la unidad USB seleccionada, copiaremos el contenido de su carpeta SyncMyRide, autoinstall.lst y reformat.lst a su portapapeles; simplemente pegue ésta información en un mensaje y aguarde respuesta.</value>
+    <comment>Corrected to better fitting.</comment>
+  </data>
+  <data name="lblLinks.Text" xml:space="preserve">
+    <value>INFORMACIÓN</value>
+  </data>
+  <data name="lblMapVersion.Text" xml:space="preserve">
+    <value>Mapas:</value>
+  </data>
+  <data name="lblRegion.Text" xml:space="preserve">
+    <value>Región:</value>
+  </data>
+  <data name="lblTotalDownloadProgress.Text" xml:space="preserve">
+    <value>Progreso Total</value>
+  </data>
+  <data name="lvIVSUsName.Text" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="lvIVSUsType.Text" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="lvIVSUsURL.Text" xml:space="preserve">
+    <value>Dirección</value>
+  </data>
+  <data name="lvIVSUsVersion.Text" xml:space="preserve">
+    <value>Versión</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Descargando</value>
+  </data>
+  <data name="All_Downloads_Complete_Message" xml:space="preserve">
+    <value>Todas las Descargas Completas!</value>
+  </data>
+  <data name="Form1_PrepareUsb_Total_Copy_Progress" xml:space="preserve">
+    <value>Progreso de Copia Total</value>
+  </data>
+  <data name="DriveInfo_1" xml:space="preserve">
+    <value>Nombre del Dispositivo:</value>
+  </data>
+  <data name="Move_Existing_Files_Message" xml:space="preserve">
+    <value>Desea remover los archivos existentes de</value>
+  </data>
+  <data name="Specify_Current_Version_Message" xml:space="preserve">
+    <value>Por favor especifique su versión y región actual de SYNC!</value>
+  </data>
+  <data name="No_Release_Specified_Message" xml:space="preserve">
+    <value>No ha seleccionado una Versión de Release o Mapas, por favor seleccione un release desde el desplegable</value>
+  </data>
+  <data name="Downloads_In_Progress_Message" xml:space="preserve">
+    <value>Por favor espere a que finalice la descarga de todos los archivos antes de preparar el dispositivo USB</value>
+  </data>
+  <data name="Region_Mismatch_Message" xml:space="preserve">
+    <value>Su actual y deseada región no son iguales!
+CyanLabs actualmente no soporta cambio de regiones y no proveerá ayuda con éste procedimiento. Sin embargo estamos activamente investigando que es necesario exactamente para que funcione!.
+
+Si tiene una unidad que es no-EU y le gustaría donarla para éste propósito por favor enviar un mail a admin@cyanlabs.net.
+
+Continuar de todos modos?</value>
+  </data>
+  <data name="Nav_On_Non_Nav_Message" xml:space="preserve">
+    <value>Parece que está tratando de instalar Navegación en una unidad No Navegación!.
+No es posible realizar ésto y terminará en error!.
+
+Si está seguro, seleccione NO para continuar!</value>
+  </data>
+  <data name="No_Maps_Nav_Message" xml:space="preserve">
+    <value>Ha declarado que tiene unidad unidad con Navegación pero no ha seleccionado Navegación!.
+Si continúa no tendrá ningún mapa en su unidad.
+
+Presione Si para continuar de todos modos o No para cancelar y selecionar mapas.</value>
+  </data>
+  <data name="No_USB_Selected_Message" xml:space="preserve">
+    <value>No ha seleccionado un dispositivo USB, desea solamente descargar los archivos?</value>
+  </data>
+  <data name="USB_Format_Message_1" xml:space="preserve">
+    <value>ATENCIÓN, TODOS LOS DATOS EN EL DISPOSITIVO SELECCIONADO SE PERDERÁN</value>
+  </data>
+  <data name="Total_Download_Progress" xml:space="preserve">
+    <value>Progreso de Descarga Total</value>
+  </data>
+  <data name="Manual_Mode_Message" xml:space="preserve">
+    <value>Puede usar el modo manual para crear semi-automáticamente archivos autoinstall.lst para secciones específicas de los &quot;releases&quot;.
+
+Un buen ejemplo sería actualizar sólo el paquete de APPS de 20021 a 20136.
+
+Para usar ésta función seleccione un release y unidad USB, y luego clickee éste botón nuevamente.</value>
+  </data>
+  <data name="Process_Complete" xml:space="preserve">
+    <value>PROCESO COMPLETADO!</value>
+  </data>
+  <data name="Manual_Mode_USB_Message" xml:space="preserve">
+    <value>Su USB semi-automático ha sido creado, por favor sepa que ésta función no es soportada actualmente!</value>
+  </data>
+  <data name="Process_Complete_Message" xml:space="preserve">
+    <value>La descarga y copia de los archivos ha sido completada, simplemente retire éste USB de su computadora e insértelo en su auto, asegúrese que el motor esté en marcha!.
+
+Si desea instrucciones detalladas seleccione Si para abrir nuestra guía en linea directamente en la sección del vehículo.
+
+Si usó el paquete &quot;DOWNGRADE&quot;, una vez que los pasos previos se completen  regrese a ésta aplicación para actualizar a su versión deseada.
+
+Quisiera más información?</value>
+  </data>
+  <data name="Copying" xml:space="preserve">
+    <value>Copiando</value>
+  </data>
+  <data name="DriveInfo_2" xml:space="preserve">
+    <value>Letra del Dispositivo:</value>
+  </data>
+  <data name="DriveInfo_3" xml:space="preserve">
+    <value>Sistema de Archivo:</value>
+  </data>
+  <data name="Move_Existing_Files_Message_2" xml:space="preserve">
+    <value>hacia</value>
+  </data>
+  <data name="USB_Format_Message_2" xml:space="preserve">
+    <value>Letra del Dispositivo:</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versión:</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Éxito</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
+  <data name="btnUploadLog" xml:space="preserve">
+    <value>Enviar Registros</value>
+  </data>
+  <data name="Main_UploadLog_Log_Uploaded_Message" xml:space="preserve">
+    <value>Archivo de Registros enviado, link copiado al portapapeles. Péguelo en un nuevo tema en el Foro o en nuestro servidor Discord.</value>
+  </data>
+  <data name="Main_UploadLog_No_Log_File_Found_message" xml:space="preserve">
+    <value>No se pudo encontrar archivo de registros, asegúrese haber seleccionado el USB correcto.</value>
+  </data>
+  <data name="btnCancel_text" xml:space="preserve">
+    <value></value>
+  </data>
+</root>

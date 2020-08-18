@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="No_Internet_Access_Message" xml:space="preserve">
+    <value>Ocorreu um problema ao tentar recuperar a lista de ficheiros do servidor online. Verifique a sua ligação à Internet e verifique se a aplicação tem acesso à Internet.</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Download_Directory_Does_Not_Exist_Message" xml:space="preserve">
+    <value>Pasta de Download não existe. Por favor seleciona a nova localização</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Sync_Version_Requires_Downgrade_Message" xml:space="preserve">
+    <value>
+A sua versão do SYNC é superior à suportada pela &apos;ferramenta de reformatação&apos;.
+
+O FordSyncDownloader pode selecionar automaticamente o pacote de downgrade.
+
+Depois de fazeres o downgrade da tua versão do Sync, podes começar de novo selecionando &apos;Qualquer outra versão do SYNC&apos; e escolhendo a nova versão pretendida.
+
+Como alternativa, podes usar o modo &apos;Configuração manual&apos;, que te permite criar pacotes de atualização simples para pacotes individuais, por exemplo, APPS.
+
+Clica em Sim para selecionar automaticamente o pacote de downgrade; caso contrário, clica em não se pretendes usar a Configuração manual ou conhecer melhor!</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notas:</value>
+    <comment>Translated word for Notes with semi colon e.g Notes:</comment>
+  </data>
+  <data name="btnDisclaimerContinue.Text" xml:space="preserve">
+    <value>Continuar</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnCommunityForumlink.Text" xml:space="preserve">
+    <value>Forum comunitário</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnDonate.Text" xml:space="preserve">
+    <value>Doação</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnFormatUSB.Text" xml:space="preserve">
+    <value>Iniciar</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnIVSUDBLink.Text" xml:space="preserve">
+    <value>Base de dados IVSU</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnLink1.Text" xml:space="preserve">
+    <value>Website</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnLink2.Text" xml:space="preserve">
+    <value>Base de dados AsBuilt</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnRefreshUSB.Text" xml:space="preserve">
+    <value>Recarregar dispositivos</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnStep1.Text" xml:space="preserve">
+    <value>Aviso legal</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnStep2.Text" xml:space="preserve">
+    <value>Configuração</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="btnStep3.Text" xml:space="preserve">
+    <value>Estado</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="chkDisclaimerConfirm.Text" xml:space="preserve">
+    <value>Compreendo e aceito os riscos descritos no aviso acima.
+A Cyanlabs não é responsável por nenhum resultado indesejado desta operação.</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="chkSyncNav.Text" xml:space="preserve">
+    <value>Navegação</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Log</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>Localização do Download</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>Informação da versão actual</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="grpNewVersion.Text" xml:space="preserve">
+    <value>Nova versão</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="grpUSB.Text" xml:space="preserve">
+    <value>Seleciona a tua Drive USB</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Versão do Mapa</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Esta seção pode ser usada para fazer &quot;atualizações automáticas&quot; manuais, usa esta seção somente se souberes o que
+estás a fazer ou se estás a seguir algumas etapas listadas online pela CyanLabs.
+
+Esta seção não será suportada, a menos que esteja associada a um guia CyanLabs.
+
+A seção não deve ser usada para instalar os MAPAS devido à falta de licenças!
+
+Selecione os IVSUs que desejas instalar e pressiona &quot;Iniciar&quot;</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblDowngrade.Text" xml:space="preserve">
+    <value>MODO DOWNGRADE ATIVADO
+(Seleciona a USB e pressiona Iniciar)</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblDownloadDirectory.Text" xml:space="preserve">
+    <value>Localização do Download</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblDownloadQueue.Text" xml:space="preserve">
+    <value>Fila</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblDriveInfo.Text" xml:space="preserve">
+    <value>Nome da drive:
+Letra da drive:
+Sistema de ficheiros:</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblGetDetails.Text" xml:space="preserve">
+    <value>Por favor, insere as informações corretas para garantir que recebes os ficheiros corretos
+Caso contrário, a tua unidade poderá ficar inutilizada até que faças download dos ficheiros corretos!</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Configuração Manual</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>AJUDA</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblIssueDesc.Text" xml:space="preserve">
+    <value>Algo não está a correr como planeado? Clica em &quot;Discórdia&quot; ou &quot;Fórum da comunidade&quot; à esquerda para obter suporte.
+Se tiveres a tua unidade USB selecionada, nós automaticamente copiamos o conteúdo da pasta SyncMyRide,
+autoinstall.lst e reformat.lst para a tua área de transferência, basta colar isso numa mensagem e aguardar uma resposta.</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblLinks.Text" xml:space="preserve">
+    <value>LINKS</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblMapVersion.Text" xml:space="preserve">
+    <value>Mapas:</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblRegion.Text" xml:space="preserve">
+    <value>Região</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lblTotalDownloadProgress.Text" xml:space="preserve">
+    <value>Progresso Total</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lvIVSUsName.Text" xml:space="preserve">
+    <value>Nome</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lvIVSUsType.Text" xml:space="preserve">
+    <value>Tipo</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lvIVSUsURL.Text" xml:space="preserve">
+    <value>URL</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="lvIVSUsVersion.Text" xml:space="preserve">
+    <value>Versão</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>A efetuar o Download</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="All_Downloads_Complete_Message" xml:space="preserve">
+    <value>Todos os Downloads foram concluídos!</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Form1_PrepareUsb_Total_Copy_Progress" xml:space="preserve">
+    <value>Progresso Total da Cópia</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="DriveInfo_1" xml:space="preserve">
+    <value>Nome da drive</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Move_Existing_Files_Message" xml:space="preserve">
+    <value>Desejas mover ficheiros existentes?</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Specify_Current_Version_Message" xml:space="preserve">
+    <value>Por favor especifica a tua versão e região do SYNC!</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="No_Release_Specified_Message" xml:space="preserve">
+    <value>Nenhuma release ou versão do mapa foi selecionada, por favor seleciona uma versão no menu.</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Downloads_In_Progress_Message" xml:space="preserve">
+    <value>Aguarda a finalização do download de todos os ficheiros antes de tentar preparar a unidade USB</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Region_Mismatch_Message" xml:space="preserve">
+    <value>A tua região existente e a desejada não coincidem!
+De momento, o CyanLabs não oferece suporte para isso e não fornecerá ajuda para esse procedimento. No entanto, estamos investigar ativamente o que  precisa ser feito exatamente para fazer esse trabalho!
+
+Se tens uma unidade que não é da UE e gostarias de doá-la para esse fim, envia um email para admin@cyanlabs.net
+
+Continuar de qualquer maneira?</value>
+  </data>
+  <data name="Nav_On_Non_Nav_Message" xml:space="preserve">
+    <value>Parece que você está a tentar instalar a Navegação em uma unidade Não Navegação!
+Não é possível fazer isso e resultará em erro!
+
+Se você tiver certeza, clique em NÃO para continuar!</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="No_Maps_Nav_Message" xml:space="preserve">
+    <value>Declaraste que possuis uma unidade de Navegação, mas não marcaste a opção Navegação!
+Se continuares, não terás nenhum mapa instalado
+
+Pressiona sim para continuares de qualquer maneira ou não para cancelar e selecionar mapas.</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="No_USB_Selected_Message" xml:space="preserve">
+    <value>Não foi selecionada nenhuma drive USB. Pretendes apenas efetuar o download de ficheiros?</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="USB_Format_Message_1" xml:space="preserve">
+    <value>AVISO, TODOS OS DADOS DA DRIVE SELECIONADA SERÃO PERDIDOS</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Total_Download_Progress" xml:space="preserve">
+    <value>Progresso total do Download</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Manual_Mode_Message" xml:space="preserve">
+    <value>Podes usar o modo manual para criar semi-automaticamente o arquivo autoinstall.lst para seções específicas da &apos;release&apos;
+
+Um bom exemplo seria atualizar apenas o pacote APPS de 20021 para 20136.
+
+Para usar esta função, seleciona uma versão e uma unidade USB e clica neste botão novamente</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Process_Complete" xml:space="preserve">
+    <value>PROCESSO COMPLETO</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Manual_Mode_USB_Message" xml:space="preserve">
+    <value>A tua pen USB semi-automática foi criada. Por favor tenha a atenção que está função de momento não é suportada.</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Process_Complete_Message" xml:space="preserve">
+    <value>O download e a cópia dos arquivos foi concluído, basta retirar a pen USB do computador e inseri-la no seu carro, Verifica se o motor está em funcionamento!
+
+Se quiseres obter mais instruções, clica em Sim para abrir nosso guia on-line diretamente na seção automóvel.
+
+Se usaste o pacote &apos;DOWNGRADE&apos;, uma vez concluídas as etapas acima, retorna a este aplicativo para atualizar para a versão desejada</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Copying" xml:space="preserve">
+    <value>A copiar</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="DriveInfo_2" xml:space="preserve">
+    <value>Letra da drive</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="DriveInfo_3" xml:space="preserve">
+    <value>Sistema de ficheiros</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Move_Existing_Files_Message_2" xml:space="preserve">
+    <value>para</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="USB_Format_Message_2" xml:space="preserve">
+    <value>Letra da drive</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versão</value>
+    <comment>Fuzzy</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="btnUploadLog" xml:space="preserve">
+    <value>Upload Log</value>
+  </data>
+  <data name="Main_UploadLog_Log_Uploaded_Message" xml:space="preserve">
+    <value>Log file uploaded, Link copied to clipboard, paste it in to a new post on our community forum or our Discord server.</value>
+  </data>
+  <data name="Main_UploadLog_No_Log_File_Found_message" xml:space="preserve">
+    <value>No log file could be found, make sure you have selected the correct USB drive.</value>
+  </data>
+  <data name="btnCancel_text" xml:space="preserve">
+    <value></value>
+  </data>
+</root>

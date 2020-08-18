@@ -61,8 +61,8 @@ namespace Sync3Updater.Helpers
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags,
             bool defaultUser)
         {
-            int result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int)knownFolder]),
-                (uint)flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
+            int result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int) knownFolder]),
+                (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
             if (result >= 0)
             {
                 string path = Marshal.PtrToStringUni(outPath);
@@ -93,6 +93,13 @@ namespace Sync3Updater.Helpers
             NoAppcontainerRedirection = 0x00010000,
             AliasOnly = 0x80000000
         }
+
+        /// <summary>
+        ///     Standard folders registered with the system. These folders are installed with Windows Vista
+        ///     and later operating systems, and a computer will have only folders appropriate to it
+        ///     installed.
+        /// </summary>
+
     }
 
     public enum KnownFolder

@@ -3,6 +3,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
+using Sync3Updater.Helpers;
+using Sync3Updater.Localization;
 using Sync3Updater.Properties;
 
 namespace Sync3Updater
@@ -62,28 +64,38 @@ namespace Sync3Updater
             DialogResult result = folderDownloads.ShowDialog();
             if (result == DialogResult.OK)
             {
-                if (Directory.Exists(_downloadpath))
+                if (Directory.Exists(Settings.Default.DownloadPath))
                 {
                     DialogResult dialogMovefiles = MessageBox.Show(
                         string.Format(
                             strings.Move_Existing_Files_Message + Environment.NewLine + Environment.NewLine + @"{0}" +
-                            Environment.NewLine + strings.Move_Existing_Files_Message_2 + Environment.NewLine + @"{1}", _downloadpath,
+                            Environment.NewLine + strings.Move_Existing_Files_Message_2 + Environment.NewLine + @"{1}", Settings.Default.DownloadPath,
                             folderDownloads.SelectedPath)
                         , strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Information
                     );
                     try
                     {
-                        if (dialogMovefiles == DialogResult.Yes) FileSystem.MoveDirectory(_downloadpath, folderDownloads.SelectedPath, UIOption.AllDialogs);
+                        if (dialogMovefiles == DialogResult.Yes) FileSystem.MoveDirectory(Settings.Default.DownloadPath, folderDownloads.SelectedPath, UIOption.AllDialogs);
                     }
                     catch (OperationCanceledException)
                     {
                     }
                 }
 
-                _downloadpath = folderDownloads.SelectedPath + @"\";
-                txtDownloadPath.Text = _downloadpath;
-                Settings.Default.DownloadPath = _downloadpath;
+                Settings.Default.DownloadPath = folderDownloads.SelectedPath + @"\";
+                txtDownloadPath.Text = Settings.Default.DownloadPath;
+                Settings.Default.DownloadPath = Settings.Default.DownloadPath;
                 Settings.Default.Save();
+            }
+        }
+
+        private void FrmSetup_Shown(object sender, EventArgs e)
+        {
+            txtDownloadPath.Text = Settings.Default.DownloadPath;
+            if (!Settings.Default.SetupCompleted)
+            {
+                Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Sync3Updater\";
+                
             }
         }
     }

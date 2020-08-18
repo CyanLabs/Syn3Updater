@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sync3Updater.Properties;
@@ -63,6 +64,22 @@ namespace Sync3Updater
         private void chkDisclaimerConfirm_CheckedChanged(object sender, EventArgs e)
         {
             btnDisclaimerContinue.Enabled = chkDisclaimerConfirm.Checked;
+        }
+
+        private void FrmDisclaimer_Shown(object sender, EventArgs e)
+        {
+            if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName != "en")
+            {
+                webDisclaimer.Navigate(
+                    $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FFordSyncDownloader%2Fdisclaimer.php");
+            }
+        }
+
+        private void webDisclaimer_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            if (webDisclaimer.Document == null || webDisclaimer.Document.GetElementsByTagName("style").Count < 1) return;
+            HtmlElement style = webDisclaimer.Document.GetElementsByTagName("style")[0];
+            style.InnerText += "#wtgbr, #gt-c { display:none !important;} #contentframe {top:0px !important;}";
         }
     }
 }

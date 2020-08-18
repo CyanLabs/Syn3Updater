@@ -5,7 +5,7 @@
     <Setting Name="TOCAccepted2" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="CurrentSyncVersion" Type="System.String" Scope="User">
+    <Setting Name="CurrentSyncVersion" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3420136</Value>
     </Setting>
     <Setting Name="CurrentSyncRegion" Type="System.String" Scope="User">
@@ -19,6 +19,9 @@
     </Setting>
     <Setting Name="DownloadPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ShowAllReleases" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="No_Internet_Access_Message" xml:space="preserve">
+    <value>Có lỗi kết nối với máy chủ, vui lòng kiểm tra kết nối internet của bạn và chắc chắn rằng phần mềm được cấp quyền truy cập internet</value>
+  </data>
+  <data name="Download_Directory_Does_Not_Exist_Message" xml:space="preserve">
+    <value>Thư mục lưu trữ không tồn tại, vui lòng chọn một địa điểm mới</value>
+  </data>
+  <data name="Sync_Version_Requires_Downgrade_Message" xml:space="preserve">
+    <value>Phiên bản Sync của bạn mới hơn phiên bản mà chúng tôi có thể hỗ trợ. 
+Fordsyncdownloader có thể tự động chọn lựa phiên bản để hạ cấp.
+Sau khi bạn đã hạ cấp phiên bản Sync, bạn có thể bắt đầu lại việc nâng cấp bằng cách chọn &quot;Bất kỳ phiên bản Sync nào&quot; và lựa chọn phiên bản Sync mới để nâng cấp.
+Bạn có thể chọn &apos;Chế độ thủ công&apos; để tạo ra các gói nâng cấp cho từng ứng dụng mong muốn.
+Nhấp chọn Yes để tự động lựa chọn gói hạ cấp, hoặc nhấp chọn No nếu bạn muốn sử dụng chế độ thủ công. 
+</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Chú ý</value>
+    <comment>Translated word for Notes with semi colon e.g Notes:</comment>
+  </data>
+  <data name="btnDisclaimerContinue.Text" xml:space="preserve">
+    <value>Tiếp tục</value>
+  </data>
+  <data name="btnCommunityForumlink.Text" xml:space="preserve">
+    <value>Diễn đàn đối thoại</value>
+  </data>
+  <data name="btnDonate.Text" xml:space="preserve">
+    <value>Quyên góp</value>
+  </data>
+  <data name="btnFormatUSB.Text" xml:space="preserve">
+    <value>Bắt đầu</value>
+  </data>
+  <data name="btnIVSUDBLink.Text" xml:space="preserve">
+    <value>Cơ sở dữ liệu IVSU </value>
+  </data>
+  <data name="btnLink1.Text" xml:space="preserve">
+    <value>Trang web</value>
+  </data>
+  <data name="btnLink2.Text" xml:space="preserve">
+    <value>Cơ sở dữ liệu mặc định</value>
+  </data>
+  <data name="btnRefreshUSB.Text" xml:space="preserve">
+    <value>Nạp lại thiết bị</value>
+  </data>
+  <data name="btnStep1.Text" xml:space="preserve">
+    <value>Từ chối trách nhiệm</value>
+  </data>
+  <data name="btnStep2.Text" xml:space="preserve">
+    <value>Cấu hình</value>
+  </data>
+  <data name="btnStep3.Text" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="chkDisclaimerConfirm.Text" xml:space="preserve">
+    <value>Tôi hiểu và chấp nhận sự rủi ro ở phần từ chối trách nhiệm trên. Cyanlabs sẽ không chịu trách nhiệm cho bất kì phát sinh nào từ việc thực hiện hành động này</value>
+  </data>
+  <data name="chkSyncNav.Text" xml:space="preserve">
+    <value>Phần mềm chỉ đường</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Nhật ký</value>
+  </data>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>Thư mục tải</value>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>Thông tin phiên bản hiện tại</value>
+  </data>
+  <data name="grpNewVersion.Text" xml:space="preserve">
+    <value>Phiên bản mới</value>
+  </data>
+  <data name="grpUSB.Text" xml:space="preserve">
+    <value>Chọn ổ USB</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Phiên bản Map</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>This section can be used to do manual &quot;autoupdates&quot; use this section only if you know what
+you are doing or if you are following some steps listed online by CyanLabs.
+
+This section will not be supported unless associated with a CyanLabs guide.
+
+The section can not be used to install MAPS due to missing licenses!
+
+Select the IVSU&apos;s you wish to install and press &quot;Start&quot;</value>
+  </data>
+  <data name="lblDowngrade.Text" xml:space="preserve">
+    <value>Cho phép chế độ hạ cấp</value>
+  </data>
+  <data name="lblDownloadDirectory.Text" xml:space="preserve">
+    <value>Thư mục tải</value>
+  </data>
+  <data name="lblDownloadQueue.Text" xml:space="preserve">
+    <value>Đang xử lý</value>
+  </data>
+  <data name="lblDriveInfo.Text" xml:space="preserve">
+    <value>Tên ổ cứng:
+Ký hiệu ổ cứng:
+Tập tin hệ thống:</value>
+  </data>
+  <data name="lblGetDetails.Text" xml:space="preserve">
+    <value>Please enter the correct information to make sure you are provided with the correct files
+failure to do so may render your unit unusable until the correct files are downloaded!</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Cấu hình thủ công</value>
+  </data>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>Giúp đỡ</value>
+  </data>
+  <data name="lblIssueDesc.Text" xml:space="preserve">
+    <value>Something not going to plan? Click &quot;Discord&quot; or &quot;Community Forum&quot; to the left to get some support.
+If you have your USB drive selected we will automatically copy the contents of your SyncMyRide folder,
+autoinstall.lst and reformat.lst to your clipboard, simply paste this in a message and await a response.</value>
+  </data>
+  <data name="lblLinks.Text" xml:space="preserve">
+    <value>Liên kết</value>
+  </data>
+  <data name="lblMapVersion.Text" xml:space="preserve">
+    <value>Bản đồ</value>
+  </data>
+  <data name="lblRegion.Text" xml:space="preserve">
+    <value>Khu vực</value>
+  </data>
+  <data name="lblTotalDownloadProgress.Text" xml:space="preserve">
+    <value>Total Progress</value>
+  </data>
+  <data name="lvIVSUsName.Text" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="lvIVSUsType.Text" xml:space="preserve">
+    <value>Loại</value>
+  </data>
+  <data name="lvIVSUsURL.Text" xml:space="preserve">
+    <value>Đường dẫn</value>
+  </data>
+  <data name="lvIVSUsVersion.Text" xml:space="preserve">
+    <value>Phiên bản</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Đang tải</value>
+  </data>
+  <data name="All_Downloads_Complete_Message" xml:space="preserve">
+    <value>Tất cả đã được tải</value>
+  </data>
+  <data name="Form1_PrepareUsb_Total_Copy_Progress" xml:space="preserve">
+    <value>Total Copy Progress</value>
+  </data>
+  <data name="DriveInfo_1" xml:space="preserve">
+    <value>Tên ổ cứng</value>
+  </data>
+  <data name="Move_Existing_Files_Message" xml:space="preserve">
+    <value>Bạn có muốn chép đè những tập tin này từ</value>
+  </data>
+  <data name="Specify_Current_Version_Message" xml:space="preserve">
+    <value>Vui lòng chọn lựa phiên bản hiện tại của bạn và vùng hoạt động của SyNC</value>
+  </data>
+  <data name="No_Release_Specified_Message" xml:space="preserve">
+    <value>No Release or Map Version has been selected, please select a release from the dropdown.</value>
+  </data>
+  <data name="Downloads_In_Progress_Message" xml:space="preserve">
+    <value>Please wait for all files to finish downloading before attempting to prepare the USB drive</value>
+  </data>
+  <data name="Region_Mismatch_Message" xml:space="preserve">
+    <value>Your existing and desired region do not match!
+CyanLabs does not currently support this and will not provide help for this procedure.We are however actively investigating what exactly needs to be done to make this work!
+
+If you have a unit which is non EU and would like to donate it for this purpose please email admin@cyanlabs.net
+
+Continue Anyway?</value>
+  </data>
+  <data name="Nav_On_Non_Nav_Message" xml:space="preserve">
+    <value>You appear to be trying to install Navigation on a Non Navigation unit!
+It is not possible to do this and will result in error!
+
+If you are sure, Click NO to continue!</value>
+  </data>
+  <data name="No_Maps_Nav_Message" xml:space="preserve">
+    <value>You have stated you have a Navigation unit but haven&apos;t ticked Navigation!
+If you continue you will not have any maps on your unit
+
+Press yes to continue any way or no to cancel and select maps.</value>
+  </data>
+  <data name="No_USB_Selected_Message" xml:space="preserve">
+    <value>No USB drive has been selected, Would you like to only download the files?</value>
+  </data>
+  <data name="USB_Format_Message_1" xml:space="preserve">
+    <value>WARNING, ALL DATA ON THE SELECTED DRIVE WILL BE LOST</value>
+  </data>
+  <data name="Total_Download_Progress" xml:space="preserve">
+    <value>Total Download Progress</value>
+  </data>
+  <data name="Manual_Mode_Message" xml:space="preserve">
+    <value>You can use manual mode to semi-automatically create autoinstall.lst files for specific sections of the &apos;release&apos;
+
+A good example would be to upgrade only the APPS package from 20021 to 20136.
+
+To use this function select a release and USB Drive and then click this button again.</value>
+  </data>
+  <data name="Process_Complete" xml:space="preserve">
+    <value>PROCESS COMPLETE!</value>
+  </data>
+  <data name="Manual_Mode_USB_Message" xml:space="preserve">
+    <value>Your semi-automatic USB has been created, please note that this function is currently unsupported!</value>
+  </data>
+  <data name="Process_Complete_Message" xml:space="preserve">
+    <value>The download and copy of the files is now complete, simply eject this USB from your computer and insert it in your car, make sure the engine is running!
+
+If you would like further instructions click Yes to open our online guide directly to the in car section.
+
+If you used the &apos;DOWNGRADE&apos; package, once the above steps are done return to this application to update to your desired version
+
+Would you like further information?</value>
+  </data>
+  <data name="Copying" xml:space="preserve">
+    <value>Copying</value>
+  </data>
+  <data name="DriveInfo_2" xml:space="preserve">
+    <value>Drive Letter:</value>
+  </data>
+  <data name="DriveInfo_3" xml:space="preserve">
+    <value>Filesystem:</value>
+  </data>
+  <data name="Move_Existing_Files_Message_2" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="USB_Format_Message_2" xml:space="preserve">
+    <value>Drive Letter:</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="btnUploadLog" xml:space="preserve">
+    <value>Upload Log</value>
+  </data>
+  <data name="Main_UploadLog_Log_Uploaded_Message" xml:space="preserve">
+    <value>Log file uploaded, Link copied to clipboard, paste it in to a new post on our community forum or our Discord server.</value>
+  </data>
+  <data name="Main_UploadLog_No_Log_File_Found_message" xml:space="preserve">
+    <value>No log file could be found, make sure you have selected the correct USB drive.</value>
+  </data>
+  <data name="btnCancel_text" xml:space="preserve">
+    <value></value>
+  </data>
+</root>

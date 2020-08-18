@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="No_Internet_Access_Message" xml:space="preserve">
+    <value>Daar was &apos;n probleem om die lys van lêers uit die aanlynbediener te haal, maak seker van jou internet verbinding en maak seker dat die toepassingsagteware het toegang tot die internet</value>
+  </data>
+  <data name="Download_Directory_Does_Not_Exist_Message" xml:space="preserve">
+    <value>Die aflaaigids bestaan nie. Kies &apos;n nuwe ligging</value>
+  </data>
+  <data name="Sync_Version_Requires_Downgrade_Message" xml:space="preserve">
+    <value>U SYNC-weergawe is hoër as wat ondersteun word deur die &apos;hervormingsinstrument&apos;.
+
+FordSyncDownloader kan outomaties die afgraderingpakket kies.
+
+Nadat u, u Sync-weergawe afgegradeer het, kan u weer begin deur &quot;Any other SYNC Version&quot; te kies en u nuwe weergawe te kies.
+
+
+Alternatiewelik kan u &apos;Handmatige Opstelling&apos; -modus gebruik wat u toelaat om eenvoudige opdateringspakkette vir individuele pakkette te skep, bv. APPS.
+
+Klik op Ja om outomaties die afgradeer-pakket te kies, anders klik nee as u van plan is om Handmatige Opstelling te gebruik of beter weet!</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Nota</value>
+    <comment>Translated word for Notes with semi colon e.g Notes:</comment>
+  </data>
+  <data name="btnDisclaimerContinue.Text" xml:space="preserve">
+    <value>Voortgaan</value>
+  </data>
+  <data name="btnCommunityForumlink.Text" xml:space="preserve">
+    <value>Gemeenskapsforum</value>
+  </data>
+  <data name="btnDonate.Text" xml:space="preserve">
+    <value>Skenk</value>
+  </data>
+  <data name="btnFormatUSB.Text" xml:space="preserve">
+    <value>Begin</value>
+    <comment>Depends on context of start, this is to start a process but not to start a car.</comment>
+  </data>
+  <data name="btnIVSUDBLink.Text" xml:space="preserve">
+    <value>IVSU Databasis</value>
+  </data>
+  <data name="btnLink1.Text" xml:space="preserve">
+    <value>Webwerf</value>
+  </data>
+  <data name="btnLink2.Text" xml:space="preserve">
+    <value>As gebou databasis</value>
+  </data>
+  <data name="btnRefreshUSB.Text" xml:space="preserve">
+    <value>Herlaai toestelle</value>
+  </data>
+  <data name="btnStep1.Text" xml:space="preserve">
+    <value>Vrywarings</value>
+  </data>
+  <data name="btnStep2.Text" xml:space="preserve">
+    <value>Konfigurasie</value>
+  </data>
+  <data name="btnStep3.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="chkDisclaimerConfirm.Text" xml:space="preserve">
+    <value>Ek verstaan en aanvaar die risiko&apos;s wat hierbo uiteengesit word.
+Cyanlabs is nie verantwoordelik vir enige ongewenste uitkoms van hierdie operasie nie.</value>
+  </data>
+  <data name="chkSyncNav.Text" xml:space="preserve">
+    <value>Navigasie</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>Aflaai ligging</value>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>Huidige weergawe inligting</value>
+  </data>
+  <data name="grpNewVersion.Text" xml:space="preserve">
+    <value>Nuwe weergawe</value>
+  </data>
+  <data name="grpUSB.Text" xml:space="preserve">
+    <value>Kies u USB skyf</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Kaartweergawe</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Hierdie afdeling kan gebruik word om handmatige &apos;outomatiese opdatering&apos; te doen, gebruik hierdie afdeling slegs as u weet wat jy doen, of as jy &apos;n paar stappe volg wat aanlyn deur CyanLabs gelys is.
+
+Hierdie afdeling sal nie ondersteun word nie, tensy dit met &apos;n CyanLabs-gids geassosieer word.
+
+Die afdeling kan nie gebruik word om KARTE te installeer nie as gevolg van lisensies wat ontbreek!
+
+Kies die IVSU&apos;s wat u wil installeer en druk op &quot;Start&quot;</value>
+  </data>
+  <data name="lblDowngrade.Text" xml:space="preserve">
+    <value>AFGRADERING GEAKTIVEER
+(Kies USB en druk op Start)</value>
+  </data>
+  <data name="lblDownloadDirectory.Text" xml:space="preserve">
+    <value>Aflaai ligging</value>
+  </data>
+  <data name="lblDownloadQueue.Text" xml:space="preserve">
+    <value>Wagtou</value>
+  </data>
+  <data name="lblDriveInfo.Text" xml:space="preserve">
+    <value>Skyf Naam: 
+Skyf letter: 
+Leerstelsel:</value>
+  </data>
+  <data name="lblGetDetails.Text" xml:space="preserve">
+    <value>Voer die korrekte inligting in om seker te maak dat u van die regte lêers voorsien word
+versuim om dit te doen, kan u eenheid onbruikbaar maak totdat die regte lêers afgelaai is!</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Handmatige Opstelling</value>
+  </data>
+  <data name="lblHelp.Text" xml:space="preserve">
+    <value>HULP</value>
+  </data>
+  <data name="lblIssueDesc.Text" xml:space="preserve">
+    <value>Iets nie van plan nie? Klik op &apos;Discord&apos; of &apos;Community Forum&apos; links om ondersteuning te kry.
+As u, u USB-skyf gekies het, sal ons die inhoud van u SyncMyRide-gids outomaties kopieer,
+autoinstall.lst en reformat.lst op u knipbord plak, plak dit eenvoudig in &apos;n boodskap en wag op &apos;n antwoord.</value>
+  </data>
+  <data name="lblLinks.Text" xml:space="preserve">
+    <value>SKAKEL</value>
+  </data>
+  <data name="lblMapVersion.Text" xml:space="preserve">
+    <value>Karte</value>
+  </data>
+  <data name="lblRegion.Text" xml:space="preserve">
+    <value>Streek</value>
+  </data>
+  <data name="lblTotalDownloadProgress.Text" xml:space="preserve">
+    <value>Totale vordering</value>
+  </data>
+  <data name="lvIVSUsName.Text" xml:space="preserve">
+    <value>Naam</value>
+  </data>
+  <data name="lvIVSUsType.Text" xml:space="preserve">
+    <value>Tipe</value>
+  </data>
+  <data name="lvIVSUsURL.Text" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="lvIVSUsVersion.Text" xml:space="preserve">
+    <value>Weergave</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Aflaai</value>
+  </data>
+  <data name="All_Downloads_Complete_Message" xml:space="preserve">
+    <value>Alle aflaaie voltooi!</value>
+  </data>
+  <data name="Form1_PrepareUsb_Total_Copy_Progress" xml:space="preserve">
+    <value>Totale kopie vordering</value>
+  </data>
+  <data name="DriveInfo_1" xml:space="preserve">
+    <value>Skyf Naam</value>
+  </data>
+  <data name="Move_Existing_Files_Message" xml:space="preserve">
+    <value>Wil jy bestaande lêers te beweeg van</value>
+  </data>
+  <data name="Specify_Current_Version_Message" xml:space="preserve">
+    <value>Spesifiseer u huidige weergawe en streek van SYNC!</value>
+  </data>
+  <data name="No_Release_Specified_Message" xml:space="preserve">
+    <value>Geen vrystelling of kaartweergawe is gekies nie, kies &apos;n weergawe uit die aftreklys.</value>
+  </data>
+  <data name="Downloads_In_Progress_Message" xml:space="preserve">
+    <value>Wag asseblief vir al die lêers om af te laai voordat u die USB-skyf probeer voorberei</value>
+  </data>
+  <data name="Region_Mismatch_Message" xml:space="preserve">
+    <value>U bestaande en gewenste streek stem nie ooreen nie!
+CyanLabs ondersteun dit tans nie en bied nie hulp aan hierdie prosedure nie. Ons ondersoek egter aktief wat gedoen moet word om hierdie werk te laat doen!
+
+
+Stuur &apos;n e-pos aan admin@cyanlabs.net as u &apos;n eenheid het wat nie EU is nie en dit vir hierdie doel wil skenk
+
+Gaan voort?</value>
+  </data>
+  <data name="Nav_On_Non_Nav_Message" xml:space="preserve">
+    <value>Dit wil voorkom asof u Navigasie probeer installeer op &apos;n nie-navigasie-eenheid! Dit is nie moontlik om dit te doen nie en sal tot foute lei!
+
+As u seker is, klik NO om verder te gaan!</value>
+  </data>
+  <data name="No_Maps_Nav_Message" xml:space="preserve">
+    <value>U het gesê dat u &apos;n navigasie-eenheid het, maar u het nie Navigasie gemerk nie!
+As u verder gaan, sal u geen kaarte op u eenheid hê nie.
+
+Druk op ja om aantegaan of nee om te kanselleer en kaarte te kies.</value>
+  </data>
+  <data name="No_USB_Selected_Message" xml:space="preserve">
+    <value>Geen USB-skyf is gekies nie. Wil u net die lêers aflaai?</value>
+  </data>
+  <data name="USB_Format_Message_1" xml:space="preserve">
+    <value>WAARSKUWING, AL DIE GEGEVENS OOR DIE GESELEKTEERDE AANDRIF SAL VERLOS WORD</value>
+  </data>
+  <data name="Total_Download_Progress" xml:space="preserve">
+    <value>Totale aflaai-vordering</value>
+  </data>
+  <data name="Manual_Mode_Message" xml:space="preserve">
+    <value>U kan die handmatige modus gebruik om &apos;n semi-outomatiese autoinstall.Ist te skep vir spesifieke gedeeltes van die &apos;weergawe&apos;
+
+&apos;N Goeie voorbeeld sou wees om slegs die APPS-pakket van 20021 tot 20136 op te gradeer.
+
+Om hierdie funksie te gebruik, kies &apos;n vrystelling en USB skyf en klik dan weer op hierdie knoppie.</value>
+  </data>
+  <data name="Process_Complete" xml:space="preserve">
+    <value>PROSES VOLTOOI</value>
+  </data>
+  <data name="Manual_Mode_USB_Message" xml:space="preserve">
+    <value>U semi-outomatiese USB is geskep. Let daarop dat hierdie funksie tans nie ondersteun word nie!</value>
+  </data>
+  <data name="Process_Complete_Message" xml:space="preserve">
+    <value>Die aflaai en kopieer van die lêers is nou voltooi. Verwyder die USB eenvoudig van u rekenaar af en dit in u motor insit, maak seker dat die enjin loop!
+
+As u verdere instruksies wil hê, klik Ja om ons aanlyngids direk na die afdeling vir motors oop te maak.
+
+As u die &apos;DOWNGRADE&apos;-pakket gebruik het, keer die bogenoemde stappe weer terug na hierdie aansoek om na die gewenste weergawe op te dateer
+
+Wil u meer inligting hê?</value>
+  </data>
+  <data name="Copying" xml:space="preserve">
+    <value>Kopiering</value>
+  </data>
+  <data name="DriveInfo_2" xml:space="preserve">
+    <value>Skyf Letter</value>
+  </data>
+  <data name="DriveInfo_3" xml:space="preserve">
+    <value>Leerstelsel:</value>
+  </data>
+  <data name="Move_Existing_Files_Message_2" xml:space="preserve">
+    <value>Na</value>
+  </data>
+  <data name="USB_Format_Message_2" xml:space="preserve">
+    <value>Skyf Letter </value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Weergawe</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="btnUploadLog" xml:space="preserve">
+    <value>Upload Log</value>
+  </data>
+  <data name="Main_UploadLog_Log_Uploaded_Message" xml:space="preserve">
+    <value>Log file uploaded, Link copied to clipboard, paste it in to a new post on our community forum or our Discord server.</value>
+  </data>
+  <data name="Main_UploadLog_No_Log_File_Found_message" xml:space="preserve">
+    <value>No log file could be found, make sure you have selected the correct USB drive.</value>
+  </data>
+  <data name="btnCancel_text" xml:space="preserve">
+    <value></value>
+  </data>
+</root>
