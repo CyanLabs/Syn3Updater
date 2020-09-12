@@ -65,12 +65,11 @@
             this.lvIVSUsURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvIVSUsMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabStatus = new System.Windows.Forms.TabPage();
+            this.btnShowLog = new System.Windows.Forms.Button();
             this.barTotalDownloadProgress = new Sync3Updater.Controls.NewProgressBar();
             this.barDownloadProgress = new Sync3Updater.Controls.NewProgressBar();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.grpLog = new System.Windows.Forms.GroupBox();
-            this.txtProcessLog = new System.Windows.Forms.RichTextBox();
-            this.lblTotalDownloadProgress = new System.Windows.Forms.Label();
+            this.lblCurrentTask = new System.Windows.Forms.Label();
             this.lstDownloadQueue = new System.Windows.Forms.ListBox();
             this.lblDownloadSize = new System.Windows.Forms.Label();
             this.lblFileName = new System.Windows.Forms.Label();
@@ -85,7 +84,6 @@
             this.tabControl1.SuspendLayout();
             this.tabAutoInstall.SuspendLayout();
             this.tabStatus.SuspendLayout();
-            this.grpLog.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -94,9 +92,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(200, 0);
+            this.lblTitle.Location = new System.Drawing.Point(0, -3);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(332, 30);
+            this.lblTitle.Size = new System.Drawing.Size(620, 30);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "SYNC 3 UPDATER";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -125,9 +123,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.Color.White;
-            this.lblVersion.Location = new System.Drawing.Point(200, 26);
+            this.lblVersion.Location = new System.Drawing.Point(3, 24);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(332, 20);
+            this.lblVersion.Size = new System.Drawing.Size(559, 20);
             this.lblVersion.TabIndex = 47;
             this.lblVersion.Text = "V #.#.#.#";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -157,7 +155,7 @@
             "RO",
             "VI",
             "ZH"});
-            this.cmbLocale.Location = new System.Drawing.Point(534, 1);
+            this.cmbLocale.Location = new System.Drawing.Point(529, 1);
             this.cmbLocale.Name = "cmbLocale";
             this.cmbLocale.Size = new System.Drawing.Size(51, 19);
             this.cmbLocale.TabIndex = 46;
@@ -166,7 +164,6 @@
             // 
             this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
-            this.btnHelp.Enabled = false;
             this.btnHelp.FlatAppearance.BorderSize = 0;
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 9.75F);
@@ -176,6 +173,7 @@
             this.btnHelp.TabIndex = 41;
             this.btnHelp.Text = "Help!";
             this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // btnMinimize
             // 
@@ -195,9 +193,9 @@
             this.btnLogo.BackColor = System.Drawing.Color.Transparent;
             this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLogo.Image = global::Sync3Updater.Properties.Resources.logo;
-            this.btnLogo.Location = new System.Drawing.Point(4, 2);
+            this.btnLogo.Location = new System.Drawing.Point(-19, -3);
             this.btnLogo.Name = "btnLogo";
-            this.btnLogo.Size = new System.Drawing.Size(191, 46);
+            this.btnLogo.Size = new System.Drawing.Size(191, 34);
             this.btnLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLogo.TabIndex = 7;
             this.btnLogo.TabStop = false;
@@ -224,24 +222,23 @@
             this.grpUSB.Controls.Add(this.btnRefreshUSB);
             this.grpUSB.Controls.Add(this.lblDriveInfo);
             this.grpUSB.ForeColor = System.Drawing.Color.White;
-            this.grpUSB.Location = new System.Drawing.Point(16, 58);
+            this.grpUSB.Location = new System.Drawing.Point(12, 58);
             this.grpUSB.Name = "grpUSB";
-            this.grpUSB.Size = new System.Drawing.Size(589, 91);
+            this.grpUSB.Size = new System.Drawing.Size(596, 91);
             this.grpUSB.TabIndex = 35;
             this.grpUSB.TabStop = false;
             this.grpUSB.Text = "Select a USB Drive";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label1.Location = new System.Drawing.Point(321, 12);
+            this.label1.Location = new System.Drawing.Point(308, 12);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(3);
-            this.label1.Size = new System.Drawing.Size(261, 73);
+            this.label1.Size = new System.Drawing.Size(283, 73);
             this.label1.TabIndex = 19;
-            this.label1.Text = "Recommended USB Flash Drive sizes\r\n\r\nNon Navigation APIM\'s should be find with 8G" +
+            this.label1.Text = "Recommended USB Flash Drive sizes\r\n\r\nNon Navigation APIM\'s should be fine with 8G" +
     "B\r\nNA, ROW, ANZ APIM\'s will require atleast 16GB\r\nEU APIM\'s will require atleast" +
     " 32GB";
             // 
@@ -295,9 +292,9 @@
             this.grpNewVersion.Controls.Add(this.lblRegion);
             this.grpNewVersion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.grpNewVersion.ForeColor = System.Drawing.Color.White;
-            this.grpNewVersion.Location = new System.Drawing.Point(16, 155);
+            this.grpNewVersion.Location = new System.Drawing.Point(12, 155);
             this.grpNewVersion.Name = "grpNewVersion";
-            this.grpNewVersion.Size = new System.Drawing.Size(589, 124);
+            this.grpNewVersion.Size = new System.Drawing.Size(596, 124);
             this.grpNewVersion.TabIndex = 34;
             this.grpNewVersion.TabStop = false;
             this.grpNewVersion.Text = "New Sync 3 Version";
@@ -307,12 +304,12 @@
             this.txtReleaseNotes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.txtReleaseNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtReleaseNotes.ForeColor = System.Drawing.Color.White;
-            this.txtReleaseNotes.Location = new System.Drawing.Point(286, 21);
+            this.txtReleaseNotes.Location = new System.Drawing.Point(237, 21);
             this.txtReleaseNotes.Multiline = true;
             this.txtReleaseNotes.Name = "txtReleaseNotes";
             this.txtReleaseNotes.ReadOnly = true;
             this.txtReleaseNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtReleaseNotes.Size = new System.Drawing.Size(291, 87);
+            this.txtReleaseNotes.Size = new System.Drawing.Size(340, 87);
             this.txtReleaseNotes.TabIndex = 23;
             this.txtReleaseNotes.Text = "Notes: ";
             // 
@@ -334,7 +331,7 @@
             this.cmbMapVersion.FormattingEnabled = true;
             this.cmbMapVersion.Location = new System.Drawing.Point(92, 87);
             this.cmbMapVersion.Name = "cmbMapVersion";
-            this.cmbMapVersion.Size = new System.Drawing.Size(166, 21);
+            this.cmbMapVersion.Size = new System.Drawing.Size(117, 21);
             this.cmbMapVersion.TabIndex = 26;
             this.cmbMapVersion.SelectedIndexChanged += new System.EventHandler(this.cmbMapVersion_SelectedIndexChanged);
             // 
@@ -348,7 +345,7 @@
             this.cmbRelease.FormattingEnabled = true;
             this.cmbRelease.Location = new System.Drawing.Point(92, 54);
             this.cmbRelease.Name = "cmbRelease";
-            this.cmbRelease.Size = new System.Drawing.Size(166, 21);
+            this.cmbRelease.Size = new System.Drawing.Size(117, 21);
             this.cmbRelease.TabIndex = 11;
             this.cmbRelease.SelectedIndexChanged += new System.EventHandler(this.cmbRelease_SelectedIndexChanged_1);
             // 
@@ -367,7 +364,7 @@
             "ROW"});
             this.cmbRegion.Location = new System.Drawing.Point(92, 21);
             this.cmbRegion.Name = "cmbRegion";
-            this.cmbRegion.Size = new System.Drawing.Size(166, 21);
+            this.cmbRegion.Size = new System.Drawing.Size(117, 21);
             this.cmbRegion.TabIndex = 15;
             this.cmbRegion.SelectedIndexChanged += new System.EventHandler(this.cmbRegion_SelectedIndexChanged);
             // 
@@ -385,11 +382,12 @@
             this.lblRegionInfo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblRegionInfo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
             this.lblRegionInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblRegionInfo.Location = new System.Drawing.Point(259, 15);
+            this.lblRegionInfo.Location = new System.Drawing.Point(211, 15);
             this.lblRegionInfo.Name = "lblRegionInfo";
             this.lblRegionInfo.Size = new System.Drawing.Size(17, 30);
             this.lblRegionInfo.TabIndex = 22;
             this.lblRegionInfo.Text = "?";
+            this.lblRegionInfo.Click += new System.EventHandler(this.lblRegionInfo_Click);
             // 
             // lblRegion
             // 
@@ -404,12 +402,12 @@
             // btnContinueNewVersion
             // 
             this.btnContinueNewVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnContinueNewVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.btnContinueNewVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.btnContinueNewVersion.Enabled = false;
             this.btnContinueNewVersion.FlatAppearance.BorderSize = 0;
             this.btnContinueNewVersion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnContinueNewVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnContinueNewVersion.Location = new System.Drawing.Point(492, 285);
+            this.btnContinueNewVersion.Location = new System.Drawing.Point(495, 285);
             this.btnContinueNewVersion.Name = "btnContinueNewVersion";
             this.btnContinueNewVersion.Size = new System.Drawing.Size(113, 31);
             this.btnContinueNewVersion.TabIndex = 36;
@@ -424,7 +422,7 @@
             this.btnShowConfiguration.FlatAppearance.BorderSize = 0;
             this.btnShowConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnShowConfiguration.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnShowConfiguration.Location = new System.Drawing.Point(16, 285);
+            this.btnShowConfiguration.Location = new System.Drawing.Point(12, 285);
             this.btnShowConfiguration.Name = "btnShowConfiguration";
             this.btnShowConfiguration.Size = new System.Drawing.Size(105, 31);
             this.btnShowConfiguration.TabIndex = 37;
@@ -436,7 +434,7 @@
             // 
             this.lblConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.lblConfiguration.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblConfiguration.Location = new System.Drawing.Point(123, 285);
+            this.lblConfiguration.Location = new System.Drawing.Point(119, 285);
             this.lblConfiguration.Name = "lblConfiguration";
             this.lblConfiguration.Size = new System.Drawing.Size(321, 31);
             this.lblConfiguration.TabIndex = 38;
@@ -448,11 +446,11 @@
             this.tabControl1.Controls.Add(this.tabAutoInstall);
             this.tabControl1.Controls.Add(this.tabStatus);
             this.tabControl1.ItemSize = new System.Drawing.Size(0, 1);
-            this.tabControl1.Location = new System.Drawing.Point(16, 323);
+            this.tabControl1.Location = new System.Drawing.Point(12, 323);
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(589, 316);
+            this.tabControl1.Size = new System.Drawing.Size(596, 221);
             this.tabControl1.TabIndex = 16;
             // 
             // tabAutoInstall
@@ -463,7 +461,7 @@
             this.tabAutoInstall.Controls.Add(this.lstIVSU);
             this.tabAutoInstall.Location = new System.Drawing.Point(0, 0);
             this.tabAutoInstall.Name = "tabAutoInstall";
-            this.tabAutoInstall.Size = new System.Drawing.Size(589, 316);
+            this.tabAutoInstall.Size = new System.Drawing.Size(596, 221);
             this.tabAutoInstall.TabIndex = 1;
             this.tabAutoInstall.Text = "tabAutoInstall";
             // 
@@ -474,7 +472,7 @@
             this.btnAutoinstall.FlatAppearance.BorderSize = 0;
             this.btnAutoinstall.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnAutoinstall.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnAutoinstall.Location = new System.Drawing.Point(448, 273);
+            this.btnAutoinstall.Location = new System.Drawing.Point(455, 184);
             this.btnAutoinstall.Name = "btnAutoinstall";
             this.btnAutoinstall.Size = new System.Drawing.Size(133, 31);
             this.btnAutoinstall.TabIndex = 37;
@@ -486,15 +484,16 @@
             // 
             this.lblManualWarning.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(46)))));
             this.lblManualWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblManualWarning.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblManualWarning.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblManualWarning.Location = new System.Drawing.Point(9, 11);
+            this.lblManualWarning.Location = new System.Drawing.Point(0, 0);
             this.lblManualWarning.Name = "lblManualWarning";
             this.lblManualWarning.Padding = new System.Windows.Forms.Padding(5);
-            this.lblManualWarning.Size = new System.Drawing.Size(572, 60);
+            this.lblManualWarning.Size = new System.Drawing.Size(596, 40);
             this.lblManualWarning.TabIndex = 26;
             this.lblManualWarning.Text = "Press Start to begin the download/install, optionally deselect any IVSU\'s you don" +
-    "\'t want.\r\n\r\nNOTE: This install mode was automatically chosen based on your confi" +
-    "guration\r\n";
+    "\'t want.\r\nNOTE: This install mode was automatically chosen based on your configu" +
+    "ration\r\n";
             this.lblManualWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lstIVSU
@@ -511,9 +510,9 @@
             this.lstIVSU.ForeColor = System.Drawing.Color.White;
             this.lstIVSU.FullRowSelect = true;
             this.lstIVSU.HideSelection = false;
-            this.lstIVSU.Location = new System.Drawing.Point(9, 91);
+            this.lstIVSU.Location = new System.Drawing.Point(9, 47);
             this.lstIVSU.Name = "lstIVSU";
-            this.lstIVSU.Size = new System.Drawing.Size(572, 173);
+            this.lstIVSU.Size = new System.Drawing.Size(579, 132);
             this.lstIVSU.TabIndex = 1;
             this.lstIVSU.UseCompatibleStateImageBehavior = false;
             this.lstIVSU.View = System.Windows.Forms.View.Details;
@@ -547,11 +546,11 @@
             // tabStatus
             // 
             this.tabStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.tabStatus.Controls.Add(this.btnShowLog);
             this.tabStatus.Controls.Add(this.barTotalDownloadProgress);
             this.tabStatus.Controls.Add(this.barDownloadProgress);
             this.tabStatus.Controls.Add(this.btnCancel);
-            this.tabStatus.Controls.Add(this.grpLog);
-            this.tabStatus.Controls.Add(this.lblTotalDownloadProgress);
+            this.tabStatus.Controls.Add(this.lblCurrentTask);
             this.tabStatus.Controls.Add(this.lstDownloadQueue);
             this.tabStatus.Controls.Add(this.lblDownloadSize);
             this.tabStatus.Controls.Add(this.lblFileName);
@@ -559,17 +558,32 @@
             this.tabStatus.Controls.Add(this.lblFilesRemaining);
             this.tabStatus.Location = new System.Drawing.Point(0, 0);
             this.tabStatus.Name = "tabStatus";
-            this.tabStatus.Size = new System.Drawing.Size(589, 316);
+            this.tabStatus.Size = new System.Drawing.Size(596, 221);
             this.tabStatus.TabIndex = 2;
             this.tabStatus.Text = "tabStatus";
+            // 
+            // btnShowLog
+            // 
+            this.btnShowLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            this.btnShowLog.FlatAppearance.BorderSize = 0;
+            this.btnShowLog.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnShowLog.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnShowLog.Location = new System.Drawing.Point(515, 196);
+            this.btnShowLog.Name = "btnShowLog";
+            this.btnShowLog.Size = new System.Drawing.Size(76, 21);
+            this.btnShowLog.TabIndex = 39;
+            this.btnShowLog.Text = "Show Log";
+            this.btnShowLog.UseVisualStyleBackColor = false;
+            this.btnShowLog.Click += new System.EventHandler(this.btnShowLog_Click);
             // 
             // barTotalDownloadProgress
             // 
             this.barTotalDownloadProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.barTotalDownloadProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
-            this.barTotalDownloadProgress.Location = new System.Drawing.Point(6, 173);
+            this.barTotalDownloadProgress.Location = new System.Drawing.Point(6, 171);
             this.barTotalDownloadProgress.Name = "barTotalDownloadProgress";
-            this.barTotalDownloadProgress.Size = new System.Drawing.Size(576, 20);
+            this.barTotalDownloadProgress.Size = new System.Drawing.Size(585, 20);
             this.barTotalDownloadProgress.TabIndex = 45;
             // 
             // barDownloadProgress
@@ -578,7 +592,7 @@
             this.barDownloadProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.barDownloadProgress.Location = new System.Drawing.Point(6, 130);
             this.barDownloadProgress.Name = "barDownloadProgress";
-            this.barDownloadProgress.Size = new System.Drawing.Size(576, 16);
+            this.barDownloadProgress.Size = new System.Drawing.Size(585, 16);
             this.barDownloadProgress.TabIndex = 44;
             // 
             // btnCancel
@@ -587,46 +601,22 @@
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(476, 6);
+            this.btnCancel.Location = new System.Drawing.Point(476, 5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(107, 20);
+            this.btnCancel.Size = new System.Drawing.Size(115, 20);
             this.btnCancel.TabIndex = 43;
-            this.btnCancel.Text = "Cancel Download";
+            this.btnCancel.Text = "Cancel Downloads";
             this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // grpLog
+            // lblCurrentTask
             // 
-            this.grpLog.Controls.Add(this.txtProcessLog);
-            this.grpLog.ForeColor = System.Drawing.Color.White;
-            this.grpLog.Location = new System.Drawing.Point(6, 199);
-            this.grpLog.Name = "grpLog";
-            this.grpLog.Size = new System.Drawing.Size(578, 114);
-            this.grpLog.TabIndex = 42;
-            this.grpLog.TabStop = false;
-            this.grpLog.Text = "Log";
-            // 
-            // txtProcessLog
-            // 
-            this.txtProcessLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
-            this.txtProcessLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtProcessLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtProcessLog.ForeColor = System.Drawing.Color.White;
-            this.txtProcessLog.Location = new System.Drawing.Point(3, 18);
-            this.txtProcessLog.Name = "txtProcessLog";
-            this.txtProcessLog.ReadOnly = true;
-            this.txtProcessLog.Size = new System.Drawing.Size(572, 93);
-            this.txtProcessLog.TabIndex = 16;
-            this.txtProcessLog.Text = "";
-            this.txtProcessLog.TextChanged += new System.EventHandler(this.txtProcessLog_TextChanged);
-            // 
-            // lblTotalDownloadProgress
-            // 
-            this.lblTotalDownloadProgress.Location = new System.Drawing.Point(7, 155);
-            this.lblTotalDownloadProgress.Name = "lblTotalDownloadProgress";
-            this.lblTotalDownloadProgress.Size = new System.Drawing.Size(576, 13);
-            this.lblTotalDownloadProgress.TabIndex = 41;
-            this.lblTotalDownloadProgress.Text = "Total Progress";
-            this.lblTotalDownloadProgress.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblCurrentTask.Location = new System.Drawing.Point(7, 155);
+            this.lblCurrentTask.Name = "lblCurrentTask";
+            this.lblCurrentTask.Size = new System.Drawing.Size(584, 13);
+            this.lblCurrentTask.TabIndex = 41;
+            this.lblCurrentTask.Text = "Total Progress";
+            this.lblCurrentTask.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lstDownloadQueue
             // 
@@ -637,14 +627,14 @@
             this.lstDownloadQueue.Location = new System.Drawing.Point(7, 27);
             this.lstDownloadQueue.Name = "lstDownloadQueue";
             this.lstDownloadQueue.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lstDownloadQueue.Size = new System.Drawing.Size(576, 80);
+            this.lstDownloadQueue.Size = new System.Drawing.Size(584, 80);
             this.lstDownloadQueue.TabIndex = 40;
             // 
             // lblDownloadSize
             // 
             this.lblDownloadSize.Location = new System.Drawing.Point(464, 114);
             this.lblDownloadSize.Name = "lblDownloadSize";
-            this.lblDownloadSize.Size = new System.Drawing.Size(120, 13);
+            this.lblDownloadSize.Size = new System.Drawing.Size(127, 13);
             this.lblDownloadSize.TabIndex = 39;
             this.lblDownloadSize.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -678,7 +668,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(46)))));
-            this.ClientSize = new System.Drawing.Size(620, 650);
+            this.ClientSize = new System.Drawing.Size(620, 550);
             this.Controls.Add(this.lblConfiguration);
             this.Controls.Add(this.btnShowConfiguration);
             this.Controls.Add(this.btnContinueNewVersion);
@@ -700,14 +690,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             this.grpUSB.ResumeLayout(false);
-            this.grpUSB.PerformLayout();
             this.grpNewVersion.ResumeLayout(false);
             this.grpNewVersion.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabAutoInstall.ResumeLayout(false);
             this.tabStatus.ResumeLayout(false);
             this.tabStatus.PerformLayout();
-            this.grpLog.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -749,9 +737,7 @@
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.TabPage tabStatus;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.GroupBox grpLog;
-        private System.Windows.Forms.RichTextBox txtProcessLog;
-        private System.Windows.Forms.Label lblTotalDownloadProgress;
+        private System.Windows.Forms.Label lblCurrentTask;
         private System.Windows.Forms.ListBox lstDownloadQueue;
         private System.Windows.Forms.Label lblDownloadSize;
         private System.Windows.Forms.Label lblFileName;
@@ -761,5 +747,6 @@
         private Controls.NewProgressBar barTotalDownloadProgress;
         private Controls.NewProgressBar barDownloadProgress;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Button btnShowLog;
     }
 }

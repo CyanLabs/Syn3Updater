@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Sync3Updater.Properties;
+using Sync3Updater.Helpers;
 
 namespace Sync3Updater
 {
@@ -20,46 +12,16 @@ namespace Sync3Updater
             InitializeComponent();
         }
 
-
-        #region Borderless Window Move / Close/Minimize
-
-        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
-        private static extern void ReleaseCapture();
-
-        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
-        private static extern void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-
         private void panelTitleBar_MouseDown(object sender, MouseEventArgs e)
         {
-            ReleaseCapture();
-            SendMessage(Handle, 0x112, 0xf012, 0);
-        }
-
-        private void btnClose_MouseHover(object sender, EventArgs e)
-        {
-            btnClose.Image = Resources.close;
-        }
-
-        private void btnMinimize_MouseHover(object sender, EventArgs e)
-        {
-            btnClose.Image = Resources.minimize;
+            Functions.ReleaseCapture();
+            Functions.SendMessage(Handle, 0x112, 0xf012, 0);
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-        private void btnWindowControls_MouseLeave(object sender, EventArgs e)
-        {
-            ((PictureBox)sender).Image = Resources.button;
-        }
-        private void btnMinimize_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-        #endregion
-
 
         private void RegionInfo_Load(object sender, EventArgs e)
         {
