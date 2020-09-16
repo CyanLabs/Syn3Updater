@@ -1,4 +1,6 @@
-﻿namespace Sync3Updater
+﻿using Syn3Updater.Controls;
+
+namespace Syn3Updater
 {
     partial class FrmMain
     {
@@ -54,7 +56,7 @@
             this.btnContinueNewVersion = new System.Windows.Forms.Button();
             this.btnShowConfiguration = new System.Windows.Forms.Button();
             this.lblConfiguration = new System.Windows.Forms.Label();
-            this.tabControl1 = new Sync3Updater.Controls.TabControlWithoutHeader();
+            this.tabControl1 = new TabControlWithoutHeader();
             this.tabAutoInstall = new System.Windows.Forms.TabPage();
             this.btnAutoinstall = new System.Windows.Forms.Button();
             this.lblManualWarning = new System.Windows.Forms.Label();
@@ -66,8 +68,8 @@
             this.lvIVSUsMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabStatus = new System.Windows.Forms.TabPage();
             this.btnShowLog = new System.Windows.Forms.Button();
-            this.barTotalDownloadProgress = new Sync3Updater.Controls.NewProgressBar();
-            this.barDownloadProgress = new Sync3Updater.Controls.NewProgressBar();
+            this.barTotalDownloadProgress = new NewProgressBar();
+            this.barDownloadProgress = new NewProgressBar();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblCurrentTask = new System.Windows.Forms.Label();
             this.lstDownloadQueue = new System.Windows.Forms.ListBox();
@@ -192,7 +194,7 @@
             // 
             this.btnLogo.BackColor = System.Drawing.Color.Transparent;
             this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogo.Image = global::Sync3Updater.Properties.Resources.logo;
+            this.btnLogo.Image = global::Syn3Updater.Properties.Resources.logo;
             this.btnLogo.Location = new System.Drawing.Point(-19, -3);
             this.btnLogo.Name = "btnLogo";
             this.btnLogo.Size = new System.Drawing.Size(191, 34);
@@ -720,7 +722,7 @@
         private System.Windows.Forms.Label lblRelease;
         private System.Windows.Forms.Label lblRegion;
         private System.Windows.Forms.Label label1;
-        private Sync3Updater.Controls.TabControlWithoutHeader tabControl1;
+        private Syn3Updater.Controls.TabControlWithoutHeader tabControl1;
         private System.Windows.Forms.TabPage tabAutoInstall;
         private System.Windows.Forms.Button btnContinueNewVersion;
         private System.Windows.Forms.Button btnAutoinstall;

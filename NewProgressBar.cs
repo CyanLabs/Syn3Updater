@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace Sync3Updater.Controls
+namespace Syn3Updater.Controls
 {
     public class NewProgressBar : ProgressBar
     {

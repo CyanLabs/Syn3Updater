@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using Sync3Updater.Helpers;
+using Syn3Updater.Helpers;
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     public partial class frmRegion : Form
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     partial class frmRegion
     {

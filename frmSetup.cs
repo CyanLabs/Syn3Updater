@@ -2,11 +2,11 @@
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
-using Sync3Updater.Helpers;
-using Sync3Updater.Localization;
-using Sync3Updater.Properties;
+using Syn3Updater.Helpers;
+using Syn3Updater.Localization;
+using Syn3Updater.Properties;
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     public partial class FrmSetup : Form
     {

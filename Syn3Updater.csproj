@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A1A2E701-9E63-4BE4-A3B7-4386EF338CD2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Sync3Updater</RootNamespace>
-    <AssemblyName>Sync3Updater</AssemblyName>
+    <RootNamespace>Syn3Updater</RootNamespace>
+    <AssemblyName>Syn3Updater</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Sync3Updater.Program</StartupObject>
+    <StartupObject>Syn3Updater.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>

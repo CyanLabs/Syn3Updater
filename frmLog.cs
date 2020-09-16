@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     public partial class frmLog : Form
     {

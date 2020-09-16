@@ -2,9 +2,8 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Windows.Forms;
 
-namespace Sync3Updater.Helpers
+namespace Syn3Updater.Helpers
 {
     class Functions
     {

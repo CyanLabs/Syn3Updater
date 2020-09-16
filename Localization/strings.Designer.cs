@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sync3Updater.Localization
+namespace Syn3Updater.Localization
 {
     using System;
 

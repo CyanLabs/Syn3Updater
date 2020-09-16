@@ -1,4 +1,4 @@
-﻿namespace Sync3Updater
+﻿namespace Syn3Updater
 {
     partial class frmLog
     {

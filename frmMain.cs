@@ -14,13 +14,13 @@ using System.Windows.Forms;
 using AutoUpdaterDotNET;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Newtonsoft.Json;
-using Sync3Updater.Helpers;
-using Sync3Updater.Localization;
-using Sync3Updater.Properties;
+using Syn3Updater.Helpers;
+using Syn3Updater.Localization;
+using Syn3Updater.Properties;
 using SearchOption = System.IO.SearchOption;
 //https://docs.microsoft.com/en-us/bingmaps/rest-services/common-parameters-and-types/supported-culture-codes
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     public partial class FrmMain : Form
     {

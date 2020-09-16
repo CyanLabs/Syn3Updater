@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sync3Updater.Helpers
+namespace Syn3Updater.Helpers
 {
     public class JsonReleases
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using Sync3Updater.Helpers;
-using Sync3Updater.Properties;
+using Syn3Updater.Helpers;
+using Syn3Updater.Properties;
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     public partial class FrmDisclaimer : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace Sync3Updater
+﻿namespace Syn3Updater
 {
     partial class FrmSetup
     {
@@ -123,7 +123,7 @@
             // 
             this.txtCurrentSyncVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.txtCurrentSyncVersion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtCurrentSyncVersion.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Sync3Updater.Properties.Settings.Default, "CurrentSyncVersion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtCurrentSyncVersion.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "CurrentSyncVersion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtCurrentSyncVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCurrentSyncVersion.ForeColor = System.Drawing.Color.White;
             this.txtCurrentSyncVersion.Location = new System.Drawing.Point(152, 18);
@@ -137,9 +137,9 @@
             // 
             // chkCurrentSyncNav
             // 
-            this.chkCurrentSyncNav.Checked = global::Sync3Updater.Properties.Settings.Default.CurrentSyncNav;
+            this.chkCurrentSyncNav.Checked = global::Syn3Updater.Properties.Settings.Default.CurrentSyncNav;
             this.chkCurrentSyncNav.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCurrentSyncNav.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Sync3Updater.Properties.Settings.Default, "CurrentSyncNav", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkCurrentSyncNav.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Syn3Updater.Properties.Settings.Default, "CurrentSyncNav", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkCurrentSyncNav.Location = new System.Drawing.Point(479, 22);
             this.chkCurrentSyncNav.Name = "chkCurrentSyncNav";
             this.chkCurrentSyncNav.Size = new System.Drawing.Size(104, 17);
@@ -172,7 +172,7 @@
             // cmbCurrentSyncRegion
             // 
             this.cmbCurrentSyncRegion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
-            this.cmbCurrentSyncRegion.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Sync3Updater.Properties.Settings.Default, "CurrentSyncRegion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cmbCurrentSyncRegion.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "CurrentSyncRegion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.cmbCurrentSyncRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCurrentSyncRegion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbCurrentSyncRegion.ForeColor = System.Drawing.Color.White;
@@ -187,7 +187,7 @@
             this.cmbCurrentSyncRegion.Name = "cmbCurrentSyncRegion";
             this.cmbCurrentSyncRegion.Size = new System.Drawing.Size(58, 21);
             this.cmbCurrentSyncRegion.TabIndex = 20;
-            this.cmbCurrentSyncRegion.Text = global::Sync3Updater.Properties.Settings.Default.CurrentSyncRegion;
+            this.cmbCurrentSyncRegion.Text = global::Syn3Updater.Properties.Settings.Default.CurrentSyncRegion;
             // 
             // lblWarning1
             // 
@@ -227,7 +227,7 @@
             // 
             this.btnLogo.BackColor = System.Drawing.Color.Transparent;
             this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogo.Image = global::Sync3Updater.Properties.Resources.logo;
+            this.btnLogo.Image = global::Syn3Updater.Properties.Resources.logo;
             this.btnLogo.Location = new System.Drawing.Point(4, 2);
             this.btnLogo.Name = "btnLogo";
             this.btnLogo.Size = new System.Drawing.Size(191, 46);
