@@ -20,5 +20,10 @@ namespace Syn3Updater
         {
             txtLog.Text = FrmMain.Logoutput;
         }
+
+        private void txtLog_TextChanged(object sender, EventArgs e)
+        {
+            txtLog.ScrollToCaret();
+        }
     }
 }

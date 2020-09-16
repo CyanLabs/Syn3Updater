@@ -45,7 +45,7 @@ namespace Syn3Updater.Localization
             {
                 if (object.ReferenceEquals(resourceMan, null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sync3Updater.Localization.strings", typeof(strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Syn3Updater.Localization.strings", typeof(strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

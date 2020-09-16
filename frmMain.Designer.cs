@@ -31,6 +31,10 @@ namespace Syn3Updater
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "NAV_VOICE",
+            "1U5T-1563G2-135",
+            "N/A"}, -1);
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelTitleBar = new System.Windows.Forms.Panel();
             this.lblVersion = new System.Windows.Forms.Label();
@@ -56,8 +60,9 @@ namespace Syn3Updater
             this.btnContinueNewVersion = new System.Windows.Forms.Button();
             this.btnShowConfiguration = new System.Windows.Forms.Button();
             this.lblConfiguration = new System.Windows.Forms.Label();
-            this.tabControl1 = new TabControlWithoutHeader();
+            this.tabControl1 = new Syn3Updater.Controls.TabControlWithoutHeader();
             this.tabAutoInstall = new System.Windows.Forms.TabPage();
+            this.lblMode1 = new System.Windows.Forms.Label();
             this.btnAutoinstall = new System.Windows.Forms.Button();
             this.lblManualWarning = new System.Windows.Forms.Label();
             this.lstIVSU = new System.Windows.Forms.ListView();
@@ -67,9 +72,10 @@ namespace Syn3Updater
             this.lvIVSUsURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvIVSUsMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabStatus = new System.Windows.Forms.TabPage();
+            this.lblMode2 = new System.Windows.Forms.Label();
             this.btnShowLog = new System.Windows.Forms.Button();
-            this.barTotalDownloadProgress = new NewProgressBar();
-            this.barDownloadProgress = new NewProgressBar();
+            this.barTotalDownloadProgress = new Syn3Updater.Controls.NewProgressBar();
+            this.barDownloadProgress = new Syn3Updater.Controls.NewProgressBar();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblCurrentTask = new System.Windows.Forms.Label();
             this.lstDownloadQueue = new System.Windows.Forms.ListBox();
@@ -415,7 +421,7 @@ namespace Syn3Updater
             this.btnContinueNewVersion.TabIndex = 36;
             this.btnContinueNewVersion.Text = "Continue";
             this.btnContinueNewVersion.UseVisualStyleBackColor = false;
-            this.btnContinueNewVersion.Click += new System.EventHandler(this.btnContinueNewVersion_Click);
+            this.btnContinueNewVersion.Click += new System.EventHandler(this.btnContinue_Click);
             // 
             // btnShowConfiguration
             // 
@@ -458,6 +464,7 @@ namespace Syn3Updater
             // tabAutoInstall
             // 
             this.tabAutoInstall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.tabAutoInstall.Controls.Add(this.lblMode1);
             this.tabAutoInstall.Controls.Add(this.btnAutoinstall);
             this.tabAutoInstall.Controls.Add(this.lblManualWarning);
             this.tabAutoInstall.Controls.Add(this.lstIVSU);
@@ -466,6 +473,16 @@ namespace Syn3Updater
             this.tabAutoInstall.Size = new System.Drawing.Size(596, 221);
             this.tabAutoInstall.TabIndex = 1;
             this.tabAutoInstall.Text = "tabAutoInstall";
+            // 
+            // lblMode1
+            // 
+            this.lblMode1.AutoSize = true;
+            this.lblMode1.Location = new System.Drawing.Point(13, 200);
+            this.lblMode1.Name = "lblMode1";
+            this.lblMode1.Size = new System.Drawing.Size(77, 13);
+            this.lblMode1.TabIndex = 38;
+            this.lblMode1.Text = "Install Mode: ";
+            this.lblMode1.TextChanged += new System.EventHandler(this.lblMode1_TextChanged);
             // 
             // btnAutoinstall
             // 
@@ -511,7 +528,12 @@ namespace Syn3Updater
             this.lstIVSU.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lstIVSU.ForeColor = System.Drawing.Color.White;
             this.lstIVSU.FullRowSelect = true;
+            this.lstIVSU.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lstIVSU.HideSelection = false;
+            listViewItem1.StateImageIndex = 0;
+            this.lstIVSU.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+            this.lstIVSU.LabelWrap = false;
             this.lstIVSU.Location = new System.Drawing.Point(9, 47);
             this.lstIVSU.Name = "lstIVSU";
             this.lstIVSU.Size = new System.Drawing.Size(579, 132);
@@ -522,19 +544,19 @@ namespace Syn3Updater
             // lvIVSUsType
             // 
             this.lvIVSUsType.Text = "Type";
-            this.lvIVSUsType.Width = 138;
+            this.lvIVSUsType.Width = 150;
             // 
             // lvIVSUsName
             // 
             this.lvIVSUsName.Text = "Name";
             this.lvIVSUsName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.lvIVSUsName.Width = 212;
+            this.lvIVSUsName.Width = 230;
             // 
             // lvIVSUsVersion
             // 
             this.lvIVSUsVersion.Text = "Version";
             this.lvIVSUsVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.lvIVSUsVersion.Width = 217;
+            this.lvIVSUsVersion.Width = 175;
             // 
             // lvIVSUsURL
             // 
@@ -548,6 +570,7 @@ namespace Syn3Updater
             // tabStatus
             // 
             this.tabStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.tabStatus.Controls.Add(this.lblMode2);
             this.tabStatus.Controls.Add(this.btnShowLog);
             this.tabStatus.Controls.Add(this.barTotalDownloadProgress);
             this.tabStatus.Controls.Add(this.barDownloadProgress);
@@ -563,6 +586,15 @@ namespace Syn3Updater
             this.tabStatus.Size = new System.Drawing.Size(596, 221);
             this.tabStatus.TabIndex = 2;
             this.tabStatus.Text = "tabStatus";
+            // 
+            // lblMode2
+            // 
+            this.lblMode2.AutoSize = true;
+            this.lblMode2.Location = new System.Drawing.Point(13, 200);
+            this.lblMode2.Name = "lblMode2";
+            this.lblMode2.Size = new System.Drawing.Size(77, 13);
+            this.lblMode2.TabIndex = 39;
+            this.lblMode2.Text = "Install Mode: ";
             // 
             // btnShowLog
             // 
@@ -695,6 +727,7 @@ namespace Syn3Updater
             this.grpNewVersion.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabAutoInstall.ResumeLayout(false);
+            this.tabAutoInstall.PerformLayout();
             this.tabStatus.ResumeLayout(false);
             this.tabStatus.PerformLayout();
             this.ResumeLayout(false);
@@ -749,5 +782,7 @@ namespace Syn3Updater
         private Controls.NewProgressBar barDownloadProgress;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Button btnShowLog;
+        private System.Windows.Forms.Label lblMode1;
+        private System.Windows.Forms.Label lblMode2;
     }
 }
