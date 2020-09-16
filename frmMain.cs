@@ -316,6 +316,7 @@ namespace Syn3Updater
 
         private void btnContinue_Click(object sender, EventArgs e)
         {
+            Reset();
             canceldownload = false;
 
             this.Size = new Size(620, 550);
@@ -331,7 +332,7 @@ namespace Syn3Updater
             //LESS THAN 3.2
             if (Settings.Default.CurrentSyncVersion < SyncReformatVersion)
             {
-                Reformat();
+                _mode = "reformat";
             }
 
             //Between 3.2 and 3.4.19274
@@ -342,11 +343,11 @@ namespace Syn3Updater
                 if (cmbMapVersion.Text == "No Maps" || cmbMapVersion.Text == "Non Nav APIM" ||
                     cmbMapVersion.Text == "Keep Existing Maps" || !cmbMapVersion.Text.Contains("ESN"))
                 {
-                    Autoinstall();
+                    _mode = "autoinstall";
                 }
                 else
                 {
-                    Reformat();
+                    _mode = "reformat";
                 }
             }
 
@@ -357,39 +358,49 @@ namespace Syn3Updater
                 if (cmbMapVersion.Text == "No Maps" || cmbMapVersion.Text == "Non Nav APIM" ||
                     cmbMapVersion.Text == "Keep Existing Maps")
                 {
-                    Autoinstall();
+                    _mode = "autoinstall";
                 }
                 else
                 {
-                    Autoinstall(true);
+                    _mode = "downgrade";
                 }
             }
-        }
 
-        private void Autoinstall(bool Downgrade = false)
-        {
             string release;
-            if (Downgrade)
+            if (_mode == "downgrade")
             {
-                _mode = "downgrade";
                 lblMode1.Text = "Install Mode: downgrade";
                 release = "DOWNGRADE";
             }
-            else
+            else if (_mode == "autoinstall")
             {
-                _mode = "autoinstall";
                 lblMode1.Text = "Install Mode: autoinstall";
                 release = cmbRelease.Text;
+            }
+            else
+            {
+                lblMode1.Text = "Install Mode: reformat";
+                release = cmbRelease.Text;
+                
             }
 
             tabControl1.SelectedTab = tabAutoInstall;
             lstIVSU.Items.Clear();
+
+            if (_mode == "reformat")
+            {
+                string reformattool = _downloadpath + @"1u5t-14g386-cb.tar.gz";
+                if (!File.Exists(reformattool) || Functions.CalculateMd5(reformattool) != "75E08C3EED8D2039BAF65B6156F79106")
+                    _downloadfiles.Enqueue(new Uri(UrlReformatTool).ToString());
+            }
+
             HttpResponseMessage response = Client.GetAsync(UrlApiAppReleaseSingle + release).Result;
             _stringDownloadJson = response.Content.ReadAsStringAsync().Result;
 
             response = Client.GetAsync(UrlApiMapReleaseSingle + cmbMapVersion.Text).Result;
             _stringMapDownloadJson = response.Content.ReadAsStringAsync().Result;
 
+            //
             JsonReleases jsonIvsUs = JsonConvert.DeserializeObject<JsonReleases>(_stringDownloadJson);
             JsonReleases jsonMapIvsUs = JsonConvert.DeserializeObject<JsonReleases>(_stringMapDownloadJson);
 
@@ -408,6 +419,7 @@ namespace Syn3Updater
             IVSUs = new ArrayList(lstIVSU.CheckedItems);
         }
 
+
         private void btnAutoinstall_Click(object sender, EventArgs e)
         {
             Reset();
@@ -415,18 +427,8 @@ namespace Syn3Updater
             tabControl1.SelectedTab = tabStatus;
             UpdateLog($"Starting process ({cmbRelease.Text} - {cmbRegion.Text} - {cmbMapVersion.Text})");
 
-            
-
             Task t = new Task(ValidateDownloadedFiles);
             t.Start();
-
-            ////_totalcount = _downloadfiles.Count;
-
-
-
-            //UpdateLog($"Starting process ({cmbRelease.Text} - {cmbRegion.Text} - {cmbMapVersion.Text})");
-            //Task t = new Task(DownloadFile);
-            //t.Start();
         }
 
         private void Reset()
