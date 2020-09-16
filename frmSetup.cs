@@ -39,6 +39,7 @@ namespace Sync3Updater
         private void btnSetupContinue_Click(object sender, EventArgs e)
         {
             Settings.Default.SetupCompleted = true;
+            Settings.Default.CurrentSyncVersion = Convert.ToInt32(txtCurrentSyncVersion.Text);
             Settings.Default.Save();
             this.Close();
         }
@@ -80,11 +81,12 @@ namespace Sync3Updater
 
         private void FrmSetup_Shown(object sender, EventArgs e)
         {
-            txtDownloadPath.Text = Settings.Default.DownloadPath;
             if (!Settings.Default.SetupCompleted)
             {
                 Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Sync3Updater\";
+                
             }
+            txtDownloadPath.Text = Settings.Default.DownloadPath;
         }
     }
 }

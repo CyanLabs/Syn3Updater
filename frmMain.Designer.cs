@@ -304,12 +304,12 @@
             this.txtReleaseNotes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.txtReleaseNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtReleaseNotes.ForeColor = System.Drawing.Color.White;
-            this.txtReleaseNotes.Location = new System.Drawing.Point(237, 21);
+            this.txtReleaseNotes.Location = new System.Drawing.Point(252, 21);
             this.txtReleaseNotes.Multiline = true;
             this.txtReleaseNotes.Name = "txtReleaseNotes";
             this.txtReleaseNotes.ReadOnly = true;
             this.txtReleaseNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtReleaseNotes.Size = new System.Drawing.Size(340, 87);
+            this.txtReleaseNotes.Size = new System.Drawing.Size(327, 87);
             this.txtReleaseNotes.TabIndex = 23;
             this.txtReleaseNotes.Text = "Notes: ";
             // 
@@ -331,7 +331,7 @@
             this.cmbMapVersion.FormattingEnabled = true;
             this.cmbMapVersion.Location = new System.Drawing.Point(92, 87);
             this.cmbMapVersion.Name = "cmbMapVersion";
-            this.cmbMapVersion.Size = new System.Drawing.Size(117, 21);
+            this.cmbMapVersion.Size = new System.Drawing.Size(148, 21);
             this.cmbMapVersion.TabIndex = 26;
             this.cmbMapVersion.SelectedIndexChanged += new System.EventHandler(this.cmbMapVersion_SelectedIndexChanged);
             // 
@@ -345,7 +345,7 @@
             this.cmbRelease.FormattingEnabled = true;
             this.cmbRelease.Location = new System.Drawing.Point(92, 54);
             this.cmbRelease.Name = "cmbRelease";
-            this.cmbRelease.Size = new System.Drawing.Size(117, 21);
+            this.cmbRelease.Size = new System.Drawing.Size(148, 21);
             this.cmbRelease.TabIndex = 11;
             this.cmbRelease.SelectedIndexChanged += new System.EventHandler(this.cmbRelease_SelectedIndexChanged_1);
             // 
@@ -364,7 +364,7 @@
             "ROW"});
             this.cmbRegion.Location = new System.Drawing.Point(92, 21);
             this.cmbRegion.Name = "cmbRegion";
-            this.cmbRegion.Size = new System.Drawing.Size(117, 21);
+            this.cmbRegion.Size = new System.Drawing.Size(125, 21);
             this.cmbRegion.TabIndex = 15;
             this.cmbRegion.SelectedIndexChanged += new System.EventHandler(this.cmbRegion_SelectedIndexChanged);
             // 
@@ -382,7 +382,7 @@
             this.lblRegionInfo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblRegionInfo.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
             this.lblRegionInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblRegionInfo.Location = new System.Drawing.Point(211, 15);
+            this.lblRegionInfo.Location = new System.Drawing.Point(221, 16);
             this.lblRegionInfo.Name = "lblRegionInfo";
             this.lblRegionInfo.Size = new System.Drawing.Size(17, 30);
             this.lblRegionInfo.TabIndex = 22;
@@ -683,7 +683,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cyanlabs Ford Sync Update Downloader";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
-            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.Shown += new System.EventHandler(this.FrmMain_Shown);
             this.panelTitleBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).EndInit();

@@ -38,7 +38,6 @@ namespace Sync3Updater
         {
             Settings.Default.TOCAccepted2 = true;
             Settings.Default.Save();
-            _ = new FrmSetup { Visible = true };
             this.Close();
         }
 

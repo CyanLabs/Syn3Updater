@@ -34,12 +34,12 @@ namespace Sync3Updater
 
         // URL's
         private const string UrlApiBase = "https://api.cyanlabs.net/fordsyncdownloader/";
-        private const string UrlApiAppReleases = UrlApiBase + "items/releases?sort=-name&filter[status]=published";
-        private const string UrlApiAppReleasesAll = UrlApiBase + "items/releases?sort=-name";
-        private const string UrlApiAppReleaseSingle = UrlApiBase + "items/releases?sort=-name&fields=*.*.*&filter[name]=";
-        private const string UrlApiMapReleases = UrlApiBase + "items/map_releases?sort=-name&filter[status]=published&filter[regions]=";
-        private const string UrlApiMapReleasesAll = UrlApiBase + "items/map_releases?sort=-name&filter[regions]=";
-        private const string UrlApiMapReleaseSingle = UrlApiBase + "items/map_releases?sort=-name&fields=*.*.*&filter[name]=";
+        private const string UrlApiAppReleases = UrlApiBase + "items/releases?sort=-name&limit=-1&filter[status]=published";
+        private const string UrlApiAppReleasesAll = UrlApiBase + "items/releases?sort=-name&limit=-1";
+        private const string UrlApiAppReleaseSingle = UrlApiBase + "items/releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
+        private const string UrlApiMapReleases = UrlApiBase + "items/map_releases?sort=-name&limit=-1&filter[status]=published&filter[regions]=";
+        private const string UrlApiMapReleasesAll = UrlApiBase + "items/map_releases?sort=-name&limit=-1&filter[regions]=";
+        private const string UrlApiMapReleaseSingle = UrlApiBase + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         private const string UrlReformatTool = "https://cyanlabs.net/api/FordSyncDownloader/reformat.php";
         private const int SyncBlacklistedVersion = 3419274;
         private const int SyncReformatVersion = 3200000;
@@ -77,36 +77,45 @@ namespace Sync3Updater
         #endregion
 
         #region Form Events
-        private void FrmMain_Load(object sender, EventArgs e)
+
+        private void FrmMain_Shown(object sender, EventArgs e)
         {
-            if (!Directory.Exists(Settings.Default.DownloadPath) && Settings.Default.DownloadPath != "")
+            lblVersion.Text = "This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo - Version: " +
+                              Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            string tmpversion = Settings.Default.CurrentSyncVersion.ToString();
+            tmpversion = tmpversion[0] + "." + tmpversion[1] + "." + tmpversion.Substring(2, tmpversion.Length - 2);
+
+            lblConfiguration.Text =
+                $"Current Version: {tmpversion} - Region: {Settings.Default.CurrentSyncRegion} - Navigation: {(Settings.Default.CurrentSyncNav ? "Yes" : "No")}" +
+                Environment.NewLine + $"Download Path: {Settings.Default.DownloadPath}";
+
+            this.Size = new Size(620, 320);
+
+
+            if (!Directory.Exists(Settings.Default.DownloadPath) && Settings.Default.DownloadPath == "")
             {
-                MessageBox.Show("Download directory does not exist, please select a new location", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 FrmSetup frmSetup = new FrmSetup { Visible = true };
-                frmSetup.FormClosing += ChildFormClosing;
+                frmSetup.FormClosing += SettingsFormClosing;
                 this.Hide();
             }
-            else if (!Directory.Exists(Settings.Default.DownloadPath) && Settings.Default.DownloadPath == "")
+            else if (!Directory.Exists(Settings.Default.DownloadPath) && Settings.Default.DownloadPath != "")
             {
-                Directory.CreateDirectory(_downloadpath);
+                Directory.CreateDirectory(Settings.Default.DownloadPath);
             }
-            else
-            {
-                _downloadpath = Settings.Default.DownloadPath;
-            }
+            _downloadpath = Settings.Default.DownloadPath;
 
             foreach (string arg in Environment.GetCommandLineArgs())
-                switch (arg)
-                {
-                    case "/updated":
-                        Settings.Default.Upgrade();
-                        Settings.Default.Save();
-                        break;
-                    case "/all":
-                        _boolShowAllReleases = true;
-                        break;
-                }
-
+                    switch (arg)
+                    {
+                        case "/updated":
+                            Settings.Default.Upgrade();
+                            Settings.Default.Save();
+                            break;
+                        case "/all":
+                            _boolShowAllReleases = true;
+                            break;
+                    }
             try
             {
                 ServicePointManager.Expect100Continue = true;
@@ -131,41 +140,13 @@ namespace Sync3Updater
             }
             catch (WebException webex)
             {
-                MessageBox.Show("There was an issue trying to retrieve the list of files from the online server, please check your internet connection and make sure the application has internet access" + Environment.NewLine + webex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "There was an issue trying to retrieve the list of files from the online server, please check your internet connection and make sure the application has internet access" +
+                    Environment.NewLine + webex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
         }
-        private void FrmMain_Shown(object sender, EventArgs e)
-        {
-            lblVersion.Text = "This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo - Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
-           
-            string tmpversion = Settings.Default.CurrentSyncVersion.ToString();
-            tmpversion = tmpversion[0] + "." + tmpversion[1] + "." + tmpversion.Substring(2, tmpversion.Length - 2);
 
-            lblConfiguration.Text =
-                $"Current Version: {tmpversion} - Region: {Settings.Default.CurrentSyncRegion} - Navigation: {(Settings.Default.CurrentSyncNav ? "Yes" : "No")}" + Environment.NewLine + $"Download Path: { Settings.Default.DownloadPath}";
-
-            this.Size = new Size(620, 320);
-
-            if (!Settings.Default.TOCAccepted2)
-            {
-                _ = new FrmDisclaimer { Visible = true };
-                this.Hide();
-            }
-            else if (!Settings.Default.SetupCompleted)
-            {
-                FrmSetup frmSetup = new FrmSetup { Visible = true };
-                frmSetup.FormClosing += ChildFormClosing;
-                this.Hide();
-            }
-
-            if (!Settings.Default.CurrentSyncNav)
-            {
-                cmbMapVersion.Items.Add(@"Non Nav APIM");
-                cmbMapVersion.SelectedItem = @"Non Nav APIM";
-                cmbMapVersion.Enabled = false;
-            }
-        }
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             _cancelcopy = true;
@@ -224,7 +205,7 @@ namespace Sync3Updater
         {
             _dicDriveList.Clear();
             _dicDriveList.Add("", "");
-            ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive WHERE MediaType='Removable media'");
+            ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive WHERE InterfaceType='USB'");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
                 ManagementObject d = (ManagementObject)o;
@@ -244,6 +225,11 @@ namespace Sync3Updater
                 cmbMapVersion.Items.Add("Non Nav APIM");
                 cmbMapVersion.SelectedItem = "Non Nav APIM";
             }
+            else
+            {
+                cmbMapVersion.Items.Add("Keep Existing Maps");
+                cmbMapVersion.SelectedItem = "Keep Existing Maps";
+            }
             _jsonReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringReleasesJson);
             foreach (Data item in _jsonReleases.data)
                 if (item.regions.Contains(cmbRegion.Text))
@@ -251,29 +237,19 @@ namespace Sync3Updater
             if (cmbRegion.SelectedIndex >= 0) cmbRelease.Enabled = true;
         }
 
-
-        private void btnContinueNewVersion_Click(object sender, EventArgs e)
+        private bool IsCancelDownload()
         {
-            canceldownload = false;
-
-            if (cmbRegion.Text != Settings.Default.CurrentSyncRegion && canceldownload == false)
+            //Check region is the same
+            if (cmbRegion.Text != Settings.Default.CurrentSyncRegion)
             {
                 DialogResult dialogOpenwebsite = MessageBox.Show(
                     strings.Region_Mismatch_Message, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning
                 );
                 if (dialogOpenwebsite != DialogResult.Yes) canceldownload = true;
             }
-            if (cmbMapVersion.Text != @"No Maps" && cmbMapVersion.Text != @"Non Nav APIM"  && cmbMapVersion.Text != @"Keep Existing Maps" && Settings.Default.CurrentSyncNav == false && canceldownload == false &&
-                Settings.Default.CurrentSyncVersion.ToString() != @"SYNC 3.4.19274+")
-            {
-                DialogResult dialogOpenwebsite = MessageBox.Show(
-                    strings.Nav_On_Non_Nav_Message, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning
-                );
-                if (dialogOpenwebsite != DialogResult.No) canceldownload = true;
-            }
 
-            if (cmbMapVersion.Text == @"No Maps" && Settings.Default.CurrentSyncNav && canceldownload == false &&
-                Settings.Default.CurrentSyncVersion.ToString() != @"SYNC 3.4.19274+")
+            //
+            if (cmbMapVersion.Text == @"No Maps" && Settings.Default.CurrentSyncNav && canceldownload == false)
             {
                 DialogResult dialogOpenwebsite = MessageBox.Show(
                     strings.No_Maps_Nav_Message,
@@ -282,7 +258,7 @@ namespace Sync3Updater
                 if (dialogOpenwebsite == DialogResult.No) canceldownload = true;
             }
 
-            if (cmbDriveList.SelectedIndex == 0 && canceldownload == false)
+            if (cmbDriveList.SelectedIndex == 0)
             {
                 DialogResult dialogOpenwebsite = MessageBox.Show(
                     strings.No_USB_Selected_Message,
@@ -294,7 +270,7 @@ namespace Sync3Updater
                     canceldownload = true;
             }
 
-            if (canceldownload == false && _downloadonly == false)
+            if (_downloadonly == false)
             {
                 string selectedDisk = ((KeyValuePair<string, string>)cmbDriveList.SelectedItem).Value;
                 DialogResult dialogResult = MessageBox.Show(
@@ -306,7 +282,12 @@ namespace Sync3Updater
                 if (dialogResult == DialogResult.No) canceldownload = true;
             }
 
-            if (canceldownload) return;
+            return canceldownload;
+        }
+
+        private void btnContinueNewVersion_Click(object sender, EventArgs e)
+        {
+            canceldownload = false;
 
             this.Size = new Size(620, 550);
             btnContinueNewVersion.Enabled = false;
@@ -356,6 +337,7 @@ namespace Sync3Updater
         private void Autoinstall()
         {
             _mode = "autoinstall";
+            if (IsCancelDownload()) return;
             tabControl1.SelectedTab = tabAutoInstall;
             lstIVSU.Items.Clear();
             HttpResponseMessage response = Client.GetAsync(UrlApiAppReleaseSingle + cmbRelease.Text).Result;
@@ -372,8 +354,8 @@ namespace Sync3Updater
         private void Downgrade()
         {
             lblManualWarning.Text = strings.lblDowngrade_Text;
-
             _mode = "downgrade";
+            if (IsCancelDownload()) return;
             tabControl1.SelectedTab = tabAutoInstall;
             lstIVSU.Items.Clear();
             HttpResponseMessage response = Client.GetAsync(UrlApiAppReleaseSingle + "DOWNGRADE").Result;
@@ -390,6 +372,7 @@ namespace Sync3Updater
         private void Reformat()
         {
             _mode = "reformat";
+            if (IsCancelDownload()) return;
             _totalcount = -1;
             tabControl1.SelectedTab = tabStatus;
             string reformattool = _downloadpath + @"1u5t-14g386-cb.tar.gz";
@@ -414,15 +397,29 @@ namespace Sync3Updater
         private void btnShowConfiguration_Click(object sender, EventArgs e)
         {
             FrmSetup frmSetup = new FrmSetup {Visible = true};
-            frmSetup.FormClosing += ChildFormClosing;
+            frmSetup.FormClosing += SettingsFormClosing;
             this.Hide();
         }
 
-        private void ChildFormClosing(object sender, FormClosingEventArgs e)
+        private void SettingsFormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Settings.Default.TOCAccepted2)
+            {
+                this.Show();
+                FrmMain_Shown(sender, e);
+                
+            }
+            else
+            {
+                FrmDisclaimer frmdisclaimer = new FrmDisclaimer { Visible = true };
+                frmdisclaimer.FormClosing += DisclaimerFormClosing;
+            }
+        }
+
+        private void DisclaimerFormClosing(object sender, FormClosingEventArgs e)
         {
             this.Show();
             FrmMain_Shown(sender, e);
-            
         }
 
         private void ValidateDownloadedFiles()
@@ -451,6 +448,7 @@ namespace Sync3Updater
                 }
                 if (!_dicIvsUs.ContainsKey(_fileName)) _dicIvsUs.Add(_fileName, item.ivsu.type);
             }
+            
             if (cmbMapVersionText != @"No Maps" && cmbMapVersionText != @"Non Nav APIM" && cmbMapVersionText != @"Keep Existing Maps")
             {
                 JsonReleases jsonMapIvsUs = JsonConvert.DeserializeObject<JsonReleases>(_stringMapDownloadJson);
@@ -584,12 +582,10 @@ namespace Sync3Updater
                         grpUSB.Enabled = true;
                     }
                 }
-
                 break;
             }
         }
 
-        
         private void CopyFiles()
         {
             _cancelcopy = false;
@@ -776,7 +772,16 @@ namespace Sync3Updater
             {
                 cmbMapVersion.Items.Clear();
                 cmbMapVersion.Items.Add("No Maps");
-
+                if (!Settings.Default.CurrentSyncNav)
+                {
+                    cmbMapVersion.Items.Add("Non Nav APIM");
+                    cmbMapVersion.SelectedItem = "Non Nav APIM";
+                }
+                else
+                {
+                    cmbMapVersion.Items.Add("Keep Existing Maps");
+                    cmbMapVersion.SelectedItem = "Keep Existing Maps";
+                }
                 _jsonMapReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringMapReleasesJson);
                 foreach (Data item in _jsonMapReleases.data) cmbMapVersion.Items.Add(item.name);
                 if (cmbRelease.SelectedIndex >= 0 && Settings.Default.CurrentSyncNav) cmbMapVersion.Enabled = true;
@@ -789,8 +794,6 @@ namespace Sync3Updater
             _tokenSource.Cancel();
         }
 
-
-
         private void UpdateLog(string text)
         {
             Logoutput += text + Environment.NewLine;
@@ -801,16 +804,8 @@ namespace Sync3Updater
             Console.WriteLine(text);
         }
 
-
-        
-
         //private void LocalizationSetup()
         //{
-        //    if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName != "en")
-        //    {
-        //        webDisclaimer.Navigate(
-        //            $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FFordSyncDownloader%2Fdisclaimer.php");
-        //    }
         //    cmbLocale.Text = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
         //    btnCommunityForumlink.Text = strings.btnCommunityForumlink_Text;
         //    btnDisclaimerContinue.Text = strings.btnDisclaimerContinue_Text;

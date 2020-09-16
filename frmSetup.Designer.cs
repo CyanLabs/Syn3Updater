@@ -284,6 +284,7 @@
             this.Name = "FrmSetup";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cyanlabs Ford Sync Update Downloader";
+            this.TopMost = true;
             this.Shown += new System.EventHandler(this.FrmSetup_Shown);
             this.grpDownload.ResumeLayout(false);
             this.grpDownload.PerformLayout();
