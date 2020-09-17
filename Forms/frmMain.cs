@@ -22,7 +22,7 @@ using Syn3Updater.Properties;
 using SearchOption = System.IO.SearchOption;
 //https://docs.microsoft.com/en-us/bingmaps/rest-services/common-parameters-and-types/supported-culture-codes
 
-namespace Syn3Updater
+namespace Syn3Updater.Forms
 {
     public partial class FrmMain : Form
     {
@@ -50,7 +50,7 @@ namespace Syn3Updater
         private const int SyncBlacklistedVersion = 3419274;
         private const int SyncReformatVersion = 3200000;
         private const string SyncReformatTool = "1u5t-14g386-cb.tar.gz";
-        private const string SyncReformatToolMD5 = "75E08C3EED8D2039BAF65B6156F79106";
+        private const string SyncReformatToolMd5 = "75E08C3EED8D2039BAF65B6156F79106";
 
         private static readonly HttpClient Client = new HttpClient();
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
@@ -59,7 +59,6 @@ namespace Syn3Updater
         private readonly Queue<string> _downloadfiles = new Queue<string>();
         private readonly Dictionary<string, string> _dicDriveList = new Dictionary<string, string>();
         private readonly Dictionary<string,KeyValuePair<string,string>> _dicIvsus = new Dictionary<string, KeyValuePair<string, string>>();
-        private List<string> _validatedIvsUsList = new List<string>();
         private KeyValuePair<string, string> _kvpDriveList;
         private int _prevprogressPercentageInt, _totalcount = -1, _pbCancel;
         private bool _downloadcomplete, _downloadonly, _cancelcopy, _canceldownload;
@@ -76,7 +75,6 @@ namespace Syn3Updater
             _stringMapDownloadJson,
             _downloadpath,
             _stringCompatibility,
-            _cmbSyncVersionText,
             _mode = "",
             _fileName = "",
             _published = "published";
@@ -296,24 +294,57 @@ namespace Syn3Updater
 
                 if (dialogResult == DialogResult.No) _canceldownload = true;
             }
-
             return _canceldownload;
+        }
+
+        private void ResetControls()
+        {
+            _prevprogressPercentageInt = 0;
+            _totalcount = -1;
+            Logoutput = "";
+            _tokenSource.Dispose();
+            _tokenSource = new CancellationTokenSource();
+            Invoke((MethodInvoker)delegate
+            {
+                this.Size = new Size(620, 320);
+                barTotalDownloadProgress.Maximum = 0;
+                lblCurrentTask.Text = strings.Total_Download_Progress;
+                btnContinue.Enabled = true;
+                grpNewVersion.Enabled = true;
+                grpUSB.Enabled = true;
+                btnCancel.Enabled = false;
+                _canceldownload = false;
+                _dicIvsus.Clear();
+            });
+
+
+        }
+
+        private void DisableControls()
+        {
+            _prevprogressPercentageInt = 0;
+            _totalcount = -1;
+
+            Invoke((MethodInvoker)delegate
+            {
+                barTotalDownloadProgress.Maximum = 0;
+                _dicIvsus.Clear();
+                lblCurrentTask.Text = strings.Total_Download_Progress;
+                _tokenSource.Dispose();
+                _tokenSource = new CancellationTokenSource();
+                tabControl1.SelectedTab = tabStatus;
+            });
+
+            btnContinue.Enabled = false;
+            grpNewVersion.Enabled = false;
+            grpUSB.Enabled = false;
+            btnCancel.Enabled = true;
         }
 
         private void btnContinue_Click(object sender, EventArgs e)
         {
-            Reset();
-            _canceldownload = false;
-
+            ResetControls();
             this.Size = new Size(620, 550);
-            btnContinueNewVersion.Enabled = false;
-            grpNewVersion.Enabled = false;
-            grpUSB.Enabled = false;
-            btnCancel.Enabled = true;
-            barTotalDownloadProgress.Maximum = 0;
-            _prevprogressPercentageInt = 0;
-            Logoutput = "";
-            _cmbSyncVersionText = cmbRelease.Text;
 
             //LESS THAN 3.2
             if (Settings.Default.CurrentSyncVersion < SyncReformatVersion)
@@ -341,14 +372,13 @@ namespace Syn3Updater
             else if (Settings.Default.CurrentSyncVersion >= SyncBlacklistedVersion)
             {
                 //Update Nav?
-                if (cmbMapVersion.Text == @"No Maps" || cmbMapVersion.Text == @"Non Nav APIM" ||
-                    cmbMapVersion.Text == @"Keep Existing Maps")
+                if (cmbMapVersion.Text.Contains("ESN"))
                 {
-                    _mode = "autoinstall";
+                    _mode = "downgrade";
                 }
                 else
                 {
-                    _mode = "downgrade";
+                    _mode = "autoinstall";
                 }
             }
 
@@ -367,7 +397,6 @@ namespace Syn3Updater
             {
                 lblMode1.Text = @"Install Mode: reformat";
                 release = cmbRelease.Text;
-
             }
 
             tabControl1.SelectedTab = tabAutoInstall;
@@ -376,7 +405,7 @@ namespace Syn3Updater
             if (_mode == "reformat")
             {
                 string reformattool = _downloadpath + SyncReformatTool;
-                if (!File.Exists(reformattool) || CalculateMd5(reformattool) != SyncReformatToolMD5)
+                if (!File.Exists(reformattool) || CalculateMd5(reformattool) != SyncReformatToolMd5)
                     _downloadfiles.Enqueue(new Uri(ReformatTool).ToString());
             }
 
@@ -407,31 +436,23 @@ namespace Syn3Updater
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Reset();
-            if (CancelledDownload()) return;
-
-            _ivsus = new ArrayList(lstIVSU.CheckedItems);
-
-            tabControl1.SelectedTab = tabStatus;
-            UpdateLog($"Starting process ({cmbRelease.Text} - {cmbRegion.Text} - {cmbMapVersion.Text})");
-
-            Task t = new Task(ValidateDownloadedFiles);
-            t.Start();
-        }
-
-        private void Reset()
-        {
-            _prevprogressPercentageInt = 0;
-            _totalcount = -1;
-
-            Invoke((MethodInvoker) delegate
+            DisableControls();
+            if (CancelledDownload())
             {
-                barTotalDownloadProgress.Maximum = 0;
-                _dicIvsus.Clear();
-                lblCurrentTask.Text = strings.Total_Download_Progress;
-                _tokenSource.Dispose();
-                _tokenSource = new CancellationTokenSource();
-            });
+                ResetControls();
+            }
+            else
+            {
+                _ivsus = new ArrayList(lstIVSU.CheckedItems);
+                for (int i = 0; i < lstIVSU.CheckedItems.Count; i++)
+                {
+                    lstDownloadQueue.Items.Add(lstIVSU.CheckedItems[i].SubItems[3].Text);
+                }
+                UpdateLog($"Starting process ({cmbRelease.Text} - {cmbRegion.Text} - {cmbMapVersion.Text})");
+
+                Task t = new Task(ValidateDownloadedFiles);
+                t.Start();
+            }
         }
 
         private void btnShowConfiguration_Click(object sender, EventArgs e)
@@ -471,16 +492,16 @@ namespace Syn3Updater
                     item.SubItems[3].Text.Length - item.SubItems[3].Text.LastIndexOf("/", StringComparison.Ordinal) -
                     1);
 
-                if (!_validatedIvsUsList.Contains(_fileName))
-                {
                     if (!ValidateFile(item.SubItems[3].Text, _downloadpath + _fileName, item.SubItems[4].Text,false))
                     {
                         _downloadfiles.Enqueue(item.SubItems[3].Text);
-                        BeginInvoke(new Action(() => lstDownloadQueue.Items.Add(item.SubItems[3].Text)));
                     }
-                }
+                    else
+                    {
+                        BeginInvoke(new Action(() => lstDownloadQueue.Items.Remove(item.SubItems[3].Text)));
+                    }
 
-                if (!_dicIvsus.ContainsKey(_fileName)) _dicIvsus.Add(_fileName, new KeyValuePair<string, string>(item.SubItems[0].Text, item.SubItems[4].Text));
+                    if (!_dicIvsus.ContainsKey(_fileName)) _dicIvsus.Add(_fileName, new KeyValuePair<string, string>(item.SubItems[0].Text, item.SubItems[4].Text));
             }
 
             if (_totalcount == -1)
@@ -599,7 +620,7 @@ namespace Syn3Updater
                             PrepareUsb();
                     }
 
-                    Reset();
+                    ResetControls();
                 }
 
                 break;
@@ -651,8 +672,7 @@ namespace Syn3Updater
                     UpdateLog("ALL FILES DOWNLOADED AND COPIED TO THE USB DRIVE SUCCESSFULLY!");
                     lblDownloadSize.Text = "";
                     lblFileName.Text = strings.Process_Complete;
-                    grpUSB.Enabled = true;
-                    grpNewVersion.Enabled = true;
+                    
                 }
             });
             GenerateLog();
@@ -671,7 +691,7 @@ namespace Syn3Updater
                 );
 
                 if (dialogOpenwebsite == DialogResult.Yes)
-                    Process.Start(_cmbSyncVersionText.Contains("DOWNGRADE")
+                    Process.Start(_mode.Contains("downgrade")
                         ? "https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#downgradingcar"
                         : "https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#updating");
             }
@@ -679,6 +699,7 @@ namespace Syn3Updater
             {
                 //TODO MESSAGEBOX FOR DOWNGRADE
             }
+            ResetControls();
         }
 
         #region Helper Functions
@@ -686,11 +707,11 @@ namespace Syn3Updater
         private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
         {
             if (!File.Exists(localfile)) return false;
-            UpdateLog("Verifying integrity of " + _fileName);
+            UpdateLog("Verifying integrity of " + _fileName,"INFO",true);
+            BeginInvoke(new Action(() => lblFileName.Text = "Verifying integrity of " + _fileName));
             if (md5 == null)
             {
-                UpdateLog("WARN: No MD5 value found in database, unable to verify " + _fileName);
-                UpdateLog("WARN: Doing a simple filesize comparison instead");
+                UpdateLog("No MD5 value found in database, comparing files size of " + _fileName, "WARN",true);
 
                 long filesize = new FileInfo(localfile).Length;
                 if (copy)
@@ -722,7 +743,6 @@ namespace Syn3Updater
                         if (newfilesize == filesize)
                         {
                             UpdateLog("Successfully Verified " + _fileName);
-                            _validatedIvsUsList.Add(_fileName);
                             return true;
                         }
                     }
@@ -732,22 +752,25 @@ namespace Syn3Updater
             if (string.Equals(CalculateMd5(localfile), md5, StringComparison.CurrentCultureIgnoreCase))
             {
                 UpdateLog("Successfully Verified " + _fileName);
-                _validatedIvsUsList.Add(_fileName);
                 return true;
             }
 
             BeginInvoke(new Action(() => barTotalDownloadProgress.Maximum += 100));
-            UpdateLog("WARN: Failed to verify " + _fileName + " retrying");
+            UpdateLog("Failed to verify " + _fileName + " retrying","WARN");
             return false;
         }
 
         private void cmbMapVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnContinueNewVersion.Enabled = (cmbMapVersion.Text != "" && cmbRelease.Text != "");
+            lstIVSU.Items.Clear();
+            this.Size = new Size(620, 320);
+            btnContinue.Enabled = (cmbMapVersion.Text != "" && cmbRelease.Text != "");
         }
 
         private void cmbRelease_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lstIVSU.Items.Clear();
+            this.Size = new Size(620, 320);
             foreach (Data item in _jsonReleases.data)
                 if (item.name == cmbRelease.Text)
                 {
@@ -781,12 +804,13 @@ namespace Syn3Updater
                 if (cmbRelease.SelectedIndex >= 0 && Settings.Default.CurrentSyncNav) cmbMapVersion.Enabled = true;
             }
 
-            btnContinueNewVersion.Enabled = cmbMapVersion.Text != "" && cmbRelease.Text != "";
+            btnContinue.Enabled = cmbMapVersion.Text != "" && cmbRelease.Text != "";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             _tokenSource.Cancel();
+            ResetControls();
         }
 
         private void lblMode1_TextChanged(object sender, EventArgs e)
@@ -794,14 +818,17 @@ namespace Syn3Updater
             lblMode2.Text = lblMode1.Text;
         }
 
-        private void UpdateLog(string text)
+        private void UpdateLog(string text, string type = "INFO", bool hide = false)
         {
-            Logoutput += text + Environment.NewLine;
-            if (lblCurrentTask.InvokeRequired)
-                BeginInvoke(new Action(() => lblCurrentTask.Text = text));
-            else
-                lblCurrentTask.Text = text;
-            Console.WriteLine(text);
+            Logoutput += type + @": " + text + Environment.NewLine;
+            if (!hide)
+            {
+                if (lblCurrentTask.InvokeRequired)
+                    BeginInvoke(new Action(() => lblCurrentTask.Text = text));
+                else
+                    lblCurrentTask.Text = text;
+            }
+            Console.WriteLine(type + @": " + text);
         }
 
         public string CalculateMd5(string filename)
@@ -819,8 +846,9 @@ namespace Syn3Updater
                     bytesRead = file.Read(buffer, 0, buffer.Length);
                     totalBytesRead += bytesRead;
                     hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
+                    var read = totalBytesRead;
                     BeginInvoke(
-                        new Action(() => barDownloadProgress.Value = ((int) ((double) totalBytesRead / size * 100))));
+                        new Action(() => barDownloadProgress.Value = ((int) ((double) read / size * 100))));
                 } while (bytesRead != 0);
 
                 hasher.TransformFinalBlock(buffer, 0, 0);
@@ -1058,13 +1086,14 @@ namespace Syn3Updater
                         CreateDowngrade();
                         break;
                     case @"reformat":
-                        _dicIvsus.Add(SyncReformatTool, new KeyValuePair<string, string>("TOOL",SyncReformatToolMD5));
+                        _dicIvsus.Add(SyncReformatTool, new KeyValuePair<string, string>("TOOL",SyncReformatToolMd5));
                         CreateReformat();
                         break;
                 }
 
                 foreach (KeyValuePair<string, KeyValuePair<string, string>> item in _dicIvsus)
                     BeginInvoke(new Action(() => lstDownloadQueue.Items.Add(_downloadpath + item.Key)));
+
                 BeginInvoke(new Action(() => lblCurrentTask.Text = strings.Form1_PrepareUsb_Total_Copy_Progress));
                 Directory.CreateDirectory(_driveId + @"\SyncMyRide\");
 

@@ -6,7 +6,7 @@ using Syn3Updater.Helpers;
 using Syn3Updater.Localization;
 using Syn3Updater.Properties;
 
-namespace Syn3Updater
+namespace Syn3Updater.Forms
 {
     public partial class FrmSetup : Form
     {

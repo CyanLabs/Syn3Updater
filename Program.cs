@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Syn3Updater.Forms;
 
 namespace Syn3Updater
 {

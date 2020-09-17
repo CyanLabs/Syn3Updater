@@ -1,6 +1,4 @@
-﻿using Syn3Updater.Controls;
-
-namespace Syn3Updater
+﻿namespace Syn3Updater.Forms
 {
     partial class FrmMain
     {
@@ -53,7 +51,7 @@ namespace Syn3Updater
             this.lblRelease = new System.Windows.Forms.Label();
             this.lblRegionInfo = new System.Windows.Forms.Label();
             this.lblRegion = new System.Windows.Forms.Label();
-            this.btnContinueNewVersion = new System.Windows.Forms.Button();
+            this.btnContinue = new System.Windows.Forms.Button();
             this.btnShowConfiguration = new System.Windows.Forms.Button();
             this.lblConfiguration = new System.Windows.Forms.Label();
             this.tabControl1 = new Syn3Updater.Controls.TabControlWithoutHeader();
@@ -403,21 +401,21 @@ namespace Syn3Updater
             this.lblRegion.Text = "Region:";
             this.lblRegion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // btnContinueNewVersion
+            // btnContinue
             // 
-            this.btnContinueNewVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnContinueNewVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
-            this.btnContinueNewVersion.Enabled = false;
-            this.btnContinueNewVersion.FlatAppearance.BorderSize = 0;
-            this.btnContinueNewVersion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnContinueNewVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnContinueNewVersion.Location = new System.Drawing.Point(495, 285);
-            this.btnContinueNewVersion.Name = "btnContinueNewVersion";
-            this.btnContinueNewVersion.Size = new System.Drawing.Size(113, 31);
-            this.btnContinueNewVersion.TabIndex = 36;
-            this.btnContinueNewVersion.Text = "Continue";
-            this.btnContinueNewVersion.UseVisualStyleBackColor = false;
-            this.btnContinueNewVersion.Click += new System.EventHandler(this.btnContinue_Click);
+            this.btnContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnContinue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            this.btnContinue.Enabled = false;
+            this.btnContinue.FlatAppearance.BorderSize = 0;
+            this.btnContinue.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnContinue.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.btnContinue.Location = new System.Drawing.Point(495, 285);
+            this.btnContinue.Name = "btnContinue";
+            this.btnContinue.Size = new System.Drawing.Size(113, 31);
+            this.btnContinue.TabIndex = 36;
+            this.btnContinue.Text = "Continue";
+            this.btnContinue.UseVisualStyleBackColor = false;
+            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
             // btnShowConfiguration
             // 
@@ -697,7 +695,7 @@ namespace Syn3Updater
             this.ClientSize = new System.Drawing.Size(620, 550);
             this.Controls.Add(this.lblConfiguration);
             this.Controls.Add(this.btnShowConfiguration);
-            this.Controls.Add(this.btnContinueNewVersion);
+            this.Controls.Add(this.btnContinue);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.grpUSB);
             this.Controls.Add(this.grpNewVersion);
@@ -749,7 +747,7 @@ namespace Syn3Updater
         private System.Windows.Forms.Label label1;
         private Syn3Updater.Controls.TabControlWithoutHeader tabControl1;
         private System.Windows.Forms.TabPage tabAutoInstall;
-        private System.Windows.Forms.Button btnContinueNewVersion;
+        private System.Windows.Forms.Button btnContinue;
         private System.Windows.Forms.Button btnAutoinstall;
         private System.Windows.Forms.Label lblManualWarning;
         private System.Windows.Forms.ListView lstIVSU;

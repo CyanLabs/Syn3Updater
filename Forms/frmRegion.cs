@@ -3,7 +3,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Syn3Updater.Helpers;
 
-namespace Syn3Updater
+namespace Syn3Updater.Forms
 {
     public partial class frmRegion : Form
     {

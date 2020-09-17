@@ -1,4 +1,4 @@
-﻿namespace Syn3Updater
+﻿namespace Syn3Updater.Forms
 {
     partial class FrmSetup
     {
