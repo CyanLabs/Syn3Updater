@@ -525,7 +525,6 @@ namespace Syn3Updater.Forms
                         int filecount = _downloadfiles.Count + 1;
                         lblFilesRemaining.Text =
                             filecount == 1 ? "1 file to download" : filecount + " files to download";
-                        Console.WriteLine(filecount);
                     }));
                     string downloadFileUrl = _downloadfiles.Dequeue();
 
@@ -594,7 +593,6 @@ namespace Syn3Updater.Forms
                     BeginInvoke(new Action(() =>
                     {
                         // btnCancel.Enabled = false;
-                        lblFileName.Text = "";
                         lblDownloadSize.Text = "";
                         lblFilesRemaining.Text = "";
                         grpNewVersion.Enabled = true;
@@ -647,10 +645,10 @@ namespace Syn3Updater.Forms
                     {
                         if (_cancelcopy) break;
                         UpdateLog("" + strings.Copying + " " + _fileName);
-                        Functions.CopyFileEx(_downloadpath + item.Key, _driveId + @"\SyncMyRide\" + item.Key,
+                        Functions.CopyFileEx(_downloadpath + _fileName, _driveId + @"\SyncMyRide\" + _fileName,
                             CopyProgressHandler, IntPtr.Zero, ref _pbCancel,
                             Functions.CopyFileFlags.CopyFileRestartable);
-                    } while (!ValidateFile(_downloadpath + item.Key, _driveId + @"\SyncMyRide\" + item.Key,item.Value.Value,true));
+                    } while (!ValidateFile(_downloadpath + _fileName, _driveId + @"\SyncMyRide\" + _fileName, item.Value.Value,true));
 
                     _prevprogressPercentageInt += 100;
                     BeginInvoke(new Action(() => lstDownloadQueue.Items.Remove(_downloadpath + item.Key)));
@@ -706,9 +704,12 @@ namespace Syn3Updater.Forms
 
         private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
         {
+            BeginInvoke(new Action(() => lblFileName.Text = "Verifying integrity of " + _fileName));
             if (!File.Exists(localfile)) return false;
             UpdateLog("Verifying integrity of " + _fileName,"INFO",true);
-            BeginInvoke(new Action(() => lblFileName.Text = "Verifying integrity of " + _fileName));
+
+            
+
             if (md5 == null)
             {
                 UpdateLog("No MD5 value found in database, comparing files size of " + _fileName, "WARN",true);
@@ -747,9 +748,8 @@ namespace Syn3Updater.Forms
                         }
                     }
                 }
-            }
-
-            if (string.Equals(CalculateMd5(localfile), md5, StringComparison.CurrentCultureIgnoreCase))
+            } 
+            else if (string.Equals(CalculateMd5(localfile), md5, StringComparison.CurrentCultureIgnoreCase))
             {
                 UpdateLog("Successfully Verified " + _fileName);
                 return true;
