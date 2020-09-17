@@ -1,20 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-
 namespace Syn3Updater.Helpers
 {
     class Functions
     {
-        public  static string CalculateMd5(string filename)
-        {
-            using (var stream = new BufferedStream(File.OpenRead(filename), 100000))
-            {
-                return BitConverter.ToString(new MD5CryptoServiceProvider().ComputeHash(stream)).Replace("-", string.Empty);
-            }
-        }
-
         public static string BytesToString(long byteCount)
         {
             string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB

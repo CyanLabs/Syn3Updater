@@ -73,8 +73,6 @@ namespace Syn3Updater
                 }
 
                 Settings.Default.DownloadPath = folderDownloads.SelectedPath + @"\";
-                txtDownloadPath.Text = Settings.Default.DownloadPath;
-                Settings.Default.DownloadPath = Settings.Default.DownloadPath;
                 Settings.Default.Save();
             }
         }
@@ -83,7 +81,7 @@ namespace Syn3Updater
         {
             if (!Settings.Default.SetupCompleted)
             {
-                Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Sync3Updater\";
+                Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\";
                 
             }
             txtDownloadPath.Text = Settings.Default.DownloadPath;

@@ -23,6 +23,7 @@ namespace Syn3Updater
 
         private void txtLog_TextChanged(object sender, EventArgs e)
         {
+            txtLog.SelectionStart = txtLog.TextLength;
             txtLog.ScrollToCaret();
         }
     }

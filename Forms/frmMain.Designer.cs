@@ -31,10 +31,6 @@ namespace Syn3Updater
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "NAV_VOICE",
-            "1U5T-1563G2-135",
-            "N/A"}, -1);
             this.lblTitle = new System.Windows.Forms.Label();
             this.panelTitleBar = new System.Windows.Forms.Panel();
             this.lblVersion = new System.Windows.Forms.Label();
@@ -171,9 +167,9 @@ namespace Syn3Updater
             // btnHelp
             // 
             this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.btnHelp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btnHelp.FlatAppearance.BorderSize = 0;
-            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 9.75F);
             this.btnHelp.Location = new System.Drawing.Point(568, 22);
             this.btnHelp.Name = "btnHelp";
@@ -355,7 +351,7 @@ namespace Syn3Updater
             this.cmbRelease.Name = "cmbRelease";
             this.cmbRelease.Size = new System.Drawing.Size(148, 21);
             this.cmbRelease.TabIndex = 11;
-            this.cmbRelease.SelectedIndexChanged += new System.EventHandler(this.cmbRelease_SelectedIndexChanged_1);
+            this.cmbRelease.SelectedIndexChanged += new System.EventHandler(this.cmbRelease_SelectedIndexChanged);
             // 
             // cmbRegion
             // 
@@ -426,7 +422,7 @@ namespace Syn3Updater
             // btnShowConfiguration
             // 
             this.btnShowConfiguration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnShowConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.btnShowConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.btnShowConfiguration.FlatAppearance.BorderSize = 0;
             this.btnShowConfiguration.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnShowConfiguration.Font = new System.Drawing.Font("Segoe UI", 9.75F);
@@ -487,17 +483,17 @@ namespace Syn3Updater
             // btnAutoinstall
             // 
             this.btnAutoinstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAutoinstall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.btnAutoinstall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.btnAutoinstall.FlatAppearance.BorderSize = 0;
             this.btnAutoinstall.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnAutoinstall.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnAutoinstall.Location = new System.Drawing.Point(455, 184);
+            this.btnAutoinstall.Location = new System.Drawing.Point(455, 185);
             this.btnAutoinstall.Name = "btnAutoinstall";
-            this.btnAutoinstall.Size = new System.Drawing.Size(133, 31);
+            this.btnAutoinstall.Size = new System.Drawing.Size(133, 30);
             this.btnAutoinstall.TabIndex = 37;
             this.btnAutoinstall.Text = "Start";
             this.btnAutoinstall.UseVisualStyleBackColor = false;
-            this.btnAutoinstall.Click += new System.EventHandler(this.btnAutoinstall_Click);
+            this.btnAutoinstall.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // lblManualWarning
             // 
@@ -508,11 +504,10 @@ namespace Syn3Updater
             this.lblManualWarning.Location = new System.Drawing.Point(0, 0);
             this.lblManualWarning.Name = "lblManualWarning";
             this.lblManualWarning.Padding = new System.Windows.Forms.Padding(5);
-            this.lblManualWarning.Size = new System.Drawing.Size(596, 40);
+            this.lblManualWarning.Size = new System.Drawing.Size(596, 25);
             this.lblManualWarning.TabIndex = 26;
             this.lblManualWarning.Text = "Press Start to begin the download/install, optionally deselect any IVSU\'s you don" +
-    "\'t want.\r\nNOTE: This install mode was automatically chosen based on your configu" +
-    "ration\r\n";
+    "\'t want.";
             this.lblManualWarning.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lstIVSU
@@ -530,13 +525,10 @@ namespace Syn3Updater
             this.lstIVSU.FullRowSelect = true;
             this.lstIVSU.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lstIVSU.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
-            this.lstIVSU.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
             this.lstIVSU.LabelWrap = false;
-            this.lstIVSU.Location = new System.Drawing.Point(9, 47);
+            this.lstIVSU.Location = new System.Drawing.Point(9, 28);
             this.lstIVSU.Name = "lstIVSU";
-            this.lstIVSU.Size = new System.Drawing.Size(579, 132);
+            this.lstIVSU.Size = new System.Drawing.Size(579, 151);
             this.lstIVSU.TabIndex = 1;
             this.lstIVSU.UseCompatibleStateImageBehavior = false;
             this.lstIVSU.View = System.Windows.Forms.View.Details;
