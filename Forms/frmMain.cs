@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutoUpdaterDotNET;
+using Microsoft.VisualBasic;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Newtonsoft.Json;
 using Syn3Updater.Helpers;
@@ -492,16 +493,16 @@ namespace Syn3Updater.Forms
                     item.SubItems[3].Text.Length - item.SubItems[3].Text.LastIndexOf("/", StringComparison.Ordinal) -
                     1);
 
-                    if (!ValidateFile(item.SubItems[3].Text, _downloadpath + _fileName, item.SubItems[4].Text,false))
-                    {
-                        _downloadfiles.Enqueue(item.SubItems[3].Text);
-                    }
-                    else
-                    {
-                        BeginInvoke(new Action(() => lstDownloadQueue.Items.Remove(item.SubItems[3].Text)));
-                    }
+                if (ValidateFile(item.SubItems[3].Text, _downloadpath + _fileName, item.SubItems[4].Text, false))
+                {
+                    BeginInvoke(new Action(() => lstDownloadQueue.Items.Remove(item.SubItems[3].Text)));
+                }
+                else
+                {
+                    _downloadfiles.Enqueue(item.SubItems[3].Text);
+                }
 
-                    if (!_dicIvsus.ContainsKey(_fileName)) _dicIvsus.Add(_fileName, new KeyValuePair<string, string>(item.SubItems[0].Text, item.SubItems[4].Text));
+                if (!_dicIvsus.ContainsKey(_fileName)) _dicIvsus.Add(_fileName, new KeyValuePair<string, string>(item.SubItems[0].Text, item.SubItems[4].Text));
             }
 
             if (_totalcount == -1)
@@ -510,8 +511,9 @@ namespace Syn3Updater.Forms
                 BeginInvoke(new Action(() => barTotalDownloadProgress.Maximum = 100 * _totalcount));
             }
 
-            Task t = new Task(DownloadFile);
-            t.Start();
+            //Task t = new Task(DownloadFile);
+            //t.Start();
+            DownloadFile();
         }
 
         private async void DownloadFile()
@@ -641,7 +643,29 @@ namespace Syn3Updater.Forms
                             : lstDownloadQueue.Items.Count + " files left to copy"));
                     _fileName = item.Key;
                     _stopWatch.Restart();
-                    do
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        UpdateLog("" + strings.Copying + " " + _fileName);
+                        bool _copycomplete = Functions.CopyFileEx(_downloadpath + _fileName,
+                            _driveId + @"\SyncMyRide\" + _fileName,
+                            CopyProgressHandler, IntPtr.Zero, ref _pbCancel,
+                            Functions.CopyFileFlags.CopyFileRestartable);
+                        bool _validfile = ValidateFile(_downloadpath + _fileName,
+                            _driveId + @"\SyncMyRide\" + _fileName,
+                            item.Value.Value, true); 
+                        if (_copycomplete == true && _validfile == true)
+                        {
+                            //todo make error thing
+                            break;
+                        }
+                        else
+                        {
+                            UpdateLog("Failed to copy/validate " + _fileName + ", retrying #" + i.ToString());
+                        }
+                    }
+
+                    /*do
                     {
                         if (_cancelcopy) break;
                         UpdateLog("" + strings.Copying + " " + _fileName);
@@ -649,7 +673,7 @@ namespace Syn3Updater.Forms
                             CopyProgressHandler, IntPtr.Zero, ref _pbCancel,
                             Functions.CopyFileFlags.CopyFileRestartable);
                     } while (!ValidateFile(_downloadpath + _fileName, _driveId + @"\SyncMyRide\" + _fileName, item.Value.Value,true));
-
+                    */
                     _prevprogressPercentageInt += 100;
                     BeginInvoke(new Action(() => lstDownloadQueue.Items.Remove(_downloadpath + item.Key)));
                 }
@@ -704,11 +728,11 @@ namespace Syn3Updater.Forms
 
         private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
         {
-            BeginInvoke(new Action(() => lblFileName.Text = "Verifying integrity of " + _fileName));
+            Invoke(new Action(() => lblFileName.Text = "Verifying integrity of " + _fileName));
             if (!File.Exists(localfile)) return false;
             UpdateLog("Verifying integrity of " + _fileName,"INFO",true);
 
-            
+            string _local_md5 = CalculateMd5(localfile);
 
             if (md5 == null)
             {
@@ -721,7 +745,7 @@ namespace Syn3Updater.Forms
 
                     if (srcfilesize == filesize)
                     {
-                        if (CalculateMd5(localfile) == CalculateMd5(srcfile))
+                        if (_local_md5 == CalculateMd5(srcfile))
                         {
                             UpdateLog("Successfully Verified " + _fileName);
                             return true;
@@ -749,7 +773,7 @@ namespace Syn3Updater.Forms
                     }
                 }
             } 
-            else if (string.Equals(CalculateMd5(localfile), md5, StringComparison.CurrentCultureIgnoreCase))
+            else if (string.Equals(_local_md5, md5, StringComparison.CurrentCultureIgnoreCase))
             {
                 UpdateLog("Successfully Verified " + _fileName);
                 return true;
@@ -1125,7 +1149,7 @@ namespace Syn3Updater.Forms
 
                         BeginInvoke(new Action(() =>
                         {
-                            lblFileName.Text = string.Format(strings.Copying + @" {0} ({1}/{2})", _fileName,
+                            lblFileName.Text = string.Format(strings.Copying + " {0} ({1}/{2})", _fileName,
                                 Functions.BytesToString(totalBytesCopiedInt64),
                                 Functions.BytesToString(totalFileSizeInt64));
                             lblDownloadSize.Text =
