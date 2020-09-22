@@ -260,11 +260,144 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Would you like to move existing files from
+        ///{0}
+        ///to
+        ///{1}.
+        /// </summary>
+        internal static string FrmSetup_btnChangeDownloadDirectory_ChangeDirectory {
+            get {
+                return ResourceManager.GetString("FrmSetup_btnChangeDownloadDirectory_ChangeDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will override the detection of the most appropriate install mode using this with a full release with maps will almost certainly cause issues.
+        ///
+        ///By checking this box you agree to not be eligible for support while this option is enabled!
+        ///
+        ///Do you wish to force &quot;autoinstall&quot; mode, this will reset on next launch?.
+        /// </summary>
+        internal static string FrmSetup_ForceAutoInstall {
+            get {
+                return ResourceManager.GetString("FrmSetup_ForceAutoInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copying {0}.
+        /// </summary>
+        internal static string LogCopying {
+            get {
+                return ResourceManager.GetString("LogCopying", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating {0} autoinstall.lst.
+        /// </summary>
+        internal static string LogCreateAutoinstall {
+            get {
+                return ResourceManager.GetString("LogCreateAutoinstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating {0} reformat.lst.
+        /// </summary>
+        internal static string LogCreateReformat {
+            get {
+                return ResourceManager.GetString("LogCreateReformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading {0}.
+        /// </summary>
+        internal static string LogDownloading {
+            get {
+                return ResourceManager.GetString("LogDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloads cancelled!.
+        /// </summary>
+        internal static string LogDownloadsCancelled {
+            get {
+                return ResourceManager.GetString("LogDownloadsCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to copy/validate {0} , retrying #{1}.
+        /// </summary>
+        internal static string LogFailed3 {
+            get {
+                return ResourceManager.GetString("LogFailed3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to verify {0} retrying.
+        /// </summary>
+        internal static string LogFailedRetry {
+            get {
+                return ResourceManager.GetString("LogFailedRetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Re-creating partition table as MBR and formatting as ExFat on selected USB drive.
+        /// </summary>
+        internal static string LogFormat {
+            get {
+                return ResourceManager.GetString("LogFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No MD5 value found in database, comparing files size of {0}.
+        /// </summary>
+        internal static string LogNoMD5 {
+            get {
+                return ResourceManager.GetString("LogNoMD5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting process ({0} - {1} - {2}).
+        /// </summary>
+        internal static string LogStart {
+            get {
+                return ResourceManager.GetString("LogStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully Verified {0}.
+        /// </summary>
+        internal static string Verified {
+            get {
+                return ResourceManager.GetString("Verified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verifying {0}.
+        /// </summary>
+        internal static string Verifying {
+            get {
+                return ResourceManager.GetString("Verifying", resourceCulture);
             }
         }
         

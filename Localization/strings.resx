@@ -177,4 +177,53 @@ Filesystem: {2}</value>
     <value>Would you like to restart application to change language?
 If you do not restart some elements may not be translated correctly</value>
   </data>
+  <data name="FrmSetup_btnChangeDownloadDirectory_ChangeDirectory" xml:space="preserve">
+    <value>Would you like to move existing files from
+{0}
+to
+{1}</value>
+  </data>
+  <data name="FrmSetup_ForceAutoInstall" xml:space="preserve">
+    <value>This will override the detection of the most appropriate install mode using this with a full release with maps will almost certainly cause issues.
+
+By checking this box you agree to not be eligible for support while this option is enabled!
+
+Do you wish to force "autoinstall" mode, this will reset on next launch?</value>
+  </data>
+  <data name="Verifying" xml:space="preserve">
+    <value>Verifying {0}</value>
+  </data>
+  <data name="Verified" xml:space="preserve">
+    <value>Successfully Verified {0}</value>
+  </data>
+  <data name="LogDownloading" xml:space="preserve">
+    <value>Downloading {0}</value>
+  </data>
+  <data name="LogDownloadsCancelled" xml:space="preserve">
+    <value>Downloads cancelled!</value>
+  </data>
+  <data name="LogCopying" xml:space="preserve">
+    <value>Copying {0}</value>
+  </data>
+  <data name="LogFailed3" xml:space="preserve">
+    <value>Failed to copy/validate {0} , retrying #{1}</value>
+  </data>
+  <data name="LogFailedRetry" xml:space="preserve">
+    <value>Failed to verify {0} retrying</value>
+  </data>
+  <data name="LogCreateAutoinstall" xml:space="preserve">
+    <value>Creating {0} autoinstall.lst</value>
+  </data>
+  <data name="LogNoMD5" xml:space="preserve">
+    <value>No MD5 value found in database, comparing files size of {0}</value>
+  </data>
+  <data name="LogCreateReformat" xml:space="preserve">
+    <value>Creating {0} reformat.lst</value>
+  </data>
+  <data name="LogStart" xml:space="preserve">
+    <value>Starting process ({0} - {1} - {2})</value>
+  </data>
+  <data name="LogFormat" xml:space="preserve">
+    <value>Re-creating partition table as MBR and formatting as ExFat on selected USB drive</value>
+  </data>
 </root>

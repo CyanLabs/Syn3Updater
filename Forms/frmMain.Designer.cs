@@ -119,7 +119,7 @@
             // cmbLocale
             // 
             this.cmbLocale.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
-            this.cmbLocale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbLocale.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "Language", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             resources.ApplyResources(this.cmbLocale, "cmbLocale");
             this.cmbLocale.ForeColor = System.Drawing.Color.White;
             this.cmbLocale.FormattingEnabled = true;
@@ -140,6 +140,7 @@
             resources.GetString("cmbLocale.Items13"),
             resources.GetString("cmbLocale.Items14")});
             this.cmbLocale.Name = "cmbLocale";
+            this.cmbLocale.Text = global::Syn3Updater.Properties.Settings.Default.Language;
             this.cmbLocale.SelectedIndexChanged += new System.EventHandler(this.cmbLocale_SelectedIndexChanged);
             // 
             // btnHelp
@@ -518,6 +519,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmMain";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
+            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.Shown += new System.EventHandler(this.FrmMain_Shown);
             this.panelTitleBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnMinimize)).EndInit();

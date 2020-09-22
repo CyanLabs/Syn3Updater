@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 using Syn3Updater.Helpers;
@@ -8,8 +9,10 @@ namespace Syn3Updater.Forms
 {
     public partial class FrmDisclaimer : Form
     {
+        public string Language = Settings.Default.Language;
         public FrmDisclaimer()
         {
+            if (!string.IsNullOrEmpty(Settings.Default.Language)) Thread.CurrentThread.CurrentUICulture = new CultureInfo(Language);
             InitializeComponent();
         }
 
@@ -48,10 +51,10 @@ namespace Syn3Updater.Forms
 
         private void FrmDisclaimer_Shown(object sender, EventArgs e)
         {
-            if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName != "en")
+            if (Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName != "en")
             {
                 webDisclaimer.Navigate(
-                    $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FFordSyncDownloader%2Fdisclaimer.php");
+                    $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FFordSyncDownloader%2Fdisclaimer.php");
             }
         }
 

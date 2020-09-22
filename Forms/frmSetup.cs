@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 using Syn3Updater.Helpers;
+using Syn3Updater.Localization;
 using Syn3Updater.Properties;
 
 namespace Syn3Updater.Forms
 {
     public partial class FrmSetup : Form
     {
+        public string Language = Settings.Default.Language;
         public FrmSetup()
         {
+            if (!string.IsNullOrEmpty(Language)) Thread.CurrentThread.CurrentUICulture = new CultureInfo(Language);
             InitializeComponent();
         }
 
@@ -27,7 +32,14 @@ namespace Syn3Updater.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            try
+            {
+                Application.Exit();
+            }
+            catch (InvalidOperationException exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
 
         private void btnWindowControls_MouseLeave(object sender, EventArgs e)
@@ -45,7 +57,7 @@ namespace Syn3Updater.Forms
 
         private void lblWarning1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            _ = new frmRegion() { Visible = true };
+            _ = new FrmRegion() { Visible = true };
         }
 
         private void btnChangeDownloadDirectory_Click(object sender, EventArgs e)
@@ -56,12 +68,12 @@ namespace Syn3Updater.Forms
                 if (Directory.Exists(Settings.Default.DownloadPath))
                 {
                     DialogResult dialogMovefiles = MessageBox.Show(
-                        string.Format("Would you like to move existing files from\n\r\n\r{0}\n\rto\n\r{1}", Settings.Default.DownloadPath, folderDownloads.SelectedPath)
-                        , "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Information
+                        string.Format(strings.FrmSetup_btnChangeDownloadDirectory_ChangeDirectory, Settings.Default.DownloadPath, folderDownloads.SelectedPath)
+                        , strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Information
                     );
                     try
                     {
-                        if (dialogMovefiles == DialogResult.Yes) FileSystem.MoveDirectory(Settings.Default.DownloadPath, folderDownloads.SelectedPath, UIOption.AllDialogs);
+                        if (dialogMovefiles == DialogResult.Yes) FileSystem.MoveDirectory(txtDownloadPath.Text, folderDownloads.SelectedPath, UIOption.AllDialogs);
                     }
                     catch (OperationCanceledException)
                     {
@@ -76,8 +88,18 @@ namespace Syn3Updater.Forms
         {
             if (!Settings.Default.SetupCompleted)
                 Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\";
-
             txtDownloadPath.Text = Settings.Default.DownloadPath;
+        }
+
+        private void chkForceAutoinstall_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkForceAutoinstall.Checked)
+            {
+                chkForceAutoinstall.Checked = false;
+                return;
+            }
+            DialogResult dialog = MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            chkForceAutoinstall.Checked = dialog == DialogResult.Yes;
         }
     }
 }

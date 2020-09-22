@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Syn3Updater.Forms
 {
-    partial class frmRegion
+    partial class FrmRegion
     {
         /// <summary>
         /// Required designer variable.
@@ -31,6 +31,7 @@ namespace Syn3Updater.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmRegion));
             this.panelTitleBar = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.pnlBottom = new System.Windows.Forms.Panel();
@@ -53,7 +54,7 @@ namespace Syn3Updater.Forms
             // 
             // lblTitle
             // 
-            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
@@ -104,7 +105,7 @@ namespace Syn3Updater.Forms
             this.webRegion.Url = new System.Uri("https://cyanlabs.net/api/FordSyncDownloader/region.php", System.UriKind.Absolute);
             this.webRegion.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webRegion_DocumentCompleted);
             // 
-            // RegionInfo
+            // FrmRegion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -114,13 +115,14 @@ namespace Syn3Updater.Forms
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.panelTitleBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "RegionInfo";
+            this.Name = "FrmRegion";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RegionInfo";
+            this.Text = "Syn3 Updater - Region Info";
             this.Load += new System.EventHandler(this.RegionInfo_Load);
             this.panelTitleBar.ResumeLayout(false);
             this.pnlBottom.ResumeLayout(false);

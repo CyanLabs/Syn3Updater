@@ -44,12 +44,9 @@
             // webDisclaimer
             // 
             this.webDisclaimer.IsWebBrowserContextMenuEnabled = false;
-            this.webDisclaimer.Location = new System.Drawing.Point(0, 42);
-            this.webDisclaimer.MinimumSize = new System.Drawing.Size(20, 20);
+            resources.ApplyResources(this.webDisclaimer, "webDisclaimer");
             this.webDisclaimer.Name = "webDisclaimer";
             this.webDisclaimer.ScriptErrorsSuppressed = true;
-            this.webDisclaimer.Size = new System.Drawing.Size(667, 402);
-            this.webDisclaimer.TabIndex = 14;
             this.webDisclaimer.Url = new System.Uri("https://cyanlabs.net/api/FordSyncDownloader/disclaimer.php", System.UriKind.Absolute);
             this.webDisclaimer.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webDisclaimer_DocumentCompleted);
             // 
@@ -59,11 +56,8 @@
             this.panelTitleBar.Controls.Add(this.btnLogo);
             this.panelTitleBar.Controls.Add(this.btnClose);
             this.panelTitleBar.Controls.Add(this.lblTitle);
-            this.panelTitleBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTitleBar.Location = new System.Drawing.Point(0, 0);
+            resources.ApplyResources(this.panelTitleBar, "panelTitleBar");
             this.panelTitleBar.Name = "panelTitleBar";
-            this.panelTitleBar.Size = new System.Drawing.Size(667, 49);
-            this.panelTitleBar.TabIndex = 15;
             this.panelTitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
             // btnLogo
@@ -71,22 +65,15 @@
             this.btnLogo.BackColor = System.Drawing.Color.Transparent;
             this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLogo.Image = global::Syn3Updater.Properties.Resources.logo;
-            this.btnLogo.Location = new System.Drawing.Point(4, 2);
+            resources.ApplyResources(this.btnLogo, "btnLogo");
             this.btnLogo.Name = "btnLogo";
-            this.btnLogo.Size = new System.Drawing.Size(191, 46);
-            this.btnLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnLogo.TabIndex = 7;
             this.btnLogo.TabStop = false;
             this.btnLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
             // btnClose
             // 
-            this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
-            this.btnClose.Location = new System.Drawing.Point(651, 0);
+            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(16, 16);
-            this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.btnClose.TabIndex = 2;
             this.btnClose.TabStop = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             this.btnClose.MouseLeave += new System.EventHandler(this.btnWindowControls_MouseLeave);
@@ -94,62 +81,41 @@
             // 
             // lblTitle
             // 
-            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
+            resources.ApplyResources(this.lblTitle, "lblTitle");
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(201, 8);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(428, 30);
-            this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "SYNC 3 UPDATER - DISCLAIMER\r\n";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
             // chkDisclaimerConfirm
             // 
             this.chkDisclaimerConfirm.Checked = global::Syn3Updater.Properties.Settings.Default.TOCAccepted2;
             this.chkDisclaimerConfirm.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Syn3Updater.Properties.Settings.Default, "TOCAccepted2", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkDisclaimerConfirm.Location = new System.Drawing.Point(47, 454);
+            resources.ApplyResources(this.chkDisclaimerConfirm, "chkDisclaimerConfirm");
             this.chkDisclaimerConfirm.Name = "chkDisclaimerConfirm";
-            this.chkDisclaimerConfirm.Size = new System.Drawing.Size(513, 39);
-            this.chkDisclaimerConfirm.TabIndex = 17;
-            this.chkDisclaimerConfirm.Text = "I understand and accept the risks outlined in the disclaimer above.\r\nCyanlabs is " +
-    "not responsible for any undesired outcome of this operation.";
             this.chkDisclaimerConfirm.UseVisualStyleBackColor = true;
             this.chkDisclaimerConfirm.CheckedChanged += new System.EventHandler(this.chkDisclaimerConfirm_CheckedChanged);
             // 
             // btnDisclaimerContinue
             // 
             this.btnDisclaimerContinue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
-            this.btnDisclaimerContinue.Enabled = false;
+            resources.ApplyResources(this.btnDisclaimerContinue, "btnDisclaimerContinue");
             this.btnDisclaimerContinue.FlatAppearance.BorderSize = 0;
-            this.btnDisclaimerContinue.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnDisclaimerContinue.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.btnDisclaimerContinue.Location = new System.Drawing.Point(566, 455);
             this.btnDisclaimerContinue.Name = "btnDisclaimerContinue";
-            this.btnDisclaimerContinue.Size = new System.Drawing.Size(91, 36);
-            this.btnDisclaimerContinue.TabIndex = 16;
-            this.btnDisclaimerContinue.Text = "Continue";
             this.btnDisclaimerContinue.UseVisualStyleBackColor = false;
             this.btnDisclaimerContinue.Click += new System.EventHandler(this.btnDisclaimerContinue_Click);
             // 
             // FrmDisclaimer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(46)))));
-            this.ClientSize = new System.Drawing.Size(667, 500);
             this.Controls.Add(this.chkDisclaimerConfirm);
             this.Controls.Add(this.btnDisclaimerContinue);
             this.Controls.Add(this.panelTitleBar);
             this.Controls.Add(this.webDisclaimer);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmDisclaimer";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cyanlabs Ford Sync Update Downloader";
             this.Shown += new System.EventHandler(this.FrmDisclaimer_Shown);
             this.panelTitleBar.ResumeLayout(false);
             this.panelTitleBar.PerformLayout();

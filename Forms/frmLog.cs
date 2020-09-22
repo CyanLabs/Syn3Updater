@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
-using Syn3Updater.Forms;
 
-namespace Syn3Updater
+namespace Syn3Updater.Forms
 {
-    public partial class frmLog : Form
+    public partial class FrmLog : Form
     {
-        public frmLog()
+        public FrmLog()
         {
             InitializeComponent();
         }
 
+        // ReSharper disable once NotAccessedField.Local
         private FrmMain _frmMain;
         public void frmLog_Load(object sender, EventArgs e)
         {
