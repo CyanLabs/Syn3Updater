@@ -3,7 +3,6 @@ using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.FileIO;
 using Syn3Updater.Helpers;
-using Syn3Updater.Localization;
 using Syn3Updater.Properties;
 
 namespace Syn3Updater.Forms
@@ -57,11 +56,8 @@ namespace Syn3Updater.Forms
                 if (Directory.Exists(Settings.Default.DownloadPath))
                 {
                     DialogResult dialogMovefiles = MessageBox.Show(
-                        string.Format(
-                            strings.Move_Existing_Files_Message + Environment.NewLine + Environment.NewLine + @"{0}" +
-                            Environment.NewLine + strings.Move_Existing_Files_Message_2 + Environment.NewLine + @"{1}", Settings.Default.DownloadPath,
-                            folderDownloads.SelectedPath)
-                        , strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Information
+                        string.Format("Would you like to move existing files from\n\r\n\r{0}\n\rto\n\r{1}", Settings.Default.DownloadPath, folderDownloads.SelectedPath)
+                        , "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Information
                     );
                     try
                     {
@@ -71,7 +67,6 @@ namespace Syn3Updater.Forms
                     {
                     }
                 }
-
                 Settings.Default.DownloadPath = folderDownloads.SelectedPath + @"\";
                 Settings.Default.Save();
             }
@@ -80,10 +75,8 @@ namespace Syn3Updater.Forms
         private void FrmSetup_Shown(object sender, EventArgs e)
         {
             if (!Settings.Default.SetupCompleted)
-            {
                 Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\";
-                
-            }
+
             txtDownloadPath.Text = Settings.Default.DownloadPath;
         }
     }

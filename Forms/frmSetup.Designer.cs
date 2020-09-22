@@ -34,6 +34,7 @@
             this.txtDownloadPath = new System.Windows.Forms.TextBox();
             this.btnChangeDownloadDirectory = new System.Windows.Forms.Button();
             this.grpExistingDetails = new System.Windows.Forms.GroupBox();
+            this.chkForceAutoinstall = new System.Windows.Forms.CheckBox();
             this.txtCurrentSyncVersion = new System.Windows.Forms.MaskedTextBox();
             this.chkCurrentSyncNav = new System.Windows.Forms.CheckBox();
             this.lblCurrentSyncVersion = new System.Windows.Forms.Label();
@@ -106,6 +107,7 @@
             // 
             // grpExistingDetails
             // 
+            this.grpExistingDetails.Controls.Add(this.chkForceAutoinstall);
             this.grpExistingDetails.Controls.Add(this.txtCurrentSyncVersion);
             this.grpExistingDetails.Controls.Add(this.chkCurrentSyncNav);
             this.grpExistingDetails.Controls.Add(this.lblCurrentSyncVersion);
@@ -119,6 +121,18 @@
             this.grpExistingDetails.TabStop = false;
             this.grpExistingDetails.Text = "Current Version Information";
             // 
+            // chkForceAutoinstall
+            // 
+            this.chkForceAutoinstall.Checked = global::Syn3Updater.Properties.Settings.Default.ForceAutoinstall;
+            this.chkForceAutoinstall.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Syn3Updater.Properties.Settings.Default, "ForceAutoinstall", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkForceAutoinstall.ForeColor = System.Drawing.Color.Red;
+            this.chkForceAutoinstall.Location = new System.Drawing.Point(456, 22);
+            this.chkForceAutoinstall.Name = "chkForceAutoinstall";
+            this.chkForceAutoinstall.Size = new System.Drawing.Size(124, 17);
+            this.chkForceAutoinstall.TabIndex = 27;
+            this.chkForceAutoinstall.Text = "Force Autoinstall?";
+            this.chkForceAutoinstall.UseVisualStyleBackColor = true;
+            // 
             // txtCurrentSyncVersion
             // 
             this.txtCurrentSyncVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
@@ -126,7 +140,7 @@
             this.txtCurrentSyncVersion.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "CurrentSyncVersion", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.txtCurrentSyncVersion.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCurrentSyncVersion.ForeColor = System.Drawing.Color.White;
-            this.txtCurrentSyncVersion.Location = new System.Drawing.Point(152, 18);
+            this.txtCurrentSyncVersion.Location = new System.Drawing.Point(112, 18);
             this.txtCurrentSyncVersion.Mask = "#.#.#####";
             this.txtCurrentSyncVersion.Name = "txtCurrentSyncVersion";
             this.txtCurrentSyncVersion.Size = new System.Drawing.Size(69, 25);
@@ -140,7 +154,7 @@
             this.chkCurrentSyncNav.Checked = global::Syn3Updater.Properties.Settings.Default.CurrentSyncNav;
             this.chkCurrentSyncNav.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkCurrentSyncNav.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Syn3Updater.Properties.Settings.Default, "CurrentSyncNav", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkCurrentSyncNav.Location = new System.Drawing.Point(479, 22);
+            this.chkCurrentSyncNav.Location = new System.Drawing.Point(355, 22);
             this.chkCurrentSyncNav.Name = "chkCurrentSyncNav";
             this.chkCurrentSyncNav.Size = new System.Drawing.Size(104, 17);
             this.chkCurrentSyncNav.TabIndex = 25;
@@ -151,9 +165,9 @@
             // 
             this.lblCurrentSyncVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblCurrentSyncVersion.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.lblCurrentSyncVersion.Location = new System.Drawing.Point(9, 23);
+            this.lblCurrentSyncVersion.Location = new System.Drawing.Point(10, 23);
             this.lblCurrentSyncVersion.Name = "lblCurrentSyncVersion";
-            this.lblCurrentSyncVersion.Size = new System.Drawing.Size(147, 13);
+            this.lblCurrentSyncVersion.Size = new System.Drawing.Size(106, 13);
             this.lblCurrentSyncVersion.TabIndex = 17;
             this.lblCurrentSyncVersion.Text = "Full Sync Version: ";
             this.lblCurrentSyncVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -162,7 +176,7 @@
             // 
             this.lblCurrentSyncRegion.BackColor = System.Drawing.Color.Transparent;
             this.lblCurrentSyncRegion.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.lblCurrentSyncRegion.Location = new System.Drawing.Point(276, 23);
+            this.lblCurrentSyncRegion.Location = new System.Drawing.Point(187, 23);
             this.lblCurrentSyncRegion.Name = "lblCurrentSyncRegion";
             this.lblCurrentSyncRegion.Size = new System.Drawing.Size(85, 13);
             this.lblCurrentSyncRegion.TabIndex = 24;
@@ -183,7 +197,7 @@
             "NA",
             "ANZ",
             "ROW"});
-            this.cmbCurrentSyncRegion.Location = new System.Drawing.Point(366, 20);
+            this.cmbCurrentSyncRegion.Location = new System.Drawing.Point(277, 20);
             this.cmbCurrentSyncRegion.Name = "cmbCurrentSyncRegion";
             this.cmbCurrentSyncRegion.Size = new System.Drawing.Size(58, 21);
             this.cmbCurrentSyncRegion.TabIndex = 20;
@@ -314,5 +328,6 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.MaskedTextBox txtCurrentSyncVersion;
         private System.Windows.Forms.FolderBrowserDialog folderDownloads;
+        private System.Windows.Forms.CheckBox chkForceAutoinstall;
     }
 }

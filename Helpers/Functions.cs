@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
 namespace Syn3Updater.Helpers
 {
     class Functions
@@ -47,5 +49,40 @@ namespace Syn3Updater.Helpers
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         public static extern void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
         #endregion
+
+        public void HideCheckbox(ListView lvw, ListViewItem item)
+        {
+            var lviItem = new LVITEM();
+            lviItem.iItem = item.Index;
+            lviItem.mask = LVIF_STATE;
+            lviItem.stateMask = LVIS_STATEIMAGEMASK;
+            lviItem.state = 0;
+            SendMessage(lvw.Handle, LVM_SETITEM, IntPtr.Zero, ref lviItem);
+        }
+
+        public const int LVIF_STATE = 0x8;
+        public const int LVIS_STATEIMAGEMASK = 0xF000;
+        public const int LVM_FIRST = 0x1000;
+        public const int LVM_SETITEM = LVM_FIRST + 76;
+
+        // suppress warnings for interop
+#pragma warning disable 0649
+        public struct LVITEM
+        {
+            public int mask;
+            public int iItem;
+            public int iSubItem;
+            public int state;
+            public int stateMask;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public String lpszText;
+            public int cchTextMax;
+            public int iImage;
+            public IntPtr iParam;
+        }
+#pragma warning restore 0649
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref LVITEM lParam);
     }
 }
