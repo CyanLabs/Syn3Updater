@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Sync3Updater.Helpers
+namespace Syn3Updater.Helpers
 {
     /// <summary>
     ///     Class containing methods to retrieve specific file system paths.

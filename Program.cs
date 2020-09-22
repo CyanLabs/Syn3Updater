@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Syn3Updater.Forms;
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     static class Program
     {

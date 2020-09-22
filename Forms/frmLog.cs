@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
+using Syn3Updater.Forms;
 
-namespace Sync3Updater
+namespace Syn3Updater
 {
     public partial class frmLog : Form
     {
@@ -19,6 +20,12 @@ namespace Sync3Updater
         private void timer1_Tick(object sender, EventArgs e)
         {
             txtLog.Text = FrmMain.Logoutput;
+        }
+
+        private void txtLog_TextChanged(object sender, EventArgs e)
+        {
+            txtLog.SelectionStart = txtLog.TextLength;
+            txtLog.ScrollToCaret();
         }
     }
 }

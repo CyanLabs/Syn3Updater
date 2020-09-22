@@ -1,21 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 
-namespace Sync3Updater.Helpers
+namespace Syn3Updater.Helpers
 {
     class Functions
     {
-        public  static string CalculateMd5(string filename)
-        {
-            using (var stream = new BufferedStream(File.OpenRead(filename), 100000))
-            {
-                return BitConverter.ToString(new MD5CryptoServiceProvider().ComputeHash(stream)).Replace("-", string.Empty);
-            }
-        }
-
         public static string BytesToString(long byteCount)
         {
             string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
@@ -59,5 +49,40 @@ namespace Sync3Updater.Helpers
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         public static extern void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
         #endregion
+
+        public void HideCheckbox(ListView lvw, ListViewItem item)
+        {
+            var lviItem = new LVITEM();
+            lviItem.iItem = item.Index;
+            lviItem.mask = LVIF_STATE;
+            lviItem.stateMask = LVIS_STATEIMAGEMASK;
+            lviItem.state = 0;
+            SendMessage(lvw.Handle, LVM_SETITEM, IntPtr.Zero, ref lviItem);
+        }
+
+        public const int LVIF_STATE = 0x8;
+        public const int LVIS_STATEIMAGEMASK = 0xF000;
+        public const int LVM_FIRST = 0x1000;
+        public const int LVM_SETITEM = LVM_FIRST + 76;
+
+        // suppress warnings for interop
+#pragma warning disable 0649
+        public struct LVITEM
+        {
+            public int mask;
+            public int iItem;
+            public int iSubItem;
+            public int state;
+            public int stateMask;
+            [MarshalAs(UnmanagedType.LPTStr)]
+            public String lpszText;
+            public int cchTextMax;
+            public int iImage;
+            public IntPtr iParam;
+        }
+#pragma warning restore 0649
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref LVITEM lParam);
     }
 }

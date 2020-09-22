@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sync3Updater")]
+[assembly: AssemblyTitle("Syn3Updater")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CyanLabs")]
-[assembly: AssemblyProduct("Sync3Updater")]
+[assembly: AssemblyProduct("Syn3Updater")]
 [assembly: AssemblyCopyright("Copyright © CyanLabs 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

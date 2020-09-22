@@ -1,4 +1,4 @@
-﻿namespace Sync3Updater.Helpers
+﻿namespace Syn3Updater.Helpers
 {
     public class Maps
     {

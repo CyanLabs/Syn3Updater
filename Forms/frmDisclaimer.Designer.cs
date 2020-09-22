@@ -1,4 +1,4 @@
-﻿namespace Sync3Updater
+﻿namespace Syn3Updater.Forms
 {
     partial class FrmDisclaimer
     {
@@ -70,7 +70,7 @@
             // 
             this.btnLogo.BackColor = System.Drawing.Color.Transparent;
             this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogo.Image = global::Sync3Updater.Properties.Resources.logo;
+            this.btnLogo.Image = global::Syn3Updater.Properties.Resources.logo;
             this.btnLogo.Location = new System.Drawing.Point(4, 2);
             this.btnLogo.Name = "btnLogo";
             this.btnLogo.Size = new System.Drawing.Size(191, 46);
@@ -108,8 +108,8 @@
             // 
             // chkDisclaimerConfirm
             // 
-            this.chkDisclaimerConfirm.Checked = global::Sync3Updater.Properties.Settings.Default.TOCAccepted2;
-            this.chkDisclaimerConfirm.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Sync3Updater.Properties.Settings.Default, "TOCAccepted2", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkDisclaimerConfirm.Checked = global::Syn3Updater.Properties.Settings.Default.TOCAccepted2;
+            this.chkDisclaimerConfirm.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Syn3Updater.Properties.Settings.Default, "TOCAccepted2", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkDisclaimerConfirm.Location = new System.Drawing.Point(47, 454);
             this.chkDisclaimerConfirm.Name = "chkDisclaimerConfirm";
             this.chkDisclaimerConfirm.Size = new System.Drawing.Size(513, 39);

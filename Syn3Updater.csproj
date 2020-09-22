@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A1A2E701-9E63-4BE4-A3B7-4386EF338CD2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Sync3Updater</RootNamespace>
-    <AssemblyName>Sync3Updater</AssemblyName>
+    <RootNamespace>Syn3Updater</RootNamespace>
+    <AssemblyName>Syn3Updater</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Sync3Updater.Program</StartupObject>
+    <StartupObject>Syn3Updater.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -87,16 +87,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmDisclaimer.cs">
+    <Compile Include="Forms\frmDisclaimer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmDisclaimer.Designer.cs">
+    <Compile Include="Forms\frmDisclaimer.Designer.cs">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmMain.cs">
+    <Compile Include="Forms\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.Designer.cs">
+    <Compile Include="Forms\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Functions.cs" />
@@ -109,53 +109,45 @@
     <Compile Include="Helpers\Json\Map_Ivsu.cs" />
     <Compile Include="Helpers\Json\Release.cs" />
     <Compile Include="Helpers\KnownFolders.cs" />
-    <Compile Include="Localization\strings.Designer.cs" />
     <Compile Include="NewProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="frmSetup.cs">
+    <Compile Include="Forms\frmSetup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSetup.Designer.cs">
+    <Compile Include="Forms\frmSetup.Designer.cs">
       <DependentUpon>frmSetup.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmRegion.cs">
+    <Compile Include="Forms\frmRegion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmRegion.Designer.cs">
+    <Compile Include="Forms\frmRegion.Designer.cs">
       <DependentUpon>frmRegion.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmLog.cs">
+    <Compile Include="Forms\frmLog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmLog.Designer.cs">
+    <Compile Include="Forms\frmLog.Designer.cs">
       <DependentUpon>frmLog.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="frmDisclaimer.resx">
+    <Compile Include="Localization\strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>strings.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\frmDisclaimer.resx">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmMain.resx">
+    <EmbeddedResource Include="Forms\frmMain.fr.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\strings.af.resx" />
-    <EmbeddedResource Include="Localization\strings.ar.resx" />
-    <EmbeddedResource Include="Localization\strings.da.resx" />
-    <EmbeddedResource Include="Localization\strings.de.resx" />
-    <EmbeddedResource Include="Localization\strings.es.resx" />
-    <EmbeddedResource Include="Localization\strings.fi.resx" />
-    <EmbeddedResource Include="Localization\strings.fr.resx" />
-    <EmbeddedResource Include="Localization\strings.hu.resx" />
-    <EmbeddedResource Include="Localization\strings.nl.resx" />
-    <EmbeddedResource Include="Localization\strings.pl.resx" />
-    <EmbeddedResource Include="Localization\strings.pt.resx" />
-    <EmbeddedResource Include="Localization\strings.resx">
+    <EmbeddedResource Include="Forms\frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\strings.ro.resx" />
-    <EmbeddedResource Include="Localization\strings.vi.resx" />
-    <EmbeddedResource Include="Localization\strings.zh.resx" />
+    <EmbeddedResource Include="Properties\Resources.fr.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -166,11 +158,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="frmSetup.resx">
+    <EmbeddedResource Include="Forms\frmSetup.resx">
       <DependentUpon>frmSetup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmLog.resx">
+    <EmbeddedResource Include="Forms\frmLog.resx">
       <DependentUpon>frmLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
@@ -211,5 +208,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
