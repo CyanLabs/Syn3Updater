@@ -42,7 +42,7 @@ namespace Syn3Updater.Forms
         private const string ApiAppReleaseSingle = ApiBase + "items/releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         private const string ApiMapReleaseSingle = ApiBase + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
 
-        private const string ReformatToolUrl = "https://cyanlabs.net/api/FordSyncDownloader/reformat.php";
+        private const string ReformatToolUrl = "https://cyanlabs.net/api/Syn3Updater/reformat.php";
         private const string SyncReformatTool = "1u5t-14g386-cb.tar.gz";
         private const string SyncReformatToolMd5 = "75E08C3EED8D2039BAF65B6156F79106";
 
@@ -149,7 +149,7 @@ namespace Syn3Updater.Forms
         {
             _cancelcopy = true;
             _tokenSource.Cancel();
-            Settings.Default.Save();
+            Environment.Exit(0);
         }
         #endregion
 
@@ -357,7 +357,7 @@ namespace Syn3Updater.Forms
             string release = cmbRelease.Text;
             if (_mode == @"downgrade")
             {
-                lblMode1.Text = @"Downgrade Mode";
+                lblMode1.Text = @"Downgrade";
                 lblMode2.ForeColor = Color.Cyan;
                 lblMode1.ForeColor = Color.Cyan;
             }
@@ -365,20 +365,20 @@ namespace Syn3Updater.Forms
             {
                 if (Settings.Default.ForceAutoinstall)
                 {
-                    lblMode1.Text = @"Autoinstall Mode (FORCED)";
+                    lblMode1.Text = @"Autoinstall (FORCED)";
                     lblMode2.ForeColor = Color.Red;
                     lblMode1.ForeColor = Color.Red;
                 }
                 else
                 {
-                    lblMode1.Text = @"Autoinstall Mode";
+                    lblMode1.Text = @"Autoinstall";
                     lblMode2.ForeColor = Color.LimeGreen;
                     lblMode1.ForeColor = Color.LimeGreen;
                 }
             }
             else
             {
-                lblMode1.Text = @"Reformat Mode";
+                lblMode1.Text = @"Reformat";
                 lblMode2.ForeColor = Color.Orange;
                 lblMode1.ForeColor = Color.Orange;
             }
@@ -389,7 +389,7 @@ namespace Syn3Updater.Forms
             if (_mode == @"downgrade")
             {
                 string app = _downloadpath + DowngradePackageApp;
-                if (!File.Exists(app) || CalculateMd5(app) != DowngradePackageAppMd5)
+                if (!File.Exists(app))
                 {
                     _downloadfiles.Enqueue(new Uri(DowngradePackageAppUrl).ToString());
                     lstDownloadQueue.Items.Add(new Uri(DowngradePackageAppUrl).ToString());
@@ -660,16 +660,14 @@ namespace Syn3Updater.Forms
             });
             GenerateLog();
 
-            DialogResult result = MessageBox.Show(strings.FrmMain_CopyFiles_CompletePopup, strings.Success, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if (result == DialogResult.Yes)
-                Process.Start("https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#" + _mode);
-
-            result = MessageBox.Show(strings.FrmMain_CopyFiles_UpdateVersion, strings.Success, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            DialogResult result = MessageBox.Show(strings.FrmMain_CopyFiles_UpdateVersion, strings.Success, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (result == DialogResult.Yes)
             {
                 Invoke(new Action(() => Settings.Default.CurrentSyncVersion = Convert.ToInt32(cmbRelease.Text.Replace(".", "").Replace("Sync ", ""))));
                 Settings.Default.Save();
             }
+            MessageBox.Show(strings.FrmMain_CopyFiles_CompletePopup, strings.Success, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Process.Start("https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#" + _mode);
             Invoke(new Action(FrmMain_Shown_Extra));
         }
 

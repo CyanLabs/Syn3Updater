@@ -102,7 +102,7 @@ namespace Syn3Updater.Forms
             this.webRegion.ScrollBarsEnabled = false;
             this.webRegion.Size = new System.Drawing.Size(767, 418);
             this.webRegion.TabIndex = 8;
-            this.webRegion.Url = new System.Uri("https://cyanlabs.net/api/FordSyncDownloader/region.php", System.UriKind.Absolute);
+            this.webRegion.Url = new System.Uri("https://cyanlabs.net/api/Syn3Updater/region.php", System.UriKind.Absolute);
             this.webRegion.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webRegion_DocumentCompleted);
             // 
             // FrmRegion

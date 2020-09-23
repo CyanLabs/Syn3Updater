@@ -47,7 +47,7 @@
             resources.ApplyResources(this.webDisclaimer, "webDisclaimer");
             this.webDisclaimer.Name = "webDisclaimer";
             this.webDisclaimer.ScriptErrorsSuppressed = true;
-            this.webDisclaimer.Url = new System.Uri("https://cyanlabs.net/api/FordSyncDownloader/disclaimer.php", System.UriKind.Absolute);
+            this.webDisclaimer.Url = new System.Uri("https://cyanlabs.net/api/Syn3Updater/disclaimer.php", System.UriKind.Absolute);
             this.webDisclaimer.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webDisclaimer_DocumentCompleted);
             // 
             // panelTitleBar

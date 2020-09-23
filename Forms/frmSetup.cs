@@ -32,14 +32,7 @@ namespace Syn3Updater.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Application.Exit();
-            }
-            catch (InvalidOperationException exception)
-            {
-                Console.WriteLine(exception);
-            }
+            Environment.Exit(0);
         }
 
         private void btnWindowControls_MouseLeave(object sender, EventArgs e)

@@ -32,7 +32,7 @@ namespace Syn3Updater.Forms
             if (Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName != "en")
             {
                 webRegion.Navigate(
-                    $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FFordSyncDownloader%2Fregion.php");
+                    $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FSyn3Updater%2Fregion.php");
             }
         }
 

@@ -1156,13 +1156,13 @@ Download Path: </value>
     <value>13, 200</value>
   </data>
   <data name="lblMode2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 13</value>
+    <value>63, 13</value>
   </data>
   <data name="lblMode2.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
   </data>
   <data name="lblMode2.Text" xml:space="preserve">
-    <value>Install Mode: </value>
+    <value>Autoinstall</value>
   </data>
   <data name="&gt;&gt;lblMode2.Name" xml:space="preserve">
     <value>lblMode2</value>
@@ -1228,7 +1228,7 @@ Download Path: </value>
     <value>barTotalDownloadProgress</value>
   </data>
   <data name="&gt;&gt;barTotalDownloadProgress.Type" xml:space="preserve">
-    <value>Syn3Updater.Controls.NewProgressBar, Syn3Updater, Version=0.0.0.14, Culture=neutral, PublicKeyToken=null</value>
+    <value>Syn3Updater.Controls.NewProgressBar, Syn3Updater, Version=0.0.0.16, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;barTotalDownloadProgress.Parent" xml:space="preserve">
     <value>tabStatus</value>
@@ -1252,7 +1252,7 @@ Download Path: </value>
     <value>barDownloadProgress</value>
   </data>
   <data name="&gt;&gt;barDownloadProgress.Type" xml:space="preserve">
-    <value>Syn3Updater.Controls.NewProgressBar, Syn3Updater, Version=0.0.0.14, Culture=neutral, PublicKeyToken=null</value>
+    <value>Syn3Updater.Controls.NewProgressBar, Syn3Updater, Version=0.0.0.16, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;barDownloadProgress.Parent" xml:space="preserve">
     <value>tabStatus</value>
@@ -1270,7 +1270,7 @@ Download Path: </value>
     <value>NoControl</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>476, 5</value>
+    <value>56, 5</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 20</value>
@@ -1432,7 +1432,7 @@ Download Path: </value>
     <value>NoControl</value>
   </data>
   <data name="lblFilesRemaining.Location" type="System.Drawing.Point, System.Drawing">
-    <value>316, 9</value>
+    <value>438, 9</value>
   </data>
   <data name="lblFilesRemaining.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 13</value>
@@ -1495,7 +1495,7 @@ Download Path: </value>
     <value>tabControl1</value>
   </data>
   <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>Syn3Updater.Controls.TabControlWithoutHeader, Syn3Updater, Version=0.0.0.14, Culture=neutral, PublicKeyToken=null</value>
+    <value>Syn3Updater.Controls.TabControlWithoutHeader, Syn3Updater, Version=0.0.0.16, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
     <value>$this</value>

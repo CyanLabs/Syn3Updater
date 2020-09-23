@@ -153,6 +153,54 @@
   <data name="&gt;&gt;btnSetupContinue.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;txtDownloadPath.Name" xml:space="preserve">
+    <value>txtDownloadPath</value>
+  </data>
+  <data name="&gt;&gt;txtDownloadPath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtDownloadPath.Parent" xml:space="preserve">
+    <value>grpDownload</value>
+  </data>
+  <data name="&gt;&gt;txtDownloadPath.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnChangeDownloadDirectory.Name" xml:space="preserve">
+    <value>btnChangeDownloadDirectory</value>
+  </data>
+  <data name="&gt;&gt;btnChangeDownloadDirectory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnChangeDownloadDirectory.Parent" xml:space="preserve">
+    <value>grpDownload</value>
+  </data>
+  <data name="&gt;&gt;btnChangeDownloadDirectory.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="grpDownload.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 221</value>
+  </data>
+  <data name="grpDownload.Size" type="System.Drawing.Size, System.Drawing">
+    <value>435, 52</value>
+  </data>
+  <data name="grpDownload.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>Optional - Download Location</value>
+  </data>
+  <data name="&gt;&gt;grpDownload.Name" xml:space="preserve">
+    <value>grpDownload</value>
+  </data>
+  <data name="&gt;&gt;grpDownload.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpDownload.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grpDownload.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="txtDownloadPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 19</value>
   </data>
@@ -201,29 +249,101 @@
   <data name="&gt;&gt;btnChangeDownloadDirectory.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="grpDownload.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 221</value>
+  <data name="&gt;&gt;chkForceAutoinstall.Name" xml:space="preserve">
+    <value>chkForceAutoinstall</value>
   </data>
-  <data name="grpDownload.Size" type="System.Drawing.Size, System.Drawing">
-    <value>435, 52</value>
+  <data name="&gt;&gt;chkForceAutoinstall.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="grpDownload.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
+  <data name="&gt;&gt;chkForceAutoinstall.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
   </data>
-  <data name="grpDownload.Text" xml:space="preserve">
-    <value>Optional - Download Location</value>
+  <data name="&gt;&gt;chkForceAutoinstall.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;grpDownload.Name" xml:space="preserve">
-    <value>grpDownload</value>
+  <data name="&gt;&gt;txtCurrentSyncVersion.Name" xml:space="preserve">
+    <value>txtCurrentSyncVersion</value>
   </data>
-  <data name="&gt;&gt;grpDownload.Type" xml:space="preserve">
+  <data name="&gt;&gt;txtCurrentSyncVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txtCurrentSyncVersion.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;txtCurrentSyncVersion.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;chkCurrentSyncNav.Name" xml:space="preserve">
+    <value>chkCurrentSyncNav</value>
+  </data>
+  <data name="&gt;&gt;chkCurrentSyncNav.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkCurrentSyncNav.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;chkCurrentSyncNav.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncVersion.Name" xml:space="preserve">
+    <value>lblCurrentSyncVersion</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncVersion.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncVersion.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncRegion.Name" xml:space="preserve">
+    <value>lblCurrentSyncRegion</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncRegion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncRegion.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;lblCurrentSyncRegion.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;cmbCurrentSyncRegion.Name" xml:space="preserve">
+    <value>cmbCurrentSyncRegion</value>
+  </data>
+  <data name="&gt;&gt;cmbCurrentSyncRegion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbCurrentSyncRegion.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;cmbCurrentSyncRegion.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="grpExistingDetails.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 158</value>
+  </data>
+  <data name="grpExistingDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>589, 52</value>
+  </data>
+  <data name="grpExistingDetails.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>Current Version Information</value>
+  </data>
+  <data name="&gt;&gt;grpExistingDetails.Name" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;grpExistingDetails.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;grpDownload.Parent" xml:space="preserve">
+  <data name="&gt;&gt;grpExistingDetails.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;grpDownload.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;grpExistingDetails.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="chkForceAutoinstall.Location" type="System.Drawing.Point, System.Drawing">
     <value>456, 22</value>
@@ -402,30 +522,6 @@
   <data name="&gt;&gt;cmbCurrentSyncRegion.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="grpExistingDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 158</value>
-  </data>
-  <data name="grpExistingDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 52</value>
-  </data>
-  <data name="grpExistingDetails.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="grpExistingDetails.Text" xml:space="preserve">
-    <value>Current Version Information</value>
-  </data>
-  <data name="&gt;&gt;grpExistingDetails.Name" xml:space="preserve">
-    <value>grpExistingDetails</value>
-  </data>
-  <data name="&gt;&gt;grpExistingDetails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;grpExistingDetails.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;grpExistingDetails.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="lblWarning1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -531,27 +627,6 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   <data name="&gt;&gt;btnLogo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="lblTitle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="lblTitle.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 15.75pt, style=Bold</value>
-  </data>
-  <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>193, 8</value>
-  </data>
-  <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 30</value>
-  </data>
-  <data name="lblTitle.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="lblTitle.Text" xml:space="preserve">
-    <value>SYN3 UPDATER - CONFIGURATION</value>
-  </data>
-  <data name="lblTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
   <data name="&gt;&gt;lblTitle.Name" xml:space="preserve">
     <value>lblTitle</value>
   </data>
@@ -587,6 +662,39 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   </data>
   <data name="&gt;&gt;panelTitleBar.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="lblTitle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="lblTitle.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 15.75pt, style=Bold</value>
+  </data>
+  <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>193, 8</value>
+  </data>
+  <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>396, 30</value>
+  </data>
+  <data name="lblTitle.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>SYN3 UPDATER - CONFIGURATION</value>
+  </data>
+  <data name="lblTitle.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblTitle.Name" xml:space="preserve">
+    <value>lblTitle</value>
+  </data>
+  <data name="&gt;&gt;lblTitle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTitle.Parent" xml:space="preserve">
+    <value>panelTitleBar</value>
+  </data>
+  <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="folderDownloads.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>

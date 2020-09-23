@@ -156,9 +156,7 @@ namespace Syn3Updater.Localization {
         /// <summary>
         ///   Looks up a localized string similar to The download and copy of the files is now complete, simply eject this USB from your computer and insert it in your car, make sure the engine is running!
         ///
-        ///If you would like further instructions click Yes to open our online guide directly to the relevant in car section.
-        ///
-        ///Would you like further information?.
+        ///Syn3Updater will now open you directly to the relevant part of the  CyanLabs tutorial for you to follow in your car..
         /// </summary>
         internal static string FrmMain_CopyFiles_CompletePopup {
             get {
