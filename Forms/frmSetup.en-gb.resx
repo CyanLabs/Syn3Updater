@@ -26,18 +26,6 @@
   <data name="chkForceAutoinstall.Text" xml:space="preserve">
     <value>Force Autoinstall?</value>
   </data>
-  <data name="cmbCurrentSyncRegion.Items" xml:space="preserve">
-    <value>CN</value>
-  </data>
-  <data name="cmbCurrentSyncRegion.Items1" xml:space="preserve">
-    <value>EU</value>
-  </data>
-  <data name="cmbCurrentSyncRegion.Items2" xml:space="preserve">
-    <value>NA</value>
-  </data>
-  <data name="cmbCurrentSyncRegion.Items3" xml:space="preserve">
-    <value>ANZ</value>
-  </data>
   <data name="cmbCurrentSyncRegion.Items4" xml:space="preserve">
     <value>ROW</value>
   </data>

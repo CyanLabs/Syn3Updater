@@ -2355,9 +2355,6 @@
         AAAAAAAAAAAAAAAAAIABAACAAQAAwAMAAPAPAAA=
 </value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Syn3 Updater</value>
-  </data>
   <data name="btnAutoinstall.Text" xml:space="preserve">
     <value>Start</value>
   </data>
@@ -2392,9 +2389,6 @@ Non Navigation APIM's should be fine with 8GB
 NA, ROW, ANZ APIM's will require atleast 16GB
 EU APIM's will require atleast 32GB</value>
   </data>
-  <data name="lblCurrentTask.Text" xml:space="preserve">
-    <value>Total Progress</value>
-  </data>
   <data name="lblDownloadQueue.Text" xml:space="preserve">
     <value>Queue</value>
   </data>
@@ -2406,9 +2400,6 @@ EU APIM's will require atleast 32GB</value>
   </data>
   <data name="lblRegion.Text" xml:space="preserve">
     <value>Region:</value>
-  </data>
-  <data name="lblRegionInfo.Text" xml:space="preserve">
-    <value>?</value>
   </data>
   <data name="lblRelease.Text" xml:space="preserve">
     <value>Version:</value>
@@ -2424,8 +2415,5 @@ EU APIM's will require atleast 32GB</value>
   </data>
   <data name="lvIVSUsVersion.Text" xml:space="preserve">
     <value>Version</value>
-  </data>
-  <data name="txtReleaseNotes.Text" xml:space="preserve">
-    <value>Notes: </value>
   </data>
 </root>
