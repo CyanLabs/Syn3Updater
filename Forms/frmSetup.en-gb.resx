@@ -1,0 +1,70 @@
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Syn3 Updater - Configuration</value>
+  </data>
+  <data name="btnChangeDownloadDirectory.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="btnSetupContinue.Text" xml:space="preserve">
+    <value>Save Configuration</value>
+  </data>
+  <data name="chkCurrentSyncNav.Text" xml:space="preserve">
+    <value>Navigation?</value>
+  </data>
+  <data name="chkForceAutoinstall.Text" xml:space="preserve">
+    <value>Force Autoinstall?</value>
+  </data>
+  <data name="cmbCurrentSyncRegion.Items" xml:space="preserve">
+    <value>CN</value>
+  </data>
+  <data name="cmbCurrentSyncRegion.Items1" xml:space="preserve">
+    <value>EU</value>
+  </data>
+  <data name="cmbCurrentSyncRegion.Items2" xml:space="preserve">
+    <value>NA</value>
+  </data>
+  <data name="cmbCurrentSyncRegion.Items3" xml:space="preserve">
+    <value>ANZ</value>
+  </data>
+  <data name="cmbCurrentSyncRegion.Items4" xml:space="preserve">
+    <value>ROW</value>
+  </data>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>Optional - Download Location</value>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>Current Version Information</value>
+  </data>
+  <data name="lblCurrentSyncRegion.Text" xml:space="preserve">
+    <value>APIM Region:</value>
+  </data>
+  <data name="lblCurrentSyncVersion.Text" xml:space="preserve">
+    <value>Full Sync Version: </value>
+  </data>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>SYN3 UPDATER - CONFIGURATION</value>
+  </data>
+  <data name="lblWarning1.Text" xml:space="preserve">
+    <value>Please enter your full SYNC version e.g 3.4.12345, you can find this in Settings &gt; General &gt; About Sync
+Please also make sure to select the correct region (click here for details).
+Finally specify if you have Navigation (Maps) or not.
+
+FAILURE TO ENTER THE CORRECT INFORMATION MAY RENDER YOUR APIM UNUSABLE
+UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
+  </data>
+  <data name="txtCurrentSyncVersion.Mask" xml:space="preserve">
+    <value>#.#.#####</value>
+  </data>
+</root>

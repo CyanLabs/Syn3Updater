@@ -140,8 +140,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\frmDisclaimer.en-gb.resx">
+      <DependentUpon>frmDisclaimer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDisclaimer.resx">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMain.en-GB.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.fr.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -153,6 +159,10 @@
     <EmbeddedResource Include="Forms\frmRegion.resx">
       <DependentUpon>frmRegion.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSetup.en-gb.resx">
+      <DependentUpon>frmSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\strings.en-gb.resx" />
     <EmbeddedResource Include="Properties\Resources.fr.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
