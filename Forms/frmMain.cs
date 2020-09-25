@@ -1022,22 +1022,24 @@ namespace Syn3Updater.Forms
                 }
 
                 UpdateDriveInfo();
-                switch (_mode)
-                {
-                    case @"autoinstall":
-                        CreateAutoInstall();
-                        break;
-                    case @"downgrade":
-                        _dicIvsus.Add(DowngradePackageApp, new KeyValuePair<string, string>(@"APP", DowngradePackageAppMd5));
-                        _dicIvsus.Add(DowngradePackageTool, new KeyValuePair<string, string>(@"TOOL", DowngradePackageToolMd5));
-                        _dicIvsus.Add(SyncReformatTool, new KeyValuePair<string, string>(@"TOOL", SyncReformatToolMd5)); 
-                        CreateReformat();
-                        break;
-                    case @"reformat":
-                        _dicIvsus.Add(SyncReformatTool, new KeyValuePair<string, string>(@"TOOL",SyncReformatToolMd5));
-                        CreateReformat();
-                        break;
-                }
+               
+                    switch (_mode)
+                    {
+                        case @"autoinstall":
+                            CreateAutoInstall();
+                            break;
+                        case @"downgrade":
+                            if (!_dicIvsus.ContainsKey(DowngradePackageApp)) _dicIvsus.Add(DowngradePackageApp, new KeyValuePair<string, string>(@"APP", DowngradePackageAppMd5));
+                            if (!_dicIvsus.ContainsKey(DowngradePackageTool)) _dicIvsus.Add(DowngradePackageTool, new KeyValuePair<string, string>(@"TOOL", DowngradePackageToolMd5));
+                            if (!_dicIvsus.ContainsKey(SyncReformatTool)) _dicIvsus.Add(SyncReformatTool, new KeyValuePair<string, string>(@"TOOL", SyncReformatToolMd5));
+                            CreateReformat();
+                            break;
+                        case @"reformat":
+                            if (!_dicIvsus.ContainsKey(SyncReformatTool)) _dicIvsus.Add(SyncReformatTool, new KeyValuePair<string, string>(@"TOOL", SyncReformatToolMd5));
+                            CreateReformat();
+                            break;
+                    }
+                
 
                 foreach (KeyValuePair<string, KeyValuePair<string, string>> item in _dicIvsus)
                     Invoke(new Action(() => lstDownloadQueue.Items.Add(_downloadpath + item.Key)));
