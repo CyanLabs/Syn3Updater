@@ -149,8 +149,9 @@ namespace Syn3Updater.Forms
         {
             _cancelcopy = true;
             _tokenSource.Cancel();
-            Environment.Exit(0);
+            Application.Exit();
         }
+
         #endregion
 
         private void cmbDriveList_SelectedIndexChanged(object sender, EventArgs e)
