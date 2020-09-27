@@ -784,17 +784,6 @@ namespace Syn3Updater.Forms
             ResetControls();
         }
 
-        private void cmbLocale_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ChangeLanguage(cmbLocale.Text);
-            Settings.Default.Save();
-            FrmMain_Shown_Extra();
-
-            DialogResult dialog = MessageBox.Show(strings.FrmMain_cmbLocale_Restart, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (dialog == DialogResult.Yes)
-                Application.Restart();
-        }
-
         private void lblMode1_TextChanged(object sender, EventArgs e)
         {
             lblMode2.Text = lblMode1.Text;
@@ -835,14 +824,6 @@ namespace Syn3Updater.Forms
 
                 hasher.TransformFinalBlock(buffer, 0, 0);
                 return BitConverter.ToString(hasher.Hash).Replace("-", String.Empty);
-            }
-        }
-        private void ChangeLanguage(string lang) //A function called to change the language
-        {
-            foreach (Control c in this.Controls)
-            {
-                ComponentResourceManager resources = new ComponentResourceManager(typeof(FrmMain));
-                resources.ApplyResources(c, c.Name, new CultureInfo(lang));
             }
         }
 

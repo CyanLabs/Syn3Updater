@@ -44,6 +44,7 @@
             this.btnClose = new System.Windows.Forms.PictureBox();
             this.btnLogo = new System.Windows.Forms.PictureBox();
             this.panelTitleBar = new System.Windows.Forms.Panel();
+            this.cmbLocale = new System.Windows.Forms.ComboBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.folderDownloads = new System.Windows.Forms.FolderBrowserDialog();
             this.grpDownload.SuspendLayout();
@@ -199,12 +200,40 @@
             // panelTitleBar
             // 
             this.panelTitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            this.panelTitleBar.Controls.Add(this.cmbLocale);
             this.panelTitleBar.Controls.Add(this.btnLogo);
             this.panelTitleBar.Controls.Add(this.btnClose);
             this.panelTitleBar.Controls.Add(this.lblTitle);
             resources.ApplyResources(this.panelTitleBar, "panelTitleBar");
             this.panelTitleBar.Name = "panelTitleBar";
             this.panelTitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
+            // 
+            // cmbLocale
+            // 
+            this.cmbLocale.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.cmbLocale.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "Language", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.cmbLocale, "cmbLocale");
+            this.cmbLocale.ForeColor = System.Drawing.Color.White;
+            this.cmbLocale.FormattingEnabled = true;
+            this.cmbLocale.Items.AddRange(new object[] {
+            resources.GetString("cmbLocale.Items"),
+            resources.GetString("cmbLocale.Items1"),
+            resources.GetString("cmbLocale.Items2"),
+            resources.GetString("cmbLocale.Items3"),
+            resources.GetString("cmbLocale.Items4"),
+            resources.GetString("cmbLocale.Items5"),
+            resources.GetString("cmbLocale.Items6"),
+            resources.GetString("cmbLocale.Items7"),
+            resources.GetString("cmbLocale.Items8"),
+            resources.GetString("cmbLocale.Items9"),
+            resources.GetString("cmbLocale.Items10"),
+            resources.GetString("cmbLocale.Items11"),
+            resources.GetString("cmbLocale.Items12"),
+            resources.GetString("cmbLocale.Items13"),
+            resources.GetString("cmbLocale.Items14")});
+            this.cmbLocale.Name = "cmbLocale";
+            this.cmbLocale.Text = global::Syn3Updater.Properties.Settings.Default.Language;
+            this.cmbLocale.SelectionChangeCommitted += new System.EventHandler(this.cmbLocale_SelectionChangeCommitted);
             // 
             // lblTitle
             // 
@@ -261,5 +290,6 @@
         private System.Windows.Forms.MaskedTextBox txtCurrentSyncVersion;
         private System.Windows.Forms.FolderBrowserDialog folderDownloads;
         private System.Windows.Forms.CheckBox chkForceAutoinstall;
+        private System.Windows.Forms.ComboBox cmbLocale;
     }
 }

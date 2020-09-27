@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -82,6 +83,10 @@ namespace Syn3Updater.Forms
             if (!Settings.Default.SetupCompleted)
                 Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\";
             txtDownloadPath.Text = Settings.Default.DownloadPath;
+            if (string.IsNullOrEmpty(Settings.Default.Language))
+            {
+                Settings.Default.Language = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
+            }
         }
 
         private void chkForceAutoinstall_CheckedChanged(object sender, EventArgs e)
@@ -93,6 +98,25 @@ namespace Syn3Updater.Forms
             }
             DialogResult dialog = MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             chkForceAutoinstall.Checked = dialog == DialogResult.Yes;
+        }
+
+        private void ChangeLanguage(string lang) //A function called to change the language
+        {
+            foreach (Control c in this.Controls)
+            {
+                ComponentResourceManager resources = new ComponentResourceManager(typeof(FrmMain));
+                resources.ApplyResources(c, c.Name, new CultureInfo(lang));
+            }
+        }
+
+        private void cmbLocale_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            ChangeLanguage(cmbLocale.Text);
+            Settings.Default.Save();
+
+            DialogResult dialog = MessageBox.Show(strings.FrmMain_cmbLocale_Restart, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dialog == DialogResult.Yes)
+                Application.Restart();
         }
     }
 }
