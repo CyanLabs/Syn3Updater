@@ -54,7 +54,7 @@ namespace Syn3Updater.Forms
             if (Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName != "en")
             {
                 webDisclaimer.Navigate(
-                    $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FSync3Updater%2Fdisclaimer.php");
+                    $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FSyn3Updater%2Fdisclaimer.php");
             }
         }
 

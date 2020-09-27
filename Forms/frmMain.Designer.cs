@@ -183,7 +183,7 @@
             // btnRefreshUSB
             // 
             resources.ApplyResources(this.btnRefreshUSB, "btnRefreshUSB");
-            this.btnRefreshUSB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.btnRefreshUSB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.btnRefreshUSB.FlatAppearance.BorderSize = 0;
             this.btnRefreshUSB.Name = "btnRefreshUSB";
             this.btnRefreshUSB.UseVisualStyleBackColor = false;

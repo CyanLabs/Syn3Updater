@@ -93,7 +93,7 @@ namespace Syn3Updater.Forms
 
             this.Size = new Size(620, 320);
 
-            if (!Directory.Exists(Settings.Default.DownloadPath) && Settings.Default.DownloadPath == "")
+            if ((!Directory.Exists(Settings.Default.DownloadPath) && Settings.Default.DownloadPath == "") || !Settings.Default.SetupCompleted)
             {
                 FrmSetup frmSetup = new FrmSetup { Visible = true };
                 frmSetup.FormClosing += SettingsFormClosing;
@@ -937,7 +937,7 @@ namespace Syn3Updater.Forms
                 int baseint = 0, extraint = 0;
                 foreach (KeyValuePair<string, KeyValuePair<string, string>> item in _dicIvsus)
                 {
-                    if (item.Value.Key == @"APPS" || item.Value.Key == @"VOICE" || item.Value.Key == @"GRACENOTES" ||
+                    if (item.Value.Key == @"APPS" || item.Value.Key == @"VOICE" ||
                         item.Value.Key == @"ENH_DAB" || item.Value.Key == @"MAP_LICENSE" || item.Value.Key == @"VOICE_NAV")
                     {
                         baseint++;

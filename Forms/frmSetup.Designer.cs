@@ -163,6 +163,7 @@
             resources.GetString("cmbCurrentSyncRegion.Items4")});
             this.cmbCurrentSyncRegion.Name = "cmbCurrentSyncRegion";
             this.cmbCurrentSyncRegion.Text = global::Syn3Updater.Properties.Settings.Default.CurrentSyncRegion;
+            this.cmbCurrentSyncRegion.SelectedIndexChanged += new System.EventHandler(this.cmbCurrentSyncRegion_SelectedIndexChanged);
             // 
             // lblWarning1
             // 
@@ -211,7 +212,7 @@
             // cmbLocale
             // 
             this.cmbLocale.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
-            this.cmbLocale.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "Language", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cmbLocale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             resources.ApplyResources(this.cmbLocale, "cmbLocale");
             this.cmbLocale.ForeColor = System.Drawing.Color.White;
             this.cmbLocale.FormattingEnabled = true;
@@ -220,20 +221,9 @@
             resources.GetString("cmbLocale.Items1"),
             resources.GetString("cmbLocale.Items2"),
             resources.GetString("cmbLocale.Items3"),
-            resources.GetString("cmbLocale.Items4"),
-            resources.GetString("cmbLocale.Items5"),
-            resources.GetString("cmbLocale.Items6"),
-            resources.GetString("cmbLocale.Items7"),
-            resources.GetString("cmbLocale.Items8"),
-            resources.GetString("cmbLocale.Items9"),
-            resources.GetString("cmbLocale.Items10"),
-            resources.GetString("cmbLocale.Items11"),
-            resources.GetString("cmbLocale.Items12"),
-            resources.GetString("cmbLocale.Items13"),
-            resources.GetString("cmbLocale.Items14")});
+            resources.GetString("cmbLocale.Items4")});
             this.cmbLocale.Name = "cmbLocale";
-            this.cmbLocale.Text = global::Syn3Updater.Properties.Settings.Default.Language;
-            this.cmbLocale.SelectionChangeCommitted += new System.EventHandler(this.cmbLocale_SelectionChangeCommitted);
+            this.cmbLocale.SelectedIndexChanged += new System.EventHandler(this.cmbLocale_SelectedIndexChanged);
             // 
             // lblTitle
             // 

@@ -83,10 +83,9 @@ namespace Syn3Updater.Forms
             if (!Settings.Default.SetupCompleted)
                 Settings.Default.DownloadPath = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\";
             txtDownloadPath.Text = Settings.Default.DownloadPath;
-            if (string.IsNullOrEmpty(Settings.Default.Language))
-            {
-                Settings.Default.Language = Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName;
-            }
+            this.cmbLocale.SelectedIndexChanged -= new EventHandler(cmbLocale_SelectedIndexChanged);
+            cmbLocale.Text = string.IsNullOrEmpty(Settings.Default.Language) ? Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName.ToUpper() : Settings.Default.Language;
+            this.cmbLocale.SelectedIndexChanged += new EventHandler(cmbLocale_SelectedIndexChanged);
         }
 
         private void chkForceAutoinstall_CheckedChanged(object sender, EventArgs e)
@@ -109,14 +108,29 @@ namespace Syn3Updater.Forms
             }
         }
 
-        private void cmbLocale_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cmbLocale_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ChangeLanguage(cmbLocale.Text);
+            Settings.Default.Language = cmbLocale.Text;
             Settings.Default.Save();
 
             DialogResult dialog = MessageBox.Show(strings.FrmMain_cmbLocale_Restart, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialog == DialogResult.Yes)
-                Application.Restart();
+            {
+                Application.ExitThread();
+                
+            }
+            else
+            {
+                ChangeLanguage(cmbLocale.Text);
+            }
+        }
+
+        private void cmbCurrentSyncRegion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(cmbCurrentSyncRegion.Text))
+            {
+                btnSetupContinue.Enabled = true;
+            }
         }
     }
 }
