@@ -136,7 +136,8 @@
     <value>Configuración</value>
   </data>
   <data name="btnShowLog.Text" xml:space="preserve">
-    <value>Mostrar Log</value>
+    <value>Ver Log</value>
+    <comment>Reduced in lenght</comment>
   </data>
   <data name="grpNewVersion.Text" xml:space="preserve">
     <value>Nueva Versión Sync3</value>
@@ -155,7 +156,8 @@ APIM&apos;s EU requieren al menos 32GB</value>
     <value>Cola</value>
   </data>
   <data name="lblManualWarning.Text" xml:space="preserve">
-    <value>Presione Comenzar para comenzar la descarga/instalación, opcionalmente deseleccione cualquier IVSU&apos;s que no desee</value>
+    <value>Presione Comenzar para comenzar la descarga/instalación, remueva cualquier IVSU&apos;s que no desee</value>
+    <comment>Redacted to reduce length</comment>
   </data>
   <data name="lblMapVersion1.Text" xml:space="preserve">
     <value>Versión Mapa:</value>
