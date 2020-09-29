@@ -145,8 +145,8 @@ Drive Letter: {1}</value>
 Would you like to continue anyway? </value>
   </data>
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
-    <value>Would you like to restart application to change language?
-If you do not restart some elements may not be translated correctly</value>
+    <value>You must restart the application to change language!</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
     <value>PROCESS COMPLETE!</value>
@@ -204,7 +204,6 @@ This setting will have no effect if your current version is set to below 3.0 or 
 This setting will default back to &quot;automatic&quot; after each restart.
 
 By changing this from &quot;automatic&quot; you agree to not be eligible for support while this option is enabled!</value>
-    <comment>Fuzzy</comment>
   </data>
   <data name="LogCopying" xml:space="preserve">
     <value>Copying {0}</value>
