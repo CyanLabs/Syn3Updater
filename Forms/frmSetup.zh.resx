@@ -126,9 +126,6 @@
   <data name="chkCurrentSyncNav.Text" xml:space="preserve">
     <value>导航？</value>
   </data>
-  <data name="chkForceAutoinstall.Text" xml:space="preserve">
-    <value>强制自动安装？</value>
-  </data>
   <data name="grpDownload.Text" xml:space="preserve">
     <value>可选-下载位置</value>
   </data>
@@ -146,5 +143,6 @@
   </data>
   <data name="lblWarning1.Text" xml:space="preserve">
     <value>请输入完整的SYNC版本，例如3.4.12345，您可以在“设置”&gt;“常规”&gt;“关于同步”中找到此版本。请确保选择正确的区域（有关详细信息，请单击此处）。最后指定您是否具有导航（地图）。输入正确的信息可能会导致您的APIM无法使用，直到您下载并安装正确的文件！</value>
+    <comment>Fuzzy</comment>
   </data>
 </root>
