@@ -34,7 +34,6 @@
             this.txtDownloadPath = new System.Windows.Forms.TextBox();
             this.btnChangeDownloadDirectory = new System.Windows.Forms.Button();
             this.grpExistingDetails = new System.Windows.Forms.GroupBox();
-            this.chkForceAutoinstall = new System.Windows.Forms.CheckBox();
             this.txtCurrentSyncVersion = new System.Windows.Forms.MaskedTextBox();
             this.chkCurrentSyncNav = new System.Windows.Forms.CheckBox();
             this.lblCurrentSyncVersion = new System.Windows.Forms.Label();
@@ -47,17 +46,22 @@
             this.cmbLocale = new System.Windows.Forms.ComboBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.folderDownloads = new System.Windows.Forms.FolderBrowserDialog();
+            this.grpAdvanced = new System.Windows.Forms.GroupBox();
+            this.chkAllReleases = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbOverride = new System.Windows.Forms.ComboBox();
             this.grpDownload.SuspendLayout();
             this.grpExistingDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).BeginInit();
             this.panelTitleBar.SuspendLayout();
+            this.grpAdvanced.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSetupContinue
             // 
             resources.ApplyResources(this.btnSetupContinue, "btnSetupContinue");
-            this.btnSetupContinue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.btnSetupContinue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.btnSetupContinue.FlatAppearance.BorderSize = 0;
             this.btnSetupContinue.Name = "btnSetupContinue";
             this.btnSetupContinue.UseVisualStyleBackColor = false;
@@ -95,7 +99,6 @@
             // 
             // grpExistingDetails
             // 
-            this.grpExistingDetails.Controls.Add(this.chkForceAutoinstall);
             this.grpExistingDetails.Controls.Add(this.txtCurrentSyncVersion);
             this.grpExistingDetails.Controls.Add(this.chkCurrentSyncNav);
             this.grpExistingDetails.Controls.Add(this.lblCurrentSyncVersion);
@@ -105,16 +108,6 @@
             resources.ApplyResources(this.grpExistingDetails, "grpExistingDetails");
             this.grpExistingDetails.Name = "grpExistingDetails";
             this.grpExistingDetails.TabStop = false;
-            // 
-            // chkForceAutoinstall
-            // 
-            this.chkForceAutoinstall.Checked = global::Syn3Updater.Properties.Settings.Default.ForceAutoinstall;
-            this.chkForceAutoinstall.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Syn3Updater.Properties.Settings.Default, "ForceAutoinstall", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkForceAutoinstall.ForeColor = System.Drawing.Color.Red;
-            resources.ApplyResources(this.chkForceAutoinstall, "chkForceAutoinstall");
-            this.chkForceAutoinstall.Name = "chkForceAutoinstall";
-            this.chkForceAutoinstall.UseVisualStyleBackColor = true;
-            this.chkForceAutoinstall.CheckedChanged += new System.EventHandler(this.chkForceAutoinstall_CheckedChanged);
             // 
             // txtCurrentSyncVersion
             // 
@@ -174,10 +167,8 @@
             this.lblWarning1.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.lblWarning1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.lblWarning1.Name = "lblWarning1";
-            this.lblWarning1.TabStop = true;
-            this.lblWarning1.UseCompatibleTextRendering = true;
             this.lblWarning1.VisitedLinkColor = System.Drawing.Color.Silver;
-            this.lblWarning1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblWarning1_LinkClicked);
+            this.lblWarning1.Click += new System.EventHandler(this.lblWarning1_Click);
             // 
             // btnClose
             // 
@@ -221,7 +212,8 @@
             resources.GetString("cmbLocale.Items1"),
             resources.GetString("cmbLocale.Items2"),
             resources.GetString("cmbLocale.Items3"),
-            resources.GetString("cmbLocale.Items4")});
+            resources.GetString("cmbLocale.Items4"),
+            resources.GetString("cmbLocale.Items5")});
             this.cmbLocale.Name = "cmbLocale";
             this.cmbLocale.SelectedIndexChanged += new System.EventHandler(this.cmbLocale_SelectedIndexChanged);
             // 
@@ -236,11 +228,53 @@
             // 
             this.folderDownloads.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // grpAdvanced
+            // 
+            this.grpAdvanced.Controls.Add(this.chkAllReleases);
+            this.grpAdvanced.Controls.Add(this.label1);
+            this.grpAdvanced.Controls.Add(this.cmbOverride);
+            this.grpAdvanced.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.grpAdvanced, "grpAdvanced");
+            this.grpAdvanced.Name = "grpAdvanced";
+            this.grpAdvanced.TabStop = false;
+            // 
+            // chkAllReleases
+            // 
+            this.chkAllReleases.Checked = global::Syn3Updater.Properties.Settings.Default.ShowAllReleases;
+            this.chkAllReleases.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::Syn3Updater.Properties.Settings.Default, "ShowAllReleases", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.chkAllReleases, "chkAllReleases");
+            this.chkAllReleases.Name = "chkAllReleases";
+            this.chkAllReleases.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // cmbOverride
+            // 
+            this.cmbOverride.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.cmbOverride.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "ForcedInstallMode", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.cmbOverride.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cmbOverride, "cmbOverride");
+            this.cmbOverride.ForeColor = System.Drawing.Color.White;
+            this.cmbOverride.FormattingEnabled = true;
+            this.cmbOverride.Items.AddRange(new object[] {
+            resources.GetString("cmbOverride.Items"),
+            resources.GetString("cmbOverride.Items1"),
+            resources.GetString("cmbOverride.Items2"),
+            resources.GetString("cmbOverride.Items3")});
+            this.cmbOverride.Name = "cmbOverride";
+            this.cmbOverride.Text = global::Syn3Updater.Properties.Settings.Default.ForcedInstallMode;
+            this.cmbOverride.SelectedIndexChanged += new System.EventHandler(this.cmbOverride_SelectedIndexChanged);
+            // 
             // FrmSetup
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(46)))));
+            this.Controls.Add(this.grpAdvanced);
             this.Controls.Add(this.lblWarning1);
             this.Controls.Add(this.grpDownload);
             this.Controls.Add(this.grpExistingDetails);
@@ -258,6 +292,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).EndInit();
             this.panelTitleBar.ResumeLayout(false);
+            this.grpAdvanced.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -279,7 +314,10 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.MaskedTextBox txtCurrentSyncVersion;
         private System.Windows.Forms.FolderBrowserDialog folderDownloads;
-        private System.Windows.Forms.CheckBox chkForceAutoinstall;
         private System.Windows.Forms.ComboBox cmbLocale;
+        private System.Windows.Forms.GroupBox grpAdvanced;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cmbOverride;
+        private System.Windows.Forms.CheckBox chkAllReleases;
     }
 }

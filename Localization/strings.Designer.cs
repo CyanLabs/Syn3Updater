@@ -126,7 +126,8 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current region and new region are not the same, this may not work..
+        ///   Looks up a localized string similar to Current region and new region are not the same, this may not work.
+        ///Would you like to continue anyway? .
         /// </summary>
         internal static string FrmMain_CancelledDownload_RegionMismatch {
             get {
@@ -240,7 +241,8 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notes: {0}.
+        ///   Looks up a localized string similar to Notes: 
+        ///{0}.
         /// </summary>
         internal static string FrmMain_Notes {
             get {
@@ -272,9 +274,11 @@ namespace Syn3Updater.Localization {
         /// <summary>
         ///   Looks up a localized string similar to This will override the detection of the most appropriate install mode using this with a full release with maps will almost certainly cause issues.
         ///
-        ///By checking this box you agree to not be eligible for support while this option is enabled!
+        ///This setting will have no effect if your current version is set to below 3.0 or below.
         ///
-        ///Do you wish to force &quot;autoinstall&quot; mode, this will reset on next launch?.
+        ///This setting will default back to &quot;automatic&quot; after each restart.
+        ///
+        ///By changing this from &quot;automatic&quot; you agree to not be eligible for support while this option is enabled!.
         /// </summary>
         internal static string FrmSetup_ForceAutoInstall {
             get {

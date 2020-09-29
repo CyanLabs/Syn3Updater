@@ -183,7 +183,8 @@ Filesystem: {2}</value>
     <value>Hubo un problema tratando de recuperar la lista de archivos desde el servidor en linea, por favor revise la conexión a internet y asegúrese que la aplicación tenga acceso a internet</value>
   </data>
   <data name="FrmMain_Notes" xml:space="preserve">
-    <value>Notas: {0}</value>
+    <value>Notas: 
+{0}</value>
   </data>
   <data name="FrmMain_ValidateFile_Verifying" xml:space="preserve">
     <value>Verificando integridad de {0}</value>

@@ -184,7 +184,8 @@ Filesystem: {2}</value>
     <value>Si è verificato un problema durante il tentativo di recuperare l&apos;elenco dei file dal server online, controlla la tua connessione Internet e assicurati che l&apos;applicazione abbia accesso a Internet</value>
   </data>
   <data name="FrmMain_Notes" xml:space="preserve">
-    <value>Note: {0}</value>
+    <value>Note: 
+{0}</value>
     <comment>Please make sure to include {0} as these are variables, without these the string will not be added to the application</comment>
   </data>
   <data name="FrmMain_ValidateFile_Verifying" xml:space="preserve">

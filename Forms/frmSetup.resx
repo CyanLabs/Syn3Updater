@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnSetupContinue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+    <value>Top, Right</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnSetupContinue.Enabled" type="System.Boolean, mscorlib">
@@ -132,11 +132,14 @@
   <data name="btnSetupContinue.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9.75pt</value>
   </data>
+  <data name="btnSetupContinue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="btnSetupContinue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>465, 221</value>
+    <value>450, 221</value>
   </data>
   <data name="btnSetupContinue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>133, 52</value>
+    <value>148, 55</value>
   </data>
   <data name="btnSetupContinue.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -154,7 +157,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSetupContinue.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="txtDownloadPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 19</value>
@@ -179,6 +182,9 @@
   </data>
   <data name="btnChangeDownloadDirectory.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
+  </data>
+  <data name="btnChangeDownloadDirectory.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="btnChangeDownloadDirectory.Location" type="System.Drawing.Point, System.Drawing">
     <value>392, 19</value>
@@ -226,31 +232,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpDownload.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="chkForceAutoinstall.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 22</value>
-  </data>
-  <data name="chkForceAutoinstall.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 17</value>
-  </data>
-  <data name="chkForceAutoinstall.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
-  </data>
-  <data name="chkForceAutoinstall.Text" xml:space="preserve">
-    <value>Force Autoinstall?</value>
-  </data>
-  <data name="&gt;&gt;chkForceAutoinstall.Name" xml:space="preserve">
-    <value>chkForceAutoinstall</value>
-  </data>
-  <data name="&gt;&gt;chkForceAutoinstall.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkForceAutoinstall.Parent" xml:space="preserve">
-    <value>grpExistingDetails</value>
-  </data>
-  <data name="&gt;&gt;chkForceAutoinstall.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="txtCurrentSyncVersion.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9.75pt</value>
@@ -262,7 +244,7 @@
     <value>#.#.#####</value>
   </data>
   <data name="txtCurrentSyncVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 25</value>
+    <value>64, 25</value>
   </data>
   <data name="txtCurrentSyncVersion.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -280,13 +262,16 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;txtCurrentSyncVersion.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
+  </data>
+  <data name="chkCurrentSyncNav.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="chkCurrentSyncNav.Location" type="System.Drawing.Point, System.Drawing">
-    <value>355, 22</value>
+    <value>441, 22</value>
   </data>
   <data name="chkCurrentSyncNav.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 17</value>
+    <value>139, 17</value>
   </data>
   <data name="chkCurrentSyncNav.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -304,10 +289,13 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;chkCurrentSyncNav.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="lblCurrentSyncVersion.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>
+  </data>
+  <data name="lblCurrentSyncVersion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="lblCurrentSyncVersion.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 23</value>
@@ -334,16 +322,19 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;lblCurrentSyncVersion.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="lblCurrentSyncRegion.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>
   </data>
+  <data name="lblCurrentSyncRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="lblCurrentSyncRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 23</value>
+    <value>182, 23</value>
   </data>
   <data name="lblCurrentSyncRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 13</value>
+    <value>139, 13</value>
   </data>
   <data name="lblCurrentSyncRegion.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -364,7 +355,7 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;lblCurrentSyncRegion.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="cmbCurrentSyncRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -385,7 +376,7 @@
     <value>ROW</value>
   </data>
   <data name="cmbCurrentSyncRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>277, 20</value>
+    <value>326, 20</value>
   </data>
   <data name="cmbCurrentSyncRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 21</value>
@@ -403,7 +394,7 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;cmbCurrentSyncRegion.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="grpExistingDetails.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 158</value>
@@ -427,7 +418,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpExistingDetails.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="lblWarning1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -435,8 +426,11 @@
   <data name="lblWarning1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt, style=Bold</value>
   </data>
+  <data name="lblWarning1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="lblWarning1.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>157, 22</value>
+    <value>0, 0</value>
   </data>
   <data name="lblWarning1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 49</value>
@@ -452,7 +446,7 @@
   </data>
   <data name="lblWarning1.Text" xml:space="preserve">
     <value>Please enter your full SYNC version e.g 3.4.12345, you can find this in Settings &gt; General &gt; About Sync
-Please also make sure to select the correct region (click here for details).
+Please also make sure to select the correct region, click this box for further information.
 Finally specify if you have Navigation (Maps) or not.
 
 FAILURE TO ENTER THE CORRECT INFORMATION MAY RENDER YOUR APIM UNUSABLE
@@ -471,7 +465,7 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblWarning1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -488,6 +482,9 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
         yKwqoLQeQve07Q1z2zZ6x+Hqdtu7bG87RvStL1USzMHYO9WggVY1ahVYuQ6U7B+WtqTJqa0O4gAAAABJ
         RU5ErkJggg==
 </value>
+  </data>
+  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
     <value>592, 0</value>
@@ -509,6 +506,9 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   </data>
   <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="btnLogo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="btnLogo.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 2</value>
@@ -541,19 +541,22 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>Segoe UI, 6pt</value>
   </data>
   <data name="cmbLocale.Items" xml:space="preserve">
-    <value>EN</value>
+    <value>DE</value>
   </data>
   <data name="cmbLocale.Items1" xml:space="preserve">
-    <value>ZH</value>
+    <value>EN</value>
   </data>
   <data name="cmbLocale.Items2" xml:space="preserve">
-    <value>DE</value>
+    <value>ES</value>
   </data>
   <data name="cmbLocale.Items3" xml:space="preserve">
     <value>IT</value>
   </data>
   <data name="cmbLocale.Items4" xml:space="preserve">
-    <value>ES</value>
+    <value>RU</value>
+  </data>
+  <data name="cmbLocale.Items5" xml:space="preserve">
+    <value>ZH</value>
   </data>
   <data name="cmbLocale.Location" type="System.Drawing.Point, System.Drawing">
     <value>542, 0</value>
@@ -581,6 +584,9 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   </data>
   <data name="lblTitle.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 15.75pt, style=Bold</value>
+  </data>
+  <data name="lblTitle.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
     <value>193, 15</value>
@@ -631,11 +637,131 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panelTitleBar.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <metadata name="folderDownloads.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="chkAllReleases.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkAllReleases.Location" type="System.Drawing.Point, System.Drawing">
+    <value>355, 22</value>
+  </data>
+  <data name="chkAllReleases.Size" type="System.Drawing.Size, System.Drawing">
+    <value>216, 17</value>
+  </data>
+  <data name="chkAllReleases.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="chkAllReleases.Text" xml:space="preserve">
+    <value>Show All (Testing/Old) Releases</value>
+  </data>
+  <data name="&gt;&gt;chkAllReleases.Name" xml:space="preserve">
+    <value>chkAllReleases</value>
+  </data>
+  <data name="&gt;&gt;chkAllReleases.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkAllReleases.Parent" xml:space="preserve">
+    <value>grpAdvanced</value>
+  </data>
+  <data name="&gt;&gt;chkAllReleases.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 8.25pt</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 23</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 13</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Force Install Mode: </value>
+  </data>
+  <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>grpAdvanced</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cmbOverride.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="cmbOverride.Items" xml:space="preserve">
+    <value>automatic</value>
+  </data>
+  <data name="cmbOverride.Items1" xml:space="preserve">
+    <value>downgrade</value>
+  </data>
+  <data name="cmbOverride.Items2" xml:space="preserve">
+    <value>autoinstall</value>
+  </data>
+  <data name="cmbOverride.Items3" xml:space="preserve">
+    <value>reformat</value>
+  </data>
+  <data name="cmbOverride.Location" type="System.Drawing.Point, System.Drawing">
+    <value>153, 19</value>
+  </data>
+  <data name="cmbOverride.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 21</value>
+  </data>
+  <data name="cmbOverride.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;cmbOverride.Name" xml:space="preserve">
+    <value>cmbOverride</value>
+  </data>
+  <data name="&gt;&gt;cmbOverride.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbOverride.Parent" xml:space="preserve">
+    <value>grpAdvanced</value>
+  </data>
+  <data name="&gt;&gt;cmbOverride.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="grpAdvanced.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 282</value>
+  </data>
+  <data name="grpAdvanced.Size" type="System.Drawing.Size, System.Drawing">
+    <value>589, 52</value>
+  </data>
+  <data name="grpAdvanced.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value>Advanced Options</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.Name" xml:space="preserve">
+    <value>grpAdvanced</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -643,7 +769,7 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>608, 286</value>
+    <value>608, 343</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>

@@ -127,12 +127,6 @@
   <data name="chkCurrentSyncNav.Text" xml:space="preserve">
     <value>Navigatore?</value>
   </data>
-  <data name="chkForceAutoinstall.Text" xml:space="preserve">
-    <value>Abilita Autoinstall?</value>
-  </data>
-  <data name="cmbCurrentSyncRegion.Items4" xml:space="preserve">
-    <value>ROW</value>
-  </data>
   <data name="grpDownload.Text" xml:space="preserve">
     <value>Opzioni - Posizione Download</value>
   </data>

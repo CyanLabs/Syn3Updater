@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutoUpdaterDotNET;
+using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using Newtonsoft.Json;
 using Syn3Updater.Helpers;
@@ -37,8 +38,10 @@ namespace Syn3Updater.Forms
 
         #region Form Variable Declarations
         private const string ApiBase = "https://api.cyanlabs.net/fordsyncdownloader/";
-        private string _apiAppReleases = ApiBase + "items/releases?sort=-name&limit=-1&filter[status]=[published]";
-        private string _apiMapReleases = ApiBase + "items/map_releases?sort=-name&limit=-1&filter[status]=[published]&filter[regions]=";
+        private const string ApiAppReleasesConst = ApiBase + "items/releases?sort=-name&limit=-1&[published]";
+        private const string ApiMapReleasesConst = ApiBase + "items/map_releases?sort=-name&limit=-1&[published]&filter[regions]=";
+        private string _apiAppReleases;
+        private string _apiMapReleases;
         private const string ApiAppReleaseSingle = ApiBase + "items/releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         private const string ApiMapReleaseSingle = ApiBase + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
 
@@ -70,7 +73,7 @@ namespace Syn3Updater.Forms
         private Stopwatch _stopWatch;
         private ArrayList _ivsus;
         private string _partitionType, _driveId, _fileSystem, _volumeName, _stringReleasesJson, _stringMapReleasesJson, _stringDownloadJson, 
-            _stringMapDownloadJson, _downloadpath, _stringCompatibility, _mode = "", _fileName = "", _published = "published", _version = "";
+            _stringMapDownloadJson, _downloadpath, _stringCompatibility, _mode = "", _fileName = "",  _version = "";
         private JsonReleases _jsonMapReleases, _jsonReleases;
         public static string Logoutput;
         #endregion
@@ -89,13 +92,14 @@ namespace Syn3Updater.Forms
             _version = Settings.Default.CurrentSyncVersion.ToString();
             _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
 
-            lblConfiguration.Text = string.Format(strings.FrmMain_CurrentConfiguration, _version, Settings.Default.CurrentSyncRegion, (Settings.Default.CurrentSyncNav ? "Yes" : "No"), Settings.Default.DownloadPath);
+            lblConfiguration.Text = string.Format(strings.FrmMain_CurrentConfiguration, _version, Settings.Default.CurrentSyncRegion,
+                (Settings.Default.CurrentSyncNav ? "Yes" : "No"), Settings.Default.DownloadPath);
 
             this.Size = new Size(620, 320);
 
             if ((!Directory.Exists(Settings.Default.DownloadPath) && Settings.Default.DownloadPath == "") || !Settings.Default.SetupCompleted)
             {
-                FrmSetup frmSetup = new FrmSetup { Visible = true };
+                FrmSetup frmSetup = new FrmSetup {Visible = true};
                 frmSetup.FormClosing += SettingsFormClosing;
                 this.Hide();
             }
@@ -113,16 +117,21 @@ namespace Syn3Updater.Forms
                         Settings.Default.Upgrade();
                         Settings.Default.Save();
                         break;
-                    case "/all":
-                        _published = "*";
-                        break;
                     case "/debug":
                         _skipcheck = true;
                         break;
                 }
 
-            _apiMapReleases = _apiMapReleases.Replace("[published]", _published);
-            _apiAppReleases = _apiAppReleases.Replace("[published]", _published);
+            if (Settings.Default.ShowAllReleases)
+            {
+                _apiMapReleases = ApiMapReleasesConst.Replace("[published]", "");
+                _apiAppReleases = ApiAppReleasesConst.Replace("[published]", "");
+            }
+            else
+            {
+                _apiMapReleases = ApiMapReleasesConst.Replace("[published]", "filter[status]=published");
+                _apiAppReleases = ApiAppReleasesConst.Replace("[published]", "filter[status]=published");
+            }
 
             try
             {
@@ -229,8 +238,11 @@ namespace Syn3Updater.Forms
             }
             else
             {
-                cmbMapVersion.Items.Add(@"Keep Existing Maps");
-                cmbMapVersion.SelectedItem = @"Keep Existing Maps";
+                if (Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
+                {
+                    cmbMapVersion.Items.Add(@"Keep Existing Maps");
+                    cmbMapVersion.SelectedItem = @"Keep Existing Maps";
+                }
             }
 
             _jsonReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringReleasesJson);
@@ -333,11 +345,11 @@ namespace Syn3Updater.Forms
                 //Update Nav?
                 if (cmbMapVersion.Text == @"No Maps" || cmbMapVersion.Text == @"Non Nav APIM" || cmbMapVersion.Text == @"Keep Existing Maps")
                 {
-                    _mode = @"autoinstall";
+                    _mode = Settings.Default.ForcedInstallMode == "automatic" ? @"autoinstall" : Settings.Default.ForcedInstallMode;
                 }
                 else
                 {
-                    _mode = Settings.Default.ForceAutoinstall ? @"autoinstall" : @"reformat";
+                    _mode = Settings.Default.ForcedInstallMode == "automatic" ? @"reformat" : Settings.Default.ForcedInstallMode;
                 }
             }
 
@@ -347,39 +359,31 @@ namespace Syn3Updater.Forms
                 //Update Nav?
                 if (cmbMapVersion.Text == @"No Maps" || cmbMapVersion.Text == @"Non Nav APIM" || cmbMapVersion.Text == @"Keep Existing Maps")
                 {
-                    _mode = @"autoinstall";
+                    _mode = Settings.Default.ForcedInstallMode == "automatic" ? @"autoinstall" : Settings.Default.ForcedInstallMode;
                 }
                 else
                 {
-                    _mode = Settings.Default.ForceAutoinstall ? @"autoinstall" : @"downgrade";
+                    _mode = Settings.Default.ForcedInstallMode == "automatic" ? @"downgrade" : Settings.Default.ForcedInstallMode;
                 }
             }
 
             string release = cmbRelease.Text;
             if (_mode == @"downgrade")
             {
-                lblMode1.Text = @"Downgrade";
+                lblMode1.Text = Settings.Default.ForcedInstallMode == "automatic" ? @"Downgrade" : @"Downgrade (FORCED)";
+
                 lblMode2.ForeColor = Color.Cyan;
                 lblMode1.ForeColor = Color.Cyan;
             }
             else if (_mode == @"autoinstall")
             {
-                if (Settings.Default.ForceAutoinstall)
-                {
-                    lblMode1.Text = @"Autoinstall (FORCED)";
-                    lblMode2.ForeColor = Color.Red;
-                    lblMode1.ForeColor = Color.Red;
-                }
-                else
-                {
-                    lblMode1.Text = @"Autoinstall";
-                    lblMode2.ForeColor = Color.LimeGreen;
-                    lblMode1.ForeColor = Color.LimeGreen;
-                }
+                lblMode1.Text = Settings.Default.ForcedInstallMode == "automatic" ? @"AutoInstall" : @"AutoInstall (FORCED)";
+                lblMode2.ForeColor = Color.LimeGreen;
+                lblMode1.ForeColor = Color.LimeGreen;
             }
             else
             {
-                lblMode1.Text = @"Reformat";
+                lblMode1.Text = Settings.Default.ForcedInstallMode == "automatic" ? @"Reformat" : @"Reformat (FORCED)";
                 lblMode2.ForeColor = Color.Orange;
                 lblMode1.ForeColor = Color.Orange;
             }
@@ -763,8 +767,11 @@ namespace Syn3Updater.Forms
                 }
                 else
                 {
-                    cmbMapVersion.Items.Add("Keep Existing Maps");
-                    cmbMapVersion.SelectedItem = "Keep Existing Maps";
+                    if (Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
+                    {
+                        cmbMapVersion.Items.Add(@"Keep Existing Maps");
+                        cmbMapVersion.SelectedItem = @"Keep Existing Maps";
+                    }
                 }
 
                 _jsonMapReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringMapReleasesJson);
@@ -774,9 +781,22 @@ namespace Syn3Updater.Forms
             btnContinue.Enabled = cmbMapVersion.Text != "" && cmbRelease.Text != "";
         }
 
+        public static string GetOSFriendlyName()
+        {
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
+            foreach (ManagementObject os in searcher.Get())
+            {
+                result = os["Caption"].ToString();
+                break;
+            }
+            return result +  " (" + Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "") + ")";
+        }
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            Settings.Default.ForceAutoinstall = false;
+           Settings.Default.ForcedInstallMode = "automatic";
+           Settings.Default.Save();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -833,12 +853,13 @@ namespace Syn3Updater.Forms
                 Invoke((MethodInvoker) delegate
                 {
                     string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}" + Environment.NewLine;
+                    data += @"Operating System: " + GetOSFriendlyName() + Environment.NewLine;
                     data += Environment.NewLine;
                     data += @"PREVIOUS CONFIGURATION" + Environment.NewLine;
                     data += @"Version: " + _version + Environment.NewLine;
                     data += @"Region: " + Settings.Default.CurrentSyncRegion + Environment.NewLine;
                     data += @"Navigation: " + Settings.Default.CurrentSyncNav + Environment.NewLine;
-                    data += @"Mode: " + _mode + Environment.NewLine + (Settings.Default.ForceAutoinstall ? "Forced" : "") + Environment.NewLine;
+                    data += @"Mode: " + (Settings.Default.ForcedInstallMode == @"automatic" ? _mode : Settings.Default.ForcedInstallMode + " FORCED") + Environment.NewLine;
                     data += Environment.NewLine;
                     data += @"USB DETAILS" + Environment.NewLine;
                     data += @"Model: " + cmbDriveList.Text + Environment.NewLine;
@@ -856,7 +877,7 @@ namespace Syn3Updater.Forms
                     {
                         data += Environment.NewLine;
                         data += @"AUTOINSTALL.LST" + Environment.NewLine;
-                        data += File.ReadAllText(_driveId + @"\autoinstall.lst");
+                        data += File.ReadAllText(_driveId + @"\autoinstall.lst") + Environment.NewLine;
                     }
 
                     if (Directory.Exists(_driveId + @"\SyncMyRide"))
@@ -867,9 +888,9 @@ namespace Syn3Updater.Forms
                         data += @"SYNCMYRIDE FILES (" + allFiles.Length + ")" + Environment.NewLine;
                         foreach (FileInfo file in allFiles)
                             data += $"{file.Name} ({Functions.BytesToString(file.Length)})" + Environment.NewLine;
+                        data += Environment.NewLine;
                     }
 
-                    data += Environment.NewLine;
                     data += @"LOG" + Environment.NewLine;
                     data += Logoutput;
                     File.WriteAllText(_driveId + @"\log.txt", data);

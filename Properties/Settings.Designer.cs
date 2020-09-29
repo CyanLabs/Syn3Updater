@@ -109,18 +109,6 @@ namespace Syn3Updater.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ForceAutoinstall {
-            get {
-                return ((bool)(this["ForceAutoinstall"]));
-            }
-            set {
-                this["ForceAutoinstall"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Language {
             get {
@@ -128,6 +116,18 @@ namespace Syn3Updater.Properties {
             }
             set {
                 this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ForcedInstallMode {
+            get {
+                return ((string)(this["ForcedInstallMode"]));
+            }
+            set {
+                this["ForcedInstallMode"] = value;
             }
         }
     }

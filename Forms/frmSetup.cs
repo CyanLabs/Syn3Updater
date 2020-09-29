@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -49,11 +50,6 @@ namespace Syn3Updater.Forms
             this.Close();
         }
 
-        private void lblWarning1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            _ = new FrmRegion() { Visible = true };
-        }
-
         private void btnChangeDownloadDirectory_Click(object sender, EventArgs e)
         {
             DialogResult result = folderDownloads.ShowDialog();
@@ -86,17 +82,12 @@ namespace Syn3Updater.Forms
             this.cmbLocale.SelectedIndexChanged -= new EventHandler(cmbLocale_SelectedIndexChanged);
             cmbLocale.Text = string.IsNullOrEmpty(Settings.Default.Language) ? Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName.ToUpper() : Settings.Default.Language;
             this.cmbLocale.SelectedIndexChanged += new EventHandler(cmbLocale_SelectedIndexChanged);
-        }
-
-        private void chkForceAutoinstall_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!chkForceAutoinstall.Checked)
+            if (!string.IsNullOrEmpty(cmbCurrentSyncRegion.Text))
             {
-                chkForceAutoinstall.Checked = false;
-                return;
+                btnSetupContinue.Enabled = true;
             }
-            DialogResult dialog = MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            chkForceAutoinstall.Checked = dialog == DialogResult.Yes;
+            if (!string.IsNullOrEmpty(Settings.Default.ForcedInstallMode))
+                cmbOverride.Text = "automatic";
         }
 
         private void ChangeLanguage(string lang) //A function called to change the language
@@ -131,6 +122,17 @@ namespace Syn3Updater.Forms
             {
                 btnSetupContinue.Enabled = true;
             }
+        }
+
+        private void lblWarning1_Click(object sender, EventArgs e)
+        {
+            this.TopMost = false;
+            _ = new FrmRegion() { Visible = true };
+        }
+
+        private void cmbOverride_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

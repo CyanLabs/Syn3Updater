@@ -23,12 +23,6 @@
   <data name="chkCurrentSyncNav.Text" xml:space="preserve">
     <value>Navigation?</value>
   </data>
-  <data name="chkForceAutoinstall.Text" xml:space="preserve">
-    <value>Force Autoinstall?</value>
-  </data>
-  <data name="cmbCurrentSyncRegion.Items4" xml:space="preserve">
-    <value>ROW</value>
-  </data>
   <data name="grpDownload.Text" xml:space="preserve">
     <value>Optional - Download Location</value>
   </data>
@@ -52,7 +46,7 @@ Finally specify if you have Navigation (Maps) or not.
 FAILURE TO ENTER THE CORRECT INFORMATION MAY RENDER YOUR APIM UNUSABLE
 UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   </data>
-  <data name="txtCurrentSyncVersion.Mask" xml:space="preserve">
-    <value>#.#.#####</value>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value>Advanced Options</value>
   </data>
 </root>

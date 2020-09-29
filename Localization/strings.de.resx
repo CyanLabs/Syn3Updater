@@ -185,7 +185,8 @@ Dateisystem: {2}</value>
     <value>Beim Versuch, die Liste der Dateien vom Online-Server abzurufen, ist ein Problem aufgetreten. Überprüfen Sie Ihre Internetverbindung und stellen Sie sicher, dass die Anwendung über einen Internetzugang verfügt.</value>
   </data>
   <data name="FrmMain_Notes" xml:space="preserve">
-    <value>Hinweise: {0}</value>
+    <value>Hinweise: 
+{0}</value>
   </data>
   <data name="FrmMain_ValidateFile_Verifying" xml:space="preserve">
     <value>Prüfe die Integrität von {0}</value>

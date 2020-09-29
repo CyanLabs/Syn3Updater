@@ -35,7 +35,8 @@ Drive Letter: {1}</value>
     <value>No USB drive selected would you like to continue with just the download?</value>
   </data>
   <data name="FrmMain_CancelledDownload_RegionMismatch" xml:space="preserve">
-    <value>Current region and new region are not the same, this may not work.</value>
+    <value>Current region and new region are not the same, this may not work.
+Would you like to continue anyway? </value>
   </data>
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
     <value>Would you like to restart application to change language?
@@ -77,7 +78,8 @@ Filesystem: {2}</value>
     <value>There was an issue trying to retrieve the list of files from the online server, please check your internet connection and make sure the application has internet access</value>
   </data>
   <data name="FrmMain_Notes" xml:space="preserve">
-    <value>Notes: {0}</value>
+    <value>Notes: 
+{0}</value>
   </data>
   <data name="FrmMain_ValidateFile_Verifying" xml:space="preserve">
     <value>Verifying integrity of {0}</value>
@@ -91,9 +93,11 @@ to
   <data name="FrmSetup_ForceAutoInstall" xml:space="preserve">
     <value>This will override the detection of the most appropriate install mode using this with a full release with maps will almost certainly cause issues.
 
-By checking this box you agree to not be eligible for support while this option is enabled!
+This setting will have no effect if your current version is set to below 3.0 or below.
 
-Do you wish to force "autoinstall" mode, this will reset on next launch?</value>
+This setting will default back to "automatic" after each restart.
+
+By changing this from "automatic" you agree to not be eligible for support while this option is enabled!</value>
   </data>
   <data name="LogCopying" xml:space="preserve">
     <value>Copying {0}</value>
