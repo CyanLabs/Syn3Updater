@@ -203,6 +203,7 @@ to
 Selezionando questa casella accetti di non volere il supporto idoneo per l&apos;autoinstallazione del Sync.
 
 Desideri abilitare la modalità &quot;autoinstall&quot;, verrà ripristinata al prossimo avvio?</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="LogCopying" xml:space="preserve">
     <value>Copia in corso {0}</value>
