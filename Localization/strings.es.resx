@@ -141,7 +141,7 @@ Unidad: {1}</value>
     <value>No se seleccionó una unidad USB, desea continuar sólo con la descarga?</value>
   </data>
   <data name="FrmMain_CancelledDownload_RegionMismatch" xml:space="preserve">
-    <value>Región Actual y Región Nueva no son iguales, ésto puede no funcionar</value>
+    <value>Región Actual y Región Nueva no son la misma, esto puede no funcionar. Desea continuar?.</value>
   </data>
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
     <value>Desea reiniciar la aplicación para cambiar el lenguaje?
@@ -183,8 +183,7 @@ Filesystem: {2}</value>
     <value>Hubo un problema tratando de recuperar la lista de archivos desde el servidor en linea, por favor revise la conexión a internet y asegúrese que la aplicación tenga acceso a internet</value>
   </data>
   <data name="FrmMain_Notes" xml:space="preserve">
-    <value>Notas: 
-{0}</value>
+    <value>Notas: {0}</value>
   </data>
   <data name="FrmMain_ValidateFile_Verifying" xml:space="preserve">
     <value>Verificando integridad de {0}</value>
@@ -196,11 +195,12 @@ a
 {1}</value>
   </data>
   <data name="FrmSetup_ForceAutoInstall" xml:space="preserve">
-    <value>Esto anulará la detección del método más apropiado de instalación. Usar ésta configuración con un full release con mapas casi seguro provocará problemas.
+    <value>Esto anulará la detección del método más apropiado de instalación. Usar ésta configuración con un release completo con mapas casi seguro provocará problemas.
 
 Al seleccionar ésta opción acepta no ser elegible para soporte mientras ésta opción esté activada!
 
 Quiere forzar el modo &quot;autoinstall&quot;?, esto se volverá atrás en la próxima ejecución</value>
+    <comment>Changed &quot;Full Release&quot; by &quot;Release Completo&quot; since it seems there&apos;s enough space.</comment>
   </data>
   <data name="LogCopying" xml:space="preserve">
     <value>Copiando {0}</value>
