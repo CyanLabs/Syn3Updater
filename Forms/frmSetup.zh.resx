@@ -126,6 +126,9 @@
   <data name="chkCurrentSyncNav.Text" xml:space="preserve">
     <value>导航？</value>
   </data>
+  <data name="chkForceAutoinstall.Text" xml:space="preserve">
+    <value>强制自动安装？</value>
+  </data>
   <data name="grpDownload.Text" xml:space="preserve">
     <value>可选-下载位置</value>
   </data>
