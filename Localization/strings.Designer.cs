@@ -136,8 +136,7 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Would you like to restart application to change language?
-        ///If you do not restart some elements may not be translated correctly.
+        ///   Looks up a localized string similar to You must restart the application to change language!.
         /// </summary>
         internal static string FrmMain_cmbLocale_Restart {
             get {

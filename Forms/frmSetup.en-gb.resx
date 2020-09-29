@@ -143,7 +143,7 @@
   </data>
   <data name="lblWarning1.Text" xml:space="preserve">
     <value>Please enter your full SYNC version e.g 3.4.12345, you can find this in Settings &gt; General &gt; About Sync
-Please also make sure to select the correct region (click here for details).
+Please also make sure to select the correct region, click this box for further information.
 Finally specify if you have Navigation (Maps) or not.
 
 FAILURE TO ENTER THE CORRECT INFORMATION MAY RENDER YOUR APIM UNUSABLE

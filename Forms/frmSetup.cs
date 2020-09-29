@@ -104,16 +104,8 @@ namespace Syn3Updater.Forms
             Settings.Default.Language = cmbLocale.Text;
             Settings.Default.Save();
 
-            DialogResult dialog = MessageBox.Show(strings.FrmMain_cmbLocale_Restart, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (dialog == DialogResult.Yes)
-            {
-                Application.ExitThread();
-                
-            }
-            else
-            {
-                ChangeLanguage(cmbLocale.Text);
-            }
+            MessageBox.Show(strings.FrmMain_cmbLocale_Restart, strings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            Application.ExitThread();
         }
 
         private void cmbCurrentSyncRegion_SelectedIndexChanged(object sender, EventArgs e)

@@ -193,8 +193,7 @@ Filesystem: {2}</value>
     <value>Copying {0} ({1}/{2})</value>
   </data>
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
-    <value>Would you like to restart application to change language?
-If you do not restart some elements may not be translated correctly</value>
+    <value>You must restart the application to change language!</value>
   </data>
   <data name="FrmSetup_btnChangeDownloadDirectory_ChangeDirectory" xml:space="preserve">
     <value>Would you like to move existing files from
