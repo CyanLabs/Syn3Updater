@@ -126,6 +126,9 @@
   <data name="chkCurrentSyncNav.Text" xml:space="preserve">
     <value>Navegación?</value>
   </data>
+  <data name="chkForceAutoinstall.Text" xml:space="preserve">
+    <value>Forzar Autoinstall?</value>
+  </data>
   <data name="grpDownload.Text" xml:space="preserve">
     <value>Opcional - Ubicación Descarga</value>
   </data>
@@ -142,10 +145,11 @@
     <value>SYN3 UPDATER - CONFIGURACION</value>
   </data>
   <data name="lblWarning1.Text" xml:space="preserve">
-    <value>Por favor ingrese su versión completa de SYNC por ejemplo 3.4.12345, puede encontrar ésta información en Configuración &gt; General &gt; Sobre Sync
-Asegúrese por favor de seleccionar la región correcta (click aquí para detalles)
+    <value>Por favor ingrese su versión completa de SYNC por ejemplo 3.4.12345, puede encontrarla en Configuración &gt; General &gt; Sobre Sync
+Asegúrese seleccionar la región correcta (click aquí para detalles)
 Finalmente especifique si tiene Navegación (Mapas) o no.
 
 NO INGRESAR LA INFORMACIÓN CORRECTA PUEDE INUTILIZAR SU APIM HASTA QUE DESCARGUE E INSTALE LOS ARCHIVOS CORRECTOS!</value>
+    <comment>Redacted to reduce footprint</comment>
   </data>
 </root>
