@@ -205,6 +205,7 @@ Wenn Sie dieses Kontrollkästchen aktivieren, stimmen Sie zu, dass Sie keinen An
 Möchten Sie den &quot;Autoinstall&quot; -Modus erzwingen? Dieser wird beim nächsten Start zurückgesetzt.
 
 </value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="LogCopying" xml:space="preserve">
     <value>Kopiere {0}</value>
