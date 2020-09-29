@@ -200,6 +200,7 @@ Syn3更新程序现在将直接打开到CyanLabs教程的相关部分，供您�
 选中此复选框，即表示您同意在启用此选项后不具备获得支持的资格！
 
 您是否要强制使用“自动安装”模式，该模式将在下次启动时重置？</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="LogCopying" xml:space="preserve">
     <value>复制{0}</value>
