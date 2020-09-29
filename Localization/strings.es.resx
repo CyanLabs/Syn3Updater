@@ -200,7 +200,8 @@ a
 Al seleccionar ésta opción acepta no ser elegible para soporte mientras ésta opción esté activada!
 
 Quiere forzar el modo &quot;autoinstall&quot;?, esto se volverá atrás en la próxima ejecución</value>
-    <comment>Changed &quot;Full Release&quot; by &quot;Release Completo&quot; since it seems there&apos;s enough space.</comment>
+    <comment>Changed &quot;Full Release&quot; by &quot;Release Completo&quot; since it seems there&apos;s enough space.
+Fuzzy</comment>
   </data>
   <data name="LogCopying" xml:space="preserve">
     <value>Copiando {0}</value>
