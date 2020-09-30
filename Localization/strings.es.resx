@@ -144,8 +144,8 @@ Unidad: {1}</value>
     <value>Región Actual y Región Nueva no son la misma, esto puede no funcionar. Desea continuar?.</value>
   </data>
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
-    <value>Desea reiniciar la aplicación para cambiar el lenguaje?
-Si no lo hace algunos elementos pueden no traducirse correctamente</value>
+    <value>Debe reiniciar la aplicación para cambiar lenguaje!</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
     <value>PROCESO COMPLETO!</value>
@@ -195,11 +195,13 @@ a
 {1}</value>
   </data>
   <data name="FrmSetup_ForceAutoInstall" xml:space="preserve">
-    <value>Esto anulará la detección del método más apropiado de instalación. Usar ésta configuración con un release completo con mapas casi seguro provocará problemas.
+    <value>Se anulará la detección del método de instalación más apropiado, usar ésto con un release completo con mapas casi con certeza causará problemas.
 
-Al seleccionar ésta opción acepta no ser elegible para soporte mientras ésta opción esté activada!
+Este parámetro no tendrá efecto si su versión es configurada en 3.0 o inferior.
 
-Quiere forzar el modo &quot;autoinstall&quot;?, esto se volverá atrás en la próxima ejecución</value>
+Este parámetro volverá a &quot;automático&quot; en cada reinicio.
+
+Al usar otro parámetro que no sea &quot;automático&quot; acepta no ser elegible para soporte mientras ésta opción esté activada!</value>
     <comment>Changed &quot;Full Release&quot; by &quot;Release Completo&quot; since it seems there&apos;s enough space.
 Fuzzy</comment>
   </data>
