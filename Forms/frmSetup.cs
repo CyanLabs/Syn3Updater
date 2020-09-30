@@ -124,7 +124,7 @@ namespace Syn3Updater.Forms
 
         private void cmbOverride_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (cmbOverride.SelectedIndex != 0) MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

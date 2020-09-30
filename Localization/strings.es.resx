@@ -203,36 +203,6 @@ Quiere forzar el modo &quot;autoinstall&quot;?, esto se volverá atrás en la pr
     <comment>Changed &quot;Full Release&quot; by &quot;Release Completo&quot; since it seems there&apos;s enough space.
 Fuzzy</comment>
   </data>
-  <data name="LogCopying" xml:space="preserve">
-    <value>Copiando {0}</value>
-  </data>
-  <data name="LogCreateAutoinstall" xml:space="preserve">
-    <value>Creando {0} autoinstall.lst</value>
-  </data>
-  <data name="LogCreateReformat" xml:space="preserve">
-    <value>Creando {0} reformat.lst</value>
-  </data>
-  <data name="LogDownloading" xml:space="preserve">
-    <value>Descargando {0}</value>
-  </data>
-  <data name="LogDownloadsCancelled" xml:space="preserve">
-    <value>Descargas canceladas!</value>
-  </data>
-  <data name="LogFailed3" xml:space="preserve">
-    <value>Error al copiar/validar {0} , reintentando #{1}</value>
-  </data>
-  <data name="LogFailedRetry" xml:space="preserve">
-    <value>Error al verificar {0} reintentando</value>
-  </data>
-  <data name="LogFormat" xml:space="preserve">
-    <value>Re-creando tabla de partición como MBR y formateando como ExFat en el USB seleccionado</value>
-  </data>
-  <data name="LogNoMD5" xml:space="preserve">
-    <value>No se encontró valor MD5 en la base de datos, comparando tamaños de archivos de {0}</value>
-  </data>
-  <data name="LogStart" xml:space="preserve">
-    <value>Iniciando proceso ({0} - {1} - {2})</value>
-  </data>
   <data name="Success" xml:space="preserve">
     <value>Exito</value>
   </data>

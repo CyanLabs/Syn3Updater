@@ -202,36 +202,6 @@ Syn3更新程序现在将直接打开到CyanLabs教程的相关部分，供您�
 您是否要强制使用“自动安装”模式，该模式将在下次启动时重置？</value>
     <comment>Fuzzy</comment>
   </data>
-  <data name="LogCopying" xml:space="preserve">
-    <value>复制{0}</value>
-  </data>
-  <data name="LogCreateAutoinstall" xml:space="preserve">
-    <value>创建{0} autoinstall.lst</value>
-  </data>
-  <data name="LogCreateReformat" xml:space="preserve">
-    <value>创建{0}重新格式化.lst</value>
-  </data>
-  <data name="LogDownloading" xml:space="preserve">
-    <value>正在下载{0}</value>
-  </data>
-  <data name="LogDownloadsCancelled" xml:space="preserve">
-    <value>下载已取消</value>
-  </data>
-  <data name="LogFailed3" xml:space="preserve">
-    <value>复制/验证{0}失败，重试＃{1}</value>
-  </data>
-  <data name="LogFailedRetry" xml:space="preserve">
-    <value>无法验证{0}重试</value>
-  </data>
-  <data name="LogFormat" xml:space="preserve">
-    <value>在选定的USB驱动器上将分区表重新创建为MBR并格式化为ExFat</value>
-  </data>
-  <data name="LogNoMD5" xml:space="preserve">
-    <value>在数据库中找不到MD5值，正在比较文件大小为{0}</value>
-  </data>
-  <data name="LogStart" xml:space="preserve">
-    <value>启动过程（{0}-{1}-{2}</value>
-  </data>
   <data name="Success" xml:space="preserve">
     <value>成功</value>
   </data>

@@ -207,36 +207,6 @@ Möchten Sie den &quot;Autoinstall&quot; -Modus erzwingen? Dieser wird beim näc
 </value>
     <comment>Fuzzy</comment>
   </data>
-  <data name="LogCopying" xml:space="preserve">
-    <value>Kopiere {0}</value>
-  </data>
-  <data name="LogCreateAutoinstall" xml:space="preserve">
-    <value>Erstelle {0} autoinstall.lst</value>
-  </data>
-  <data name="LogCreateReformat" xml:space="preserve">
-    <value>Erstelle {0} reformat.lst</value>
-  </data>
-  <data name="LogDownloading" xml:space="preserve">
-    <value>Lade herunter {0}</value>
-  </data>
-  <data name="LogDownloadsCancelled" xml:space="preserve">
-    <value>Downloads abgebrochen!</value>
-  </data>
-  <data name="LogFailed3" xml:space="preserve">
-    <value>Kopieren/Überprüfen fehlgeschlagen {0} , versuche erneut #{1}</value>
-  </data>
-  <data name="LogFailedRetry" xml:space="preserve">
-    <value>Überprüfung fehlgeschlagen {0} versuche erneut</value>
-  </data>
-  <data name="LogFormat" xml:space="preserve">
-    <value>Erstelle Partition als MBR und formatiere das ausgewählte USB-Laufwerk als ExFat.</value>
-  </data>
-  <data name="LogNoMD5" xml:space="preserve">
-    <value>In der Datenbank wurde kein MD5-Wert gefunden, der die Dateigröße von {0} vergleicht</value>
-  </data>
-  <data name="LogStart" xml:space="preserve">
-    <value>Starte Vorgang ({0} - {1} - {2})</value>
-  </data>
   <data name="Success" xml:space="preserve">
     <value>Erfolgreich</value>
   </data>

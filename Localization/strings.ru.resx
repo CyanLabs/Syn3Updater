@@ -202,36 +202,6 @@ Syn3 Updater теперь откроет вам непосредственно �
 Вы хотите установить режим принудительная &quot;автоустановка&quot;? Этот пункт будет сброшен при следующем запуске.</value>
     <comment>Fuzzy</comment>
   </data>
-  <data name="LogCopying" xml:space="preserve">
-    <value>Копирование {0}</value>
-  </data>
-  <data name="LogCreateAutoinstall" xml:space="preserve">
-    <value>Создание {0} autoinstall.lst</value>
-  </data>
-  <data name="LogCreateReformat" xml:space="preserve">
-    <value>Создание {0} reformat.lst</value>
-  </data>
-  <data name="LogDownloading" xml:space="preserve">
-    <value>Загрузка {0}</value>
-  </data>
-  <data name="LogDownloadsCancelled" xml:space="preserve">
-    <value>Загрузки отменены!</value>
-  </data>
-  <data name="LogFailed3" xml:space="preserve">
-    <value>Не удалось скопировать/проверить {0} , повторная попытка #{1}</value>
-  </data>
-  <data name="LogFailedRetry" xml:space="preserve">
-    <value>Не удалось проверить {0} пробуем еще раз.</value>
-  </data>
-  <data name="LogFormat" xml:space="preserve">
-    <value>Повторное создание таблицы разделов в виде MBR и форматирование в виде ExFat на выбранном USB-накопителе</value>
-  </data>
-  <data name="LogNoMD5" xml:space="preserve">
-    <value>Значения MD5 не найдено в базе данных, сравнение размеров файлов {0}</value>
-  </data>
-  <data name="LogStart" xml:space="preserve">
-    <value>Запуск процесса ({0} - {1} - {2})</value>
-  </data>
   <data name="Success" xml:space="preserve">
     <value>Успех</value>
   </data>

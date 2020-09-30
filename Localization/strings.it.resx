@@ -205,36 +205,6 @@ Selezionando questa casella accetti di non volere il supporto idoneo per l&apos;
 Desideri abilitare la modalità &quot;autoinstall&quot;, verrà ripristinata al prossimo avvio?</value>
     <comment>Fuzzy</comment>
   </data>
-  <data name="LogCopying" xml:space="preserve">
-    <value>Copia in corso {0}</value>
-  </data>
-  <data name="LogCreateAutoinstall" xml:space="preserve">
-    <value>Creazione file {0} autoinstall.lst</value>
-  </data>
-  <data name="LogCreateReformat" xml:space="preserve">
-    <value>Creazione file {0} reformat.lst</value>
-  </data>
-  <data name="LogDownloading" xml:space="preserve">
-    <value>Downloading {0}</value>
-  </data>
-  <data name="LogDownloadsCancelled" xml:space="preserve">
-    <value>Downloads cancellati</value>
-  </data>
-  <data name="LogFailed3" xml:space="preserve">
-    <value>Errore durante la copia/validazione {0} , Riprovare #{1}</value>
-  </data>
-  <data name="LogFailedRetry" xml:space="preserve">
-    <value>Errore durante la verifica {0} Riprovare</value>
-  </data>
-  <data name="LogFormat" xml:space="preserve">
-    <value>Creazione partizione MBR e formattazione in ExFat sul dispositivo USB selezionato.</value>
-  </data>
-  <data name="LogNoMD5" xml:space="preserve">
-    <value>Nessun valore MD5 trovato nel database, confronto dimensioni file di {0}</value>
-  </data>
-  <data name="LogStart" xml:space="preserve">
-    <value>Avvio processo ({0} - {1} - {2})</value>
-  </data>
   <data name="Success" xml:space="preserve">
     <value>Completo!</value>
   </data>
