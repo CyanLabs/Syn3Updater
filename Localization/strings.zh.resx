@@ -146,6 +146,7 @@
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
     <value>是否要重新启动应用程序以更改语言？
 如果不重新启动，某些元素可能无法正确转换</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
     <value>过程完成！</value>
