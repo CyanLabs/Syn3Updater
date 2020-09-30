@@ -255,6 +255,20 @@ namespace Syn3Updater.Forms
 
         private bool CancelledDownload()
         {
+            if ((_mode == "reformat" || _mode == "downgrade") && _canceldownload == false)
+            {
+                DialogResult dialogOpenwebsite = MessageBox.Show(string.Format(strings.FrmMain_CancelledDownload_MY20, _mode), strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dialogOpenwebsite == DialogResult.Yes)
+                {
+                    dialogOpenwebsite = MessageBox.Show(strings.FrmMain_CancelledDownload_MY20Final, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dialogOpenwebsite != DialogResult.Yes) _canceldownload = true;
+                }
+                else
+                {
+                    _canceldownload = true;
+                }
+            }
+
             //Check region is the same.
             if (cmbRegion.Text != Settings.Default.CurrentSyncRegion && _canceldownload == false)
             {
@@ -339,6 +353,7 @@ namespace Syn3Updater.Forms
             if (Settings.Default.CurrentSyncVersion < SyncReformatVersion)
             {
                 _mode = @"reformat";
+
             }
 
             //Above 3.2 and  Below 3.4.19274

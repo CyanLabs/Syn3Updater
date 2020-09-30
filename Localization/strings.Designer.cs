@@ -108,6 +108,34 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The automatically determined mode is {0}
+        ///
+        ///DO NOT CONTINUE IF YOU HAVE A CAR MANUFACTURED IN 2020!
+        ///
+        ///IF YOU CONTINUE AND HAVE A CAR MANUFACTURED IN 2020 YOU WILL BRICK YOUR SYNC!
+        ///
+        ///A workaround for this is coming in a future version of Syn3 Updater
+        ///
+        ///By clicking &quot;Yes&quot; you understand the above warning and confirm you do not have a car manufactured in 2020!.
+        /// </summary>
+        internal static string FrmMain_CancelledDownload_MY20 {
+            get {
+                return ResourceManager.GetString("FrmMain_CancelledDownload_MY20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FINAL WARNING!
+        ///
+        ///By clicking &quot;Yes&quot; you confirm you do not have a car manufactured in 2020!.
+        /// </summary>
+        internal static string FrmMain_CancelledDownload_MY20Final {
+            get {
+                return ResourceManager.GetString("FrmMain_CancelledDownload_MY20Final", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mode is reformat or downgrade and no apps package has been selected, this will result in a non booting system, ABORTING! No &quot;APPS&quot; package has been selected but Syn3 Updater has determined that a downgrade or reformat is required, this will result in a non booting system. Aborting!.
         /// </summary>
         internal static string FrmMain_CancelledDownload_NoApps {
