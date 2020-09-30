@@ -146,6 +146,7 @@
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
     <value>Хотите ли вы перезапустить приложение, чтобы сменить язык?
 Если этого не сделать, некоторые элементы могут быть переведены неправильно</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
     <value>ПРОЦЕСС ЗАВЕРШЕН!</value>
