@@ -108,7 +108,7 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The automatically determined mode is {0}
+        ///   Looks up a localized string similar to Syn3 Updater has set the install mode to {0}
         ///
         ///DO NOT CONTINUE IF YOU HAVE A CAR MANUFACTURED IN 2020!
         ///

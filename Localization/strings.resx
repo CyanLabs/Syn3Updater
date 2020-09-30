@@ -217,7 +217,7 @@ By changing this from "automatic" you agree to not be eligible for support while
     <value>Successfully Verified {0}</value>
   </data>
   <data name="FrmMain_CancelledDownload_MY20" xml:space="preserve">
-    <value>The automatically determined mode is {0}
+    <value>Syn3 Updater has set the install mode to {0}
 
 DO NOT CONTINUE IF YOU HAVE A CAR MANUFACTURED IN 2020!
 

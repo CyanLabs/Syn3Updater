@@ -217,4 +217,20 @@ By changing this from &quot;automatic&quot; you agree to not be eligible for sup
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
+  <data name="FrmMain_CancelledDownload_MY20" xml:space="preserve">
+    <value>Syn3 Updater has set the install mode to {0}
+
+DO NOT CONTINUE IF YOU HAVE A CAR MANUFACTURED IN 2020!
+
+IF YOU CONTINUE AND HAVE A CAR MANUFACTURED IN 2020 YOU WILL BRICK YOUR SYNC!
+
+A workaround for this is coming in a future version of Syn3 Updater
+
+By clicking "Yes" you understand the above warning and confirm you do not have a car manufactured in 2020!</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20Final" xml:space="preserve">
+    <value>FINAL WARNING!
+
+By clicking "Yes" you confirm you do not have a car manufactured in 2020!</value>
+  </data>
 </root>
