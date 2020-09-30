@@ -148,6 +148,7 @@ Laufwerk: {1}</value>
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
     <value>Möchtest du die Anwendung neu starten um die Sprache zu ändern?
 Wenn du dies nicht machst, dann könnten einige Elemente nicht richtig übersetzt werden.</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
     <value>Vorgang abgeschlossen!</value>
