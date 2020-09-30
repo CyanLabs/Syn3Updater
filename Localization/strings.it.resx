@@ -147,6 +147,7 @@ Non è stato selezionato alcun pacchetto &quot;APPS&quot; ma Syn3 Updater ha sta
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
     <value>Vuoi riavviare l&apos;applicazione per impostare il cambio lingua?
 Se non riavvii alcuni elementi potrebbero non essere tradotti correttamente.</value>
+    <comment>Fuzzy</comment>
   </data>
   <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
     <value>Processo Completato!</value>
