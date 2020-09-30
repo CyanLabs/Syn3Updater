@@ -199,7 +199,7 @@ to
   <data name="FrmSetup_ForceAutoInstall" xml:space="preserve">
     <value>This will override the detection of the most appropriate install mode using this with a full release with maps will almost certainly cause issues.
 
-This setting will have no effect if your current version is set to below 3.0 or below.
+This setting will have no effect if your current version is set to 3.0 or below.
 
 This setting will default back to &quot;automatic&quot; after each restart.
 
