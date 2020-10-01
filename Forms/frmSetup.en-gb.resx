@@ -149,4 +149,26 @@ Finally specify if you have Navigation (Maps) or not.
 FAILURE TO ENTER THE CORRECT INFORMATION MAY RENDER YOUR APIM UNUSABLE
 UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value>Advanced Options</value>
+  </data>
+  <data name="btnPurchaseActivate.Text" xml:space="preserve">
+    <value>Activate
+</value>
+  </data>
+  <data name="chkAllReleases.Text" xml:space="preserve">
+    <value>Show All Releases</value>
+  </data>
+  <data name="grpPurchase.Text" xml:space="preserve">
+    <value>Paid Options</value>
+  </data>
+  <data name="lblForceMode.Text" xml:space="preserve">
+    <value>Force Install Mode:</value>
+  </data>
+  <data name="lblPurchaseInfo.Text" xml:space="preserve">
+    <value>Enter your license key below to gain access to any custom packages you have purchased!</value>
+  </data>
+  <data name="lblReleaseKey.Text" xml:space="preserve">
+    <value>License Key:</value>
+  </data>
 </root>

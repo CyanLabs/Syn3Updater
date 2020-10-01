@@ -50,12 +50,18 @@
             this.chkAllReleases = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbOverride = new System.Windows.Forms.ComboBox();
+            this.lblReleaseKey = new System.Windows.Forms.Label();
+            this.grpPurchase = new System.Windows.Forms.GroupBox();
+            this.lblPurchaseInfo = new System.Windows.Forms.LinkLabel();
+            this.btnPurchaseActivate = new System.Windows.Forms.Button();
+            this.txtReleaseKey = new System.Windows.Forms.TextBox();
             this.grpDownload.SuspendLayout();
             this.grpExistingDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).BeginInit();
             this.panelTitleBar.SuspendLayout();
             this.grpAdvanced.SuspendLayout();
+            this.grpPurchase.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSetupContinue
@@ -248,8 +254,8 @@
             // 
             // label1
             // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
             resources.ApplyResources(this.label1, "label1");
+            this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Name = "label1";
             // 
             // cmbOverride
@@ -269,11 +275,58 @@
             this.cmbOverride.Text = global::Syn3Updater.Properties.Settings.Default.ForcedInstallMode;
             this.cmbOverride.SelectedIndexChanged += new System.EventHandler(this.cmbOverride_SelectedIndexChanged);
             // 
+            // lblReleaseKey
+            // 
+            resources.ApplyResources(this.lblReleaseKey, "lblReleaseKey");
+            this.lblReleaseKey.Name = "lblReleaseKey";
+            // 
+            // grpPurchase
+            // 
+            this.grpPurchase.Controls.Add(this.lblPurchaseInfo);
+            this.grpPurchase.Controls.Add(this.btnPurchaseActivate);
+            this.grpPurchase.Controls.Add(this.txtReleaseKey);
+            this.grpPurchase.Controls.Add(this.lblReleaseKey);
+            this.grpPurchase.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.grpPurchase, "grpPurchase");
+            this.grpPurchase.Name = "grpPurchase";
+            this.grpPurchase.TabStop = false;
+            // 
+            // lblPurchaseInfo
+            // 
+            this.lblPurchaseInfo.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            this.lblPurchaseInfo.BackColor = System.Drawing.Color.Transparent;
+            this.lblPurchaseInfo.DisabledLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            resources.ApplyResources(this.lblPurchaseInfo, "lblPurchaseInfo");
+            this.lblPurchaseInfo.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.lblPurchaseInfo.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            this.lblPurchaseInfo.Name = "lblPurchaseInfo";
+            this.lblPurchaseInfo.VisitedLinkColor = System.Drawing.Color.Silver;
+            // 
+            // btnPurchaseActivate
+            // 
+            resources.ApplyResources(this.btnPurchaseActivate, "btnPurchaseActivate");
+            this.btnPurchaseActivate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            this.btnPurchaseActivate.FlatAppearance.BorderSize = 0;
+            this.btnPurchaseActivate.Name = "btnPurchaseActivate";
+            this.btnPurchaseActivate.UseVisualStyleBackColor = false;
+            // 
+            // txtReleaseKey
+            // 
+            this.txtReleaseKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
+            this.txtReleaseKey.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtReleaseKey.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Syn3Updater.Properties.Settings.Default, "LicenseKey", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.txtReleaseKey.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.txtReleaseKey, "txtReleaseKey");
+            this.txtReleaseKey.Name = "txtReleaseKey";
+            this.txtReleaseKey.ReadOnly = true;
+            this.txtReleaseKey.Text = global::Syn3Updater.Properties.Settings.Default.LicenseKey;
+            // 
             // FrmSetup
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(46)))));
+            this.Controls.Add(this.grpPurchase);
             this.Controls.Add(this.grpAdvanced);
             this.Controls.Add(this.lblWarning1);
             this.Controls.Add(this.grpDownload);
@@ -293,6 +346,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).EndInit();
             this.panelTitleBar.ResumeLayout(false);
             this.grpAdvanced.ResumeLayout(false);
+            this.grpAdvanced.PerformLayout();
+            this.grpPurchase.ResumeLayout(false);
+            this.grpPurchase.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -319,5 +375,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbOverride;
         private System.Windows.Forms.CheckBox chkAllReleases;
+        private System.Windows.Forms.TextBox txtReleaseKey;
+        private System.Windows.Forms.Label lblReleaseKey;
+        private System.Windows.Forms.GroupBox grpPurchase;
+        private System.Windows.Forms.LinkLabel lblPurchaseInfo;
+        private System.Windows.Forms.Button btnPurchaseActivate;
     }
 }
