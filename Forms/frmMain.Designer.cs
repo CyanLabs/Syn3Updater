@@ -96,7 +96,6 @@
             // 
             // panelTitleBar
             // 
-            resources.ApplyResources(this.panelTitleBar, "panelTitleBar");
             this.panelTitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.panelTitleBar.Controls.Add(this.lblVersion);
             this.panelTitleBar.Controls.Add(this.btnHelp);
@@ -104,6 +103,7 @@
             this.panelTitleBar.Controls.Add(this.btnLogo);
             this.panelTitleBar.Controls.Add(this.btnClose);
             this.panelTitleBar.Controls.Add(this.lblTitle);
+            resources.ApplyResources(this.panelTitleBar, "panelTitleBar");
             this.panelTitleBar.Name = "panelTitleBar";
             this.panelTitleBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
@@ -134,10 +134,10 @@
             // 
             // btnLogo
             // 
-            resources.ApplyResources(this.btnLogo, "btnLogo");
             this.btnLogo.BackColor = System.Drawing.Color.Transparent;
             this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLogo.Image = global::Syn3Updater.Properties.Resources.logo;
+            resources.ApplyResources(this.btnLogo, "btnLogo");
             this.btnLogo.Name = "btnLogo";
             this.btnLogo.TabStop = false;
             this.btnLogo.Click += new System.EventHandler(this.btnLogo_Click);
@@ -154,27 +154,27 @@
             // 
             // grpUSB
             // 
-            resources.ApplyResources(this.grpUSB, "grpUSB");
             this.grpUSB.Controls.Add(this.label1);
             this.grpUSB.Controls.Add(this.cmbDriveList);
             this.grpUSB.Controls.Add(this.btnRefreshUSB);
             this.grpUSB.Controls.Add(this.lblDriveInfo);
             this.grpUSB.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.grpUSB, "grpUSB");
             this.grpUSB.Name = "grpUSB";
             this.grpUSB.TabStop = false;
             // 
             // label1
             // 
-            resources.ApplyResources(this.label1, "label1");
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
             // cmbDriveList
             // 
-            resources.ApplyResources(this.cmbDriveList, "cmbDriveList");
             this.cmbDriveList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.cmbDriveList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cmbDriveList, "cmbDriveList");
             this.cmbDriveList.ForeColor = System.Drawing.Color.White;
             this.cmbDriveList.FormattingEnabled = true;
             this.cmbDriveList.Name = "cmbDriveList";
@@ -182,23 +182,22 @@
             // 
             // btnRefreshUSB
             // 
-            resources.ApplyResources(this.btnRefreshUSB, "btnRefreshUSB");
             this.btnRefreshUSB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.btnRefreshUSB.FlatAppearance.BorderSize = 0;
+            resources.ApplyResources(this.btnRefreshUSB, "btnRefreshUSB");
             this.btnRefreshUSB.Name = "btnRefreshUSB";
             this.btnRefreshUSB.UseVisualStyleBackColor = false;
             this.btnRefreshUSB.Click += new System.EventHandler(this.btnRefreshUSB_Click);
             // 
             // lblDriveInfo
             // 
-            resources.ApplyResources(this.lblDriveInfo, "lblDriveInfo");
             this.lblDriveInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.lblDriveInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblDriveInfo, "lblDriveInfo");
             this.lblDriveInfo.Name = "lblDriveInfo";
             // 
             // grpNewVersion
             // 
-            resources.ApplyResources(this.grpNewVersion, "grpNewVersion");
             this.grpNewVersion.Controls.Add(this.txtReleaseNotes);
             this.grpNewVersion.Controls.Add(this.lblMapVersion1);
             this.grpNewVersion.Controls.Add(this.cmbMapVersion);
@@ -209,15 +208,16 @@
             this.grpNewVersion.Controls.Add(this.lblRegion);
             this.grpNewVersion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.grpNewVersion.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.grpNewVersion, "grpNewVersion");
             this.grpNewVersion.Name = "grpNewVersion";
             this.grpNewVersion.TabStop = false;
             // 
             // txtReleaseNotes
             // 
-            resources.ApplyResources(this.txtReleaseNotes, "txtReleaseNotes");
             this.txtReleaseNotes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.txtReleaseNotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtReleaseNotes.ForeColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.txtReleaseNotes, "txtReleaseNotes");
             this.txtReleaseNotes.Name = "txtReleaseNotes";
             this.txtReleaseNotes.ReadOnly = true;
             // 
@@ -228,9 +228,9 @@
             // 
             // cmbMapVersion
             // 
-            resources.ApplyResources(this.cmbMapVersion, "cmbMapVersion");
             this.cmbMapVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.cmbMapVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cmbMapVersion, "cmbMapVersion");
             this.cmbMapVersion.ForeColor = System.Drawing.Color.White;
             this.cmbMapVersion.FormattingEnabled = true;
             this.cmbMapVersion.Name = "cmbMapVersion";
@@ -238,9 +238,9 @@
             // 
             // cmbRelease
             // 
-            resources.ApplyResources(this.cmbRelease, "cmbRelease");
             this.cmbRelease.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.cmbRelease.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cmbRelease, "cmbRelease");
             this.cmbRelease.ForeColor = System.Drawing.Color.White;
             this.cmbRelease.FormattingEnabled = true;
             this.cmbRelease.Name = "cmbRelease";
@@ -248,9 +248,9 @@
             // 
             // cmbRegion
             // 
-            resources.ApplyResources(this.cmbRegion, "cmbRegion");
             this.cmbRegion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.cmbRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.cmbRegion, "cmbRegion");
             this.cmbRegion.ForeColor = System.Drawing.Color.White;
             this.cmbRegion.FormattingEnabled = true;
             this.cmbRegion.Items.AddRange(new object[] {
@@ -269,15 +269,15 @@
             // 
             // lblRegionInfo
             // 
-            resources.ApplyResources(this.lblRegionInfo, "lblRegionInfo");
             this.lblRegionInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            resources.ApplyResources(this.lblRegionInfo, "lblRegionInfo");
             this.lblRegionInfo.Name = "lblRegionInfo";
             this.lblRegionInfo.Click += new System.EventHandler(this.lblRegionInfo_Click);
             // 
             // lblRegion
             // 
-            resources.ApplyResources(this.lblRegion, "lblRegion");
             this.lblRegion.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.lblRegion, "lblRegion");
             this.lblRegion.Name = "lblRegion";
             // 
             // btnContinue
@@ -300,9 +300,9 @@
             // 
             // lblConfiguration
             // 
-            resources.ApplyResources(this.lblConfiguration, "lblConfiguration");
             this.lblConfiguration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.lblConfiguration.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblConfiguration, "lblConfiguration");
             this.lblConfiguration.Name = "lblConfiguration";
             // 
             // tabControl1
@@ -316,12 +316,12 @@
             // 
             // tabAutoInstall
             // 
-            resources.ApplyResources(this.tabAutoInstall, "tabAutoInstall");
             this.tabAutoInstall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.tabAutoInstall.Controls.Add(this.lblMode1);
             this.tabAutoInstall.Controls.Add(this.btnAutoinstall);
             this.tabAutoInstall.Controls.Add(this.lblManualWarning);
             this.tabAutoInstall.Controls.Add(this.lstIVSU);
+            resources.ApplyResources(this.tabAutoInstall, "tabAutoInstall");
             this.tabAutoInstall.Name = "tabAutoInstall";
             // 
             // lblMode1
@@ -341,14 +341,13 @@
             // 
             // lblManualWarning
             // 
-            resources.ApplyResources(this.lblManualWarning, "lblManualWarning");
             this.lblManualWarning.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(46)))));
             this.lblManualWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.lblManualWarning, "lblManualWarning");
             this.lblManualWarning.Name = "lblManualWarning";
             // 
             // lstIVSU
             // 
-            resources.ApplyResources(this.lstIVSU, "lstIVSU");
             this.lstIVSU.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.lstIVSU.CheckBoxes = true;
             this.lstIVSU.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -357,6 +356,7 @@
             this.lvIVSUsVersion,
             this.lvIVSUsURL,
             this.lvIVSUsMD5});
+            resources.ApplyResources(this.lstIVSU, "lstIVSU");
             this.lstIVSU.ForeColor = System.Drawing.Color.White;
             this.lstIVSU.FullRowSelect = true;
             this.lstIVSU.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -387,7 +387,6 @@
             // 
             // tabStatus
             // 
-            resources.ApplyResources(this.tabStatus, "tabStatus");
             this.tabStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.tabStatus.Controls.Add(this.lblMode2);
             this.tabStatus.Controls.Add(this.btnShowLog);
@@ -400,6 +399,7 @@
             this.tabStatus.Controls.Add(this.lblFileName);
             this.tabStatus.Controls.Add(this.lblDownloadQueue);
             this.tabStatus.Controls.Add(this.lblFilesRemaining);
+            resources.ApplyResources(this.tabStatus, "tabStatus");
             this.tabStatus.Name = "tabStatus";
             // 
             // lblMode2
@@ -418,23 +418,23 @@
             // 
             // barTotalDownloadProgress
             // 
-            resources.ApplyResources(this.barTotalDownloadProgress, "barTotalDownloadProgress");
             this.barTotalDownloadProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.barTotalDownloadProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            resources.ApplyResources(this.barTotalDownloadProgress, "barTotalDownloadProgress");
             this.barTotalDownloadProgress.Name = "barTotalDownloadProgress";
             // 
             // barDownloadProgress
             // 
-            resources.ApplyResources(this.barDownloadProgress, "barDownloadProgress");
             this.barDownloadProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
             this.barDownloadProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            resources.ApplyResources(this.barDownloadProgress, "barDownloadProgress");
             this.barDownloadProgress.Name = "barDownloadProgress";
             // 
             // btnCancel
             // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.BackColor = System.Drawing.Color.Maroon;
             this.btnCancel.FlatAppearance.BorderSize = 0;
+            resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -446,11 +446,11 @@
             // 
             // lstDownloadQueue
             // 
-            resources.ApplyResources(this.lstDownloadQueue, "lstDownloadQueue");
             this.lstDownloadQueue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
             this.lstDownloadQueue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lstDownloadQueue.ForeColor = System.Drawing.Color.White;
             this.lstDownloadQueue.FormattingEnabled = true;
+            resources.ApplyResources(this.lstDownloadQueue, "lstDownloadQueue");
             this.lstDownloadQueue.Name = "lstDownloadQueue";
             this.lstDownloadQueue.SelectionMode = System.Windows.Forms.SelectionMode.None;
             // 

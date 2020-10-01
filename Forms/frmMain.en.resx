@@ -150,12 +150,6 @@
         RU5ErkJggg==
 </value>
   </data>
-  <data name="lblMode1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 13</value>
-  </data>
-  <data name="lblMode2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 13</value>
-  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAYAAAAAAAEAIABPfgAAZgAAAICAAAABACAAKAgBALV+AABAQAAAAQAgAChCAADdhgEAMDAAAAEA
@@ -2360,9 +2354,5 @@
         2GxnB5ZybQgwAAAAAAAAAAAAAAAAAAAAAPAPAADAAwAAgAEAAIABAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAAAAAAAAAIABAACAAQAAwAMAAPAPAAA=
 </value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
 </root>
