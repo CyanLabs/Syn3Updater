@@ -215,4 +215,13 @@ Syn3更新程序现在将直接打开到CyanLabs教程的相关部分，供您�
   <data name="Warning" xml:space="preserve">
     <value>警告</value>
   </data>
+  <data name="FrmMain_CancelledDownload_MY20" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20Final" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="FrmSetup_LicenseKeyActivated" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
