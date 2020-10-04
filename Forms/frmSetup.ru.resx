@@ -150,4 +150,25 @@
 ПОКА ВЫ НЕ СКАЧАЕТЕ И НЕ УСТАНОВИТЕ ПРАВИЛЬНЫЕ ФАЙЛЫ!</value>
     <comment>Fuzzy</comment>
   </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value>Дополнительные настройки</value>
+  </data>
+  <data name="btnPurchaseActivate.Text" xml:space="preserve">
+    <value>Активировать</value>
+  </data>
+  <data name="chkAllReleases.Text" xml:space="preserve">
+    <value>Показать все выпуски</value>
+  </data>
+  <data name="grpPurchase.Text" xml:space="preserve">
+    <value>Платные опции</value>
+  </data>
+  <data name="lblForceMode.Text" xml:space="preserve">
+    <value>Режим принудительной установки:</value>
+  </data>
+  <data name="lblPurchaseInfo.Text" xml:space="preserve">
+    <value>Введите свой лицензионный ключ ниже, чтобы получить доступ к пользовательским пакетам, которые вы приобрели!</value>
+  </data>
+  <data name="lblReleaseKey.Text" xml:space="preserve">
+    <value>Лицензионный ключ:</value>
+  </data>
 </root>
