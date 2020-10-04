@@ -62,6 +62,7 @@
             this.lvIVSUsType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvIVSUsName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvIVSUsVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvIVSUsNotes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvIVSUsURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lvIVSUsMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabStatus = new System.Windows.Forms.TabPage();
@@ -354,6 +355,7 @@
             this.lvIVSUsType,
             this.lvIVSUsName,
             this.lvIVSUsVersion,
+            this.lvIVSUsNotes,
             this.lvIVSUsURL,
             this.lvIVSUsMD5});
             resources.ApplyResources(this.lstIVSU, "lstIVSU");
@@ -376,6 +378,10 @@
             // lvIVSUsVersion
             // 
             resources.ApplyResources(this.lvIVSUsVersion, "lvIVSUsVersion");
+            // 
+            // lvIVSUsNotes
+            // 
+            resources.ApplyResources(this.lvIVSUsNotes, "lvIVSUsNotes");
             // 
             // lvIVSUsURL
             // 
@@ -557,5 +563,6 @@
         private System.Windows.Forms.Button btnShowLog;
         private System.Windows.Forms.Label lblMode1;
         private System.Windows.Forms.Label lblMode2;
+        private System.Windows.Forms.ColumnHeader lvIVSUsNotes;
     }
 }

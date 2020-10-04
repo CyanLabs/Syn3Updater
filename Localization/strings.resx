@@ -118,7 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="FrmMain_FrmMain_Shown_Extra_BackendError" xml:space="preserve">
-    <value>There was an issue trying to retrieve the list of files from the online server, please check your internet connection and make sure the application has internet access</value>
+    <value>There was an issue trying to retrieve the list of files from the online server.
+
+Check your internet connection and validate that the application has internet access and that you are running the latest version of Syn3 Updater.
+
+If the issue persists contact CyanLabs for assistance!
+
+Syn3 Updater will now close!</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
@@ -231,5 +237,13 @@ By clicking "Yes" you understand the above warning and confirm you do not have a
     <value>FINAL WARNING!
 
 By clicking "Yes" you confirm you do not have a car manufactured in 2020!</value>
+  </data>
+  <data name="FrmSetup_LicenseKeyActivated" xml:space="preserve">
+    <value>If you have entered a valid licence key you should now see your purchased packages in the dropdowns on the main page.
+
+If you do not see the new packages please check your license key is correct and if needed contact CyanLabs</value>
+  </data>
+  <data name="FrmSetip_LicenseKeyActivated" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -508,7 +508,7 @@ EU APIM's will require atleast 32GB</value>
     <value>4</value>
   </data>
   <data name="txtReleaseNotes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>252, 21</value>
+    <value>294, 21</value>
   </data>
   <data name="txtReleaseNotes.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -517,7 +517,7 @@ EU APIM's will require atleast 32GB</value>
     <value>Vertical</value>
   </data>
   <data name="txtReleaseNotes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>327, 87</value>
+    <value>285, 87</value>
   </data>
   <data name="txtReleaseNotes.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -574,7 +574,7 @@ EU APIM's will require atleast 32GB</value>
     <value>92, 87</value>
   </data>
   <data name="cmbMapVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 21</value>
+    <value>196, 21</value>
   </data>
   <data name="cmbMapVersion.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -601,7 +601,7 @@ EU APIM's will require atleast 32GB</value>
     <value>92, 54</value>
   </data>
   <data name="cmbRelease.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 21</value>
+    <value>196, 21</value>
   </data>
   <data name="cmbRelease.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -640,7 +640,7 @@ EU APIM's will require atleast 32GB</value>
     <value>92, 21</value>
   </data>
   <data name="cmbRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 21</value>
+    <value>173, 21</value>
   </data>
   <data name="cmbRegion.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -697,7 +697,7 @@ EU APIM's will require atleast 32GB</value>
     <value>NoControl</value>
   </data>
   <data name="lblRegionInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>221, 16</value>
+    <value>271, 16</value>
   </data>
   <data name="lblRegionInfo.Size" type="System.Drawing.Size, System.Drawing">
     <value>17, 30</value>
@@ -986,25 +986,31 @@ Download Path: </value>
     <value>Type</value>
   </data>
   <data name="lvIVSUsType.Width" type="System.Int32, mscorlib">
-    <value>150</value>
+    <value>100</value>
   </data>
   <data name="lvIVSUsName.Text" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="lvIVSUsName.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Center</value>
-  </data>
   <data name="lvIVSUsName.Width" type="System.Int32, mscorlib">
-    <value>230</value>
+    <value>110</value>
   </data>
   <data name="lvIVSUsVersion.Text" xml:space="preserve">
     <value>Version</value>
   </data>
-  <data name="lvIVSUsVersion.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Right</value>
-  </data>
   <data name="lvIVSUsVersion.Width" type="System.Int32, mscorlib">
-    <value>175</value>
+    <value>110</value>
+  </data>
+  <data name="lvIVSUsNotes.DisplayIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="lvIVSUsNotes.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="lvIVSUsNotes.Width" type="System.Int32, mscorlib">
+    <value>230</value>
+  </data>
+  <data name="lvIVSUsURL.DisplayIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="lvIVSUsURL.Text" xml:space="preserve">
     <value>URL</value>
@@ -1012,11 +1018,14 @@ Download Path: </value>
   <data name="lvIVSUsURL.Width" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
+  <data name="lvIVSUsMD5.DisplayIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
   <data name="lvIVSUsMD5.Width" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="lstIVSU.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 12pt</value>
+    <value>Segoe UI, 8.25pt</value>
   </data>
   <data name="lstIVSU.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -3659,6 +3668,12 @@ Download Path: </value>
     <value>lvIVSUsVersion</value>
   </data>
   <data name="&gt;&gt;lvIVSUsVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lvIVSUsNotes.Name" xml:space="preserve">
+    <value>lvIVSUsNotes</value>
+  </data>
+  <data name="&gt;&gt;lvIVSUsNotes.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lvIVSUsURL.Name" xml:space="preserve">

@@ -11,6 +11,8 @@ namespace Syn3Updater.Helpers
         public string md5 { get; set; }
         public string url { get; set; }
 
+        public string notes { get; set; }
+
         public string version { get; set; }
     }
 }

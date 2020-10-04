@@ -48,7 +48,7 @@
             this.folderDownloads = new System.Windows.Forms.FolderBrowserDialog();
             this.grpAdvanced = new System.Windows.Forms.GroupBox();
             this.chkAllReleases = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblForceMode = new System.Windows.Forms.Label();
             this.cmbOverride = new System.Windows.Forms.ComboBox();
             this.lblReleaseKey = new System.Windows.Forms.Label();
             this.grpPurchase = new System.Windows.Forms.GroupBox();
@@ -237,7 +237,7 @@
             // grpAdvanced
             // 
             this.grpAdvanced.Controls.Add(this.chkAllReleases);
-            this.grpAdvanced.Controls.Add(this.label1);
+            this.grpAdvanced.Controls.Add(this.lblForceMode);
             this.grpAdvanced.Controls.Add(this.cmbOverride);
             this.grpAdvanced.ForeColor = System.Drawing.Color.White;
             resources.ApplyResources(this.grpAdvanced, "grpAdvanced");
@@ -252,11 +252,11 @@
             this.chkAllReleases.Name = "chkAllReleases";
             this.chkAllReleases.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // lblForceMode
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.lblForceMode, "lblForceMode");
+            this.lblForceMode.BackColor = System.Drawing.Color.Transparent;
+            this.lblForceMode.Name = "lblForceMode";
             // 
             // cmbOverride
             // 
@@ -309,6 +309,7 @@
             this.btnPurchaseActivate.FlatAppearance.BorderSize = 0;
             this.btnPurchaseActivate.Name = "btnPurchaseActivate";
             this.btnPurchaseActivate.UseVisualStyleBackColor = false;
+            this.btnPurchaseActivate.Click += new System.EventHandler(this.btnPurchaseActivate_Click);
             // 
             // txtReleaseKey
             // 
@@ -318,8 +319,8 @@
             this.txtReleaseKey.ForeColor = System.Drawing.Color.White;
             resources.ApplyResources(this.txtReleaseKey, "txtReleaseKey");
             this.txtReleaseKey.Name = "txtReleaseKey";
-            this.txtReleaseKey.ReadOnly = true;
             this.txtReleaseKey.Text = global::Syn3Updater.Properties.Settings.Default.LicenseKey;
+            this.txtReleaseKey.TextChanged += new System.EventHandler(this.txtReleaseKey_TextChanged);
             // 
             // FrmSetup
             // 
@@ -372,7 +373,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderDownloads;
         private System.Windows.Forms.ComboBox cmbLocale;
         private System.Windows.Forms.GroupBox grpAdvanced;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblForceMode;
         private System.Windows.Forms.ComboBox cmbOverride;
         private System.Windows.Forms.CheckBox chkAllReleases;
         private System.Windows.Forms.TextBox txtReleaseKey;

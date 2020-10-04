@@ -259,7 +259,13 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was an issue trying to retrieve the list of files from the online server, please check your internet connection and make sure the application has internet access.
+        ///   Looks up a localized string similar to There was an issue trying to retrieve the list of files from the online server.
+        ///
+        ///Check your internet connection and validate that the application has internet access and that you are running the latest version of Syn3 Updater.
+        ///
+        ///If the issue persists contact CyanLabs for assistance!
+        ///
+        ///Syn3 Updater will now close!.
         /// </summary>
         internal static string FrmMain_FrmMain_Shown_Extra_BackendError {
             get {
@@ -287,6 +293,15 @@ namespace Syn3Updater.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FrmSetip_LicenseKeyActivated {
+            get {
+                return ResourceManager.GetString("FrmSetip_LicenseKeyActivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Would you like to move existing files from
         ///{0}
         ///to
@@ -310,6 +325,17 @@ namespace Syn3Updater.Localization {
         internal static string FrmSetup_ForceAutoInstall {
             get {
                 return ResourceManager.GetString("FrmSetup_ForceAutoInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you have entered a valid licence key you should now see your purchased packages in the dropdowns on the main page.
+        ///
+        ///If you do not see the new packages please check your license key is correct and if needed contact CyanLabs.
+        /// </summary>
+        internal static string FrmSetup_LicenseKeyActivated {
+            get {
+                return ResourceManager.GetString("FrmSetup_LicenseKeyActivated", resourceCulture);
             }
         }
         

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
@@ -38,11 +39,12 @@ namespace Syn3Updater.Forms
         #region Form Variable Declarations
         private const string ApiBase = "https://api.cyanlabs.net/fordsyncdownloader/";
         private const string ApiAppReleasesConst = ApiBase + "items/releases?sort=-name&limit=-1&[published]";
-        private const string ApiMapReleasesConst = ApiBase + "items/map_releases?sort=-name&limit=-1&[published]&filter[regions]=";
+        private const string ApiMapReleasesConst = ApiBase + "items/map_releases?sort=-name&limit=-1&[regionplaceholder]&[published]";
         private string _apiAppReleases;
         private string _apiMapReleases;
         private const string ApiAppReleaseSingle = ApiBase + "items/releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         private const string ApiMapReleaseSingle = ApiBase + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
+        private const string ApiToken = "hjuBpZko7BUAFeA2NnJsuhO6";
 
         private const string ReformatToolUrl = "https://cyanlabs.net/api/Syn3Updater/reformat.php";
         private const string SyncReformatTool = "1u5t-14g386-cb.tar.gz";
@@ -123,36 +125,9 @@ namespace Syn3Updater.Forms
                         break;
                 }
 
-            if (Settings.Default.ShowAllReleases)
-            {
-                _apiMapReleases = ApiMapReleasesConst.Replace("[published]", "");
-                _apiAppReleases = ApiAppReleasesConst.Replace("[published]", "");
-            }
-            else
-            {
-                _apiMapReleases = ApiMapReleasesConst.Replace("[published]", "filter[status]=published");
-                _apiAppReleases = ApiAppReleasesConst.Replace("[published]", "filter[status]=published");
-            }
-
-            try
-            {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-                AutoUpdater.Start("https://cyanlabs.net/api/latest.php?product=" + Application.ProductName);
-
-                HttpResponseMessage response = Client.GetAsync(_apiAppReleases).Result;
-                _stringReleasesJson = response.Content.ReadAsStringAsync().Result;
-
-                cmbDriveList.DisplayMember = "Value";
-                cmbDriveList.ValueMember = "Key";
-                RefreshUsb();
-            }
-            catch (WebException webex)
-            {
-                MessageBox.Show(strings.FrmMain_FrmMain_Shown_Extra_BackendError + Environment.NewLine + webex.Message, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1);
-            }
+            cmbDriveList.DisplayMember = "Value";
+            cmbDriveList.ValueMember = "Key";
+            RefreshUsb();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -230,6 +205,36 @@ namespace Syn3Updater.Forms
 
         private void cmbRegion_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (Settings.Default.ShowAllReleases)
+            {
+                _apiMapReleases = ApiMapReleasesConst.Replace("[published]", $"filter[key][in]=public,{Settings.Default.LicenseKey}");
+                _apiAppReleases = ApiAppReleasesConst.Replace("[published]", $"filter[key][in]=public,{Settings.Default.LicenseKey}");
+
+                //https://api.cyanlabs.net/fordsyncdownloader/items/map_releases?sort=-name&limit=-1&filter[regions]=ANZ&filter[compatibility][contains]=3.4&filter[status][in]=published,private&filter[key][in]=admin@cyanlabs.net,public
+            }
+            else
+            {
+                _apiMapReleases = ApiMapReleasesConst.Replace("[published]", $"filter[status][in]=published,private&filter[key][in]=public,{Settings.Default.LicenseKey}");
+                _apiAppReleases = ApiAppReleasesConst.Replace("[published]", $"filter[status][in]=published,private&filter[key][in]=public,{Settings.Default.LicenseKey}");
+            }
+
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                AutoUpdater.Start("https://cyanlabs.net/api/latest.php?product=" + Application.ProductName);
+
+                HttpResponseMessage response = Client.GetAsync(_apiAppReleases).Result;
+                _stringReleasesJson = response.Content.ReadAsStringAsync().Result;
+            }
+            catch (WebException webex)
+            {
+                MessageBox.Show(strings.FrmMain_FrmMain_Shown_Extra_BackendError + Environment.NewLine + webex.Message, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            }
+
+
             cmbRelease.Items.Clear();
             cmbMapVersion.Items.Clear();
             if (!Settings.Default.CurrentSyncNav)
@@ -247,9 +252,18 @@ namespace Syn3Updater.Forms
             }
 
             _jsonReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringReleasesJson);
-            foreach (Data item in _jsonReleases.data)
-                if (item.regions.Contains(cmbRegion.Text))
-                    cmbRelease.Items.Add(item.name);
+            try
+            {
+                foreach (Data item in _jsonReleases.data)
+                    if (item.regions.Contains(cmbRegion.Text))
+                        cmbRelease.Items.Add(item.name);
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show(strings.FrmMain_FrmMain_Shown_Extra_BackendError, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+            
             if (cmbRegion.SelectedIndex >= 0) cmbRelease.Enabled = true;
         }
 
@@ -324,6 +338,7 @@ namespace Syn3Updater.Forms
                 _canceldownload = false;
                 _dicIvsus.Clear();
                 lstDownloadQueue.Items.Clear();
+                btnShowConfiguration.Enabled = false;
             });
         }
 
@@ -338,6 +353,7 @@ namespace Syn3Updater.Forms
                 _tokenSource.Dispose();
                 _tokenSource = new CancellationTokenSource();
                 tabControl1.SelectedTab = tabStatus;
+                btnShowConfiguration.Enabled = false;
             });
             btnContinue.Enabled = false;
             grpNewVersion.Enabled = false;
@@ -446,13 +462,13 @@ namespace Syn3Updater.Forms
             foreach (Ivsus item in jsonIvsUs.data[0].ivsus)
                 if (item.ivsu.regions.Contains(@"ALL") || item.ivsu.regions.Contains(cmbRegion.Text))
                     lstIVSU.Items.Add(new ListViewItem(new[]
-                        {item.ivsu.type, item.ivsu.name, item.ivsu.version, item.ivsu.url, item.ivsu.md5}));
+                        {item.ivsu.type, item.ivsu.name, item.ivsu.version,item.ivsu.notes,item.ivsu.url, item.ivsu.md5}));
             
             if (cmbMapVersion.Text != @"No Maps" && cmbMapVersion.Text != @"Non Nav APIM" && cmbMapVersion.Text != @"Keep Existing Maps")
                 foreach (Ivsus item in jsonMapIvsUs.data[0].ivsus)
                     if (item.map_ivsu.regions.Contains(@"ALL") || item.map_ivsu.regions.Contains(cmbRegion.Text))
                         lstIVSU.Items.Add(new ListViewItem(new[]{
-                            item.map_ivsu.type, item.map_ivsu.name, cmbMapVersion.Text, item.map_ivsu.url, item.map_ivsu.md5
+                            item.map_ivsu.type, item.map_ivsu.name, item.map_ivsu.version,item.map_ivsu.notes,item.map_ivsu.url, item.map_ivsu.md5
                         }));
             foreach (ListViewItem item in lstIVSU.Items)
                 item.Checked = true;
@@ -467,7 +483,7 @@ namespace Syn3Updater.Forms
             {
                 if (item.SubItems[0].Text == @"APPS")
                     _appsselected = true;
-                lstDownloadQueue.Items.Add(item.SubItems[3].Text);
+                lstDownloadQueue.Items.Add(item.SubItems[4].Text);
             }
 
             if (CancelledDownload())
@@ -513,15 +529,15 @@ namespace Syn3Updater.Forms
         {
             foreach (ListViewItem item in _ivsus)
             {
-                _fileName = item.SubItems[3].Text.Substring(item.SubItems[3].Text.LastIndexOf("/", StringComparison.Ordinal) + 1,
-                    item.SubItems[3].Text.Length - item.SubItems[3].Text.LastIndexOf("/", StringComparison.Ordinal) - 1);
+                _fileName = item.SubItems[4].Text.Substring(item.SubItems[4].Text.LastIndexOf("/", StringComparison.Ordinal) + 1,
+                    item.SubItems[4].Text.Length - item.SubItems[4].Text.LastIndexOf("/", StringComparison.Ordinal) - 1);
 
-                if (ValidateFile(item.SubItems[3].Text, _downloadpath + _fileName, item.SubItems[4].Text, false))
-                    Invoke(new Action(() => lstDownloadQueue.Items.Remove(item.SubItems[3].Text)));
+                if (ValidateFile(item.SubItems[4].Text, _downloadpath + _fileName, item.SubItems[5].Text, false))
+                    Invoke(new Action(() => lstDownloadQueue.Items.Remove(item.SubItems[4].Text)));
                 else
-                    _downloadfiles.Enqueue(item.SubItems[3].Text);
+                    _downloadfiles.Enqueue(item.SubItems[4].Text);
 
-                if (!_dicIvsus.ContainsKey(_fileName)) _dicIvsus.Add(_fileName, new KeyValuePair<string, string>(item.SubItems[0].Text, item.SubItems[4].Text));
+                if (!_dicIvsus.ContainsKey(_fileName)) _dicIvsus.Add(_fileName, new KeyValuePair<string, string>(item.SubItems[0].Text, item.SubItems[5].Text));
             }
 
             if (_totalcount == -1)
@@ -770,7 +786,9 @@ namespace Syn3Updater.Forms
                         txtReleaseNotes.Text = string.Format(strings.FrmMain_Notes, item.notes.Replace("\n", Environment.NewLine));
                 }
 
-            HttpResponseMessage response = Client.GetAsync(_apiMapReleases + cmbRegion.Text + "&filter[compatibility][contains]=" + _stringCompatibility).Result;
+            _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={cmbRegion.Text}&filter[compatibility][contains]={_stringCompatibility}");
+
+            HttpResponseMessage response = Client.GetAsync(_apiMapReleases).Result;
             _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
 
             if (Settings.Default.CurrentSyncNav)
@@ -813,8 +831,9 @@ namespace Syn3Updater.Forms
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-           Settings.Default.ForcedInstallMode = "automatic";
-           Settings.Default.Save();
+            Settings.Default.ForcedInstallMode = "automatic";
+            Settings.Default.Save();
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiToken);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
