@@ -150,4 +150,25 @@ Infine specificare se hai il navigatore o no.
 SBAGLIARE AD INSERIRE LE CORRETTE INFORMAZIONI PUO RENDERE L&apos;APIM E DI CONSEGUENZA IL SYNC INUTILIZZABILE FINCHE&apos; NON SCARICHERAI E INSTALLERAI I FILE CORRETTI</value>
     <comment>Fuzzy</comment>
   </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="btnPurchaseActivate.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="chkAllReleases.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="grpPurchase.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="lblForceMode.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="lblPurchaseInfo.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="lblReleaseKey.Text" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
