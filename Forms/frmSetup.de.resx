@@ -147,6 +147,28 @@ Bitte gehe auch sicher das du die richtige Region ausgewählt hast (klicke hier 
 Zuletzt gib an ob Navigation (Karten) vorhanden ist oder nicht.
 
 FEHLER BEI DER EINGABE FALSCHER INFORMATIONEN KÖNNEN DIE APIM EINHEIT UNBRAUCHBAR MACHRN, BIS DU DIE RICHTIGEN DATEIEN GELADEN UND INSTALLIERT HAST!</value>
-    <comment>Fuzzy</comment>
+  </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value>Erweiterte Einstellungen</value>
+  </data>
+  <data name="btnPurchaseActivate.Text" xml:space="preserve">
+    <value>Aktivieren
+
+</value>
+  </data>
+  <data name="chkAllReleases.Text" xml:space="preserve">
+    <value>Zeige alle Releases</value>
+  </data>
+  <data name="grpPurchase.Text" xml:space="preserve">
+    <value>Bezahlte Optionen</value>
+  </data>
+  <data name="lblForceMode.Text" xml:space="preserve">
+    <value>Erzwinge Installationsart:</value>
+  </data>
+  <data name="lblPurchaseInfo.Text" xml:space="preserve">
+    <value>Geben Sie Ihren Lizenzschlüssel unten ein, um Zugang zu Ihren angepassten Paketen zu erhalten, die Sie gekauft haben!</value>
+  </data>
+  <data name="lblReleaseKey.Text" xml:space="preserve">
+    <value>Lizenzschlüssel:</value>
   </data>
 </root>
