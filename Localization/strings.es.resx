@@ -217,4 +217,26 @@ Fuzzy</comment>
   <data name="Warning" xml:space="preserve">
     <value>Advertencia</value>
   </data>
+  <data name="FrmMain_CancelledDownload_MY20" xml:space="preserve">
+    <value>Syn3 Updater estableció el método de instalación {0}
+
+NO CONTINUE SI TIENE UN AUTO FABRICADO EN 2020!
+
+SI CONTINUA Y TIENE UN AUTO FABRICADO EN 2020 INUTILIZARÁ SU UNIDAD DE SYNC!
+
+Una solución a esto estará disponible en una futura versión de Syn3 Updater
+
+Al elegir &quot;Si&quot; usted comprende la advertencia previa y confirma que no tiene un auto fabricado en 2020!</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20Final" xml:space="preserve">
+    <value>ADVERTENCIA FINAL!
+
+Al elegir &quot;Si&quot; usted confirma que no tiene un auto fabricado en 2020!</value>
+  </data>
+  <data name="FrmSetup_LicenseKeyActivated" xml:space="preserve">
+    <value>Si introdujo una licencia válida debería ahora ver sus paquetes comprados en el desplegable en la página principal.
+
+Si no ve los nuevos paquetes por favor revise que su licencia sea correcta y de ser necesario contacte a CyanLabs</value>
+    <comment>Fuzzy</comment>
+  </data>
 </root>
