@@ -148,4 +148,25 @@ NO INGRESAR LA INFORMACIÓN CORRECTA PUEDE INUTILIZAR SU APIM HASTA QUE DESCARGU
     <comment>Redacted to reduce footprint
 Fuzzy</comment>
   </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value>Opciones Avanzadas</value>
+  </data>
+  <data name="btnPurchaseActivate.Text" xml:space="preserve">
+    <value>Activar</value>
+  </data>
+  <data name="chkAllReleases.Text" xml:space="preserve">
+    <value>Mostrar Todos los Releases</value>
+  </data>
+  <data name="grpPurchase.Text" xml:space="preserve">
+    <value>Opciones Pagas</value>
+  </data>
+  <data name="lblForceMode.Text" xml:space="preserve">
+    <value>Forzar Modo Instalación:</value>
+  </data>
+  <data name="lblPurchaseInfo.Text" xml:space="preserve">
+    <value>Ingrese su licencia para ganar acceso a cualquier paquete personalizado que haya comprado!</value>
+  </data>
+  <data name="lblReleaseKey.Text" xml:space="preserve">
+    <value>Licencia:</value>
+  </data>
 </root>
