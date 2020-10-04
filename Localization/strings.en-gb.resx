@@ -232,12 +232,12 @@ IF YOU CONTINUE AND HAVE A CAR MANUFACTURED IN 2020 YOU WILL BRICK YOUR SYNC!
 
 A workaround for this is coming in a future version of Syn3 Updater
 
-By clicking "Yes" you understand the above warning and confirm you do not have a car manufactured in 2020!</value>
+By clicking &quot;Yes&quot; you understand the above warning and confirm you do not have a car manufactured in 2020!</value>
   </data>
   <data name="FrmMain_CancelledDownload_MY20Final" xml:space="preserve">
     <value>FINAL WARNING!
 
-By clicking "Yes" you confirm you do not have a car manufactured in 2020!</value>
+By clicking &quot;Yes&quot; you confirm you do not have a car manufactured in 2020!</value>
   </data>
   <data name="FrmSetup_LicenseKeyActivated" xml:space="preserve">
     <value>If you have entered a valid licence key you should now see your purchased packages in the dropdowns on the main page.
