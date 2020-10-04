@@ -219,7 +219,10 @@
             resources.GetString("cmbLocale.Items2"),
             resources.GetString("cmbLocale.Items3"),
             resources.GetString("cmbLocale.Items4"),
-            resources.GetString("cmbLocale.Items5")});
+            resources.GetString("cmbLocale.Items5"),
+            resources.GetString("cmbLocale.Items6"),
+            resources.GetString("cmbLocale.Items7"),
+            resources.GetString("cmbLocale.Items8")});
             this.cmbLocale.Name = "cmbLocale";
             this.cmbLocale.SelectedIndexChanged += new System.EventHandler(this.cmbLocale_SelectedIndexChanged);
             // 

@@ -159,54 +159,6 @@
   <data name="&gt;&gt;btnSetupContinue.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;txtDownloadPath.Name" xml:space="preserve">
-    <value>txtDownloadPath</value>
-  </data>
-  <data name="&gt;&gt;txtDownloadPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtDownloadPath.Parent" xml:space="preserve">
-    <value>grpDownload</value>
-  </data>
-  <data name="&gt;&gt;txtDownloadPath.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnChangeDownloadDirectory.Name" xml:space="preserve">
-    <value>btnChangeDownloadDirectory</value>
-  </data>
-  <data name="&gt;&gt;btnChangeDownloadDirectory.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnChangeDownloadDirectory.Parent" xml:space="preserve">
-    <value>grpDownload</value>
-  </data>
-  <data name="&gt;&gt;btnChangeDownloadDirectory.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="grpDownload.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 221</value>
-  </data>
-  <data name="grpDownload.Size" type="System.Drawing.Size, System.Drawing">
-    <value>435, 52</value>
-  </data>
-  <data name="grpDownload.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="grpDownload.Text" xml:space="preserve">
-    <value>Optional - Download Location</value>
-  </data>
-  <data name="&gt;&gt;grpDownload.Name" xml:space="preserve">
-    <value>grpDownload</value>
-  </data>
-  <data name="&gt;&gt;grpDownload.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;grpDownload.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;grpDownload.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="txtDownloadPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 19</value>
   </data>
@@ -258,89 +210,29 @@
   <data name="&gt;&gt;btnChangeDownloadDirectory.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;txtCurrentSyncVersion.Name" xml:space="preserve">
-    <value>txtCurrentSyncVersion</value>
+  <data name="grpDownload.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 221</value>
   </data>
-  <data name="&gt;&gt;txtCurrentSyncVersion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="grpDownload.Size" type="System.Drawing.Size, System.Drawing">
+    <value>435, 52</value>
   </data>
-  <data name="&gt;&gt;txtCurrentSyncVersion.Parent" xml:space="preserve">
-    <value>grpExistingDetails</value>
+  <data name="grpDownload.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
   </data>
-  <data name="&gt;&gt;txtCurrentSyncVersion.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="grpDownload.Text" xml:space="preserve">
+    <value>Optional - Download Location</value>
   </data>
-  <data name="&gt;&gt;chkCurrentSyncNav.Name" xml:space="preserve">
-    <value>chkCurrentSyncNav</value>
+  <data name="&gt;&gt;grpDownload.Name" xml:space="preserve">
+    <value>grpDownload</value>
   </data>
-  <data name="&gt;&gt;chkCurrentSyncNav.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkCurrentSyncNav.Parent" xml:space="preserve">
-    <value>grpExistingDetails</value>
-  </data>
-  <data name="&gt;&gt;chkCurrentSyncNav.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncVersion.Name" xml:space="preserve">
-    <value>lblCurrentSyncVersion</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncVersion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncVersion.Parent" xml:space="preserve">
-    <value>grpExistingDetails</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncVersion.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncRegion.Name" xml:space="preserve">
-    <value>lblCurrentSyncRegion</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncRegion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncRegion.Parent" xml:space="preserve">
-    <value>grpExistingDetails</value>
-  </data>
-  <data name="&gt;&gt;lblCurrentSyncRegion.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;cmbCurrentSyncRegion.Name" xml:space="preserve">
-    <value>cmbCurrentSyncRegion</value>
-  </data>
-  <data name="&gt;&gt;cmbCurrentSyncRegion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbCurrentSyncRegion.Parent" xml:space="preserve">
-    <value>grpExistingDetails</value>
-  </data>
-  <data name="&gt;&gt;cmbCurrentSyncRegion.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="grpExistingDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 158</value>
-  </data>
-  <data name="grpExistingDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 52</value>
-  </data>
-  <data name="grpExistingDetails.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="grpExistingDetails.Text" xml:space="preserve">
-    <value>Current Version Information</value>
-  </data>
-  <data name="&gt;&gt;grpExistingDetails.Name" xml:space="preserve">
-    <value>grpExistingDetails</value>
-  </data>
-  <data name="&gt;&gt;grpExistingDetails.Type" xml:space="preserve">
+  <data name="&gt;&gt;grpDownload.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;grpExistingDetails.Parent" xml:space="preserve">
+  <data name="&gt;&gt;grpDownload.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;grpExistingDetails.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;grpDownload.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="txtCurrentSyncVersion.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9.75pt</value>
@@ -504,6 +396,30 @@
   <data name="&gt;&gt;cmbCurrentSyncRegion.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="grpExistingDetails.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 158</value>
+  </data>
+  <data name="grpExistingDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>589, 52</value>
+  </data>
+  <data name="grpExistingDetails.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="grpExistingDetails.Text" xml:space="preserve">
+    <value>Current Version Information</value>
+  </data>
+  <data name="&gt;&gt;grpExistingDetails.Name" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;grpExistingDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpExistingDetails.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grpExistingDetails.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="lblWarning1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -618,54 +534,6 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   <data name="&gt;&gt;btnLogo.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;cmbLocale.Name" xml:space="preserve">
-    <value>cmbLocale</value>
-  </data>
-  <data name="&gt;&gt;cmbLocale.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbLocale.Parent" xml:space="preserve">
-    <value>panelTitleBar</value>
-  </data>
-  <data name="&gt;&gt;cmbLocale.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.Name" xml:space="preserve">
-    <value>lblTitle</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.Parent" xml:space="preserve">
-    <value>panelTitleBar</value>
-  </data>
-  <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="panelTitleBar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="panelTitleBar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panelTitleBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>608, 49</value>
-  </data>
-  <data name="panelTitleBar.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;panelTitleBar.Name" xml:space="preserve">
-    <value>panelTitleBar</value>
-  </data>
-  <data name="&gt;&gt;panelTitleBar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panelTitleBar.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;panelTitleBar.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="cmbLocale.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
   </data>
@@ -685,9 +553,18 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>IT</value>
   </data>
   <data name="cmbLocale.Items4" xml:space="preserve">
-    <value>RU</value>
+    <value>PL</value>
   </data>
   <data name="cmbLocale.Items5" xml:space="preserve">
+    <value>PT</value>
+  </data>
+  <data name="cmbLocale.Items6" xml:space="preserve">
+    <value>RU</value>
+  </data>
+  <data name="cmbLocale.Items7" xml:space="preserve">
+    <value>TR</value>
+  </data>
+  <data name="cmbLocale.Items8" xml:space="preserve">
     <value>ZH</value>
   </data>
   <data name="cmbLocale.Location" type="System.Drawing.Point, System.Drawing">
@@ -747,69 +624,33 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   <data name="&gt;&gt;lblTitle.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="panelTitleBar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="panelTitleBar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelTitleBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>608, 49</value>
+  </data>
+  <data name="panelTitleBar.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;panelTitleBar.Name" xml:space="preserve">
+    <value>panelTitleBar</value>
+  </data>
+  <data name="&gt;&gt;panelTitleBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelTitleBar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelTitleBar.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <metadata name="folderDownloads.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="&gt;&gt;chkAllReleases.Name" xml:space="preserve">
-    <value>chkAllReleases</value>
-  </data>
-  <data name="&gt;&gt;chkAllReleases.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkAllReleases.Parent" xml:space="preserve">
-    <value>grpAdvanced</value>
-  </data>
-  <data name="&gt;&gt;chkAllReleases.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lblForceMode.Name" xml:space="preserve">
-    <value>lblForceMode</value>
-  </data>
-  <data name="&gt;&gt;lblForceMode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblForceMode.Parent" xml:space="preserve">
-    <value>grpAdvanced</value>
-  </data>
-  <data name="&gt;&gt;lblForceMode.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;cmbOverride.Name" xml:space="preserve">
-    <value>cmbOverride</value>
-  </data>
-  <data name="&gt;&gt;cmbOverride.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cmbOverride.Parent" xml:space="preserve">
-    <value>grpAdvanced</value>
-  </data>
-  <data name="&gt;&gt;cmbOverride.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="grpAdvanced.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 282</value>
-  </data>
-  <data name="grpAdvanced.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 91</value>
-  </data>
-  <data name="grpAdvanced.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="grpAdvanced.Text" xml:space="preserve">
-    <value>Advanced Options</value>
-  </data>
-  <data name="&gt;&gt;grpAdvanced.Name" xml:space="preserve">
-    <value>grpAdvanced</value>
-  </data>
-  <data name="&gt;&gt;grpAdvanced.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;grpAdvanced.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;grpAdvanced.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="chkAllReleases.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -905,6 +746,30 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   </data>
   <data name="&gt;&gt;cmbOverride.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="grpAdvanced.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 282</value>
+  </data>
+  <data name="grpAdvanced.Size" type="System.Drawing.Size, System.Drawing">
+    <value>250, 91</value>
+  </data>
+  <data name="grpAdvanced.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value>Advanced Options</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.Name" xml:space="preserve">
+    <value>grpAdvanced</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grpAdvanced.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="lblReleaseKey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

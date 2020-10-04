@@ -170,15 +170,6 @@
     <EmbeddedResource Include="Forms\frmDisclaimer.zh.resx">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmLog.pl.resx">
-      <DependentUpon>frmLog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmLog.pt.resx">
-      <DependentUpon>frmLog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmLog.tr.resx">
-      <DependentUpon>frmLog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.de.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -216,16 +207,7 @@
     <EmbeddedResource Include="Forms\frmMain.zh.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmRegion.pl.resx">
-      <DependentUpon>frmRegion.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmRegion.pt.resx">
-      <DependentUpon>frmRegion.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmRegion.resx">
-      <DependentUpon>frmRegion.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmRegion.tr.resx">
       <DependentUpon>frmRegion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSetup.de.resx">
