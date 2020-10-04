@@ -149,7 +149,8 @@
 
 Für APIM&apos;s ohne Navigation reichen 8GB
 NA, ROW, ANZ APIM&apos;s benötigen 16GB
-EU APIM&apos;s benötigen 32BB</value>
+EU APIM&apos;s benötigen 32GB</value>
+    <comment>changed &quot;32BB&quot; to &quot;32GB&quot;</comment>
   </data>
   <data name="lblDownloadQueue.Text" xml:space="preserve">
     <value>Warteschlange</value>
