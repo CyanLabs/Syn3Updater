@@ -145,4 +145,25 @@
     <value>请输入完整的SYNC版本，例如3.4.12345，您可以在“设置”&gt;“常规”&gt;“关于同步”中找到此版本。请确保选择正确的区域（有关详细信息，请单击此处）。最后指定您是否具有导航（地图）。输入正确的信息可能会导致您的APIM无法使用，直到您下载并安装正确的文件！</value>
     <comment>Fuzzy</comment>
   </data>
+  <data name="grpAdvanced.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="btnPurchaseActivate.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="chkAllReleases.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="grpPurchase.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="lblForceMode.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="lblPurchaseInfo.Text" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="lblReleaseKey.Text" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
