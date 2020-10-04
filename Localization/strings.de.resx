@@ -146,9 +146,7 @@ Laufwerk: {1}</value>
     <value>Die aktuelle Region und neue Region stimmen nicht überein, dies könnte zu Problemen führen.</value>
   </data>
   <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
-    <value>Möchtest du die Anwendung neu starten um die Sprache zu ändern?
-Wenn du dies nicht machst, dann könnten einige Elemente nicht richtig übersetzt werden.</value>
-    <comment>Fuzzy</comment>
+    <value>Starte die Anwendung neu um die Sprache zu ändern.!</value>
   </data>
   <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
     <value>Vorgang abgeschlossen!</value>
@@ -201,12 +199,11 @@ verschieben</value>
   <data name="FrmSetup_ForceAutoInstall" xml:space="preserve">
     <value>Dies überschreibt die Erkennung der am besten geeigneten Installationsmoduses. Wenn dieser mit einer vollständigen Karten-Version verwendet wird, dann wird es mit ziemlicher Sicherheit zu Problemen führen.
 
-Wenn Sie dieses Kontrollkästchen aktivieren, stimmen Sie zu, dass Sie keinen Anspruch auf Support haben, solange diese Option aktiviert ist!
+Diese Einstellung hat keine Auswirkungen, wenn die momentane Version 3.0 oder niedriger ist.
 
-Möchten Sie den &quot;Autoinstall&quot; -Modus erzwingen? Dieser wird beim nächsten Start zurückgesetzt.
+Diese Einstellung stellt sich nach jedem Neustart zurück auf &quot;Automatisch&quot;.
 
-</value>
-    <comment>Fuzzy</comment>
+Wenn du dies von &quot;Automatisch&quot; ändern, stimmen du zu, dass Sie keinen Anspruch auf Support haben, solange diese Option aktiviert ist!</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Erfolgreich</value>
@@ -219,5 +216,27 @@ Möchten Sie den &quot;Autoinstall&quot; -Modus erzwingen? Dieser wird beim näc
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Warnung</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20" xml:space="preserve">
+    <value>Syn3 Updater setzt den Modus der Installation nach {0}
+
+BRECHE ALLES AB, WENN DEIN AUTO 2020 HERGESTELLT WURDE!
+
+MACHST DU TROTZDEM WEITER WIRD DEIN SYNC ZERSTÖRT!
+
+Eine Behebung für diese Gefahr ist in Arbeit und wird in einer späteren Version behoben.
+
+Wenn du &quot;Ja&quot; anklickst hast du die obengenannte Warnung verstanden und bestätigst, dass du kein Auto aus 2020 hast!</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20Final" xml:space="preserve">
+    <value>LETZTE WARNUNG!
+
+Mit &quot;Ja&quot; bestätigst du, dass dein Auto vor 2020 gebaut wurde!</value>
+  </data>
+  <data name="FrmSetup_LicenseKeyActivated" xml:space="preserve">
+    <value>Falls Sie einen gültigen Lizenzschlüssel eingegeben haben, sollten Sie nun auf der Hauptseite Ihre gekauften Pakte in den Drop-down Menüs auswählen können.
+
+Falls Sie die neuen Pakete nicht sehen können, überprüfen Sie bitte, ob Sie einen gültigen Lizenzschlüssel eingegeben haben.
+Wenn nötig, kontaktieren Sie bitte CyanLabs</value>
   </data>
 </root>
