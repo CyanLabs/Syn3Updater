@@ -1,14 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Copying" xml:space="preserve">
+    <value>Kopyalanıyor</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>İndiriliyor {0} ({1} / {2})</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Hata</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_DownloadPathInvalid" xml:space="preserve">
+    <value>İndirme yolu ve hedef USB sürücüsü aynı, lütfen indirme yolunuzu değiştirin.</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_FormatUSB" xml:space="preserve">
+    <value>UYARI, SEÇİLEN SÜRÜCÜDEKİ TÜM VERİLER KAYBOLACAKTIR
+{0}
+Drive Harfi: {1}</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_NoApps" xml:space="preserve">
+    <value>Mod yeniden biçimlendiriliyor veya indiriliyor ve hiçbir uygulama paketi seçilmedi. bu, önyükleme yapmayan bir sisteme neden olacak, DURDURULUYOR! &quot;APPS&quot; paketi seçilmedi, ancak Syn3 Updater bir sürüm düşürme veya yeniden biçimlendirme gerektiğini belirledi, bu, önyüklemesiz bir sistemle sonuçlanacaktır. İptal ediliyor!</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_NoUSB" xml:space="preserve">
+    <value>Hiçbir USB sürücüsü seçilmedi, sadece indirmeye devam etmek ister misiniz?</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_RegionMismatch" xml:space="preserve">
+    <value>Mevcut bölge ve yeni bölge aynı değil, bu çalışmayabilir.
+Yine de devam etmek ister misin?</value>
+  </data>
+  <data name="FrmMain_cmbLocale_Restart" xml:space="preserve">
+    <value>Dili değiştirmek için uygulamayı yeniden başlatmalısınız!</value>
+  </data>
+  <data name="FrmMain_CopyFiles_Completed" xml:space="preserve">
+    <value>SÜREÇ TAMAMLANDI!</value>
+  </data>
+  <data name="FrmMain_CopyFiles_CompletePopup" xml:space="preserve">
+    <value>Dosyaların indirilmesi ve kopyalanması artık tamamlandı, bu USB&apos;yi bilgisayarınızdan çıkarın ve arabanıza takın, motorun çalıştığından emin olun!
+
+Syn3Updater, arabanızda takip etmeniz için sizi doğrudan CyanLabs eğitiminin ilgili bölümüne açacaktır.</value>
+  </data>
+  <data name="FrmMain_CopyFiles_UpdateVersion" xml:space="preserve">
+    <value>Gelecekte kullanım için doğru olması için uygulamadaki mevcut senkronizasyon sürümünüzü güncellemek ister misiniz?</value>
+  </data>
+  <data name="FrmMain_CopyFiles_VerificationFailed" xml:space="preserve">
+    <value>Dosya 3 kez doğrulanamadı, USB sürücüsünün ve bağlantı noktasının tamamen işlevsel olduğundan emin olun.</value>
+  </data>
+  <data name="FrmMain_Copying" xml:space="preserve">
+    <value>kopyalanıyor {0} ({1} / {2}) </value>
+  </data>
+  <data name="FrmMain_CurrentConfiguration" xml:space="preserve">
+    <value>Mevcut Sürüm: {0} - Bölge: {1} - Gezinme: {2}
+İndirme Yolu: {3}</value>
+  </data>
+  <data name="FrmMain_DownloadFile_AllDownloaded" xml:space="preserve">
+    <value>Tüm indirmeler tamamlandı!</value>
+  </data>
+  <data name="FrmMain_DriveInfo" xml:space="preserve">
+    <value>Sürücü Adı: {0}
+Sürücü Harfi: {1}
+Dosya sistemi: {2}</value>
+  </data>
+  <data name="FrmMain_Exception" xml:space="preserve">
+    <value>Bir istisna oluştu, {0}</value>
+  </data>
+  <data name="FrmMain_FrmMain_Shown_Extra_BackendError" xml:space="preserve">
+    <value>Çevrimiçi sunucudan dosya listesini almaya çalışırken bir sorun oluştu, lütfen internet bağlantınızı kontrol edin ve uygulamanın internet erişimi olduğundan emin olun</value>
+  </data>
+  <data name="FrmMain_Notes" xml:space="preserve">
+    <value>Notlar:
+{0}</value>
+  </data>
+  <data name="FrmMain_ValidateFile_Verifying" xml:space="preserve">
+    <value>
+bütünlüğü doğrulanıyor {0} </value>
+  </data>
+  <data name="FrmSetup_btnChangeDownloadDirectory_ChangeDirectory" xml:space="preserve">
+    <value>Mevcut dosyaları şuradan taşımak ister misiniz?
+{0}
+veya
+{1}</value>
+  </data>
+  <data name="FrmSetup_ForceAutoInstall" xml:space="preserve">
+    <value>Bu, en uygun yükleme modunun algılanmasını geçersiz kılar, bunu haritalarla tam sürümle birlikte kullanmak neredeyse kesinlikle sorunlara neden olur.
+
+Mevcut sürümünüz 3.0 veya altına ayarlanmışsa, bu ayarın bir etkisi olmayacaktır.
+
+Bu ayar, her yeniden başlatmanın ardından varsayılan olarak &quot;otomatik&quot; e geri dönecektir.
+
+Bunu &quot;otomatik&quot; ten değiştirerek, bu seçenek etkinken destek için uygun olmayacağınızı kabul edersiniz!</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Başarılı</value>
+  </data>
+  <data name="Verified" xml:space="preserve">
+    <value>Başarıyla Doğrulandı {0}</value>
+  </data>
+  <data name="Verifying" xml:space="preserve">
+    <value>doğrulanıyor {0} </value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Uyarı</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20" xml:space="preserve">
+    <value>Syn3 Updater, yükleme modunu {0} olarak ayarladı
+
+2020&apos;DE ÜRETİLEN BİR ARABA İSE DEVAM ETMEYİN!
+
+2020&apos;DE ÜRETİLEN BİR ARABADA DEVAM EDERSENİZ, SYNC&apos;İNİZİ TUĞLA YAPACAKSINIZ!
+
+Bunun için bir çözüm, Syn3 Updater&apos;ın gelecekteki bir sürümünde geliyor
+
+&quot;Evet&quot; i tıklayarak yukarıdaki uyarıyı anlar ve 2020&apos;de üretilmiş bir arabanız olmadığını onaylarsınız!</value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20Final" xml:space="preserve">
+    <value>SON UYARI!
+
+&quot;Evet&quot; i tıklayarak 2020&apos;de üretilmiş bir arabanız olmadığını onaylıyorsunuz!</value>
+  </data>
+  <data name="FrmSetup_LicenseKeyActivated" xml:space="preserve">
+    <value>Geçerli bir lisans anahtarı girdiyseniz, şimdi satın aldığınız paketleri ana sayfadaki açılır menülerde görmelisiniz.
+
+Yeni paketleri görmüyorsanız, lütfen lisans anahtarınızın doğru olup olmadığını kontrol edin ve gerekirse CyanLabs ile iletişime geçin.</value>
+  </data>
 </root>
