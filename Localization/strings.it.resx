@@ -218,4 +218,13 @@ Desideri abilitare la modalità &quot;autoinstall&quot;, verrà ripristinata al 
   <data name="Warning" xml:space="preserve">
     <value>Attenzione</value>
   </data>
+  <data name="FrmMain_CancelledDownload_MY20" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="FrmMain_CancelledDownload_MY20Final" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="FrmSetup_LicenseKeyActivated" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
