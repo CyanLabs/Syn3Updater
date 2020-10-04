@@ -152,14 +152,32 @@
     <EmbeddedResource Include="Forms\frmDisclaimer.it.resx">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDisclaimer.pl.resx">
+      <DependentUpon>frmDisclaimer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDisclaimer.pt.resx">
+      <DependentUpon>frmDisclaimer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDisclaimer.resx">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDisclaimer.ru.resx">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDisclaimer.tr.resx">
+      <DependentUpon>frmDisclaimer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmDisclaimer.zh.resx">
       <DependentUpon>frmDisclaimer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmLog.pl.resx">
+      <DependentUpon>frmLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmLog.pt.resx">
+      <DependentUpon>frmLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmLog.tr.resx">
+      <DependentUpon>frmLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.de.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -179,6 +197,12 @@
     <EmbeddedResource Include="Forms\frmMain.it.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMain.pl.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMain.pt.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -186,10 +210,22 @@
     <EmbeddedResource Include="Forms\frmMain.ru.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMain.tr.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.zh.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRegion.pl.resx">
+      <DependentUpon>frmRegion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRegion.pt.resx">
+      <DependentUpon>frmRegion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmRegion.resx">
+      <DependentUpon>frmRegion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRegion.tr.resx">
       <DependentUpon>frmRegion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSetup.de.resx">
@@ -207,7 +243,16 @@
       <DependentUpon>frmSetup.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSetup.pl.resx">
+      <DependentUpon>frmSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSetup.pt.resx">
+      <DependentUpon>frmSetup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSetup.ru.resx">
+      <DependentUpon>frmSetup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSetup.tr.resx">
       <DependentUpon>frmSetup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSetup.zh.resx">
@@ -224,7 +269,10 @@
     <EmbeddedResource Include="Localization\strings.it.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localization\strings.pl.resx" />
+    <EmbeddedResource Include="Localization\strings.pt.resx" />
     <EmbeddedResource Include="Localization\strings.ru.resx" />
+    <EmbeddedResource Include="Localization\strings.tr.resx" />
     <EmbeddedResource Include="Localization\strings.zh.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -232,6 +280,8 @@
     <EmbeddedResource Include="Properties\Resources.es.resx" />
     <EmbeddedResource Include="Properties\Resources.fr.resx" />
     <EmbeddedResource Include="Properties\Resources.it.resx" />
+    <EmbeddedResource Include="Properties\Resources.pl.resx" />
+    <EmbeddedResource Include="Properties\Resources.pt.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -255,6 +305,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ru.resx" />
+    <EmbeddedResource Include="Properties\Resources.tr.resx" />
     <EmbeddedResource Include="Properties\Resources.zh.resx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
