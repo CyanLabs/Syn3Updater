@@ -269,7 +269,17 @@ namespace Syn3Updater.Forms
 
         private bool CancelledDownload()
         {
-            if ((_mode == "reformat" || _mode == "downgrade") && _canceldownload == false)
+            //No USB drive selected, download only?
+            if (cmbDriveList.SelectedIndex == 0 && _canceldownload == false)
+            {
+                DialogResult dialogOpenwebsite = MessageBox.Show(strings.FrmMain_CancelledDownload_NoUSB, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dialogOpenwebsite == DialogResult.Yes)
+                    _downloadonly = true;
+                else
+                    _canceldownload = true;
+            }
+
+            if ((_mode == "reformat" || _mode == "downgrade") && _canceldownload == false && _downloadonly == false)
             {
                 DialogResult dialogOpenwebsite = MessageBox.Show(string.Format(strings.FrmMain_CancelledDownload_MY20, _mode), strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (dialogOpenwebsite == DialogResult.Yes)
@@ -290,15 +300,6 @@ namespace Syn3Updater.Forms
                 if (dialogOpenwebsite != DialogResult.Yes) _canceldownload = true;
             }
 
-            //No USB drive selected, download only?
-            if (cmbDriveList.SelectedIndex == 0 && _canceldownload == false)
-            {
-                DialogResult dialogOpenwebsite = MessageBox.Show(strings.FrmMain_CancelledDownload_NoUSB, strings.Warning, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (dialogOpenwebsite == DialogResult.Yes)
-                    _downloadonly = true;
-                else
-                    _canceldownload = true;
-            }
 
             if (!string.IsNullOrEmpty(_driveId))
             {
@@ -338,7 +339,6 @@ namespace Syn3Updater.Forms
                 _canceldownload = false;
                 _dicIvsus.Clear();
                 lstDownloadQueue.Items.Clear();
-                btnShowConfiguration.Enabled = false;
             });
         }
 
@@ -353,7 +353,6 @@ namespace Syn3Updater.Forms
                 _tokenSource.Dispose();
                 _tokenSource = new CancellationTokenSource();
                 tabControl1.SelectedTab = tabStatus;
-                btnShowConfiguration.Enabled = false;
             });
             btnContinue.Enabled = false;
             grpNewVersion.Enabled = false;

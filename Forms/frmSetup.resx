@@ -136,7 +136,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSetupContinue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>450, 221</value>
+    <value>450, 227</value>
   </data>
   <data name="btnSetupContinue.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 52</value>
@@ -157,7 +157,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnSetupContinue.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="txtDownloadPath.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 19</value>
@@ -211,7 +211,7 @@
     <value>1</value>
   </data>
   <data name="grpDownload.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 221</value>
+    <value>9, 227</value>
   </data>
   <data name="grpDownload.Size" type="System.Drawing.Size, System.Drawing">
     <value>435, 52</value>
@@ -232,13 +232,40 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpDownload.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
+  </data>
+  <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 23</value>
+  </data>
+  <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>210, 84</value>
+  </data>
+  <data name="pictureBox1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
+    <value>pictureBox1</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="txtCurrentSyncVersion.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9.75pt</value>
   </data>
   <data name="txtCurrentSyncVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 18</value>
+    <value>112, 121</value>
   </data>
   <data name="txtCurrentSyncVersion.Mask" xml:space="preserve">
     <value>#.#.#####</value>
@@ -262,13 +289,55 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;txtCurrentSyncVersion.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="lblWarning1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt, style=Bold</value>
+  </data>
+  <data name="lblWarning1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblWarning1.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
+    <value>0, 0</value>
+  </data>
+  <data name="lblWarning1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>225, 23</value>
+  </data>
+  <data name="lblWarning1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="lblWarning1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>355, 84</value>
+  </data>
+  <data name="lblWarning1.TabIndex" type="System.Int32, mscorlib">
+    <value>31</value>
+  </data>
+  <data name="lblWarning1.Text" xml:space="preserve">
+    <value>Enter your SYNC version (Settings &gt; General &gt; About Sync)
+Enter your REGION and specify if you have NAVIGATION
+
+INCORRECT INFORMATION MAY RENDER YOUR APIM TEMPORARILY OR PERMANENTLY UNUSABLE</value>
+  </data>
+  <data name="lblWarning1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;lblWarning1.Name" xml:space="preserve">
+    <value>lblWarning1</value>
+  </data>
+  <data name="&gt;&gt;lblWarning1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblWarning1.Parent" xml:space="preserve">
+    <value>grpExistingDetails</value>
+  </data>
+  <data name="&gt;&gt;lblWarning1.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="chkCurrentSyncNav.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="chkCurrentSyncNav.Location" type="System.Drawing.Point, System.Drawing">
-    <value>441, 22</value>
+    <value>441, 125</value>
   </data>
   <data name="chkCurrentSyncNav.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 17</value>
@@ -289,7 +358,7 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;chkCurrentSyncNav.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="lblCurrentSyncVersion.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>
@@ -298,7 +367,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblCurrentSyncVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 23</value>
+    <value>10, 126</value>
   </data>
   <data name="lblCurrentSyncVersion.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 13</value>
@@ -322,7 +391,7 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;lblCurrentSyncVersion.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="lblCurrentSyncRegion.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>
@@ -331,7 +400,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblCurrentSyncRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>182, 23</value>
+    <value>182, 126</value>
   </data>
   <data name="lblCurrentSyncRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>139, 13</value>
@@ -355,7 +424,7 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;lblCurrentSyncRegion.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="cmbCurrentSyncRegion.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -376,7 +445,7 @@
     <value>ROW</value>
   </data>
   <data name="cmbCurrentSyncRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>326, 20</value>
+    <value>326, 123</value>
   </data>
   <data name="cmbCurrentSyncRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 21</value>
@@ -394,13 +463,13 @@
     <value>grpExistingDetails</value>
   </data>
   <data name="&gt;&gt;cmbCurrentSyncRegion.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="grpExistingDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 158</value>
+    <value>9, 60</value>
   </data>
   <data name="grpExistingDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>589, 52</value>
+    <value>589, 160</value>
   </data>
   <data name="grpExistingDetails.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -418,121 +487,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpExistingDetails.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="lblWarning1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="lblWarning1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt, style=Bold</value>
-  </data>
-  <data name="lblWarning1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lblWarning1.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>0, 0</value>
-  </data>
-  <data name="lblWarning1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 49</value>
-  </data>
-  <data name="lblWarning1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="lblWarning1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>608, 97</value>
-  </data>
-  <data name="lblWarning1.TabIndex" type="System.Int32, mscorlib">
-    <value>31</value>
-  </data>
-  <data name="lblWarning1.Text" xml:space="preserve">
-    <value>Please enter your full SYNC version e.g 3.4.12345, you can find this in Settings &gt; General &gt; About Sync
-Please also make sure to select the correct region, click this box for further information.
-Finally specify if you have Navigation (Maps) or not.
-
-FAILURE TO ENTER THE CORRECT INFORMATION MAY RENDER YOUR APIM UNUSABLE
-UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
-  </data>
-  <data name="lblWarning1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;lblWarning1.Name" xml:space="preserve">
-    <value>lblWarning1</value>
-  </data>
-  <data name="&gt;&gt;lblWarning1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblWarning1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblWarning1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="btnClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wgAADsIBFShKgAAAAj1JREFUOE+FUk1ME0EUXtEaMSGGcNWDhhuaaPyLiSeMByUexEPl5sGjeuHs0VD7
-        J7ju2laBNlSzpdYIxAItbaGlVor9SRWwYEurjVCsui20ZdvtjDs7BdqTk29eZt773vtmXh5B0LL/g8K2
-        B9k9Ly2TaFUtg9SJIabrPXPPwVw2G44ayOYXiv2YgNN22YcG6JvTHyYzXAXACgAcX4YQstt/h0Pj7a/6
-        Dj4XODUKhwd1Uv/X1UIZlDbnkkvG6BfN58C7xGqEzef54kps/paptwGXRkJa8qonFMmX4WZq9JPtgv4x
-        rtI0QF+ZmB3ZyBUg/BafOK0R/Sjw2vwk8YeDWafPclInx+wd9J2d9HpyBR6wSrMCvYqglWes084sD9kF
-        6TB1APNwQ/BB2/8wls5V4FLQiDwETV6fCUUrIJNwXzSqd3g1lpZ3BpLpEmRTrlZRgbrhjsQgXIu7zg+p
-        qgn16PAn1jn4e3lMIpQgaPUl26wvD8Cv8DUTuU9g1JWXERptd3SN5cHPRQu6CruFsVDfWQ7kpz6aj+tw
-        i8Q/CDka9bFx71y2CMtbz8aU6EtimGx3B8PFEiwkFXbTKYP6CGLLm/rpc1anOc1ug1IiNtW221YEg/5B
-        YDleLPOFjGPRJ/PY73ucj0IL/uxWEXArP4J3md7qgCBd8bnNen2nd966zgpzgReEpQ02ZQnPSBmyEY2G
-        yKwqoLQeQve07Q1z2zZ6x+Hqdtu7bG87RvStL1USzMHYO9WggVY1ahVYuQ6U7B+WtqTJqa0O4gAAAABJ
-        RU5ErkJggg==
-</value>
-  </data>
-  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>592, 0</value>
-  </data>
-  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 17</value>
-  </data>
-  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
-    <value>panelTitleBar</value>
-  </data>
-  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="btnLogo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 2</value>
-  </data>
-  <data name="btnLogo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 46</value>
-  </data>
-  <data name="btnLogo.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="btnLogo.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;btnLogo.Name" xml:space="preserve">
-    <value>btnLogo</value>
-  </data>
-  <data name="&gt;&gt;btnLogo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnLogo.Parent" xml:space="preserve">
-    <value>panelTitleBar</value>
-  </data>
-  <data name="&gt;&gt;btnLogo.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="cmbLocale.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -587,6 +542,73 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   </data>
   <data name="&gt;&gt;cmbLocale.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="btnLogo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnLogo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 2</value>
+  </data>
+  <data name="btnLogo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 46</value>
+  </data>
+  <data name="btnLogo.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="btnLogo.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;btnLogo.Name" xml:space="preserve">
+    <value>btnLogo</value>
+  </data>
+  <data name="&gt;&gt;btnLogo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnLogo.Parent" xml:space="preserve">
+    <value>panelTitleBar</value>
+  </data>
+  <data name="&gt;&gt;btnLogo.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnClose.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wgAADsIBFShKgAAAAj1JREFUOE+FUk1ME0EUXtEaMSGGcNWDhhuaaPyLiSeMByUexEPl5sGjeuHs0VD7
+        J7ju2laBNlSzpdYIxAItbaGlVor9SRWwYEurjVCsui20ZdvtjDs7BdqTk29eZt773vtmXh5B0LL/g8K2
+        B9k9Ly2TaFUtg9SJIabrPXPPwVw2G44ayOYXiv2YgNN22YcG6JvTHyYzXAXACgAcX4YQstt/h0Pj7a/6
+        Dj4XODUKhwd1Uv/X1UIZlDbnkkvG6BfN58C7xGqEzef54kps/paptwGXRkJa8qonFMmX4WZq9JPtgv4x
+        rtI0QF+ZmB3ZyBUg/BafOK0R/Sjw2vwk8YeDWafPclInx+wd9J2d9HpyBR6wSrMCvYqglWes084sD9kF
+        6TB1APNwQ/BB2/8wls5V4FLQiDwETV6fCUUrIJNwXzSqd3g1lpZ3BpLpEmRTrlZRgbrhjsQgXIu7zg+p
+        qgn16PAn1jn4e3lMIpQgaPUl26wvD8Cv8DUTuU9g1JWXERptd3SN5cHPRQu6CruFsVDfWQ7kpz6aj+tw
+        i8Q/CDka9bFx71y2CMtbz8aU6EtimGx3B8PFEiwkFXbTKYP6CGLLm/rpc1anOc1ug1IiNtW221YEg/5B
+        YDleLPOFjGPRJ/PY73ucj0IL/uxWEXArP4J3md7qgCBd8bnNen2nd966zgpzgReEpQ02ZQnPSBmyEY2G
+        yKwqoLQeQve07Q1z2zZ6x+Hqdtu7bG87RvStL1USzMHYO9WggVY1ahVYuQ6U7B+WtqTJqa0O4gAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
+  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>592, 0</value>
+  </data>
+  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 17</value>
+  </data>
+  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
+    <value>panelTitleBar</value>
+  </data>
+  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="lblTitle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -646,7 +668,7 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;panelTitleBar.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <metadata name="folderDownloads.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -748,7 +770,7 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>2</value>
   </data>
   <data name="grpAdvanced.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 282</value>
+    <value>9, 288</value>
   </data>
   <data name="grpAdvanced.Size" type="System.Drawing.Size, System.Drawing">
     <value>250, 91</value>
@@ -799,7 +821,7 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>grpPurchase</value>
   </data>
   <data name="&gt;&gt;lblReleaseKey.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="lblPurchaseInfo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -843,53 +865,11 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
   <data name="&gt;&gt;lblPurchaseInfo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="btnPurchaseActivate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnPurchaseActivate.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="btnPurchaseActivate.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
-  <data name="btnPurchaseActivate.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="btnPurchaseActivate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnPurchaseActivate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>258, 59</value>
-  </data>
-  <data name="btnPurchaseActivate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 22</value>
-  </data>
-  <data name="btnPurchaseActivate.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
-  </data>
-  <data name="btnPurchaseActivate.Text" xml:space="preserve">
-    <value>Activate</value>
-  </data>
-  <data name="btnPurchaseActivate.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomCenter</value>
-  </data>
-  <data name="&gt;&gt;btnPurchaseActivate.Name" xml:space="preserve">
-    <value>btnPurchaseActivate</value>
-  </data>
-  <data name="&gt;&gt;btnPurchaseActivate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnPurchaseActivate.Parent" xml:space="preserve">
-    <value>grpPurchase</value>
-  </data>
-  <data name="&gt;&gt;btnPurchaseActivate.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="txtReleaseKey.Location" type="System.Drawing.Point, System.Drawing">
     <value>83, 59</value>
   </data>
   <data name="txtReleaseKey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 22</value>
+    <value>241, 22</value>
   </data>
   <data name="txtReleaseKey.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -904,10 +884,10 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>grpPurchase</value>
   </data>
   <data name="&gt;&gt;txtReleaseKey.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="grpPurchase.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 282</value>
+    <value>265, 288</value>
   </data>
   <data name="grpPurchase.Size" type="System.Drawing.Size, System.Drawing">
     <value>333, 91</value>
@@ -937,7 +917,7 @@ UNTIL YOU DOWNLOAD AND INSTALL THE CORRECT FILES!</value>
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>608, 385</value>
+    <value>608, 388</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>

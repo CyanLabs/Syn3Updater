@@ -124,17 +124,8 @@ namespace Syn3Updater.Forms
 
         private void cmbOverride_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbOverride.SelectedIndex != 0) MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        private void btnPurchaseActivate_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(strings.FrmSetup_LicenseKeyActivated, @"Syn3 Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void txtReleaseKey_TextChanged(object sender, EventArgs e)
-        {
-            btnPurchaseActivate.Enabled = !string.IsNullOrEmpty(txtReleaseKey.Text);
+            if (cmbOverride.SelectedIndex != 0)
+                MessageBox.Show(strings.FrmSetup_ForceAutoInstall, strings.Warning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

@@ -40,8 +40,6 @@
             this.lblCurrentSyncRegion = new System.Windows.Forms.Label();
             this.cmbCurrentSyncRegion = new System.Windows.Forms.ComboBox();
             this.lblWarning1 = new System.Windows.Forms.LinkLabel();
-            this.btnClose = new System.Windows.Forms.PictureBox();
-            this.btnLogo = new System.Windows.Forms.PictureBox();
             this.panelTitleBar = new System.Windows.Forms.Panel();
             this.cmbLocale = new System.Windows.Forms.ComboBox();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -53,15 +51,18 @@
             this.lblReleaseKey = new System.Windows.Forms.Label();
             this.grpPurchase = new System.Windows.Forms.GroupBox();
             this.lblPurchaseInfo = new System.Windows.Forms.LinkLabel();
-            this.btnPurchaseActivate = new System.Windows.Forms.Button();
             this.txtReleaseKey = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnClose = new System.Windows.Forms.PictureBox();
+            this.btnLogo = new System.Windows.Forms.PictureBox();
             this.grpDownload.SuspendLayout();
             this.grpExistingDetails.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).BeginInit();
             this.panelTitleBar.SuspendLayout();
             this.grpAdvanced.SuspendLayout();
             this.grpPurchase.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSetupContinue
@@ -105,7 +106,9 @@
             // 
             // grpExistingDetails
             // 
+            this.grpExistingDetails.Controls.Add(this.pictureBox1);
             this.grpExistingDetails.Controls.Add(this.txtCurrentSyncVersion);
+            this.grpExistingDetails.Controls.Add(this.lblWarning1);
             this.grpExistingDetails.Controls.Add(this.chkCurrentSyncNav);
             this.grpExistingDetails.Controls.Add(this.lblCurrentSyncVersion);
             this.grpExistingDetails.Controls.Add(this.lblCurrentSyncRegion);
@@ -175,25 +178,6 @@
             this.lblWarning1.Name = "lblWarning1";
             this.lblWarning1.VisitedLinkColor = System.Drawing.Color.Silver;
             this.lblWarning1.Click += new System.EventHandler(this.lblWarning1_Click);
-            // 
-            // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.Name = "btnClose";
-            this.btnClose.TabStop = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            this.btnClose.MouseLeave += new System.EventHandler(this.btnWindowControls_MouseLeave);
-            this.btnClose.MouseHover += new System.EventHandler(this.btnClose_MouseHover);
-            // 
-            // btnLogo
-            // 
-            this.btnLogo.BackColor = System.Drawing.Color.Transparent;
-            this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogo.Image = global::Syn3Updater.Properties.Resources.logo;
-            resources.ApplyResources(this.btnLogo, "btnLogo");
-            this.btnLogo.Name = "btnLogo";
-            this.btnLogo.TabStop = false;
-            this.btnLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
             // panelTitleBar
             // 
@@ -286,7 +270,6 @@
             // grpPurchase
             // 
             this.grpPurchase.Controls.Add(this.lblPurchaseInfo);
-            this.grpPurchase.Controls.Add(this.btnPurchaseActivate);
             this.grpPurchase.Controls.Add(this.txtReleaseKey);
             this.grpPurchase.Controls.Add(this.lblReleaseKey);
             this.grpPurchase.ForeColor = System.Drawing.Color.White;
@@ -305,15 +288,6 @@
             this.lblPurchaseInfo.Name = "lblPurchaseInfo";
             this.lblPurchaseInfo.VisitedLinkColor = System.Drawing.Color.Silver;
             // 
-            // btnPurchaseActivate
-            // 
-            resources.ApplyResources(this.btnPurchaseActivate, "btnPurchaseActivate");
-            this.btnPurchaseActivate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
-            this.btnPurchaseActivate.FlatAppearance.BorderSize = 0;
-            this.btnPurchaseActivate.Name = "btnPurchaseActivate";
-            this.btnPurchaseActivate.UseVisualStyleBackColor = false;
-            this.btnPurchaseActivate.Click += new System.EventHandler(this.btnPurchaseActivate_Click);
-            // 
             // txtReleaseKey
             // 
             this.txtReleaseKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(33)))), ((int)(((byte)(38)))));
@@ -323,7 +297,32 @@
             resources.ApplyResources(this.txtReleaseKey, "txtReleaseKey");
             this.txtReleaseKey.Name = "txtReleaseKey";
             this.txtReleaseKey.Text = global::Syn3Updater.Properties.Settings.Default.LicenseKey;
-            this.txtReleaseKey.TextChanged += new System.EventHandler(this.txtReleaseKey_TextChanged);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Syn3Updater.Properties.Resources.syncversion;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
+            // 
+            // btnClose
+            // 
+            resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.Name = "btnClose";
+            this.btnClose.TabStop = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnClose.MouseLeave += new System.EventHandler(this.btnWindowControls_MouseLeave);
+            this.btnClose.MouseHover += new System.EventHandler(this.btnClose_MouseHover);
+            // 
+            // btnLogo
+            // 
+            this.btnLogo.BackColor = System.Drawing.Color.Transparent;
+            this.btnLogo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLogo.Image = global::Syn3Updater.Properties.Resources.logo;
+            resources.ApplyResources(this.btnLogo, "btnLogo");
+            this.btnLogo.Name = "btnLogo";
+            this.btnLogo.TabStop = false;
+            this.btnLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitleBar_MouseDown);
             // 
             // FrmSetup
             // 
@@ -332,7 +331,6 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(40)))), ((int)(((byte)(46)))));
             this.Controls.Add(this.grpPurchase);
             this.Controls.Add(this.grpAdvanced);
-            this.Controls.Add(this.lblWarning1);
             this.Controls.Add(this.grpDownload);
             this.Controls.Add(this.grpExistingDetails);
             this.Controls.Add(this.btnSetupContinue);
@@ -346,13 +344,14 @@
             this.grpDownload.PerformLayout();
             this.grpExistingDetails.ResumeLayout(false);
             this.grpExistingDetails.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).EndInit();
             this.panelTitleBar.ResumeLayout(false);
             this.grpAdvanced.ResumeLayout(false);
             this.grpAdvanced.PerformLayout();
             this.grpPurchase.ResumeLayout(false);
             this.grpPurchase.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -383,6 +382,6 @@
         private System.Windows.Forms.Label lblReleaseKey;
         private System.Windows.Forms.GroupBox grpPurchase;
         private System.Windows.Forms.LinkLabel lblPurchaseInfo;
-        private System.Windows.Forms.Button btnPurchaseActivate;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
