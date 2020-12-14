@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-//using QRCoder;
-using Syn3Updater.UI;
+using Syn3Updater.UI; //using QRCoder;
 
 namespace Syn3Updater
 {

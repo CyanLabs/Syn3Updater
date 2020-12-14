@@ -16,10 +16,8 @@ namespace Syn3Updater.Converter
             {
                 return Visibility.Visible;
             }
-            else
-            {
-                return Visibility.Collapsed;
-            }
+
+            return Visibility.Collapsed;
         }
 
 
@@ -38,10 +36,8 @@ namespace Syn3Updater.Converter
             {
                 return Visibility.Visible;
             }
-            else
-            {
-                return Visibility.Collapsed;
-            }
+
+            return Visibility.Collapsed;
         }
 
 

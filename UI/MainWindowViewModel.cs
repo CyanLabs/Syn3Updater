@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using Syn3Updater.Model;
 
-
 namespace Syn3Updater.UI
 {
     public class MainWindowViewModel : LanguageAwareBaseViewModel
@@ -76,7 +75,7 @@ namespace Syn3Updater.UI
             set => SetProperty(ref _modalText, value);
         }
 
-        private bool _showModalTextBox = false;
+        private bool _showModalTextBox;
 
         public bool ShowModalTextBox
         {
@@ -84,7 +83,7 @@ namespace Syn3Updater.UI
             set => SetProperty(ref _showModalTextBox, value);
         }
 
-        private bool _showModalCloseButton = false;
+        private bool _showModalCloseButton;
 
         public bool ShowModalCloseButton
         {
@@ -122,7 +121,7 @@ namespace Syn3Updater.UI
             set => SetProperty(ref _tabItems, value);
         }
 
-        private int _modalPercentage = 0;
+        private int _modalPercentage;
         public int ModalPercentage { get => _modalPercentage; set => SetProperty(ref _modalPercentage, value); }
 
         private bool _modalShowPercentage;

@@ -20,7 +20,7 @@ namespace Syn3Updater.Helper
             return message;
         }
 
-        private static readonly Action EmptyDelegate = delegate () { };
+        private static readonly Action EmptyDelegate = delegate { };
 
 
         public static void Refresh(this UIElement uiElement)

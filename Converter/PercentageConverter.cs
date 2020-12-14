@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -21,7 +18,7 @@ namespace Syn3Updater.Converter
         {
             try
             {
-                double res = (value.ToString()).GetDouble() * (parameter.ToString()).GetDouble();
+                double res = (value?.ToString()).GetDouble() * (parameter?.ToString()).GetDouble();
 
                 if (res < 1) res = 1;
 
@@ -57,7 +54,7 @@ namespace Syn3Updater.Converter
         {
             try
             {
-                return (value.ToString()).GetDouble() - (parameter.ToString()).GetDouble();
+                return (value?.ToString()).GetDouble() - (parameter?.ToString()).GetDouble();
             }
             catch
             {
@@ -98,10 +95,10 @@ namespace Syn3Updater.Converter
                 v = -v;
             }
 
-            var parts = param.Split('|');
-            param = parts.First();
+            var parts = param?.Split('|');
+            param = (parts ?? Array.Empty<string>()).First();
 
-            if (parts.Length > 1)
+            if (parts != null && parts.Length > 1)
             {
                 double amount = parts[1].GetDouble();
 

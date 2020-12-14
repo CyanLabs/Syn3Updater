@@ -13,7 +13,8 @@
         Width="800"
         MinHeight="360"
         MinWidth="640"
-        fw:AcrylicWindow.Enabled="True" Icon="/Syn3Updater;component/cyanlabs.ico">
+        fw:AcrylicWindow.Enabled="True" Icon="/Syn3Updater;component/cyanlabs.ico"
+        Closing="Window_Closing">
     <Window.Resources>
 
         <Converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>

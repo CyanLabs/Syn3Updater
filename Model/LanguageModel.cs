@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using Syn3Updater.Properties;
 
 namespace Syn3Updater.Model
 {
@@ -25,12 +27,12 @@ namespace Syn3Updater.Model
             string contents = File.ReadAllText(path);
             List<string> lines = contents.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Select(x => x.Trim()).ToList();
 
-            this.Code = lines[0];
-            this.EnglishName = lines[2];
-            this.NativeName = lines[1];
+            Code = lines[0];
+            EnglishName = lines[2];
+            NativeName = lines[1];
             //this.Emoji = lines[3];
 
-            this.Items = new List<LanguageItem>();
+            Items = new List<LanguageItem>();
             foreach (string s in lines.Skip(3))
             {
                 string[] parts = s.Replace("  ", "\t").Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
@@ -39,13 +41,13 @@ namespace Syn3Updater.Model
                 {
                     parts = new string[2];
 
-                    parts[0] = s.Substring(0, s.IndexOf(" ")).Trim();
-                    parts[1] = s.Substring(s.IndexOf(" ")).Trim();
+                    parts[0] = s.Substring(0, s.IndexOf(" ", StringComparison.Ordinal)).Trim();
+                    parts[1] = s.Substring(s.IndexOf(" ", StringComparison.Ordinal)).Trim();
                 }
 
                 if (parts.Length > 1)
                 {
-                    this.Items.Add(new LanguageItem
+                    Items.Add(new LanguageItem
                     {
                         Key = parts[0],
                         Value = parts[1]
@@ -82,6 +84,7 @@ namespace Syn3Updater.Model
             }
             catch
             {
+                // ignored
             }
         }
 
@@ -100,7 +103,7 @@ namespace Syn3Updater.Model
                     return "[" + lang + ":" + key + "]";
                 }
 
-                Debug.WriteLine("Looking for " + key + " in " + l?.Code);
+                Debug.WriteLine("Looking for " + key + " in " + l.Code);
                 string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value;
                 if (string.IsNullOrWhiteSpace(r))
                 {
@@ -112,6 +115,7 @@ namespace Syn3Updater.Model
             }
             catch
             {
+                // ignored
             }
 
             return lang + ":::" + key;
@@ -131,21 +135,23 @@ namespace Syn3Updater.Model
 
                 //if (ApplicationManager.Instance != null)
                 //{
-                //    if (ApplicationManager.Instance.NGSettings?.Lang != null)
-                //    {
-                //        lang = ApplicationManager.Instance.NGSettings.Lang;
-                //    }
+                if (Settings.Default.Lang != null)
+                {
+                    lang = Settings.Default.Lang;
+                }
                 //}
 
                 if (string.IsNullOrWhiteSpace(lang))
                 {
-                    lang = System.Globalization.CultureInfo.CurrentCulture.Name;
+                    lang = CultureInfo.CurrentCulture.Name;
 
                     //if (ApplicationManager.Instance?.NGSettings != null)
                     //{
 
                     //    ApplicationManager.Instance.NGSettings.Lang = lang;
                     //}
+
+                    Settings.Default.Lang = lang;
                 }
 
                 LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());

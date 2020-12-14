@@ -44,11 +44,11 @@ namespace Syn3Updater.Model
         /// <returns><c>true</c> if the value was changed, <c>false</c> if the existing value matched the desired value.</returns>
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
-            if (!this.RequiresUpdate(ref storage, value)) return false;
+            if (!RequiresUpdate(ref storage, value)) return false;
 
             storage = value;
             // ReSharper disable once ExplicitCallerInfoArgument
-            this.OnPropertyChanged(propertyName);
+            OnPropertyChanged(propertyName);
             return true;
         }
 
@@ -59,7 +59,7 @@ namespace Syn3Updater.Model
         /// and can be provided automatically when invoked from compilers that support <see cref="CallerMemberNameAttribute"/>.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

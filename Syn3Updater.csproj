@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-  <Deterministic>False</Deterministic>
+    <Deterministic>False</Deterministic>
     <StartupObject>Syn3Updater.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
@@ -103,10 +103,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\LocConverter.cs" />
-    <Compile Include="Converters\PercentageConverter.cs" />
-    <Compile Include="Converters\StringMatchToVisibilityConverter.cs" />
+    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\LocConverter.cs" />
+    <Compile Include="Converter\PercentageConverter.cs" />
+    <Compile Include="Converter\StringMatchToVisibilityConverter.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

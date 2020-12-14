@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using Syn3Updater.Properties;
 
 namespace Syn3Updater.UI
 {
@@ -8,20 +12,15 @@ namespace Syn3Updater.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowViewModel Vm => ((MainWindowViewModel)DataContext);
-
-        public static readonly SimpleLogger Logger = new SimpleLogger();
+        private MainWindowViewModel Vm => (MainWindowViewModel)DataContext;
 
         public MainWindow()
         {
-
             InitializeComponent();
-
-            this.Title = "Syn3 Updater " + System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-
+            Title = "Syn3 Updater " + Assembly.GetEntryAssembly().GetName().Version;
         }
 
-        private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if ((sender as Grid).DataContext is MainWindowViewModel.TabItem lvm)
             {
@@ -36,9 +35,14 @@ namespace Syn3Updater.UI
             }
         }
 
-        private void Grid_MouseDown_1(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Grid_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
             Vm.CurrentTab = "settings";
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Settings.Default.Save();
         }
     }
 }
