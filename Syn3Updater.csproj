@@ -4,29 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A1A2E701-9E63-4BE4-A3B7-4386EF338CD2}</ProjectGuid>
+    <ProjectGuid>{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Syn3Updater</RootNamespace>
     <AssemblyName>Syn3Updater</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,293 +35,135 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Syn3Updater.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>cyanlabs.ico</ApplicationIcon>
+    <StartupObject>Syn3Updater.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoUpdater.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
-      <HintPath>packages\Autoupdater.NET.Official.1.6.0\lib\net40\AutoUpdater.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    <Reference Include="FluentWPF, Version=0.8.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\FluentWPF.0.8.0\lib\net45\FluentWPF.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\frmDisclaimer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmDisclaimer.Designer.cs">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmMain.Designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\Functions.cs" />
-    <Compile Include="Helpers\HttpClientDownloadWithProgress.cs" />
-    <Compile Include="Helpers\Json\Data.cs" />
-    <Compile Include="Helpers\Json\Ivsu.cs" />
-    <Compile Include="Helpers\Json\Ivsus.cs" />
-    <Compile Include="Helpers\Json\JsonReleases.cs" />
-    <Compile Include="Helpers\Json\Maps.cs" />
-    <Compile Include="Helpers\Json\Map_Ivsu.cs" />
-    <Compile Include="Helpers\Json\Release.cs" />
-    <Compile Include="Helpers\KnownFolders.cs" />
-    <Compile Include="NewProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\frmSetup.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmSetup.Designer.cs">
-      <DependentUpon>frmSetup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmRegion.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmRegion.Designer.cs">
-      <DependentUpon>frmRegion.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmLog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmLog.Designer.cs">
-      <DependentUpon>frmLog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Localization\strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>strings.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Forms\frmDisclaimer.de.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.en-gb.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.es.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.it.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.pl.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.pt.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.ru.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.tr.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDisclaimer.zh.resx">
-      <DependentUpon>frmDisclaimer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.de.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.en-GB.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.en.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.es.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.fr.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.it.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.pl.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.pt.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.ru.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.tr.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmMain.zh.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmRegion.resx">
-      <DependentUpon>frmRegion.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.de.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.en-gb.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
+    </ApplicationDefinition>
+    <Compile Include="Helper\ExceptionExtension.cs" />
+    <Compile Include="Helper\MathHelper.cs" />
+    <Compile Include="Model\LanguageModel.cs" />
+    <Compile Include="Model\BaseViewModel.cs" />
+    <Compile Include="UI\CrashWindow.xaml.cs">
+      <DependentUpon>CrashWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LanguageAwareBaseviewModel.cs" />
+    <Compile Include="UI\MainWindowViewModel.cs" />
+    <Compile Include="UI\SimpleLogger.cs" />
+    <Compile Include="UI\Tabs\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Tabs\AboutViewModel.cs" />
+    <Compile Include="UI\Tabs\Download.xaml.cs">
+      <DependentUpon>Download.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Tabs\DownloadViewModel.cs" />
+    <Compile Include="UI\Tabs\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Tabs\HomeViewModel.cs" />
+    <Compile Include="UI\Tabs\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Tabs\SettingsViewModel.cs" />
+    <Page Include="UI\CrashWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.es.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
+    </Page>
+    <Page Include="UI\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.it.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\LocConverter.cs" />
+    <Compile Include="Converters\PercentageConverter.cs" />
+    <Compile Include="Converters\StringMatchToVisibilityConverter.cs" />
+    <Compile Include="UI\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="UI\Tabs\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.pl.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.pt.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.ru.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.tr.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmSetup.zh.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
+    </Page>
+    <Page Include="UI\Tabs\Download.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization\strings.de.resx">
+    </Page>
+    <Page Include="UI\Tabs\Home.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization\strings.en-gb.resx" />
-    <EmbeddedResource Include="Localization\strings.es.resx">
+    </Page>
+    <Page Include="UI\Tabs\Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization\strings.it.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization\strings.pl.resx" />
-    <EmbeddedResource Include="Localization\strings.pt.resx" />
-    <EmbeddedResource Include="Localization\strings.ru.resx" />
-    <EmbeddedResource Include="Localization\strings.tr.resx" />
-    <EmbeddedResource Include="Localization\strings.zh.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.de.resx" />
-    <EmbeddedResource Include="Properties\Resources.es.resx" />
-    <EmbeddedResource Include="Properties\Resources.fr.resx" />
-    <EmbeddedResource Include="Properties\Resources.it.resx" />
-    <EmbeddedResource Include="Properties\Resources.pl.resx" />
-    <EmbeddedResource Include="Properties\Resources.pt.resx" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\frmSetup.resx">
-      <DependentUpon>frmSetup.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmLog.resx">
-      <DependentUpon>frmLog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization\strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>strings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ru.resx" />
-    <EmbeddedResource Include="Properties\Resources.tr.resx" />
-    <EmbeddedResource Include="Properties\Resources.zh.resx" />
-    <None Include="packages.config" />
-    <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\button.png" />
+    <Resource Include="cyanlabs.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\close.png" />
+    <Resource Include="UI\Tabs\syncversion.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\minimize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="cyanlabs.ico" />
+    <Content Include="Languages\en-GB.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (del "$(TargetDir)*.xml", "$(TargetDir)*.pdb")
-if $(ConfigurationName) == Release ("C:\Program Files (x86)\NSIS\makensis.exe" /DProductName="$(TargetName)" $(ProjectDir)cyanlabs_setup.nsi)
-</PostBuildEvent>
-  </PropertyGroup>
 </Project>
