@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Syn3Updater.Languages;
+using Syn3Updater.Model;
 
 namespace Syn3Updater.Converter
 {

@@ -1,8 +1,8 @@
-﻿using Syn3Updater.Languages;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using Syn3Updater.Model;
 
 
 namespace Syn3Updater.UI
