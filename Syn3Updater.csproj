@@ -163,6 +163,9 @@
     <Resource Include="UI\Tabs\syncversion.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Languages\FR-FR.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Languages\en-GB.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
