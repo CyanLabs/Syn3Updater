@@ -8,25 +8,9 @@ namespace Syn3Updater.UI
 {
     public class MainWindowViewModel : LanguageAwareBaseViewModel
     {
+
         public MainWindowViewModel()
         {
-            TabItems = new ObservableCollection<TabItem>
-            {
-                new TabItem("0xE700","",""),
-                new TabItem("0xE946","About","about"),
-                new TabItem("0xE74C","Home","home"),
-                new TabItem("0xE896","Downloads","downloads"),
-                //new TabItem("0xF163","Profiles","profiles"),
-                new TabItem("0xF582","News","news"),
-                new TabItem("0xEBE8","Crash","crashme")
-            };
-
-            foreach (TabItem tabItem in TabItems.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
-            {
-                tabItem.Name = LanguageManager.GetValue("Main." + tabItem.Key);
-            }
-            OnPropertyChanged(nameof(TabItems));
-
             ApplicationManager.Instance.LanguageChangedEvent += delegate (object sender, EventArgs args)
             {
                 ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
@@ -47,7 +31,6 @@ namespace Syn3Updater.UI
 
                 TabItems = ti;
             };
-
             CurrentTab = "home";
         }
 
