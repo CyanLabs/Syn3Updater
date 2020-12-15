@@ -56,3 +56,6 @@ Settings.ShowAllReleases Show All Releases:
 Settings.PaidOptions Paid Options
 Settings.LicenseKeyInfo Enter your license key below to gain access to any custom packages you have purchased!
 Settings.LicenseKey License Key:
+MessageBox.DisclaimerNotAccepted Please read and accept the disclaimer before continuing. You will not be able to continue unless you agree to the terms.
+MessageBox.NoSyncVersionOrRegionSelected You have not set your current Sync Version or Sync Region!
+MessageBox.DownloadPathChangeCopy Would you like to move existing files from {0} to {1}

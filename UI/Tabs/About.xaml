@@ -80,7 +80,7 @@
                         <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}"/>
 
                         <StackPanel Orientation="Horizontal" >
-                            <CheckBox VerticalAlignment="Center" Margin="10"></CheckBox>
+                            <CheckBox VerticalAlignment="Center" Margin="10" IsChecked="{Binding DisclaimerAccepted}"/>
                             <TextBlock VerticalAlignment="Center"  Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.DisclaimerAgreement, Converter={StaticResource LocConverter}}"/>
                         </StackPanel>
                     </StackPanel>

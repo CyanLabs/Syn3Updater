@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using Microsoft.VisualBasic.FileIO;
+using Syn3Updater.Helper;
 using Syn3Updater.Model;
 
 namespace Syn3Updater.UI.Tabs
@@ -36,8 +39,11 @@ namespace Syn3Updater.UI.Tabs
 
             CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion;
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
-            DownloadLocation = Properties.Settings.Default.DownloadLocation;
-            
+
+            DownloadLocation = Properties.Settings.Default.DownloadLocation == ""
+                ? KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\"
+                : Properties.Settings.Default.DownloadLocation;
+
             ShowAllReleases = Properties.Settings.Default.ShowAllReleases;
             LicenseKey = Properties.Settings.Default.LicenseKey;
             CurrentLanguage = Properties.Settings.Default.Lang;
@@ -165,6 +171,38 @@ namespace Syn3Updater.UI.Tabs
                     ApplicationManager.Instance.FireLanguageChangedEvent();
                 }
 
+            }
+        }
+        
+        private ActionCommand _downloadPathSelector;
+        public ActionCommand DownloadPathSelector => _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
+
+        private void DownloadPathAction()
+        {
+            string oldpath = Properties.Settings.Default.DownloadLocation;
+            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+            if (dialog.ShowDialog().GetValueOrDefault())
+            {
+                if (Directory.Exists(oldpath))
+                {
+                    if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldpath + Environment.NewLine, Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        if (oldpath != dialog.SelectedPath)
+                        {
+                            try
+                            {
+                                FileSystem.MoveDirectory(oldpath, dialog.SelectedPath,
+                                UIOption.AllDialogs);
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                //TODO Catch better
+                            }
+                        }
+                    }
+                    Properties.Settings.Default.DownloadLocation = dialog.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
             }
         }
 

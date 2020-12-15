@@ -65,24 +65,21 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="25" />
                         </Grid.ColumnDefinitions>
-                        <ComboBox Margin="5,0,0,0" SelectedIndex="0" Text="Select USB Drive">
-                            <ComboBoxItem Visibility="Collapsed">Please Select a USB Drive</ComboBoxItem>
-                            <ComboBoxItem>Testing 1 2 3</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox Margin="5,0,0,0" SelectedIndex="0" ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDrive}"/>
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="16" ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}" Background="#00000000" Text="&#xE72C;" VerticalAlignment="Center"  Foreground="White" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" />
                     </Grid>
                     <StackPanel Margin="5,10,5,10" Grid.Row="2" Grid.Column="0" >
                         <StackPanel Orientation="Horizontal" Margin="0">
                             <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveName, Converter={StaticResource LocConverter}}"/>
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding DriveName}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0">
                             <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveLetter, Converter={StaticResource LocConverter}}"/>
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding DriveLetter}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0">
                             <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, Converter={StaticResource LocConverter}}"/>
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding DriveFileSystem}"/>
                         </StackPanel>
             </StackPanel>
                     
@@ -108,7 +105,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -126,7 +123,7 @@
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"  Grid.Row="0" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}"/>
                         <ComboBox Grid.Row="0" Grid.Column="1"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0" Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Text="&#xF142;" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Button Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0" Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xF142;" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RegionInfo}" />
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}"/>
                         <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>

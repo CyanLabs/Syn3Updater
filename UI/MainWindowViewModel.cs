@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using Syn3Updater.Model;
+using Syn3Updater.Properties;
 
 namespace Syn3Updater.UI
 {
@@ -19,6 +21,7 @@ namespace Syn3Updater.UI
                     new TabItem("0xE946","About","about"),
                     new TabItem("0xE74C","Home","home"),
                     new TabItem("0xE896","Downloads","downloads"),
+                    //TODO Implement Profiles in the future
                     //new TabItem("0xF163","Profiles","profiles"),
                     new TabItem("0xF582","News","news"),
                     new TabItem("0xEBE8","Crash","crashme")
@@ -31,7 +34,7 @@ namespace Syn3Updater.UI
 
                 TabItems = ti;
             };
-            CurrentTab = "home";
+            CurrentTab = Settings.Default.DisclaimerAccepted ? "home" : "about";
         }
 
         private bool _hamburgerExtended;
@@ -81,14 +84,25 @@ namespace Syn3Updater.UI
             get => _currentTab;
             set
             {
-                SetProperty(ref _currentTab, value);
-                if (value == "crashme")
+                if (value != "about" && !Settings.Default.DisclaimerAccepted)
+                {
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater",MessageBoxButton.OK,MessageBoxImage.Warning);
+                }
+                else if(value == "home" && (Settings.Default.CurrentSyncVersion == "" || Settings.Default.CurrentSyncRegion == ""))
+                {
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    SetProperty(ref _currentTab, "settings");
+                }
+                else if (value == "crashme")
                 {
                     int i = 11;
                     i -= 11;
                     Debug.WriteLine(11 / i);
                 }
-
+                else
+                {
+                    SetProperty(ref _currentTab, value);
+                }
                 foreach (TabItem tabItem in TabItems)
                 {
                     tabItem.IsCurrent = tabItem.Key.ToLower() == value.ToLower();

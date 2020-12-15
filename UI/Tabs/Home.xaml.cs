@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Controls;
 
 namespace Syn3Updater.UI.Tabs
@@ -11,6 +12,10 @@ namespace Syn3Updater.UI.Tabs
         public Home()
         {
             InitializeComponent();
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                (this.DataContext as HomeViewModel)?.Init();
+            }
         }
     }
 }

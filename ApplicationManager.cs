@@ -13,6 +13,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +27,7 @@ namespace Syn3Updater
         public static ApplicationManager Instance { get; } = new ApplicationManager();
 
         public MainWindow MainWindow;
+        public bool Skipcheck;
 
         public void FireLanguageChangedEvent()
         {
@@ -61,6 +63,24 @@ namespace Syn3Updater
 
             //client = new DiscordRpcClient("");
             //client.Initialize();
+
+            if (!Directory.Exists(Properties.Settings.Default.DownloadLocation) && Properties.Settings.Default.DownloadLocation != "")
+            {
+                Directory.CreateDirectory(Properties.Settings.Default.DownloadLocation);
+            }
+
+            foreach (string arg in Environment.GetCommandLineArgs())
+               switch (arg)
+               {
+                   case "/updated":
+                       Properties.Settings.Default.Upgrade();
+                       Properties.Settings.Default.Save();
+                       break;
+                   case "/debug":
+                       Skipcheck = true;
+                       break;
+               }
+
             if (MainWindow == null) MainWindow = new MainWindow();
             if (!MainWindow.IsVisible)
             {

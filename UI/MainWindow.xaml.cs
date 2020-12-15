@@ -48,10 +48,5 @@ namespace Syn3Updater.UI
         {
             Settings.Default.Save();
         }
-
-        private void MainWindow_OnClosed(object sender, EventArgs e)
-        {
-            ApplicationManager.Instance.Exit();
-        }
     }
 }

@@ -118,5 +118,17 @@ namespace Syn3Updater.Properties {
                 this["LicenseKey"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisclaimerAccepted {
+            get {
+                return ((bool)(this["DisclaimerAccepted"]));
+            }
+            set {
+                this["DisclaimerAccepted"] = value;
+            }
+        }
     }
 }

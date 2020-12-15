@@ -18,7 +18,7 @@ namespace Syn3Updater
         {
             Log.Add(new LogEntry(log.ToString(), "Info", null, cmn));
         }
-
+        //TODO Implement QR Code backend crashlog etc
         public void CrashWindow(Exception ex, [CallerMemberName] string callerMemberName = "")
         {
             CrashWindow crashWindow = new CrashWindow();
