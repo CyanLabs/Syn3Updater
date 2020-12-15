@@ -1,12 +1,14 @@
-﻿<Application x:Class="Syn3Updater.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Syn3Updater"
-             xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-             xmlns:converter="clr-namespace:Syn3Updater.Converter"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-             StartupUri="UI/MainWindow.xaml">
+﻿<Application
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:p = "clr-namespace:Syn3Updater.Properties"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
+    xmlns:rgbSyncPlus="clr-namespace:Syn3Updater" xmlns:Converter="clr-namespace:Syn3Updater.Converter"
+    xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    x:Class="Syn3Updater.App"
+    Exit="App_OnExit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,7 +16,7 @@
                 <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <converter:LocConverter x:Key="LocConverter"/>
+            <Converter:LocConverter x:Key="LocConverter"/>
 
             <Style TargetType="ListView">
                 <Setter Property="BorderThickness" Value="0"></Setter>
@@ -332,7 +334,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="RepeatButton">
-                            <Border SnapsToDevicePixels="True" Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}" BorderThickness="1" BorderBrush="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}" Height="3"/>
+                            <Border SnapsToDevicePixels="True" Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" BorderThickness="1" BorderBrush="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" Height="3"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -344,7 +346,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Thumb">
-                            <Border Height="24" Width="8" CornerRadius="4" Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}"></Border>
+                            <Border Height="24" Width="8" CornerRadius="4" Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}"></Border>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>

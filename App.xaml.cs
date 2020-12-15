@@ -10,30 +10,27 @@ namespace Syn3Updater
     {
 
         #region Methods
-        //void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        //{
-            //ApplicationManager.Logger.CrashWindow(e.Exception);
-            //e.Handled = true;
-        //}
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             //if (!Debugger.IsAttached)
             {
-                DispatcherUnhandledException += App_DispatcherUnhandledException;
+                this.DispatcherUnhandledException += App_DispatcherUnhandledException;
             }
 
+            ApplicationManager.Instance.Initialize();
         }
 
-        public static readonly SimpleLogger Logger = new SimpleLogger();
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Logger.CrashWindow(e.Exception);
+            ApplicationManager.Logger.CrashWindow(e.Exception);
             e.Handled = true;
         }
 
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            //  throw new NotImplementedException();
+        }
         #endregion
-
     }
 }

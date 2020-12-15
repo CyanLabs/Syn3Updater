@@ -24,8 +24,8 @@
             <StackPanel>
                 <Grid Background="#40000000" Grid.ColumnSpan="2">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="About Syn3 Updater" TextDecorations="{x:Null}"/>
-                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="Syn3 Updater is a Windows application created to make the upgrade process of Ford Sync 3 as simple as possible." TextWrapping="WrapWithOverflow"/>
+                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
+                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.About, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow"/>
                         <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo" TextWrapping="WrapWithOverflow"/>
                         
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -37,7 +37,7 @@
                                     </LinearGradientBrush>
                                 </Button.Background>
                             </Button>
-                            <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="CYANLABS FORUM">
+                            <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -45,7 +45,7 @@
                                     </LinearGradientBrush>
                                 </Button.Background>
                             </Button>
-                            <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="DONATE">
+                            <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -60,11 +60,9 @@
 
                 <Grid Background="#40000000">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="Documentation" TextDecorations="{x:Null}"/>
-                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextWrapping="WrapWithOverflow">
-                            To ensure that the documentation is always up to date please refer to the below webpage.
-                        </TextBlock>
-                        <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Content="Syn3 Updater Documentation" HorizontalAlignment="Right">
+                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
+                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow"/>
+                        <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Content="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}" HorizontalAlignment="Right">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                     <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -78,14 +76,12 @@
 
                 <Grid Background="#40000000" VerticalAlignment="Bottom">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="Disclaimer" TextDecorations="{x:Null}"/>
-                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextWrapping="WrapWithOverflow">
-                            CyanLabs will not be liable for any loss or damage including, without limitation, indirect or consequential loss or damage, or any loss or damage whatsoever arising from use or loss of use of, data, or profits, arising out of or in connection with the use of this application or the associated guides. This process is not approved by any vehicle manufacturer and may void any warranty/agreement you may have in place
-                        </TextBlock>
+                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
+                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}"/>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                        <StackPanel Orientation="Horizontal" >
                             <CheckBox VerticalAlignment="Center" Margin="10"></CheckBox>
-                            <TextBlock VerticalAlignment="Center"  Foreground="{DynamicResource SystemBaseHighColorBrush}">I understand and accept the risks outlined in the disclaimer above.<LineBreak/>Cyanlabs is not responsible for any undesired outcome of this operation.</TextBlock>
+                            <TextBlock VerticalAlignment="Center"  Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.DisclaimerAgreement, Converter={StaticResource LocConverter}}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

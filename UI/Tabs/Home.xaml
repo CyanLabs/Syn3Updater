@@ -29,12 +29,16 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="Current Configuration" TextDecorations="{x:Null}"/>
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.CurrentConfiguration, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="10,0,10,10" xml:space="preserve"><Bold>Version: </Bold>3.4.19200</TextBlock>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="10,0,10,10" xml:space="preserve"><Bold>Region: </Bold>EU</TextBlock>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="10,0,10,10" xml:space="preserve"><Bold>Navigation: </Bold>Yes</TextBlock>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="10,0,10,10" xml:space="preserve"><Bold>Download Path: </Bold>E:\Ford Sync\Syn3Updater</TextBlock>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" xml:space="preserve" Text="3.4.19200"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"  Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" xml:space="preserve" Text="EU"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"  Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.SyncNav, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" xml:space="preserve" Text="Yes"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"  Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.DownloadPath, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" xml:space="preserve" Text="E:\Ford Sync\Syn3Updater"/>
                     </StackPanel>
                 </Grid>
 
@@ -48,13 +52,14 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="Select a USB Drive" TextDecorations="{x:Null}"/>
-                    <TextBlock Margin="20,15" Grid.RowSpan="3" Grid.Column="2" Foreground="{DynamicResource SystemBaseHighColorBrush}">
-                        <Bold>Recommended USB Flash Drive sizes</Bold><LineBreak /><LineBreak />
-                        Non Navigation APIM's should be fine with 8GB<LineBreak />
-                        NA, ROW, ANZ APIM's will require atleast 16GB<LineBreak />
-                        EU APIM's will require atleast 32GB
-                    </TextBlock>
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
+                    <StackPanel Grid.RowSpan="3" Grid.Column="2" >
+                        <TextBlock Margin="20,15" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveTitle, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveNonNav, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveNA, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveEU, Converter={StaticResource LocConverter}}" />
+                    </StackPanel>
+                    
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -66,11 +71,21 @@
                         </ComboBox>
                         <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="16" ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}" Background="#00000000" Text="&#xE72C;" VerticalAlignment="Center"  Foreground="White" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" />
                     </Grid>
-                    <TextBlock Margin="5,10,5,10"  Grid.Row="2" Grid.Column="0" Foreground="{DynamicResource SystemBaseHighColorBrush}">
-                        <Bold>Drive Name:</Bold> CYANLABS<LineBreak />
-                        <Bold>Drive Letter:</Bold> F:<LineBreak />
-                         <Bold>Filesystem:</Bold> exFAT
-                    </TextBlock>
+                    <StackPanel Margin="5,10,5,10" Grid.Row="2" Grid.Column="0" >
+                        <StackPanel Orientation="Horizontal" Margin="0">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveName, Converter={StaticResource LocConverter}}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveLetter, Converter={StaticResource LocConverter}}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, Converter={StaticResource LocConverter}}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"/>
+                        </StackPanel>
+            </StackPanel>
+                    
                 </Grid>
 
                 <Grid Background="#40000000" Margin="10,5">
@@ -83,13 +98,12 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="New Sync Version" TextDecorations="{x:Null}"/>
-                    <TextBlock Margin="20,15" Grid.RowSpan="3" Grid.Column="1" Foreground="{DynamicResource SystemBaseHighColorBrush}">
-                        <Bold>Notes</Bold><LineBreak /><LineBreak />
-                        BLAH BLAH <LineBreak />
-                        BLAH BLAH <LineBreak />
-                        BLAH BLAH <LineBreak />
-                    </TextBlock>
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
+                    <StackPanel Grid.RowSpan="3" Grid.Column="1" >
+                        <TextBlock Margin="20,15" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Margin="20,15" Foreground="{DynamicResource SystemBaseHighColorBrush}" />
+                    </StackPanel>
+                   
                     <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -110,21 +124,15 @@
                             </Style>
                         </Grid.Resources>
 
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"  Grid.Row="0" Grid.Column="0">Region: </TextBlock>
-                        <ComboBox Grid.Row="0" Grid.Column="1" Text="Select USB Drive">
-                            <ComboBoxItem>Testing 1 2 3</ComboBoxItem>
-                        </ComboBox>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"  Grid.Row="0" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1"/>
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0" Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Text="&#xF142;" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0">Version: </TextBlock>
-                        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Select USB Drive">
-                            <ComboBoxItem>Testing 1 2 3</ComboBoxItem>
-                        </ComboBox>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}"/>
+                        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0">Map Version: </TextBlock>
-                        <ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="Select USB Drive">
-                            <ComboBoxItem>Testing 1 2 3</ComboBoxItem>
-                        </ComboBox>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}"/>
+                        <ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
                     </Grid>
                 </Grid>
 
@@ -133,7 +141,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}"><Run Text="Select Packages"/></TextBlock>
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.SelectPackages, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                     <ListView Margin="5,0" Height="150" Grid.Row="1" FontFamily="Segoe UI Light" FontSize="18">
                         <ListView.View>
                             <GridView>
@@ -150,8 +158,11 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Margin="5" FontSize="16" xml:space="preserve" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center"><Bold>Install Mode: </Bold>Auto Detect (Reformat)</TextBlock>
-                    <Button Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}"  Grid.Column="1" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="Start"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Margin="5" FontSize="16" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}"  Grid.Column="1" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Home.StartButton, Converter={StaticResource LocConverter}}"/>
                 </Grid>
             </StackPanel>
         </Grid>

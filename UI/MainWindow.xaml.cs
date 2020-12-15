@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Syn3Updater.Model;
 using Syn3Updater.Properties;
 
 namespace Syn3Updater.UI
@@ -43,6 +47,11 @@ namespace Syn3Updater.UI
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             Settings.Default.Save();
+        }
+
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            ApplicationManager.Instance.Exit();
         }
     }
 }

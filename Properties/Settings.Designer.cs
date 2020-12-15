@@ -8,19 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.CodeDom.Compiler;
-using System.Configuration;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-
 namespace Syn3Updater.Properties {
     
     
-    [CompilerGenerated()]
-    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
-    internal sealed partial class Settings : ApplicationSettingsBase {
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(Synchronized(new Settings())));
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
             get {
@@ -28,9 +23,9 @@ namespace Syn3Updater.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("")]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string CurrentSyncRegion {
             get {
                 return ((string)(this["CurrentSyncRegion"]));
@@ -40,15 +35,87 @@ namespace Syn3Updater.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("")]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Lang {
             get {
                 return ((string)(this["Lang"]));
             }
             set {
                 this["Lang"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CurrentSyncVersion {
+            get {
+                return ((string)(this["CurrentSyncVersion"]));
+            }
+            set {
+                this["CurrentSyncVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CurrentSyncNav {
+            get {
+                return ((bool)(this["CurrentSyncNav"]));
+            }
+            set {
+                this["CurrentSyncNav"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DownloadLocation {
+            get {
+                return ((string)(this["DownloadLocation"]));
+            }
+            set {
+                this["DownloadLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CurrentInstallMode {
+            get {
+                return ((string)(this["CurrentInstallMode"]));
+            }
+            set {
+                this["CurrentInstallMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowAllReleases {
+            get {
+                return ((bool)(this["ShowAllReleases"]));
+            }
+            set {
+                this["ShowAllReleases"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LicenseKey {
+            get {
+                return ((string)(this["LicenseKey"]));
+            }
+            set {
+                this["LicenseKey"] = value;
             }
         }
     }

@@ -15,10 +15,10 @@ namespace Syn3Updater.UI
                 new TabItem("0xE700","",""),
                 new TabItem("0xE946","About","about"),
                 new TabItem("0xE74C","Home","home"),
-                new TabItem("0xE896","Downloads","download"),
+                new TabItem("0xE896","Downloads","downloads"),
                 //new TabItem("0xF163","Profiles","profiles"),
                 new TabItem("0xF582","News","news"),
-                new TabItem("0xF582","Crash","crashme")
+                new TabItem("0xEBE8","Crash","crashme")
             };
 
             foreach (TabItem tabItem in TabItems.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
@@ -27,26 +27,26 @@ namespace Syn3Updater.UI
             }
             OnPropertyChanged(nameof(TabItems));
 
-            //ApplicationManager.Instance.LanguageChangedEvent += delegate (object sender, EventArgs args)
-            //{
-            //    ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
-            //    {
-            //        new TabItem("0xE700","",""),
-            //        new TabItem("0xE946","About","about"),
-            //        new TabItem("0xE74C","Home","home",true),
-            //        new TabItem("0xE896","Downloads","download"),
-            //        //new TabItem("0xF163","Profiles","profiles"),
-            //        new TabItem("0xF582","News","news"),
-            //        //new TabItem("","Crash","crashme")
-            //    };
+            ApplicationManager.Instance.LanguageChangedEvent += delegate (object sender, EventArgs args)
+            {
+                ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
+                {
+                    new TabItem("0xE700","",""),
+                    new TabItem("0xE946","About","about"),
+                    new TabItem("0xE74C","Home","home"),
+                    new TabItem("0xE896","Downloads","downloads"),
+                    //new TabItem("0xF163","Profiles","profiles"),
+                    new TabItem("0xF582","News","news"),
+                    new TabItem("0xEBE8","Crash","crashme")
+                };
 
-            //    foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
-            //    {
-            //        tabItem.Name = LanguageManager.GetValue("Main." + tabItem.Key, Language);
-            //    }
+                foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
+                {
+                    tabItem.Name = LanguageManager.GetValue("Main." + tabItem.Key, Language);
+                }
 
-            //    TabItems = ti;
-            //};
+                TabItems = ti;
+            };
 
             CurrentTab = "home";
         }

@@ -1,4 +1,58 @@
 ﻿EN-GB
 English (United Kingdom)
 English (United Kingdom)
-Main.Home Hello World
+Main.Home Home
+Main.About About
+Main.Downloads Downloads
+Main.News News
+Main.Crashme Crash
+Main.Settings Settings
+Home.CurrentConfiguration Current Configuration
+Home.SyncVersion Version:
+Home.SyncRegion Region:
+Home.SyncNav Navigation:
+Home.SyncMapVersion Map Version:
+Home.DownloadPath Download Path:
+Home.SelectUSBDrive Select A USB Drive
+Home.DriveName Drive Name:
+Home.DriveLetter Drive Letter:
+Home.DriveFileSystem File System:
+Home.RecommendedUSBFlashDriveTitle Recommended USB Flash Drive sizes
+Home.RecommendedUSBFlashDriveNonNav Non Navigation APIM's should be fine with 8GB
+Home.RecommendedUSBFlashDriveNA NA, ROW, ANZ APIM's will require atleast 16GB
+Home.RecommendedUSBFlashDriveEU EU APIM's will require atleast 32GB
+Home.Notes Notes: 
+Home.NewSyncVersion New Sync Version
+Home.SelectPackages Select Package
+Home.InstallMode Install Mode:
+Home.StartButton Start
+About.AboutTitle About Syn3 Updater
+About.About Syn3 Updater is a Windows application created to make the upgrade process of Ford Sync 3 as simple as possible.
+About.ForumButton CYANLABS FORUM
+About.DonateButton DONATE
+About.DocumentationTitle Documentation
+About.Documentation To ensure that the documentation is always up to date please refer to the below webpage.
+About.DocumentationButton Syn3 Updater Documentation
+About.DisclaimerTitle Disclaimer
+About.Disclaimer CyanLabs will not be liable for any loss or damage including, without limitation, indirect or consequential loss or damage, or any loss or damage whatsoever arising from use or loss of use of, data, or profits, arising out of or in connection with the use of this application or the associated guides. This process is not approved by any vehicle manufacturer and may void any warranty/agreement you may have in place
+About.DisclaimerAgreement I understand and accept the risks outlined in the disclaimer above.
+Download.DownloadQueue Download Queue
+Download.Log Log
+Download.CancelButton Cancel
+Download.StartButton Start
+Settings.CarConfiguration Car Configuration
+Settings.EnterSyncVersion Enter your SYNC version (Settings > General > About Sync)
+Settings.EnterRegionNav Enter your REGION and specify if you have NAVIGATION
+Settings.Warning INCORRECT INFORMATION MAY RENDER YOUR APIM TEMPORARILY OR PERMANENTLY UNUSABLE
+Settings.FullSyncVersion Full Sync Version:
+Settings.SyncRegion SYNC Region:
+Settings.SyncNavigation Navigation:
+Settings.Configuration Configuration
+Settings.DownloadLocation Download Location:
+Settings.Language Language:
+Settings.AdvancedOptions Advanced Options
+Settings.InstallMode Force "Install Mode":
+Settings.ShowAllReleases Show All Releases:
+Settings.PaidOptions Paid Options
+Settings.LicenseKeyInfo Enter your license key below to gain access to any custom packages you have purchased!
+Settings.LicenseKey License Key:

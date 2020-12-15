@@ -20,7 +20,7 @@
             <StackPanel Orientation="Vertical">
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="Download Queue" TextDecorations="{x:Null}"/>
+                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Download.DownloadQueue, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                         <ListBox MaxHeight="160">
                             <ListBoxItem>1</ListBoxItem>
                             <ListBoxItem>1</ListBoxItem>
@@ -52,17 +52,20 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Margin="5" FontSize="16" xml:space="preserve" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center"><Bold>Install Mode: </Bold>Auto Detect (Reformat)</TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="5" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}"/>
+                                <TextBlock Margin="5" FontSize="16" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center"/>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0" Grid.Column="1">
-                                <Button Background="#ffff424d" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="Cancel"/>
-                                <Button Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}" Margin="0,5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="Start"/>
+                                <Button Background="#ffff424d" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}"/>
+                                <Button Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}" Margin="0,5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Download.StartButton, Converter={StaticResource LocConverter}}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Grid>
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="Log" TextDecorations="{x:Null}"/>
+                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                         <TextBox MinHeight="80" Margin="5" xml:space="preserve"  IsReadOnly="True">1
                                 2
                                 3

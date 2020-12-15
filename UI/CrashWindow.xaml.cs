@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 namespace Syn3Updater.UI
@@ -19,7 +15,7 @@ namespace Syn3Updater.UI
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            ApplicationManager.Instance.Exit();
         }
 
         public class CrashContainer

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         mc:Ignorable="d"
-        Title="CrashWindow" Height="450" Width="800"
+        Title="Syn3 Updater" Height="450" Width="800"
         fw:AcrylicWindow.Enabled="True" Background="#80009AC7" Icon="/Syn3Updater;component/cyanlabs.ico">
     <Grid>
         <Grid.RowDefinitions>

@@ -145,12 +145,6 @@ namespace Syn3Updater.Model
                 {
                     lang = CultureInfo.CurrentCulture.Name;
 
-                    //if (ApplicationManager.Instance?.NGSettings != null)
-                    //{
-
-                    //    ApplicationManager.Instance.NGSettings.Lang = lang;
-                    //}
-
                     Settings.Default.Lang = lang;
                 }
 

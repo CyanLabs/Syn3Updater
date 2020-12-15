@@ -14,7 +14,8 @@
         MinHeight="360"
         MinWidth="640"
         fw:AcrylicWindow.Enabled="True" Icon="/Syn3Updater;component/cyanlabs.ico"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        Closed="MainWindow_OnClosed">
     <Window.Resources>
 
         <Converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
@@ -91,11 +92,6 @@ Foreground="Transparent"
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="1"  Grid.ColumnSpan="2" Source="{Binding BackGround}" Stretch="UniformToFill" Opacity="{Binding BackgroundOpacity}">
-            <Image.Effect>
-                <BlurEffect Radius="{Binding BackgroundBlur}"></BlurEffect>
-            </Image.Effect>
-        </Image>
         <Grid Grid.Column="0" Width="auto" Background="{x:Null}" fw:PointerTracker.Enabled="True" >
             <Grid Background="{x:Static SystemParameters.WindowGlassBrush}" Opacity="0.5"/>
             <ListView ItemsSource="{Binding TabItems, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" ItemTemplate="{DynamicResource TabItemTemplate}"  Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Left" Padding="0" Margin="0,0" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
@@ -141,7 +137,7 @@ Foreground="Transparent"
             <Tabs:About HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </UserControl>
 
-        <UserControl Grid.Column="1" Visibility="{Binding CurrentTab, ConverterParameter=download, Converter={StaticResource StringMatchToVisibilityConverter}}" x:Name="DownloadUserControl">
+        <UserControl Grid.Column="1" Visibility="{Binding CurrentTab, ConverterParameter=downloads, Converter={StaticResource StringMatchToVisibilityConverter}}" x:Name="DownloadUserControl">
             <Tabs:Download HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </UserControl>
 
