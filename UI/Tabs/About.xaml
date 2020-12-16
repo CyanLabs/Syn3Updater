@@ -29,7 +29,7 @@
                         <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo" TextWrapping="WrapWithOverflow"/>
                         
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="CYANLABS">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="CYANLABS">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -37,7 +37,7 @@
                                     </LinearGradientBrush>
                                 </Button.Background>
                             </Button>
-                            <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -45,7 +45,7 @@
                                     </LinearGradientBrush>
                                 </Button.Background>
                             </Button>
-                            <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -62,7 +62,7 @@
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                         <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow"/>
-                        <Button Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Content="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}" HorizontalAlignment="Right">
+                        <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Content="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}" HorizontalAlignment="Right">
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                     <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -80,7 +80,7 @@
                         <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}"/>
 
                         <StackPanel Orientation="Horizontal" >
-                            <CheckBox VerticalAlignment="Center" Margin="10" IsChecked="{Binding DisclaimerAccepted}"/>
+                            <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Margin="10" IsChecked="{Binding DisclaimerAccepted}"/>
                             <TextBlock VerticalAlignment="Center"  Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.DisclaimerAgreement, Converter={StaticResource LocConverter}}"/>
                         </StackPanel>
                     </StackPanel>

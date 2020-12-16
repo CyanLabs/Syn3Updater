@@ -51,6 +51,7 @@ namespace Syn3Updater
         {
             Logger.Debug("============ Syn3 Updater is Starting ============");
 
+            // ReSharper disable once IdentifierTypo
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (Properties.Settings.Default.Lang == null)

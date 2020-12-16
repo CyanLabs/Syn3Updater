@@ -88,7 +88,7 @@ namespace Syn3Updater.UI
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater",MessageBoxButton.OK,MessageBoxImage.Warning);
                 }
-                else if(value == "home" && (Settings.Default.CurrentSyncVersion == "" || Settings.Default.CurrentSyncRegion == ""))
+                else if(value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     SetProperty(ref _currentTab, "settings");

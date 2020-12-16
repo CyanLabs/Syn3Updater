@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
-             xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+             xmlns:obselete="clr-namespace:Xceed.Wpf.Toolkit.Obselete;assembly=Xceed.Wpf.Toolkit"
              x:Class="Syn3Updater.UI.Tabs.Settings"
              mc:Ignorable="d" 
-             d:DesignHeight="610" d:DesignWidth="750">
+             d:DesignHeight="610" d:DesignWidth="750" >
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -61,7 +61,7 @@
                         </Grid.Resources>
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.FullSyncVersion, Converter={StaticResource LocConverter}}"/>
-                        <TextBox Grid.Column="1" Text="{Binding CurrentSyncVersion}"></TextBox>
+                        <TextBox FontSize="12" Grid.Column="1" Text="{Binding CurrentSyncVersion}" VerticalContentAlignment="Center" TextAlignment="Center"/>
                     </Grid>
 
 
@@ -80,7 +80,7 @@
                             </Style>
                         </Grid.Resources>
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.SyncRegion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox SelectedIndex="0" Grid.Column="1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding SyncRegions}" DisplayMemberPath="Name" SelectedValuePath="Code" SelectedValue="{Binding CurrentSyncRegion}"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding SyncRegions}" VerticalContentAlignment="Center" DisplayMemberPath="Name" SelectedValuePath="Code" SelectedValue="{Binding CurrentSyncRegion}"/>
                     </Grid>
 
 
@@ -98,8 +98,8 @@
                                 <Setter Property="Margin" Value="10"/>
                             </Style>
                         </Grid.Resources>
-                        <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.SyncNavigation, Converter={StaticResource LocConverter}}"/>
-                        <CheckBox VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" IsChecked="{Binding CurrentSyncNav}" />
+                        <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.SyncNavigation, Converter={StaticResource LocConverter}}"/>
+                        <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" IsChecked="{Binding CurrentSyncNav}" />
                     </Grid>
                 </Grid>
 
@@ -129,10 +129,10 @@
                     </Grid.Resources>
                     <TextBlock Grid.Row="0" Margin="5" FontSize="18" FontFamily="Segoe UI Light" Grid.ColumnSpan="3" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Settings.Configuration, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                     <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"  Grid.Row="1" Grid.Column="1" Text="{Binding Language, ConverterParameter=Settings.DownloadLocation, Converter={StaticResource LocConverter}}"/>
-                    <TextBox IsReadOnly="True" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding DownloadLocation}"/>
-                    <Button Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,6,3,6" Grid.Row="1" Grid.Column="3" FontFamily="Segoe MDL2 Assets" FontSize="24" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xE838;" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.ColumnSpan="2" Command="{Binding DownloadPathSelector}" />
+                    <TextBox IsReadOnly="True" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding DownloadLocation}" VerticalContentAlignment="Center"/>
+                    <Button BorderThickness="0" Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,6,3,6" Grid.Row="1" Grid.Column="3" FontFamily="Segoe MDL2 Assets" FontSize="24" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xE838;" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.ColumnSpan="2" Command="{Binding DownloadPathSelector}" />
                     <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"  Grid.Row="2" Grid.Column="2" Text="{Binding Language, ConverterParameter=Settings.Language, Converter={StaticResource LocConverter}}" />
-                    <ComboBox ItemsSource="{Binding Languages}" SelectedValuePath="Code" DisplayMemberPath="Name" SelectedValue="{Binding CurrentLanguage}" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" />
+                    <ComboBox ItemsSource="{Binding Languages}" SelectedValuePath="Code" DisplayMemberPath="Name" VerticalContentAlignment="Center" SelectedValue="{Binding CurrentLanguage}" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" />
                 </Grid>
 
 
@@ -161,9 +161,9 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Margin="5" FontSize="18" FontFamily="Segoe UI Light" Grid.ColumnSpan="2" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Settings.AdvancedOptions, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                         <TextBlock Grid.Row="1" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.InstallMode, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox Grid.Row="1" SelectedIndex="0" Grid.Column="1" Text="Navigation" ItemsSource="{Binding InstallModes}" SelectedValue="{Binding CurrentInstallMode}"/>
+                        <ComboBox Grid.Row="1" SelectedIndex="0" Grid.Column="1" Text="Navigation" ItemsSource="{Binding InstallModes}" SelectedValue="{Binding CurrentInstallMode}" VerticalContentAlignment="Center"/>
                         <TextBlock Grid.Row="2" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.ShowAllReleases, Converter={StaticResource LocConverter}}"/>
-                        <CheckBox VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" IsChecked="{Binding ShowAllReleases}"/>
+                        <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" IsChecked="{Binding ShowAllReleases}"/>
                     </Grid>
 
 
@@ -189,7 +189,7 @@
                         <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.ColumnSpan="2" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Center" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.LicenseKeyInfo, Converter={StaticResource LocConverter}}"/>
 
                         <TextBlock Grid.Row="2" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.LicenseKey, Converter={StaticResource LocConverter}}"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding LicenseKey}"></TextBox>
+                        <TextBox Grid.Row="2" Grid.Column="1" FontSize="14" Text="{Binding LicenseKey}" VerticalContentAlignment="Center"></TextBox>
                     </Grid>
                 </Grid>
             </StackPanel>

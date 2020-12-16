@@ -8,8 +8,8 @@
     <Setting Name="Lang" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="CurrentSyncVersion" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="CurrentSyncVersion" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="CurrentSyncNav" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

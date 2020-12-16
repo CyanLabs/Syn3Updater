@@ -66,7 +66,7 @@
                             <ColumnDefinition Width="25" />
                         </Grid.ColumnDefinitions>
                         <ComboBox Margin="5,0,0,0" SelectedIndex="0" ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDrive}"/>
-                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="16" ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}" Background="#00000000" Text="&#xE72C;" VerticalAlignment="Center"  Foreground="White" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" />
+                        <Button  BorderThickness="0" Cursor="Hand" FontFamily="Segoe MDL2 Assets" FontSize="16" ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xE72C;" VerticalAlignment="Center"  Foreground="White" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Command="{Binding RefreshUSB}" />
                     </Grid>
                     <StackPanel Margin="5,10,5,10" Grid.Row="2" Grid.Column="0" >
                         <StackPanel Orientation="Horizontal" Margin="0">
@@ -122,14 +122,14 @@
                         </Grid.Resources>
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"  Grid.Row="0" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox Grid.Row="0" Grid.Column="1"/>
-                        <Button Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0" Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xF142;" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RegionInfo}" />
+                        <ComboBox ItemsSource="{Binding SyncRegions}" DisplayMemberPath="Name" SelectedValuePath="Code" SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1"/>
+                        <Button Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0" Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xF142;" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RegionInfo}" />
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+                        <ComboBox ItemsSource="{Binding SyncVersion}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
+                        <ComboBox ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}"/>
                     </Grid>
                 </Grid>
 
