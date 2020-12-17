@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Syn3Updater.UI.Tabs
@@ -13,10 +14,19 @@ namespace Syn3Updater.UI.Tabs
         public Home()
         {
             InitializeComponent();
-            if (!DesignerProperties.GetIsInDesignMode(this))
+            //if (!DesignerProperties.GetIsInDesignMode(this))
+            //{
+            //    (this.DataContext as HomeViewModel)?.Init();
+            //}
+        }
+
+        private void Home_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue == true && (bool)e.OldValue == false)
             {
-                (this.DataContext as HomeViewModel)?.Init();
+                (this.DataContext as HomeViewModel)?.ReloadSettings();
             }
+            
         }
     }
 }

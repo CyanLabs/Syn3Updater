@@ -54,14 +54,16 @@ namespace Syn3Updater.UI.Tabs
         private const string DowngradePackageToolMd5 = "E16F5E01D816E738E2B68592BDC22F3F";
 
         private bool _appsselected;
-        public void Init()
+
+        public void ReloadSettings()
         {
-            Properties.Settings.Default.CurrentInstallMode = "automatic";
-            
             CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
             DownloadLocation = Properties.Settings.Default.DownloadLocation;
+        }
+        public void Init()
+        {
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiToken);
             SyncRegions = new ObservableCollection<SyncRegion>
             {
@@ -74,8 +76,6 @@ namespace Syn3Updater.UI.Tabs
             OnPropertyChanged("SyncRegions");
             SyncVersionsEnabled = false;
             RefreshUsb();
-
-
             IvsuList = new ObservableCollection<Ivsu>{};
             OnPropertyChanged("IvsuList");
         }

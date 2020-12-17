@@ -8,7 +8,7 @@
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
              x:Class="Syn3Updater.UI.Tabs.Home"
              mc:Ignorable="d" 
-             d:DesignHeight="610" d:DesignWidth="750">
+             d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged" >
     <UserControl.Resources>
         <converter:LocConverter x:Key="LocConverter"/>
     </UserControl.Resources>

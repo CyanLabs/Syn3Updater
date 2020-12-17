@@ -197,7 +197,7 @@ namespace Syn3Updater.UI.Tabs
                             }
                         }
                     }
-                    Properties.Settings.Default.DownloadLocation = dialog.SelectedPath;
+                    DownloadLocation = dialog.SelectedPath;
                     Properties.Settings.Default.Save();
                 }
             }
