@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Threading.Tasks;
 using AutoUpdaterDotNET;
 using Newtonsoft.Json;
 using Syn3Updater.Helpers;
@@ -39,10 +41,27 @@ namespace Syn3Updater.UI.Tabs
         private const int SyncBlacklistedVersion = 3419274;
         private const int SyncReformatVersion = 3200000;
 
+        private const string ReformatToolUrl = "https://cyanlabs.net/api/Syn3Updater/reformat.php";
+        private const string SyncReformatTool = "1u5t-14g386-cb.tar.gz";
+        private const string SyncReformatToolMd5 = "75E08C3EED8D2039BAF65B6156F79106";
+
+        private const string DowngradePackageAppUrl = "https://ivsubinaries.azureedge.net/swparts/4U5T-14G381-AN_1552583626000.TAR.GZ";
+        private const string DowngradePackageApp = "4U5T-14G381-AN_1552583626000.TAR.GZ";
+        private const string DowngradePackageAppMd5 = "0553D1A474FBF9F0DB68A9C96FBDA7CB";
+
+        private const string DowngradePackageToolUrl = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz";
+        private const string DowngradePackageTool = "GB5T-14G386-SC_85041.tar.gz";
+        private const string DowngradePackageToolMd5 = "E16F5E01D816E738E2B68592BDC22F3F";
+
+        private bool _appsselected;
         public void Init()
         {
             Properties.Settings.Default.CurrentInstallMode = "automatic";
-            Properties.Settings.Default.Save();
+            
+            CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
+            CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
+            CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
+            DownloadLocation = Properties.Settings.Default.DownloadLocation;
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiToken);
             SyncRegions = new ObservableCollection<SyncRegion>
             {
@@ -53,10 +72,14 @@ namespace Syn3Updater.UI.Tabs
                 new SyncRegion {Code = "ROW", Name = "Rest Of World"}
             };
             OnPropertyChanged("SyncRegions");
+            SyncVersionsEnabled = false;
             RefreshUsb();
+
+
+            IvsuList = new ObservableCollection<Ivsu>{};
+            OnPropertyChanged("IvsuList");
         }
 
-        
         private void RegionInfoAction()
         {
             if (Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName == "en")
@@ -66,7 +89,7 @@ namespace Syn3Updater.UI.Tabs
             else
             {
                 Process.Start(
-                    "https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FSyn3Updater%2Fregion.php");
+                    "https://translate.google.co.uk/translate?hl=&sl=en&tl="+Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName+"&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FSyn3Updater%2Fregion.php");
             }
         }
 
@@ -129,6 +152,11 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateSelectedRegion() 
         {
+            IvsuList.Clear();
+            SelectedMapVersion = null;
+            SelectedRelease = null;
+            OnPropertyChanged("SelectedRelease");
+            OnPropertyChanged("SelectedMapVersion");
             if (Properties.Settings.Default.ShowAllReleases)
             {
                 _apiMapReleases = ApiMapReleasesConst.Replace("[published]", $"filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
@@ -151,32 +179,261 @@ namespace Syn3Updater.UI.Tabs
                 throw webex;
                 //TODO Exception handling
             }
-
-            SyncVersion?.Clear();
-            SyncMapVersion?.Clear();
             if (!Properties.Settings.Default.CurrentSyncNav)
             {
                SyncMapVersion.Add(@"Non Nav APIM");
-               SelectedMapVersion = "Non Nav APIM";
             }
             else
             {
                 if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
                 {
-                    SyncMapVersion = new ObservableCollection<string>();
-                    SyncMapVersion.Add(@"Keep Existing Maps"); 
-                    OnPropertyChanged("SyncMapVersion");
-                    
-                    SelectedMapVersion = "Keep Existing Maps";
+                    SyncMapVersion = new ObservableCollection<string> {@"Keep Existing Maps"};
                 }
             }
-            
+            OnPropertyChanged("SyncMapVersion");
+
             _jsonReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringReleasesJson);
             SyncVersion = new ObservableCollection<string>();
             foreach (Data item in _jsonReleases.data)
                 if (item.regions.Contains(SelectedRegion.Code))
                     SyncVersion.Add(item.name);
             OnPropertyChanged("SyncVersion");
+
+            SyncVersionsEnabled = true;
+            OnPropertyChanged("SyncVersionsEnabled");
+
+            StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+            OnPropertyChanged("StartEnabled");
+        }
+
+        private string _stringCompatibility;
+        private void UpdateSelectedRelease()
+        {
+            SelectedMapVersion = null;
+            OnPropertyChanged("SelectedMapVersion");
+            IvsuList.Clear();
+            foreach (Data item in _jsonReleases.data)
+                if (item.name == SelectedRelease)
+                {
+                    _stringCompatibility = item.version.Substring(0, 3);
+                    if (item.notes == null) continue;
+                    Notes = item.notes.Replace("\n", Environment.NewLine);
+                    OnPropertyChanged("Notes");
+                }
+
+            _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]="+SelectedRegion.Code+"&filter[compatibility][contains]="+_stringCompatibility);
+
+            HttpResponseMessage response = Client.GetAsync(_apiMapReleases).Result;
+            _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
+
+            if (Properties.Settings.Default.CurrentSyncNav)
+            {
+                SyncMapVersion.Clear();
+                SyncMapVersion.Add("No Maps");
+                if (Properties.Settings.Default.CurrentSyncNav)
+                {
+                    if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
+                    {
+                        SyncMapVersion.Add("Keep Existing Maps");
+                    }
+                }
+                else
+                {
+                    SyncMapVersion.Add("Non Nav APIM");
+                }
+                _jsonMapReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringMapReleasesJson);
+                foreach (Data item in _jsonMapReleases.data)
+                {
+                    SyncMapVersion.Add(item.name);
+                }
+            }
+            SyncMapVersionsEnabled = true;
+            OnPropertyChanged("SyncMapVersionsEnabled");
+            StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+            OnPropertyChanged("StartEnabled");
+        }
+
+        private void UpdateSelectedMapVersion()
+        {
+            IvsuList.Clear();
+            //ResetControls();
+
+            //LESS THAN 3.2
+            if (Properties.Settings.Default.CurrentSyncVersion < SyncReformatVersion)
+            {
+                InstallMode = "reformat";
+            }
+
+            //Above 3.2 and  Below 3.4.19274
+            else if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion && Properties.Settings.Default.CurrentSyncVersion < SyncBlacklistedVersion)
+            {
+                //Update Nav?
+                if (SelectedMapVersion == @"No Maps" || SelectedMapVersion == @"Non Nav APIM" || SelectedMapVersion == @"Keep Existing Maps")
+                {
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"autoinstall" : Properties.Settings.Default.CurrentInstallMode;
+                }
+                else
+                {
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"reformat" : Properties.Settings.Default.CurrentInstallMode;
+                }
+            }
+
+            //3.4.19274 or above
+            else if (Properties.Settings.Default.CurrentSyncVersion >= SyncBlacklistedVersion)
+            {
+                //Update Nav?
+                if (SelectedMapVersion == @"No Maps" || SelectedMapVersion == @"Non Nav APIM" || SelectedMapVersion == @"Keep Existing Maps")
+                {
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"autoinstall" : Properties.Settings.Default.CurrentInstallMode;
+                }
+                else
+                {
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"downgrade" : Properties.Settings.Default.CurrentInstallMode;
+                }
+            }
+            OnPropertyChanged("InstallMode");
+
+            //tabControl1.SelectedTab = tabAutoInstall;
+            //lstIVSU.Items.Clear();
+
+            if (InstallMode == @"downgrade")
+            {
+                string app = DownloadLocation + DowngradePackageApp;
+                if (!File.Exists(app))
+                {
+                    ApplicationManager.Instance._downloadfiles.Enqueue(new Uri(DowngradePackageAppUrl).ToString());
+                    //lstDownloadQueue.Items.Add(new Uri(DowngradePackageAppUrl).ToString());
+                }
+                string tool = DownloadLocation + DowngradePackageTool;
+                if (!File.Exists(tool) || Functions.CalculateMd5(tool) != DowngradePackageToolMd5)
+                {
+                    ApplicationManager.Instance._downloadfiles.Enqueue(new Uri(DowngradePackageToolUrl).ToString());
+                    //lstDownloadQueue.Items.Add(new Uri(DowngradePackageToolUrl).ToString());
+                }
+            }
+
+            if (InstallMode == @"reformat" || InstallMode == @"downgrade")
+            {
+                string reformattool = DownloadLocation + SyncReformatTool;
+                if (!File.Exists(reformattool) || Functions.CalculateMd5(reformattool) != SyncReformatToolMd5)
+                {
+                    ApplicationManager.Instance._downloadfiles.Enqueue(new Uri(ReformatToolUrl).ToString());
+                    //lstDownloadQueue.Items.Add(new Uri(ReformatToolUrl).ToString());
+                }
+            }
+
+            HttpResponseMessage response = Client.GetAsync(ApiAppReleaseSingle + SelectedRelease).Result;
+            _stringDownloadJson = response.Content.ReadAsStringAsync().Result;
+
+            response = Client.GetAsync(ApiMapReleaseSingle + SelectedMapVersion).Result;
+            _stringMapDownloadJson = response.Content.ReadAsStringAsync().Result;
+
+            JsonReleases jsonIvsUs = JsonConvert.DeserializeObject<JsonReleases>(_stringDownloadJson);
+            JsonReleases jsonMapIvsUs = JsonConvert.DeserializeObject<JsonReleases>(_stringMapDownloadJson);
+
+            foreach (Ivsus item in jsonIvsUs.data[0].ivsus)
+                if (item.ivsu.regions.Contains(@"ALL") || item.ivsu.regions.Contains(SelectedRegion.Code))
+                {
+                    IvsuList.Add(new Ivsu() { Type = item.ivsu.type, Name = item.ivsu.name, Version = item.ivsu.version, Notes = item.ivsu.notes, Url = item.ivsu.url, Md5 = item.ivsu.md5, Selected = true });
+                }
+
+            if (SelectedMapVersion != @"No Maps" && SelectedMapVersion != @"Non Nav APIM" && SelectedMapVersion != @"Keep Existing Maps")
+                foreach (Ivsus item in jsonMapIvsUs.data[0].ivsus)
+                    if (item.map_ivsu.regions.Contains(@"ALL") || item.map_ivsu.regions.Contains(SelectedRegion.Code))
+                    {
+                        IvsuList.Add(new Ivsu() { Type = item.map_ivsu.type, Name = item.map_ivsu.name, Version = item.map_ivsu.version, Notes = item.map_ivsu.notes, Url = item.map_ivsu.url, Md5 = item.map_ivsu.md5, Selected = true});
+                    }
+            OnPropertyChanged("IvsuList");
+            StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+            OnPropertyChanged("StartEnabled");
+        }
+
+        private void StartAction()
+        {
+            //DisableControls();
+            ApplicationManager.Instance._ivsus = new ArrayList();
+            foreach (Ivsu item in IvsuList)
+            {
+                if (item.Selected)
+                {
+                    if (item.Type == "APPS")
+                    {
+                        _appsselected = true;
+                    }
+                ApplicationManager.Instance._downloadfiles.Enqueue(item.Url);
+                ApplicationManager.Instance._ivsus.Add(item);
+                }
+            }
+
+            if (!CancelledDownload())
+                ApplicationManager.Instance.FireDownloadsTabEvent();
+
+            ApplicationManager.Logger.Info($@"Starting process ({SelectedRelease} - {SelectedRegion} - {SelectedMapVersion})");
+
+            //Task t = new Task(ValidateDownloadedFiles);
+            //t.Start();
+
+            ApplicationManager.Instance.FireDownloadsTabEvent();
+        }
+
+        private bool _canceldownload;
+        private bool _downloadonly;
+        private bool CancelledDownload()
+        {
+            //No USB drive selected, download only?
+            if (SelectedDrive == null && _canceldownload == false)
+            {
+                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    _downloadonly = true;
+                }
+                else
+                {
+                    _canceldownload = true;
+                }
+            }
+
+            if ((InstallMode == "reformat" || InstallMode == "downgrade") && _canceldownload == false && _downloadonly == false)
+            {
+                if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final "), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                        _canceldownload = true;
+                }
+                else
+                {
+                    _canceldownload = true;
+                }
+            }
+
+            //Check region is the same.
+            if (SelectedRegion.Code != Properties.Settings.Default.CurrentSyncRegion && _canceldownload == false)
+            {
+                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                {
+                    _canceldownload = true;
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(DriveLetter))
+            {
+                if (DownloadLocation.Contains(DriveLetter) && _canceldownload == false)
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+
+            if (_appsselected == false && _canceldownload == false && (InstallMode == "reformat" || InstallMode == "downgrade"))
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+            // ReSharper disable once InvertIf
+            if (_downloadonly == false && _canceldownload == false)
+            {
+                if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), SelectedDrive.Name, DriveLetter), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                    _canceldownload = true;
+            }
+            return _canceldownload;
         }
 
         private ActionCommand _refreshUSB;
@@ -184,6 +441,9 @@ namespace Syn3Updater.UI.Tabs
 
         private ActionCommand _regionInfo;
         public ActionCommand RegionInfo => _regionInfo ?? (_regionInfo = new ActionCommand(RegionInfoAction));
+
+        private ActionCommand _startButton;
+        public ActionCommand StartButton => _startButton ?? (_startButton = new ActionCommand(StartAction));
 
         public string DriveLetter { get; set; }
         public string DriveName { get; set; }
@@ -209,7 +469,31 @@ namespace Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedRegion, value);
-                UpdateSelectedRegion();
+                if(value != null) UpdateSelectedRegion();
+            }
+        }
+
+        private string _selectedRelease;
+
+        public string SelectedRelease
+        {
+            get => _selectedRelease;
+            set
+            {
+                SetProperty(ref _selectedRelease, value);
+                if (value != null) UpdateSelectedRelease();
+            }
+        }
+
+        private string _selectedMapVersion;
+
+        public string SelectedMapVersion
+        {
+            get => _selectedMapVersion;
+            set
+            {
+                SetProperty(ref _selectedMapVersion, value);
+                if (value != null) UpdateSelectedMapVersion();
             }
         }
 
@@ -230,6 +514,80 @@ namespace Syn3Updater.UI.Tabs
         public ObservableCollection<string> SyncVersion { get; set; }
         public ObservableCollection<string> SyncMapVersion { get; set; }
 
-        public string SelectedMapVersion { get; set; }
+        public bool SyncVersionsEnabled { get; set; }
+
+        public bool SyncMapVersionsEnabled { get; set; }
+
+        public string Notes { get; set; }
+
+        public ObservableCollection<Ivsu> IvsuList { get; set; }
+
+        public class Ivsu
+        {
+            public bool Selected { get; set; }
+            public string Type { get; set; }
+            public string Name { get; set; }
+            public string Version { get; set; }
+            public string Notes { get; set; }
+            public string Url { get; set; }
+            public string Md5 { get; set; }
+        }
+
+        private string _currentSyncRegion;
+
+        public string CurrentSyncRegion
+        {
+            get => _currentSyncRegion;
+            set
+            {
+                if (value != null)
+                {
+                    SetProperty(ref _currentSyncRegion, value);
+                    Properties.Settings.Default.CurrentSyncRegion = value;
+                }
+            }
+        }
+
+        private string _currentSyncVersion;
+
+        public string CurrentSyncVersion
+        {
+            get => _currentSyncVersion;
+            set
+            {
+                SetProperty(ref _currentSyncVersion, value);
+            }
+        }
+
+        private string _currentSyncNav;
+
+        public string CurrentSyncNav
+        {
+            get => _currentSyncNav;
+            set
+            {
+                SetProperty(ref _currentSyncNav, value);
+            }
+        }
+
+        private string _downloadLocation;
+
+        public string DownloadLocation
+        {
+            get => _downloadLocation;
+            set
+            {
+                if (value != null)
+                {
+                    SetProperty(ref _downloadLocation, value);
+                }
+            }
+        }
+
+        public string InstallMode { get; set; }
+
+        public bool StartEnabled { get; set; }
+
+        MainWindowViewModel Parent { get; set; }
     }
 }

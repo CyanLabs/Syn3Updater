@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Windows.Controls;
 
 namespace Syn3Updater.UI.Tabs
 {
@@ -10,6 +11,10 @@ namespace Syn3Updater.UI.Tabs
         public Download()
         {
             InitializeComponent();
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                (this.DataContext as DownloadViewModel)?.Init();
+            }
         }
     }
 }

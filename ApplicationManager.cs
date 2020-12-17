@@ -6,6 +6,7 @@ using Syn3Updater.Model;
 using Syn3Updater.UI;
 using Syn3Updater.UI.Tabs;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -24,6 +25,9 @@ namespace Syn3Updater
 {
     public class ApplicationManager
     {
+        public readonly Queue<string> _downloadfiles = new Queue<string>();
+        public ArrayList _ivsus;
+        public HomeViewModel.Drive selectedDisk;
         public static ApplicationManager Instance { get; } = new ApplicationManager();
 
         public MainWindow MainWindow;
@@ -34,7 +38,14 @@ namespace Syn3Updater
             LanguageChangedEvent?.Invoke(this, new EventArgs());
         }
 
+        public void FireDownloadsTabEvent()
+        {
+            ShowDownloadsTab?.Invoke(this, new EventArgs());
+        }
+
         public event EventHandler LanguageChangedEvent;
+
+        public event EventHandler ShowDownloadsTab;
 
         #region Constructors
 

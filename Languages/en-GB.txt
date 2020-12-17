@@ -23,7 +23,7 @@ Home.RecommendedUSBFlashDriveNA NA, ROW, ANZ APIM's will require atleast 16GB
 Home.RecommendedUSBFlashDriveEU EU APIM's will require atleast 32GB
 Home.Notes Notes: 
 Home.NewSyncVersion New Sync Version
-Home.SelectPackages Select Package
+Home.SelectPackages Select Packages
 Home.InstallMode Install Mode:
 Home.StartButton Start
 About.AboutTitle About Syn3 Updater
@@ -59,3 +59,11 @@ Settings.LicenseKey License Key:
 MessageBox.DisclaimerNotAccepted Please read and accept the disclaimer before continuing. You will not be able to continue unless you agree to the terms.
 MessageBox.NoSyncVersionOrRegionSelected You have not set your current Sync Version or Sync Region!
 MessageBox.DownloadPathChangeCopy Would you like to move existing files from {0} to {1}
+MessageBox.NoDownloads There is currently nothing in your download queue, visit the main page to choose what to download.
+MessageBox.CancelNoUSB No USB drive selected would you like to continue with just the download?
+MessageBox.CancelMy20 Syn3 Updater has set the install mode to {0}\n DO NOT CONTINUE IF YOU HAVE A CAR MANUFACTURED IN 2020!\n\nIF YOU CONTINUE AND HAVE A CAR MANUFACTURED IN 2020 YOU WILL BRICK YOUR SYNC!\n\nBy clicking "Yes" you understand the above warning and confirm you do not have a car manufactured in 2020!
+MessageBox.CancelMy20Final FINAL WARNING! \n\nBy clicking "Yes" you confirm you do not have a car manufactured in 2020!
+MessageBox.CancelRegionMismatch Current region and new region are not the same, this may not work. Would you like to continue anyway? 
+MessageBox.CancelDownloadIsDrive Download path and destination USB drive are the same, please change your download path.
+MessageBox.CancelNoApps Mode is reformat or downgrade and no apps package has been selected, this will result in a non booting system, ABORTING! No "APPS" package has been selected but Syn3 Updater has determined that a downgrade or reformat is required, this will result in a non booting system. Aborting!
+MessageBox.CancelFormatUSB WARNING, ALL DATA ON THE SELECTED DRIVE WILL BE LOST {0}\nDrive Letter: {1}

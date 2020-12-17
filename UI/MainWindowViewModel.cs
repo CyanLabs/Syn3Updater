@@ -4,15 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using Syn3Updater.Model;
-using Syn3Updater.Properties;
+using Syn3Updater.UI.Tabs;
+using Settings = Syn3Updater.Properties.Settings;
 
 namespace Syn3Updater.UI
 {
     public class MainWindowViewModel : LanguageAwareBaseViewModel
     {
-
         public MainWindowViewModel()
         {
+
             ApplicationManager.Instance.LanguageChangedEvent += delegate (object sender, EventArgs args)
             {
                 ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
@@ -35,6 +36,11 @@ namespace Syn3Updater.UI
                 TabItems = ti;
             };
             CurrentTab = Settings.Default.DisclaimerAccepted ? "home" : "about";
+
+            ApplicationManager.Instance.ShowDownloadsTab += delegate (object sender, EventArgs args)
+            {
+                CurrentTab = "downloads";
+            };
         }
 
         private bool _hamburgerExtended;
@@ -92,6 +98,11 @@ namespace Syn3Updater.UI
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     SetProperty(ref _currentTab, "settings");
+                }
+                else if (value == "downloads" && ApplicationManager.Instance._downloadfiles.Count == 0)
+                {
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoDownloads"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SetProperty(ref _currentTab, "home");
                 }
                 else if (value == "crashme")
                 {

@@ -21,28 +21,7 @@
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
                         <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Download.DownloadQueue, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
-                        <ListBox MaxHeight="160">
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                            <ListBoxItem>1</ListBoxItem>
-                        </ListBox>
+                        <ListBox MaxHeight="160"/>
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="10" HorizontalAlignment="Center" xml:space="preserve">Verifying integrity of 4U5T-3289346-AB-398734689349837.TAR.GZ</TextBlock>
                         <ProgressBar Height="20"></ProgressBar>
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="10" HorizontalAlignment="Center"  xml:space="preserve">Verifying integrity of 4U5T-3289346-AB-398734689349837.TAR.GZ</TextBlock>
