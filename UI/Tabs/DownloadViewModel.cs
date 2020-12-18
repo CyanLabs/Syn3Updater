@@ -21,16 +21,14 @@ namespace Syn3Updater.UI.Tabs
     public class DownloadViewModel : LanguageAwareBaseViewModel
     {
 
-        private const string SyncReformatTool = "1u5t-14g386-cb.tar.gz";
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
-        private ObservableCollection<FileList> fileListIvsus = new ObservableCollection<FileList>();
         public event EventHandler<EventArgs<int>> PercentageChanged;
         private BackgroundWorker _worker = new BackgroundWorker();
         private List<string> DownloadQueue = new List<string>();
-
+        private string _version;
         public void Init()
         {
-            InstallMode = Properties.Settings.Default.CurrentInstallMode;
+            InstallMode = ApplicationManager.Instance.InstallMode;
             OnPropertyChanged("InstallMode");
 
             PercentageChanged += OnPercentageChanged;
@@ -40,26 +38,18 @@ namespace Syn3Updater.UI.Tabs
 
             CurrentProgress = 0;
 
-            DownloadQueueList = new List<string>();
-            //DownloadQueue.Add("http://127.0.0.1/swparts/4U5T-14G423-AB_1598633764000.TAR.GZ");
+            DownloadQueueList = new ObservableCollection<string>();
 
             foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
             {
-                if (!ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false))
-                {
-                    DownloadQueueList.Add(item.Url);
-                    DownloadQueue.Add(item.Url);
-                }
-
-
-                if (!fileListIvsus.Any(p => p.FileName == item.FileName)) fileListIvsus.Add(new FileList() { FileName = item.FileName, Type = item.Type, Md5 = item.Md5 });
-
+                DownloadQueueList.Add(item.Url);
             }
-
-            TotalPercentageMax = 100 * DownloadQueue.Count;
-            _worker.RunWorkerAsync();
-
             OnPropertyChanged("DownloadQueueList");
+
+            _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
+            _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
+
+            _worker.RunWorkerAsync();
         }
 
         private void CancelDownloadAction()
@@ -71,7 +61,11 @@ namespace Syn3Updater.UI.Tabs
             CurrentProgress = 0;
             DownloadInfo = "";
             DownloadPercentage = "";
-            DownloadQueueList.Clear();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                DownloadQueueList.Clear();
+                OnPropertyChanged("DownloadQueueList");
+            });
             tokenSource.Dispose(); // Clean up old token source....
             tokenSource = new CancellationTokenSource(); // "Reset" the cancellation token source...
             ApplicationManager.Instance.FireHomeTabEvent();
@@ -88,34 +82,204 @@ namespace Syn3Updater.UI.Tabs
         int count = 0;
         private async void DoWork(object sender, DoWorkEventArgs e)
         {
-            var total = DownloadQueue.Count;
+            int total = ApplicationManager.Instance._ivsus.Count;
             count = 0;
-            
-            foreach (var url in DownloadQueue)
+            TotalPercentageMax = 100 * total;
+
+            //TODO Handle verification of file that has just downloaded
+            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
             {
-                //  Do the download  
-                DownloadInfo = "Downloading: " + url;
-                string _fileName = url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1,
-                    url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
-
-                try
+                if (!ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false))
                 {
-                    await HttpGetForLargeFile(url,ApplicationManager.Instance.DownloadLocation + _fileName, tokenSource.Token);
+                    DownloadInfo = "Downloading: " + item.Url;
+                    try
+                    {
+                        for (int i = 1; i < 4; i++)
+                        {
+                            if(i > 1) DownloadInfo = "Downloading (Attempt #" + i + "): " + item.Url;
+                            await HttpGetForLargeFile(item.Url,
+                                ApplicationManager.Instance.DownloadLocation + item.FileName, tokenSource.Token);
+                            
+                            bool validfile = ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false);
+                            if (validfile) break;
+                            if (i == 3)
+                            {
+                                MessageBox.Show("Something has gone wrong!");
+                                CancelDownloadAction();
+                                break;
+                            }
+                            TotalPercentageMax += 100;
+                            count++;
+                            
+                        }
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        break;
+                    }
                 }
-                catch (TaskCanceledException)
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    break;
-                }
-                DownloadQueueList.Remove(url);
-                OnPropertyChanged("DownloadQueueList");
-                CurrentProgress = 100 / (total - count);
+                    DownloadQueueList.Remove(item.Url);
+                    OnPropertyChanged("DownloadQueueList");
+                });
                 count++;
-
             }
+
+            //Downloads complete
+            if (ApplicationManager.Instance._downloadonly)
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                PrepareUsb();
+
             if (_worker.CancellationPending)
             {
                 e.Cancel = true;
             }
+        }
+
+        private void PrepareUsb()
+        {
+            string drivenumber = ApplicationManager.Instance.drivenumber;
+            string driveletter = ApplicationManager.Instance.driveletter;
+
+            using (Process p = new Process())
+            {
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.FileName = @"diskpart.exe";
+                p.StartInfo.CreateNoWindow = true;
+
+                //UpdateLog(@"Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
+
+                p.Start();
+                p.StandardInput.WriteLine("SELECT DISK=" + drivenumber);
+                p.StandardInput.WriteLine("CLEAN");
+                p.StandardInput.WriteLine("CONVERT MBR");
+                p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
+                p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
+                p.StandardInput.WriteLine("ASSIGN " + driveletter.Replace(":",""));
+                p.StandardInput.WriteLine("EXIT");
+
+                p.WaitForExit();
+            }
+
+            switch (InstallMode)
+            {
+                case "autoinstall":
+                    CreateAutoInstall();
+                    break;
+                case "downgrade":
+                    CreateReformat();
+                    break;
+                case "reformat":
+                    CreateReformat();
+                    break;
+            }
+
+            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    DownloadQueueList.Add(item.Url);
+                    OnPropertyChanged("DownloadQueueList");
+                });
+            }
+
+            Directory.CreateDirectory(ApplicationManager.Instance.driveletter + @"\SyncMyRide\");
+
+            //CopyFiles();
+        }
+
+        private void CreateAutoInstall()
+        {
+            string SelectedRelease = ApplicationManager.Instance.selectedrelease;
+            string SelectedRegion  = ApplicationManager.Instance.selectedregion;
+            string SelectedMapVersion = ApplicationManager.Instance.selectedmapversion;
+            string autoinstalllst = @"; CyanLabs Syn3Updater 2.x - Autoinstall Mode - " +
+                                    SelectedRelease + " " + SelectedRegion +
+                                    Environment.NewLine + Environment.NewLine + @"[SYNCGen3.0_ALL_PRODUCT]" +
+                                    Environment.NewLine;
+
+            string extrafiles = "";
+            int baseint = 0, extraint = 0;
+            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
+            {
+                if (item.Type == @"APPS" || item.Type == @"VOICE" ||
+                    item.Type == @"ENH_DAB" || item.Type == @"MAP_LICENSE" || item.Type == @"VOICE_NAV")
+                {
+                    baseint++;
+                    autoinstalllst += string.Format(@"Item{0} = {1} - {2}\rOpen{0} = SyncMyRide\{2}\r", baseint,
+                            item.Type, item.FileName)
+                        .Replace(@"\r", Environment.NewLine);
+                }
+                else
+                {
+                    if (extrafiles == "")
+                    {
+                        extrafiles = @"[SYNCGen3.0_ALL]" + Environment.NewLine;
+                    }
+                    if (extraint == 10)
+                    {
+                        extraint = 0;
+                        extrafiles += @"Options = Delay,Include,Transaction" + Environment.NewLine + @"[SYNCGen3.0_" + _version + "]" + Environment.NewLine;
+                    }
+                    extraint++;
+                    extrafiles += string.Format(@"Item{0} = {1} - {2}\rOpen{0} = SyncMyRide\{2}\r", extraint,
+                            item.Type, item.FileName)
+                        .Replace(@"\r", Environment.NewLine);
+
+                }
+            }
+
+            if (extrafiles != "")
+            {
+                extrafiles += @"Options = Delay,Include,Transaction";
+
+            }
+            autoinstalllst += @"Options = AutoInstall" + Environment.NewLine;
+            autoinstalllst += extrafiles;
+            //UpdateLog($@"Creating {_mode} autoinstall.lst");
+            File.WriteAllText(ApplicationManager.Instance.driveletter + @"\autoinstall.lst", autoinstalllst);
+            File.Create(ApplicationManager.Instance.driveletter + @"\DONTINDX.MSA");
+        }
+
+        private void CreateReformat()
+        {
+            string SelectedRelease = ApplicationManager.Instance.selectedrelease;
+            string SelectedRegion = ApplicationManager.Instance.selectedregion;
+            string SelectedMapVersion = ApplicationManager.Instance.selectedmapversion;
+            string reformatlst = "";
+            int i = 0;
+            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
+            {
+                if (item.Md5 == HomeViewModel.SyncReformatToolMd5 || (item.Md5 == HomeViewModel.DowngradePackageAppMd5 && SelectedRelease != @"Sync 3.3.19052") || item.Md5 == HomeViewModel.DowngradePackageAppMd5) continue;
+                i++;
+                reformatlst += item.Type + @"=" + item.FileName;
+                if (i != ApplicationManager.Instance._ivsus.Count) reformatlst += Environment.NewLine;
+            }
+
+            //UpdateLog($@"Creating {_mode} reformat.lst");
+
+            File.WriteAllText(ApplicationManager.Instance.driveletter + @"\reformat.lst", reformatlst);
+            string autoinstalllst = @"; CyanLabs Syn3Updater 2.x - " + InstallMode + @" Mode - " + SelectedRelease + " " + SelectedRegion + Environment.NewLine + Environment.NewLine + @"[SYNCGen3.0_ALL_PRODUCT]" + Environment.NewLine;
+            if (InstallMode == @"downgrade")
+            {
+                autoinstalllst += string.Format(@"Item1 = TOOL - {0}\rOpen1 = SyncMyRide\{0}\r", HomeViewModel.DowngradePackageToolFileName).Replace(@"\r", Environment.NewLine);
+                autoinstalllst += string.Format(@"Item2 = APP - {0}\rOpen2 = SyncMyRide\{0}\r", HomeViewModel.DowngradePackageAppFileName).Replace(@"\r", Environment.NewLine);
+                autoinstalllst += @"Options = AutoInstall" + Environment.NewLine + @"[SYNCGen3.0_ALL]" + Environment.NewLine;
+                autoinstalllst += string.Format(@"Item1 = REFORMAT TOOL - {0}\rOpen1 = SyncMyRide\{0}\r", HomeViewModel.SyncReformatToolFileName).Replace(@"\r", Environment.NewLine);
+                autoinstalllst += @"Options = AutoInstall,Include,Transaction" + Environment.NewLine;
+            }
+            else if (InstallMode == @"reformat")
+            {
+                autoinstalllst += string.Format(@"Item1 = REFORMAT TOOL  - {0}\rOpen1 = SyncMyRide\{0}\r", HomeViewModel.SyncReformatToolFileName).Replace(@"\r", Environment.NewLine);
+                autoinstalllst += @"Options = AutoInstall";
+            }
+            //UpdateLog($@"Creating {InstallMode} autoinstall.lst");
+
+            File.WriteAllText(ApplicationManager.Instance.driveletter + @"\autoinstall.lst", autoinstalllst);
+            File.Create(ApplicationManager.Instance.driveletter + @"\DONTINDX.MSA");
         }
 
         public string CalculateMd5(string filename)
@@ -135,6 +299,7 @@ namespace Syn3Updater.UI.Tabs
                     hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                     var read = totalBytesRead;
                     CurrentProgress = ((int)((double)read / size * 100));
+                    TotalPercentage = (count * 100) + ((int)((double)read / size * 100));
                 } while (bytesRead != 0);
 
                 hasher.TransformFinalBlock(buffer, 0, 0);
@@ -146,7 +311,7 @@ namespace Syn3Updater.UI.Tabs
         {
             if (ApplicationManager.Instance.Skipcheck) return true;
             if (!File.Exists(localfile)) return false;
-
+            DownloadInfo = "Validating: " + localfile;
             string localMd5 = CalculateMd5(localfile);
 
             if (md5 == null)
@@ -189,7 +354,6 @@ namespace Syn3Updater.UI.Tabs
         }
 
         //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
-
         private static HttpClient client = new HttpClient();
         public async Task HttpGetForLargeFile(string path, string filename, CancellationToken token)
         {
@@ -259,15 +423,7 @@ namespace Syn3Updater.UI.Tabs
         private ActionCommand _cancelDownload;
         public ActionCommand CancelDownload => _cancelDownload ?? (_cancelDownload = new ActionCommand(CancelDownloadAction));
 
-        public List<string> DownloadQueueList { get; set; }
-
-        public class FileList
-        {
-            public string FileName { get; set; }
-            public string Type { get; set; }
-            public string Md5 { get; set; }
-        }
-
+        public ObservableCollection<string> DownloadQueueList { get; set; }
         public bool CancelButtonEnabled { get; set; }
 
         private string _downloadFilesRemaining;

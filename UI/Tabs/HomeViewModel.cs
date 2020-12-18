@@ -42,17 +42,20 @@ namespace Syn3Updater.UI.Tabs
         private const int SyncBlacklistedVersion = 3419274;
         private const int SyncReformatVersion = 3200000;
 
-        private const string ReformatToolUrl = "https://cyanlabs.net/api/Syn3Updater/reformat.php";
-        private const string SyncReformatTool = "1u5t-14g386-cb.tar.gz";
-        private const string SyncReformatToolMd5 = "75E08C3EED8D2039BAF65B6156F79106";
+        public const string SyncReformatToolUrl = "https://cyanlabs.net/api/Syn3Updater/reformat.php";
+        public const string SyncReformatToolFileName = "1u5t-14g386-cb.tar.gz";
+        public const string SyncReformatToolName = "1u5t-14g386-cb"; 
+        public const string SyncReformatToolMd5 = "75E08C3EED8D2039BAF65B6156F79106";
 
-        private const string DowngradePackageAppUrl = "https://ivsubinaries.azureedge.net/swparts/4U5T-14G381-AN_1552583626000.TAR.GZ";
-        private const string DowngradePackageApp = "4U5T-14G381-AN_1552583626000.TAR.GZ";
-        private const string DowngradePackageAppMd5 = "0553D1A474FBF9F0DB68A9C96FBDA7CB";
+        public const string DowngradePackageAppUrl = "https://ivsubinaries.azureedge.net/swparts/4U5T-14G381-AN_1552583626000.TAR.GZ";
+        public const string DowngradePackageAppFileName = "4U5T-14G381-AN_1552583626000.TAR.GZ";
+        public const string DowngradePackageAppName = "4U5T-14G381-AN"; 
+        public const string DowngradePackageAppMd5 = "0553D1A474FBF9F0DB68A9C96FBDA7CB";
 
-        private const string DowngradePackageToolUrl = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz";
-        private const string DowngradePackageTool = "GB5T-14G386-SC_85041.tar.gz";
-        private const string DowngradePackageToolMd5 = "E16F5E01D816E738E2B68592BDC22F3F";
+        public const string DowngradePackageToolUrl = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz";
+        public const string DowngradePackageToolFileName = "GB5T-14G386-SC_85041.tar.gz";
+        public const string DowngradePackageToolName = "GB5T-14G386-SC"; 
+        public const string DowngradePackageToolMd5 = "E16F5E01D816E738E2B68592BDC22F3F";
 
         private bool _appsselected;
 
@@ -299,34 +302,49 @@ namespace Syn3Updater.UI.Tabs
             }
             OnPropertyChanged("InstallMode");
 
-            //tabControl1.SelectedTab = tabAutoInstall;
-            //lstIVSU.Items.Clear();
-
             if (InstallMode == @"downgrade")
             {
-                string app = DownloadLocation + DowngradePackageApp;
-                if (!File.Exists(app))
+                IvsuList.Add(new Ivsu()
                 {
-                    ApplicationManager.Instance._downloadfiles.Add(new Uri(DowngradePackageAppUrl));
-                    //lstDownloadQueue.Items.Add(new Uri(DowngradePackageAppUrl).ToString());
-                }
-                string tool = DownloadLocation + DowngradePackageTool;
-                if (!File.Exists(tool)) //||DownloadViewModel.CalculateMd5(tool) != DowngradePackageToolMd5)
+                    Type = "APP",
+                    Name = DowngradePackageAppName,
+                    Version = "",
+                    Notes = "REQUIRED!",
+                    Url = DowngradePackageAppUrl,
+                    Md5 = DowngradePackageAppMd5,
+                    Selected = true,
+                    FileName = DowngradePackageAppFileName
+                });
+
+                IvsuList.Add(new Ivsu()
                 {
-                    ApplicationManager.Instance._downloadfiles.Add(new Uri(DowngradePackageToolUrl));
-                    //lstDownloadQueue.Items.Add(new Uri(DowngradePackageToolUrl).ToString());
-                }
+                    Type = "TOOL",
+                    Name = DowngradePackageToolName,
+                    Version = "",
+                    Notes = "REQUIRED!",
+                    Url = DowngradePackageToolUrl,
+                    Md5 = DowngradePackageToolMd5,
+                    Selected = true,
+                    FileName = DowngradePackageToolFileName
+                });
             }
 
             if (InstallMode == @"reformat" || InstallMode == @"downgrade")
             {
-                string reformattool = DownloadLocation + SyncReformatTool;
-                if (!File.Exists(reformattool))// || DownloadViewModel.CalculateMd5(reformattool) != SyncReformatToolMd5)
+                IvsuList.Add(new Ivsu()
                 {
-                    ApplicationManager.Instance._downloadfiles.Add(new Uri(ReformatToolUrl));
-                    //lstDownloadQueue.Items.Add(new Uri(ReformatToolUrl).ToString());
-                }
+                    Type = "TOOL",
+                    Name = SyncReformatToolName,
+                    Version = "",
+                    Notes = "REQUIRED!",
+                    Url = SyncReformatToolUrl,
+                    Md5 = SyncReformatToolMd5,
+                    Selected = true,
+                    FileName = SyncReformatToolFileName
+                });
             }
+
+            ApplicationManager.Instance.InstallMode = InstallMode;
 
             HttpResponseMessage response = Client.GetAsync(ApiAppReleaseSingle + SelectedRelease).Result;
             _stringDownloadJson = response.Content.ReadAsStringAsync().Result;
@@ -374,13 +392,17 @@ namespace Syn3Updater.UI.Tabs
                     Uri myUri = new Uri(item.Url);
                     item.Url = item.Url.Replace(myUri.Host,"127.0.0.1").Replace(myUri.Scheme,"http");  // host is "www.contoso.com"
 //#endif
-                    ApplicationManager.Instance._downloadfiles.Add(new Uri(item.Url));
-                ApplicationManager.Instance._ivsus.Add(item);
+                    ApplicationManager.Instance._ivsus.Add(item);
                 }
             }
 
             if (!CancelledDownload())
             {
+                ApplicationManager.Instance.drivenumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+                ApplicationManager.Instance.driveletter = DriveLetter;
+                ApplicationManager.Instance.selectedregion = SelectedRegion.Code;
+                ApplicationManager.Instance.selectedrelease = SelectedRelease;
+                ApplicationManager.Instance.selectedmapversion = SelectedMapVersion;
                 ApplicationManager.Instance.FireDownloadsTabEvent();
                 ApplicationManager.Logger.Info($@"Starting process ({SelectedRelease} - {SelectedRegion} - {SelectedMapVersion})");
                 StartEnabled = false;

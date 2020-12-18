@@ -20,7 +20,7 @@
             <StackPanel Orientation="Vertical">
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" Text="{Binding Language, ConverterParameter=Download.DownloadQueue, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" Text="{Binding Language, ConverterParameter=Download.Queue, Converter={StaticResource LocConverter}}"/>
                         <ListBox Height="160" ItemsSource="{Binding DownloadQueueList}"/>
                         <Grid>
                             <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="10" Text="{Binding DownloadInfo}" />

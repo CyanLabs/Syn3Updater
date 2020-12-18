@@ -26,13 +26,13 @@ namespace Syn3Updater
     public class ApplicationManager
     {
         public readonly ObservableCollection<Uri> _downloadfiles = new ObservableCollection<Uri>();
-        public ObservableCollection<HomeViewModel.Ivsu> _ivsus;
-        public HomeViewModel.Drive selectedDisk;
+        public ObservableCollection<HomeViewModel.Ivsu> _ivsus = new ObservableCollection<HomeViewModel.Ivsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
 
         public MainWindow MainWindow;
         public bool Skipcheck, _downloadonly;
         public string DownloadLocation;
+        public string drivenumber, driveletter, selectedmapversion, selectedrelease, selectedregion, InstallMode;
 
         public void FireLanguageChangedEvent()
         {

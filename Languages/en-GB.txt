@@ -36,12 +36,12 @@ About.DocumentationButton Syn3 Updater Documentation
 About.DisclaimerTitle Disclaimer
 About.Disclaimer CyanLabs will not be liable for any loss or damage including, without limitation, indirect or consequential loss or damage, or any loss or damage whatsoever arising from use or loss of use of, data, or profits, arising out of or in connection with the use of this application or the associated guides. This process is not approved by any vehicle manufacturer and may void any warranty/agreement you may have in place
 About.DisclaimerAgreement I understand and accept the risks outlined in the disclaimer above.
-Download.DownloadQueue Download Queue
+Download.Queue Queue
 Download.Log Log
 Download.CancelButton Cancel
 Download.StartButton Start
 Download.VerifyingFile Verifying integrity of
-Download.TotalDownload Total Download Progress
+Download.TotalDownload Total Progress
 Settings.CarConfiguration Car Configuration
 Settings.EnterSyncVersion Enter your SYNC version (Settings > General > About Sync)
 Settings.EnterRegionNav Enter your REGION and specify if you have NAVIGATION
