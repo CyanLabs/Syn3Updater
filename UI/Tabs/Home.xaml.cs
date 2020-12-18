@@ -14,10 +14,10 @@ namespace Syn3Updater.UI.Tabs
         public Home()
         {
             InitializeComponent();
-            //if (!DesignerProperties.GetIsInDesignMode(this))
-            //{
-            //    (this.DataContext as HomeViewModel)?.Init();
-            //}
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                (this.DataContext as HomeViewModel)?.Init();
+            }
         }
 
         private void Home_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

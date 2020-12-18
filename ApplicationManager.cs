@@ -25,13 +25,14 @@ namespace Syn3Updater
 {
     public class ApplicationManager
     {
-        public readonly Queue<string> _downloadfiles = new Queue<string>();
-        public ArrayList _ivsus;
+        public readonly ObservableCollection<Uri> _downloadfiles = new ObservableCollection<Uri>();
+        public ObservableCollection<HomeViewModel.Ivsu> _ivsus;
         public HomeViewModel.Drive selectedDisk;
         public static ApplicationManager Instance { get; } = new ApplicationManager();
 
         public MainWindow MainWindow;
-        public bool Skipcheck;
+        public bool Skipcheck, _downloadonly;
+        public string DownloadLocation;
 
         public void FireLanguageChangedEvent()
         {
@@ -43,9 +44,16 @@ namespace Syn3Updater
             ShowDownloadsTab?.Invoke(this, new EventArgs());
         }
 
+        public void FireHomeTabEvent()
+        {
+            ShowHomeTab?.Invoke(this, new EventArgs());
+        }
+
         public event EventHandler LanguageChangedEvent;
 
         public event EventHandler ShowDownloadsTab;
+
+        public event EventHandler ShowHomeTab;
 
         #region Constructors
 
@@ -76,6 +84,10 @@ namespace Syn3Updater
             //client = new DiscordRpcClient("");
             //client.Initialize();
 
+            DownloadLocation = Properties.Settings.Default.DownloadLocation == ""
+                ? KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\"
+                : Properties.Settings.Default.DownloadLocation;
+
             if (!Directory.Exists(Properties.Settings.Default.DownloadLocation) && Properties.Settings.Default.DownloadLocation != "")
             {
                 Directory.CreateDirectory(Properties.Settings.Default.DownloadLocation);
@@ -103,6 +115,8 @@ namespace Syn3Updater
             {
                 MainWindow.WindowState = WindowState.Normal;
             }
+
+            
         }
 
         public void RestartApp()

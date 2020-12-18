@@ -14,6 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.RightsManagement;
 using System.Threading.Tasks;
 using AutoUpdaterDotNET;
 using Newtonsoft.Json;
@@ -60,10 +61,15 @@ namespace Syn3Updater.UI.Tabs
             CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
-            DownloadLocation = Properties.Settings.Default.DownloadLocation;
+            DownloadLocation = ApplicationManager.Instance.DownloadLocation;
         }
         public void Init()
         {
+            CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
+            CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
+            CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
+            DownloadLocation = ApplicationManager.Instance.DownloadLocation;
+
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiToken);
             SyncRegions = new ObservableCollection<SyncRegion>
             {
@@ -301,13 +307,13 @@ namespace Syn3Updater.UI.Tabs
                 string app = DownloadLocation + DowngradePackageApp;
                 if (!File.Exists(app))
                 {
-                    ApplicationManager.Instance._downloadfiles.Enqueue(new Uri(DowngradePackageAppUrl).ToString());
+                    ApplicationManager.Instance._downloadfiles.Add(new Uri(DowngradePackageAppUrl));
                     //lstDownloadQueue.Items.Add(new Uri(DowngradePackageAppUrl).ToString());
                 }
                 string tool = DownloadLocation + DowngradePackageTool;
-                if (!File.Exists(tool) || Functions.CalculateMd5(tool) != DowngradePackageToolMd5)
+                if (!File.Exists(tool)) //||DownloadViewModel.CalculateMd5(tool) != DowngradePackageToolMd5)
                 {
-                    ApplicationManager.Instance._downloadfiles.Enqueue(new Uri(DowngradePackageToolUrl).ToString());
+                    ApplicationManager.Instance._downloadfiles.Add(new Uri(DowngradePackageToolUrl));
                     //lstDownloadQueue.Items.Add(new Uri(DowngradePackageToolUrl).ToString());
                 }
             }
@@ -315,9 +321,9 @@ namespace Syn3Updater.UI.Tabs
             if (InstallMode == @"reformat" || InstallMode == @"downgrade")
             {
                 string reformattool = DownloadLocation + SyncReformatTool;
-                if (!File.Exists(reformattool) || Functions.CalculateMd5(reformattool) != SyncReformatToolMd5)
+                if (!File.Exists(reformattool))// || DownloadViewModel.CalculateMd5(reformattool) != SyncReformatToolMd5)
                 {
-                    ApplicationManager.Instance._downloadfiles.Enqueue(new Uri(ReformatToolUrl).ToString());
+                    ApplicationManager.Instance._downloadfiles.Add(new Uri(ReformatToolUrl));
                     //lstDownloadQueue.Items.Add(new Uri(ReformatToolUrl).ToString());
                 }
             }
@@ -334,14 +340,18 @@ namespace Syn3Updater.UI.Tabs
             foreach (Ivsus item in jsonIvsUs.data[0].ivsus)
                 if (item.ivsu.regions.Contains(@"ALL") || item.ivsu.regions.Contains(SelectedRegion.Code))
                 {
-                    IvsuList.Add(new Ivsu() { Type = item.ivsu.type, Name = item.ivsu.name, Version = item.ivsu.version, Notes = item.ivsu.notes, Url = item.ivsu.url, Md5 = item.ivsu.md5, Selected = true });
+                    string _fileName = item.ivsu.url.Substring(item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
+                        item.ivsu.url.Length - item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+                    IvsuList.Add(new Ivsu() { Type = item.ivsu.type, Name = item.ivsu.name, Version = item.ivsu.version, Notes = item.ivsu.notes, Url = item.ivsu.url, Md5 = item.ivsu.md5, Selected = true, FileName = _fileName });
                 }
 
             if (SelectedMapVersion != @"No Maps" && SelectedMapVersion != @"Non Nav APIM" && SelectedMapVersion != @"Keep Existing Maps")
                 foreach (Ivsus item in jsonMapIvsUs.data[0].ivsus)
                     if (item.map_ivsu.regions.Contains(@"ALL") || item.map_ivsu.regions.Contains(SelectedRegion.Code))
                     {
-                        IvsuList.Add(new Ivsu() { Type = item.map_ivsu.type, Name = item.map_ivsu.name, Version = item.map_ivsu.version, Notes = item.map_ivsu.notes, Url = item.map_ivsu.url, Md5 = item.map_ivsu.md5, Selected = true});
+                        string _fileName = item.map_ivsu.url.Substring(item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
+                            item.map_ivsu.url.Length - item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+                        IvsuList.Add(new Ivsu() { Type = item.map_ivsu.type, Name = item.map_ivsu.name, Version = item.map_ivsu.version, Notes = item.map_ivsu.notes, Url = item.map_ivsu.url, Md5 = item.map_ivsu.md5, Selected = true, FileName = _fileName });
                     }
             OnPropertyChanged("IvsuList");
             StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
@@ -351,7 +361,7 @@ namespace Syn3Updater.UI.Tabs
         private void StartAction()
         {
             //DisableControls();
-            ApplicationManager.Instance._ivsus = new ArrayList();
+            ApplicationManager.Instance._ivsus = new ObservableCollection<Ivsu>();
             foreach (Ivsu item in IvsuList)
             {
                 if (item.Selected)
@@ -360,24 +370,25 @@ namespace Syn3Updater.UI.Tabs
                     {
                         _appsselected = true;
                     }
-                ApplicationManager.Instance._downloadfiles.Enqueue(item.Url);
+//#if DEBUG
+                    Uri myUri = new Uri(item.Url);
+                    item.Url = item.Url.Replace(myUri.Host,"127.0.0.1").Replace(myUri.Scheme,"http");  // host is "www.contoso.com"
+//#endif
+                    ApplicationManager.Instance._downloadfiles.Add(new Uri(item.Url));
                 ApplicationManager.Instance._ivsus.Add(item);
                 }
             }
 
             if (!CancelledDownload())
+            {
                 ApplicationManager.Instance.FireDownloadsTabEvent();
-
-            ApplicationManager.Logger.Info($@"Starting process ({SelectedRelease} - {SelectedRegion} - {SelectedMapVersion})");
-
-            //Task t = new Task(ValidateDownloadedFiles);
-            //t.Start();
-
-            ApplicationManager.Instance.FireDownloadsTabEvent();
+                ApplicationManager.Logger.Info($@"Starting process ({SelectedRelease} - {SelectedRegion} - {SelectedMapVersion})");
+                StartEnabled = false;
+                OnPropertyChanged("StartEnabled");
+            }
         }
 
         private bool _canceldownload;
-        private bool _downloadonly;
         private bool CancelledDownload()
         {
             //No USB drive selected, download only?
@@ -386,7 +397,7 @@ namespace Syn3Updater.UI.Tabs
                 if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    _downloadonly = true;
+                    ApplicationManager.Instance._downloadonly = true;
                 }
                 else
                 {
@@ -394,11 +405,11 @@ namespace Syn3Updater.UI.Tabs
                 }
             }
 
-            if ((InstallMode == "reformat" || InstallMode == "downgrade") && _canceldownload == false && _downloadonly == false)
+            if ((InstallMode == "reformat" || InstallMode == "downgrade") && _canceldownload == false && ApplicationManager.Instance._downloadonly == false)
             {
                 if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final "), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                         _canceldownload = true;
                 }
                 else
@@ -428,7 +439,7 @@ namespace Syn3Updater.UI.Tabs
                 MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
             // ReSharper disable once InvertIf
-            if (_downloadonly == false && _canceldownload == false)
+            if (ApplicationManager.Instance._downloadonly == false && _canceldownload == false)
             {
                 if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), SelectedDrive.Name, DriveLetter), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                     _canceldownload = true;
@@ -531,6 +542,8 @@ namespace Syn3Updater.UI.Tabs
             public string Notes { get; set; }
             public string Url { get; set; }
             public string Md5 { get; set; }
+            
+            public string FileName { get; set; }
         }
 
         private string _currentSyncRegion;

@@ -40,9 +40,7 @@ namespace Syn3Updater.UI.Tabs
             CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
 
-            DownloadLocation = Properties.Settings.Default.DownloadLocation == ""
-                ? KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\"
-                : Properties.Settings.Default.DownloadLocation;
+            DownloadLocation = ApplicationManager.Instance.DownloadLocation;
 
             ShowAllReleases = Properties.Settings.Default.ShowAllReleases;
             LicenseKey = Properties.Settings.Default.LicenseKey;
@@ -105,7 +103,9 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _downloadLocation, value);
+                    ApplicationManager.Instance.DownloadLocation = value;
                     Properties.Settings.Default.DownloadLocation = value;
+                    
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldpath + Environment.NewLine, Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                     {
-                        if (oldpath != dialog.SelectedPath)
+                        if (oldpath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldpath))
                         {
                             try
                             {
@@ -197,7 +197,7 @@ namespace Syn3Updater.UI.Tabs
                             }
                         }
                     }
-                    DownloadLocation = dialog.SelectedPath;
+                    DownloadLocation = dialog.SelectedPath + "\\";
                     Properties.Settings.Default.Save();
                 }
             }

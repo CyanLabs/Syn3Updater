@@ -20,30 +20,6 @@ namespace Syn3Updater.Helpers
             return Math.Sign(byteCount) * num + suf[place];
         }
 
-        public static string CalculateMd5(string filename, ProgressBar progress = null)
-        {
-            long totalBytesRead = 0;
-            using (Stream file = File.OpenRead(filename))
-            {
-                var size = file.Length;
-                HashAlgorithm hasher = MD5.Create();
-                int bytesRead;
-                byte[] buffer;
-                do
-                {
-                    buffer = new byte[4096];
-                    bytesRead = file.Read(buffer, 0, buffer.Length);
-                    totalBytesRead += bytesRead;
-                    hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
-                    var read = totalBytesRead;
-                    if (progress != null) progress.Value = ((int)((double)read / size * 100));
-                } while (bytesRead != 0);
-
-                hasher.TransformFinalBlock(buffer, 0, 0);
-                return BitConverter.ToString(hasher.Hash).Replace("-", String.Empty);
-            }
-        }
-
         #region CopyFileEx
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]

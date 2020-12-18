@@ -41,6 +41,11 @@ namespace Syn3Updater.UI
             {
                 CurrentTab = "downloads";
             };
+
+            ApplicationManager.Instance.ShowHomeTab += delegate (object sender, EventArgs args)
+            {
+                CurrentTab = "home";
+            };
         }
 
         private bool _hamburgerExtended;
@@ -99,11 +104,15 @@ namespace Syn3Updater.UI
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     SetProperty(ref _currentTab, "settings");
                 }
-                else if (value == "downloads" && ApplicationManager.Instance._downloadfiles.Count == 0)
+                else if(value == "home" && ApplicationManager.Instance._downloadfiles.Count != 0)
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoDownloads"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                    SetProperty(ref _currentTab, "home");
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
+                //else if (value == "downloads" && ApplicationManager.Instance._downloadfiles.Count == 0)
+                //{
+                //    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoDownloads"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                //    SetProperty(ref _currentTab, "home");
+                //}
                 else if (value == "crashme")
                 {
                     int i = 11;

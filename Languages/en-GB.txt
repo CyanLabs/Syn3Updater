@@ -40,6 +40,8 @@ Download.DownloadQueue Download Queue
 Download.Log Log
 Download.CancelButton Cancel
 Download.StartButton Start
+Download.VerifyingFile Verifying integrity of
+Download.TotalDownload Total Download Progress
 Settings.CarConfiguration Car Configuration
 Settings.EnterSyncVersion Enter your SYNC version (Settings > General > About Sync)
 Settings.EnterRegionNav Enter your REGION and specify if you have NAVIGATION
@@ -67,3 +69,4 @@ MessageBox.CancelRegionMismatch Current region and new region are not the same, 
 MessageBox.CancelDownloadIsDrive Download path and destination USB drive are the same, please change your download path.
 MessageBox.CancelNoApps Mode is reformat or downgrade and no apps package has been selected, this will result in a non booting system, ABORTING! No "APPS" package has been selected but Syn3 Updater has determined that a downgrade or reformat is required, this will result in a non booting system. Aborting!
 MessageBox.CancelFormatUSB WARNING, ALL DATA ON THE SELECTED DRIVE WILL BE LOST {0}\nDrive Letter: {1}
+MessageBox.DownloadInProgress A download is already in progress please wait or cancel the download first.
