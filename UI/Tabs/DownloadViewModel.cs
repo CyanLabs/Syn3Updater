@@ -333,7 +333,10 @@ namespace Syn3Updater.UI.Tabs
             if (ct.IsCancellationRequested == false)
             {
                 if (ApplicationManager.Instance._downloadonly)
+                {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ApplicationManager.Instance.downloading = false;
+                }
                 else
                     PrepareUsb();
             }

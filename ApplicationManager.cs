@@ -71,13 +71,13 @@ namespace Syn3Updater
             // ReSharper disable once IdentifierTypo
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            if (Properties.Settings.Default.Lang == null)
+            if (Properties.Settings.Default.Lang == "")
             {
                 Logger.Debug("Language is not set, inferring language from system culture. Lang=" + ci.TwoLetterISOLanguageName);
                 Properties.Settings.Default.Lang = ci.TwoLetterISOLanguageName;
             }
 
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Syn3Updater.Properties.Settings.Default.Lang);
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(Properties.Settings.Default.Lang);
 
             //client = new DiscordRpcClient("");
             //client.Initialize();

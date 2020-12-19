@@ -100,6 +100,11 @@ namespace Syn3Updater.Model
 
                 if (l == null)
                 {
+                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
+                }
+
+                if (l == null)
+                {
                     return "[" + lang + ":" + key + "]";
                 }
 
@@ -172,6 +177,11 @@ namespace Syn3Updater.Model
                         Languages.Add(l);
                         dbg += "\r\nLoaded";
                     }
+                }
+
+                if (l == null)
+                {
+                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
                 }
 
                 if (l == null)
