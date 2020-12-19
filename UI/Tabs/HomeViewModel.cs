@@ -116,6 +116,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     DriveList.Add(new Drive { Path = d.Path.RelativePath, Name = diskName + " " + friendlySize});
                 }
+
             }
             OnPropertyChanged("DriveList");
         }
@@ -150,6 +151,10 @@ namespace Syn3Updater.UI.Tabs
                             {
                                 ApplicationManager.Instance.SkipFormat = true;
                             }
+
+                            ApplicationManager.Instance.drivefilesystem = ld.Properties["FileSystem"].Value.ToString();
+                            ApplicationManager.Instance.drivepartitiontype = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
+                            ApplicationManager.Instance.drivename = SelectedDrive.Name;
                         }
                     }
                 }

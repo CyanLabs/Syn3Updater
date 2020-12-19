@@ -22,7 +22,7 @@ namespace Syn3Updater
 
         public MainWindow MainWindow;
         public bool Skipcheck, _downloadonly, SkipFormat, downloading;
-        public string DownloadLocation;
+        public string DownloadLocation, drivename, drivepartitiontype, drivefilesystem;
         public string drivenumber, driveletter, selectedmapversion, selectedrelease, selectedregion, InstallMode;
 
         public void FireLanguageChangedEvent()

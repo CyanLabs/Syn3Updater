@@ -5,13 +5,16 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using Syn3Updater.Helper;
 using Syn3Updater.Helpers;
 using Syn3Updater.Model;
@@ -21,24 +24,14 @@ namespace Syn3Updater.UI.Tabs
     public class DownloadViewModel : LanguageAwareBaseViewModel
     {
         public event EventHandler<EventArgs<int>> PercentageChanged;
-        private BackgroundWorker downloadWorker = new BackgroundWorker();
-        private BackgroundWorker copyWorker = new BackgroundWorker();
         private string _version;
+        CancellationToken ct;
         public void Init()
         {
             InstallMode = ApplicationManager.Instance.InstallMode;
             OnPropertyChanged("InstallMode");
 
             PercentageChanged += DownloadPercentageChanged;
-            downloadWorker.DoWork += DownloadWorkerDoWork;
-            downloadWorker.WorkerReportsProgress = true;
-            downloadWorker.WorkerSupportsCancellation = true;
-
-            copyWorker.DoWork += CopyWorkerDoWork;
-            copyWorker.WorkerSupportsCancellation = true;
-            copyWorker.WorkerReportsProgress = true;
-            copyWorker.ProgressChanged += workerProgressChanged;
-            copyWorker.RunWorkerCompleted += CopyCompleted;
 
             CurrentProgress = 0;
 
@@ -51,10 +44,18 @@ namespace Syn3Updater.UI.Tabs
 
             _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
             _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
-            if (downloadWorker.IsBusy == false) downloadWorker.RunWorkerAsync();
+
+            //if (downloadWorker.IsBusy == false) downloadWorker.RunWorkerAsync();
+            ct = tokenSource.Token;
+            Task.Run(DoDownload, tokenSource.Token);
         }
 
-        private void CopyWorkerDoWork(object sender, DoWorkEventArgs e)
+        //private async Task RunDownloadTask()
+        //{
+        //    await Task.Run(DoDownload, tokenSource.Token);
+        //}
+
+        private void DoCopy()
         {
 
             int total = ApplicationManager.Instance._ivsus.Count;
@@ -62,8 +63,12 @@ namespace Syn3Updater.UI.Tabs
             TotalPercentageMax = (100 * total) * 2;
             foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
             {
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
                 if (ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
-                    ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true, copyWorker))
+                    ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true))
                 {
                     //TotalPercentage += 100;
                     count++;
@@ -91,10 +96,18 @@ namespace Syn3Updater.UI.Tabs
 
                             while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
                             {
-                                if (copyWorker.CancellationPending)
+                                if (ct.IsCancellationRequested)
                                 {
-                                    e.Cancel = true;
-                                    break;
+                                    fileStream.Close();
+                                    fileStream.Dispose();
+                                    try
+                                    {
+                                        File.Delete(ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName);
+                                    }
+                                    catch (IOException)
+                                    {
+
+                                    }
                                 }
                                 fileStream.Write(bytes, 0, bytesRead);
                                 totalReads += bytesRead;
@@ -102,14 +115,14 @@ namespace Syn3Updater.UI.Tabs
                                     System.Convert.ToInt32(((decimal) totalReads / (decimal) totalBytes) * 100);
                                 if (percent != prevPercent)
                                 {
-                                    copyWorker.ReportProgress(percent);
+                                    PercentageChanged.Raise(this, percent);
                                     prevPercent = percent;
                                 }
                             }
                         }
 
                         bool validfile = ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
-                            ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true,copyWorker);
+                            ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true);
                         if (validfile)
                         {
                             count++;
@@ -130,36 +143,91 @@ namespace Syn3Updater.UI.Tabs
                     OnPropertyChanged("DownloadQueueList");
                 });
                 count++;
-                copyWorker.ReportProgress(100);
+                PercentageChanged.Raise(this,100);
+                
             }
+
+            DownloadInfo = "";
+            DownloadPercentage = "";
+
+            GenerateLog();
+
+            if (MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo,
+                MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.selectedrelease.Replace(".", "").Replace("Sync ", ""));
+                Properties.Settings.Default.Save();
+            }
+            MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+            Process.Start("https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#" + InstallMode);
         }
 
-        private void CopyCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        public static string GetOsFriendlyName()
         {
-            copyWorker.Dispose();
-            ApplicationManager.Instance.downloading = false;
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
+            foreach (var o in searcher.Get())
+            {
+                var os = (ManagementObject)o;
+                result = os["Caption"].ToString();
+                break;
+            }
+            return result + " (" + Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "") + ")";
+        }
+
+        private void GenerateLog()
+        {
+            string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}" + Environment.NewLine;
+            data += @"Operating System: " + GetOsFriendlyName() + Environment.NewLine;
+            data += Environment.NewLine;
+            data += @"PREVIOUS CONFIGURATION" + Environment.NewLine;
+            data += @"Version: " + _version + Environment.NewLine;
+            data += @"Region: " + Properties.Settings.Default.CurrentSyncRegion + Environment.NewLine;
+            data += @"Navigation: " + Properties.Settings.Default.CurrentSyncNav + Environment.NewLine;
+            data += @"Mode: " + (Properties.Settings.Default.CurrentInstallMode == @"autodetect" ? InstallMode : Properties.Settings.Default.CurrentInstallMode + " FORCED") + Environment.NewLine;
+            data += Environment.NewLine;
+            data += @"USB DETAILS" + Environment.NewLine;
+            data += @"Model: " + ApplicationManager.Instance.drivename + Environment.NewLine;
+            data += @"FileSystem: " + ApplicationManager.Instance.drivefilesystem + Environment.NewLine;
+            data += @"Partition Type: " + ApplicationManager.Instance.drivepartitiontype + Environment.NewLine;
+
+            string driveletter = ApplicationManager.Instance.driveletter;
+            if (File.Exists(driveletter + @"\reformat.lst"))
+            {
+                data += Environment.NewLine;
+                data += @"REFORMAT.LST" + Environment.NewLine;
+                data += File.ReadAllText(driveletter + @"\reformat.lst") + Environment.NewLine;
+            }
+
+            if (File.Exists(driveletter + @"\autoinstall.lst"))
+            {
+                data += Environment.NewLine;
+                data += @"AUTOINSTALL.LST" + Environment.NewLine;
+                data += File.ReadAllText(driveletter + @"\autoinstall.lst") + Environment.NewLine;
+            }
+
+            if (Directory.Exists(driveletter + @"\SyncMyRide"))
+            {
+                data += Environment.NewLine;
+                DirectoryInfo di = new DirectoryInfo(driveletter + @"\SyncMyRide");
+                FileInfo[] allFiles = di.GetFiles("*", SearchOption.AllDirectories);
+                data += @"SYNCMYRIDE FILES (" + allFiles.Length + ")" + Environment.NewLine;
+                foreach (FileInfo file in allFiles)
+                    data += $"{file.Name} ({Functions.BytesToString(file.Length)})" + Environment.NewLine;
+                data += Environment.NewLine;
+            }
+
+            data += @"LOG" + Environment.NewLine;
+            //data += Logoutput;
+            File.WriteAllText(driveletter + @"\log.txt", data);
         }
 
         private string progress_bar_suffix = "";
-
-        private void workerProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        {
-            ProgressChanged(e.ProgressPercentage);
-        }
-
-        private void ProgressChanged(int percentage)
-        {
-            DownloadPercentage = percentage + "% " + progress_bar_suffix;
-            CurrentProgress = percentage;
-            TotalPercentage = count == 0 ? percentage : (count * 100) + percentage;
-        }
 
         private void CancelAction()
         {
             ApplicationManager.Instance.downloading = false;
             tokenSource.Cancel();
-            if (downloadWorker != null && downloadWorker.IsBusy) downloadWorker.CancelAsync();
-            if(copyWorker != null && copyWorker.IsBusy) copyWorker.CancelAsync();
             Thread.Sleep(2000);
             TotalPercentage = 0;
             CurrentProgress = 0;
@@ -179,12 +247,14 @@ namespace Syn3Updater.UI.Tabs
 
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
         {
-            ProgressChanged(e.Value);
+            DownloadPercentage = e.Value + "% " + progress_bar_suffix;
+            CurrentProgress = e.Value;
+            TotalPercentage = count == 0 ? e.Value : (count * 100) + e.Value;
         }
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
         int count = 0;
-        private async void DownloadWorkerDoWork(object sender, DoWorkEventArgs e)
+        private async void DoDownload()
         {
             int total = ApplicationManager.Instance._ivsus.Count;
             count = 0;
@@ -194,8 +264,11 @@ namespace Syn3Updater.UI.Tabs
             {
                 foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
                 {
-                    if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5,
-                        false, downloadWorker))
+                    if (ct.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false))
                     {
                         count++;
                     }
@@ -212,20 +285,14 @@ namespace Syn3Updater.UI.Tabs
                                 try
                                 {
                                     await HttpGetForLargeFile(item.Url,
-                                        ApplicationManager.Instance.DownloadLocation + item.FileName, tokenSource.Token);
+                                        ApplicationManager.Instance.DownloadLocation + item.FileName, ct);
                                 }
                                 catch (System.Net.Http.HttpRequestException webException)
                                 {
                                     MessageBox.Show(LanguageManager.GetValue(string.Format("MessageBox.WebException", webException.Message)), "Syn3 Updater",
                                         MessageBoxButton.OK, MessageBoxImage.Exclamation);
                                 }
-
-                                if (downloadWorker.CancellationPending)
-                                {
-                                    e.Cancel = true;
-                                    break;
-                                }
-                                bool validfile = ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false, downloadWorker);
+                                bool validfile = ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false);
                                 if (validfile)
                                 {
                                     count++;
@@ -252,7 +319,11 @@ namespace Syn3Updater.UI.Tabs
                     count++;
                     PercentageChanged.Raise(this, 100);
                 }
-
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    DownloadQueueList.Clear();
+                    OnPropertyChanged("DownloadQueueList");
+                });
             }
             catch (System.InvalidOperationException exception)
             {
@@ -313,7 +384,6 @@ namespace Syn3Updater.UI.Tabs
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    DownloadQueueList.Clear();
                     DownloadQueueList.Add(ApplicationManager.Instance.DownloadLocation + item.FileName);
                     OnPropertyChanged("DownloadQueueList");
                 });
@@ -321,7 +391,7 @@ namespace Syn3Updater.UI.Tabs
 
             Directory.CreateDirectory(ApplicationManager.Instance.driveletter + @"\SyncMyRide\");
 
-           //if(copyWorker.IsBusy == false) copyWorker.RunWorkerAsync();
+            Task.Run(DoCopy, tokenSource.Token);
         }
 
         private bool _cancelcopy;
@@ -418,7 +488,7 @@ namespace Syn3Updater.UI.Tabs
             File.Create(ApplicationManager.Instance.driveletter + @"\DONTINDX.MSA");
         }
 
-        public string CalculateMd5(string filename, BackgroundWorker worker)
+        public string CalculateMd5(string filename)
         {
             long totalBytesRead = 0;
             using (Stream file = File.OpenRead(filename))
@@ -434,12 +504,10 @@ namespace Syn3Updater.UI.Tabs
                     totalBytesRead += bytesRead;
                     hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                     var read = totalBytesRead;
-                    CurrentProgress = ((int)((double)read / size * 100));
-                    //TotalPercentage = (count * 100) + ((int)((double)read / size * 100));
+                    //CurrentProgress = ((int)((double)read / size * 100));
                     if (totalBytesRead % 102400 == 0)
                     {
-                        PercentageChanged.Raise(this, CurrentProgress);
-                        //worker.ReportProgress(CurrentProgress);
+                        PercentageChanged.Raise(this, ((int)((double)read / size * 100)));
                     }
 
                 } while (bytesRead != 0);
@@ -449,14 +517,19 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
-        private bool ValidateFile(string srcfile, string localfile, string md5, bool copy, BackgroundWorker worker)
+        private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
         {
+            if (ct.IsCancellationRequested)
+            {
+                // Clean up here, then...
+                return false;
+            }
             if (ApplicationManager.Instance.Skipcheck) return true;
             if (!File.Exists(localfile)) return false;
             DownloadInfo = "Validating: " + localfile;
 
             progress_bar_suffix = "validated";
-            string localMd5 = CalculateMd5(localfile, worker);
+            string localMd5 = CalculateMd5(localfile);
 
             if (md5 == null)
             {
@@ -467,7 +540,7 @@ namespace Syn3Updater.UI.Tabs
 
                     if (srcfilesize == filesize)
                     {
-                        if (localMd5 == CalculateMd5(srcfile,worker))
+                        if (localMd5 == CalculateMd5(srcfile))
                         {
                             return true;
                         }
@@ -554,12 +627,7 @@ namespace Syn3Updater.UI.Tabs
                             {
                                 var downloadPercentage = ((totalRead * 1d) / (total * 1d)) * 100;
                                 var value = Convert.ToInt32(downloadPercentage);
-
-                                //if (value > 0)
-                                //{
-                                    //downloadWorker.ReportProgress(value);
-                                    PercentageChanged.Raise(this, value);
-                                //}
+                                PercentageChanged.Raise(this, value);
                             }
                         }
                     }
