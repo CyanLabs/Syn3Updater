@@ -86,6 +86,7 @@ namespace Syn3Updater.UI.Tabs
             SyncVersionsEnabled = false;
             RefreshUsb();
             IvsuList = new ObservableCollection<Ivsu>{};
+            SyncMapVersion = new ObservableCollection<string> { };
             OnPropertyChanged("IvsuList");
         }
 
@@ -143,9 +144,13 @@ namespace Syn3Updater.UI.Tabs
                         {
                             ManagementObject ld = (ManagementObject)managementBaseObject;
                             DriveLetter = Convert.ToString(ld.Properties["DeviceId"].Value);
+                            if (ld.Properties["FileSystem"].Value.ToString() == "exFAT" && !p.Properties["Type"].Value.ToString().Contains("GPT:"))
+                            {
+                                ApplicationManager.Instance.SkipFormat = true;
+                            }
                             DriveFileSystem = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
                             DriveFileSystem += " " + Convert.ToString(ld.Properties["FileSystem"].Value);
-                            DriveName = Convert.ToString(ld.Properties["VolumeName"].Value);
+                            DriveName = ld.Properties["VolumeName"].Value.ToString();
                         }
                     }
                 }
@@ -196,7 +201,7 @@ namespace Syn3Updater.UI.Tabs
             {
                 if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
                 {
-                    SyncMapVersion = new ObservableCollection<string> {@"Keep Existing Maps"};
+                    SyncMapVersion.Add(@"Keep Existing Maps");
                 }
             }
             OnPropertyChanged("SyncMapVersion");
@@ -279,11 +284,11 @@ namespace Syn3Updater.UI.Tabs
                 //Update Nav?
                 if (SelectedMapVersion == @"No Maps" || SelectedMapVersion == @"Non Nav APIM" || SelectedMapVersion == @"Keep Existing Maps")
                 {
-                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"autoinstall" : Properties.Settings.Default.CurrentInstallMode;
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? @"autoinstall" : Properties.Settings.Default.CurrentInstallMode;
                 }
                 else
                 {
-                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"reformat" : Properties.Settings.Default.CurrentInstallMode;
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? @"reformat" : Properties.Settings.Default.CurrentInstallMode;
                 }
             }
 
@@ -293,11 +298,11 @@ namespace Syn3Updater.UI.Tabs
                 //Update Nav?
                 if (SelectedMapVersion == @"No Maps" || SelectedMapVersion == @"Non Nav APIM" || SelectedMapVersion == @"Keep Existing Maps")
                 {
-                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"autoinstall" : Properties.Settings.Default.CurrentInstallMode;
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? @"autoinstall" : Properties.Settings.Default.CurrentInstallMode;
                 }
                 else
                 {
-                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "automatic" ? @"downgrade" : Properties.Settings.Default.CurrentInstallMode;
+                    InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? @"downgrade" : Properties.Settings.Default.CurrentInstallMode;
                 }
             }
             OnPropertyChanged("InstallMode");
@@ -388,10 +393,10 @@ namespace Syn3Updater.UI.Tabs
                     {
                         _appsselected = true;
                     }
-//#if DEBUG
+#if DEBUG
                     Uri myUri = new Uri(item.Url);
                     item.Url = item.Url.Replace(myUri.Host,"127.0.0.1").Replace(myUri.Scheme,"http");  // host is "www.contoso.com"
-//#endif
+#endif
                     ApplicationManager.Instance._ivsus.Add(item);
                 }
             }

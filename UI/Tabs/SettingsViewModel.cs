@@ -29,7 +29,7 @@ namespace Syn3Updater.UI.Tabs
             CurrentSyncRegion = CurrentSyncRegionTemp;
 
             //TODO Fix need for temp string
-            string CurrentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode;
+            string CurrentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != "" ? Properties.Settings.Default.CurrentInstallMode : "autodetect";
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect","autoinstall","reformat","downgrade"
@@ -173,6 +173,23 @@ namespace Syn3Updater.UI.Tabs
         
         private ActionCommand _downloadPathSelector;
         public ActionCommand DownloadPathSelector => _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
+        
+        private ActionCommand _applySettings;
+        public ActionCommand ApplySettings => _applySettings ?? (_applySettings = new ActionCommand(ApplySettingsAction));
+
+        private void ApplySettingsAction()
+        {
+            if (CurrentSyncVersion != "" || CurrentSyncVersion != "0" || CurrentSyncRegion != "")
+            {
+                Properties.Settings.Default.Save();
+                ApplicationManager.Instance.FireHomeTabEvent();
+            }
+            else
+            {
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void DownloadPathAction()
         {

@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CurrentSyncVersion" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">3319052</Value>
     </Setting>
     <Setting Name="CurrentSyncNav" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

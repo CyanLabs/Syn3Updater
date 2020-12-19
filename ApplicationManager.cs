@@ -30,7 +30,7 @@ namespace Syn3Updater
         public static ApplicationManager Instance { get; } = new ApplicationManager();
 
         public MainWindow MainWindow;
-        public bool Skipcheck, _downloadonly;
+        public bool Skipcheck, _downloadonly, SkipFormat;
         public string DownloadLocation;
         public string drivenumber, driveletter, selectedmapversion, selectedrelease, selectedregion, InstallMode;
 
@@ -49,11 +49,18 @@ namespace Syn3Updater
             ShowHomeTab?.Invoke(this, new EventArgs());
         }
 
+        public void FireSettingsTabEvent()
+        {
+            ShowSettingsTab?.Invoke(this, new EventArgs());
+        }
+
         public event EventHandler LanguageChangedEvent;
 
         public event EventHandler ShowDownloadsTab;
 
         public event EventHandler ShowHomeTab;
+
+        public event EventHandler ShowSettingsTab;
 
         #region Constructors
 
@@ -88,9 +95,9 @@ namespace Syn3Updater
                 ? KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\"
                 : Properties.Settings.Default.DownloadLocation;
 
-            if (!Directory.Exists(Properties.Settings.Default.DownloadLocation) && Properties.Settings.Default.DownloadLocation != "")
+            if (!Directory.Exists(DownloadLocation) && DownloadLocation != "")
             {
-                Directory.CreateDirectory(Properties.Settings.Default.DownloadLocation);
+                Directory.CreateDirectory(DownloadLocation);
             }
 
             foreach (string arg in Environment.GetCommandLineArgs())

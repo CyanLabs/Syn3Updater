@@ -17,6 +17,10 @@
                 SetProperty(ref _disclaimerAccepted, value);
                 Properties.Settings.Default.DisclaimerAccepted = value;
                 Properties.Settings.Default.Save();
+                if (value)
+                {
+                    ApplicationManager.Instance.FireSettingsTabEvent();
+                }
             }
         }
     }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
+             xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
              x:Class="Syn3Updater.UI.Tabs.Settings"
              mc:Ignorable="d" 
              d:DesignHeight="610" d:DesignWidth="750" >
@@ -26,9 +27,9 @@
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition ></RowDefinition>
@@ -37,13 +38,21 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition />
                     </Grid.RowDefinitions>
+                    
                     <TextBlock Grid.Row="0" Margin="5" FontSize="18" FontFamily="Segoe UI Light" Grid.ColumnSpan="3" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Settings.CarConfiguration, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
-                    <Image Grid.Row="2" Grid.Column="0" Margin="5" Source="syncversion.png" Grid.ColumnSpan="3"></Image>
-                    <StackPanel Background="DarkRed" Grid.Row="1" Margin="5" Grid.ColumnSpan="3" Grid.Column="0">
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" TextAlignment="Center" Text="{Binding Language, ConverterParameter=Settings.EnterSyncVersion, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" TextAlignment="Center" Text="{Binding Language, ConverterParameter=Settings.EnterRegionNav, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="0,10" TextAlignment="Center" Text="{Binding Language, ConverterParameter=Settings.Warning, Converter={StaticResource LocConverter}}"/>
-                    </StackPanel>
+                    <Grid Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                        <Image Margin="5" Source="syncversion.png" Grid.Column="0" StretchDirection="UpOnly"/>
+                        <StackPanel Background="DarkRed" Grid.Column="1" Margin="5" Grid.ColumnSpan="3">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" TextAlignment="Center" Text="{Binding Language, ConverterParameter=Settings.EnterSyncVersion, Converter={StaticResource LocConverter}}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" TextAlignment="Center" Text="{Binding Language, ConverterParameter=Settings.EnterRegionNav, Converter={StaticResource LocConverter}}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="0,10" TextAlignment="Center" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=Settings.Warning, Converter={StaticResource LocConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                    
 
                     <Grid Grid.Row="4" Grid.Column="0" Margin="5,0,0,0">
                         <Grid.ColumnDefinitions>
@@ -86,8 +95,8 @@
 
                     <Grid Grid.Row="4" Grid.Column="2" Margin="5,0,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.Resources >
                             <Style TargetType="{x:Type ComboBox}">
@@ -166,7 +175,7 @@
                     </Grid>
 
 
-                    <Grid Column="1" Background="#40000000" Margin="10,5,5,5">
+                    <Grid Column="1" Background="#40000000" Margin="10,5,10,5">
                         <Grid.Resources >
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="Margin" Value="5"/>
@@ -190,6 +199,20 @@
                         <TextBlock Grid.Row="2" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.LicenseKey, Converter={StaticResource LocConverter}}"/>
                         <TextBox Grid.Row="2" Grid.Column="1" FontSize="14" Text="{Binding LicenseKey}" VerticalContentAlignment="Center"></TextBox>
                     </Grid>
+                </Grid>
+
+                <Grid Background="#40000000" Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Cursor="Hand" Command="{Binding ApplySettings}" Margin="10,10" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="150" Content="{Binding Language, ConverterParameter=Settings.Apply, Converter={StaticResource LocConverter}}">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
+                                <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
                 </Grid>
             </StackPanel>
         </Grid>

@@ -49,7 +49,7 @@ namespace Syn3Updater.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3319052")]
         public int CurrentSyncVersion {
             get {
                 return ((int)(this["CurrentSyncVersion"]));

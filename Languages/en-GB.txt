@@ -45,7 +45,7 @@ Download.TotalDownload Total Progress
 Settings.CarConfiguration Car Configuration
 Settings.EnterSyncVersion Enter your SYNC version (Settings > General > About Sync)
 Settings.EnterRegionNav Enter your REGION and specify if you have NAVIGATION
-Settings.Warning INCORRECT INFORMATION MAY RENDER YOUR APIM TEMPORARILY OR PERMANENTLY UNUSABLE
+Settings.Warning INCORRECT INFORMATION MAY RENDER \n YOUR APIM TEMPORARILY OR PERMANENTLY UNUSABLE
 Settings.FullSyncVersion Full Sync Version:
 Settings.SyncRegion SYNC Region:
 Settings.SyncNavigation Navigation:
@@ -53,11 +53,12 @@ Settings.Configuration Configuration
 Settings.DownloadLocation Download Location:
 Settings.Language Language:
 Settings.AdvancedOptions Advanced Options
-Settings.InstallMode Force "Install Mode":
+Settings.InstallMode Install Mode:
 Settings.ShowAllReleases Show All Releases:
 Settings.PaidOptions Paid Options
 Settings.LicenseKeyInfo Enter your license key below to gain access to any custom packages you have purchased!
 Settings.LicenseKey License Key:
+Settings.Apply Apply Settings
 MessageBox.DisclaimerNotAccepted Please read and accept the disclaimer before continuing. You will not be able to continue unless you agree to the terms.
 MessageBox.NoSyncVersionOrRegionSelected You have not set your current Sync Version or Sync Region!
 MessageBox.DownloadPathChangeCopy Would you like to move existing files from {0} to {1}
@@ -70,3 +71,5 @@ MessageBox.CancelDownloadIsDrive Download path and destination USB drive are the
 MessageBox.CancelNoApps Mode is reformat or downgrade and no apps package has been selected, this will result in a non booting system, ABORTING! No "APPS" package has been selected but Syn3 Updater has determined that a downgrade or reformat is required, this will result in a non booting system. Aborting!
 MessageBox.CancelFormatUSB WARNING, ALL DATA ON THE SELECTED DRIVE WILL BE LOST {0}\nDrive Letter: {1}
 MessageBox.DownloadInProgress A download is already in progress please wait or cancel the download first.
+MessageBox.CopyVerificationFailed Failed to verify file 3 times, ensure USB drive and port are fully functional, aborting process!
+MessageBox.DownloadVerificationFailed Failed to verify downloaded file 3 times, aborting process!
