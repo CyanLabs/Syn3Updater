@@ -58,6 +58,7 @@ namespace Syn3Updater.UI.Tabs
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
             DownloadLocation = ApplicationManager.Instance.DownloadLocation;
             SelectedMapVersionIndex = -1;
+            SelectedReleaseIndex = -1;
             StartEnabled = false;
             OnPropertyChanged("StartEnabled");
             IvsuList = new ObservableCollection<Ivsu>();
@@ -580,6 +581,16 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
+        private int _selectedReleaseIndex;
+
+        public int SelectedReleaseIndex
+        {
+            get => _selectedReleaseIndex;
+            set
+            {
+                SetProperty(ref _selectedReleaseIndex, value);
+            }
+        }
         public ObservableCollection<Drive> DriveList { get; set; }
         public class Drive
         {

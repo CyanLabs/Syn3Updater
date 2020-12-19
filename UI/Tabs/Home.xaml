@@ -126,10 +126,10 @@
                         <Button Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0" Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xF142;" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RegionInfo}" />
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}" SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+                        <ComboBox  SelectedIndex="{Binding SelectedReleaseIndex}" IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}" SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox  SelectedIndex="{Binding SelectedMapVersionIndex}" IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}"/>
+                        <ComboBox SelectedIndex="{Binding SelectedMapVersionIndex}" IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}"/>
                     </Grid>
                 </Grid>
 

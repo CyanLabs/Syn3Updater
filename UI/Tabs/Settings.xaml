@@ -69,7 +69,7 @@
                         </Grid.Resources>
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.FullSyncVersion, Converter={StaticResource LocConverter}}"/>
-                        <TextBox FontSize="12" Grid.Column="1" Text="{Binding CurrentSyncVersion}" VerticalContentAlignment="Center" TextAlignment="Center"/>
+                        <TextBox FontSize="12" Grid.Column="1" Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}" MaxLength="9" VerticalContentAlignment="Center" TextAlignment="Center"/>
                     </Grid>
 
 
@@ -197,7 +197,7 @@
                         <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.ColumnSpan="2" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Center" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.LicenseKeyInfo, Converter={StaticResource LocConverter}}"/>
 
                         <TextBlock Grid.Row="2" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.LicenseKey, Converter={StaticResource LocConverter}}"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" FontSize="14" Text="{Binding LicenseKey}" VerticalContentAlignment="Center"></TextBox>
+                        <TextBox Grid.Row="2" Grid.Column="1" FontSize="14" Text="{Binding LicenseKey, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"></TextBox>
                     </Grid>
                 </Grid>
 

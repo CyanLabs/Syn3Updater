@@ -15,6 +15,7 @@ namespace Syn3Updater.UI.Tabs
     {
         public void Init()
         {
+            ApplicationManager.Instance.FireHomeTabEvent();
             //TODO Fix need for temp string
             string CurrentSyncRegionTemp = Properties.Settings.Default.CurrentSyncRegion;
             SyncRegions = new ObservableCollection<SyncRegion>
@@ -65,6 +66,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _currentSyncRegion, value);
                     Properties.Settings.Default.CurrentSyncRegion = value;
+                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -78,6 +80,7 @@ namespace Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _currentSyncVersion, value);
                 Properties.Settings.Default.CurrentSyncVersion = Int32.Parse(new string(value.Where(c => char.IsDigit(c)).ToArray()));
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -90,6 +93,7 @@ namespace Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _currentSyncNav, value);
                 Properties.Settings.Default.CurrentSyncNav = value;
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -105,7 +109,7 @@ namespace Syn3Updater.UI.Tabs
                     SetProperty(ref _downloadLocation, value);
                     ApplicationManager.Instance.DownloadLocation = value;
                     Properties.Settings.Default.DownloadLocation = value;
-                    
+                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -121,6 +125,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _currentInstallMode, value);
                     Properties.Settings.Default.CurrentInstallMode = value;
+                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -134,6 +139,7 @@ namespace Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _showAllReleases, value);
                 Properties.Settings.Default.ShowAllReleases = value;
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -149,6 +155,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _licenseKey, value);
                     Properties.Settings.Default.LicenseKey = value;
+                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -166,6 +173,7 @@ namespace Syn3Updater.UI.Tabs
                     SetProperty(ref _currentLanguage, value);
                     Properties.Settings.Default.Lang = value;
                     ApplicationManager.Instance.FireLanguageChangedEvent();
+                    Properties.Settings.Default.Save();
                 }
 
             }
@@ -232,6 +240,7 @@ namespace Syn3Updater.UI.Tabs
             public string Name { get; set; }
             public string Code { get; set; }
         }
+
     }
 }
 

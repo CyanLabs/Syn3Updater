@@ -329,11 +329,14 @@ namespace Syn3Updater.UI.Tabs
             {
                 //
             }
-            
-            if (ApplicationManager.Instance._downloadonly)
-                MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-            else
-                PrepareUsb();
+
+            if (ct.IsCancellationRequested == false)
+            {
+                if (ApplicationManager.Instance._downloadonly)
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    PrepareUsb();
+            }
         }
 
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using Syn3Updater.Model;
 using Syn3Updater.UI.Tabs;
-using Settings = Syn3Updater.Properties.Settings;
 
 namespace Syn3Updater.UI
 {
@@ -20,7 +19,7 @@ namespace Syn3Updater.UI
                 {
                     new TabItem("0xE700","",""),
                     new TabItem("0xE946","About","about"),
-                    new TabItem("0xE74C","Home","home"),
+                    new TabItem("0xE80F","Home","home"),
                     new TabItem("0xE896","Downloads","downloads"),
                     //TODO Implement Profiles in the future
                     //new TabItem("0xF163","Profiles","profiles"),
@@ -35,21 +34,20 @@ namespace Syn3Updater.UI
 
                 TabItems = ti;
             };
-            CurrentTab = Settings.Default.DisclaimerAccepted ? "home" : "about";
 
             ApplicationManager.Instance.ShowDownloadsTab += delegate (object sender, EventArgs args)
             {
                 CurrentTab = "downloads";
             };
 
-            ApplicationManager.Instance.ShowHomeTab += delegate (object sender, EventArgs args)
-            {
-                CurrentTab = "home";
-            };
-
             ApplicationManager.Instance.ShowSettingsTab += delegate (object sender, EventArgs args)
             {
                 CurrentTab = "settings";
+            };
+
+            ApplicationManager.Instance.ShowHomeTab += delegate (object sender, EventArgs args)
+            {
+                CurrentTab = "home";
             };
         }
 
@@ -61,38 +59,6 @@ namespace Syn3Updater.UI
             set => SetProperty(ref _hamburgerExtended, value);
         }
 
-        private bool _showModal;
-
-        public bool ShowModal
-        {
-            get => _showModal;
-            set => SetProperty(ref _showModal, value);
-        }
-
-        private string _modalText = "Please Wait";
-
-        public string ModalText
-        {
-            get => _modalText;
-            set => SetProperty(ref _modalText, value);
-        }
-
-        private bool _showModalTextBox;
-
-        public bool ShowModalTextBox
-        {
-            get => _showModalTextBox;
-            set => SetProperty(ref _showModalTextBox, value);
-        }
-
-        private bool _showModalCloseButton;
-
-        public bool ShowModalCloseButton
-        {
-            get => _showModalCloseButton;
-            set => SetProperty(ref _showModalCloseButton, value);
-        }
-
         private string _currentTab = "home";
 
         public string CurrentTab
@@ -100,12 +66,12 @@ namespace Syn3Updater.UI
             get => _currentTab;
             set
             {
-                Settings.Default.Save();
-                if (value != "about" && !Settings.Default.DisclaimerAccepted)
+                if (value != "about" && !Properties.Settings.Default.DisclaimerAccepted)
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater",MessageBoxButton.OK,MessageBoxImage.Warning);
+                    SetProperty(ref _currentTab, "about");
                 }
-                else if(value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
+                else if(value == "home" && (Properties.Settings.Default.CurrentSyncRegion == "" || Properties.Settings.Default.CurrentSyncVersion == 0))
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     SetProperty(ref _currentTab, "settings");
@@ -125,6 +91,11 @@ namespace Syn3Updater.UI
                     i -= 11;
                     Debug.WriteLine(11 / i);
                 }
+                else if (value == "home")
+                {
+                    Properties.Settings.Default.Save();
+                    SetProperty(ref _currentTab, value);
+                }
                 else
                 {
                     SetProperty(ref _currentTab, value);
@@ -143,18 +114,6 @@ namespace Syn3Updater.UI
             get => _tabItems;
             set => SetProperty(ref _tabItems, value);
         }
-
-        private int _modalPercentage;
-        public int ModalPercentage { get => _modalPercentage; set => SetProperty(ref _modalPercentage, value); }
-
-        private bool _modalShowPercentage;
-
-        public bool ModalShowPercentage
-        {
-            get => _modalShowPercentage;
-            set => SetProperty(ref _modalShowPercentage, value);
-        }
-
 
         public class TabItem : LanguageAwareBaseViewModel
         {
