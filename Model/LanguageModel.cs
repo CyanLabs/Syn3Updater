@@ -104,7 +104,7 @@ namespace Syn3Updater.Model
                 }
 
                 Debug.WriteLine("Looking for " + key + " in " + l.Code);
-                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\n",Environment.NewLine).Replace("\\r",Environment.NewLine).Replace("\\r\\n",Environment.NewLine);
+                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n",Environment.NewLine).Replace("\\r",Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
                 {
                     r = "[" + lang + ":" + key + "]";

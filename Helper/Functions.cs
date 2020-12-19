@@ -19,31 +19,5 @@ namespace Syn3Updater.Helpers
             double num = Math.Round(bytes / Math.Pow(1024, place), 1);
             return Math.Sign(byteCount) * num + suf[place];
         }
-
-        #region CopyFileEx
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool CopyFileEx(string lpExistingFileName, string lpNewFileName,
-            CopyProgressRoutine lpProgressRoutine, IntPtr lpData, ref int pbCancel,
-            CopyFileFlags dwCopyFlags);
-
-        public delegate CopyProgressResult CopyProgressRoutine(long totalFileSize, long totalBytesTransferred,
-            long streamSize, long streamBytesTransferred, uint dwStreamNumber, IntPtr hSourceFile,
-            IntPtr hDestinationFile, IntPtr lpData);
-
-        [Flags]
-        public enum CopyFileFlags : uint
-        {
-            CopyFileRestartable = 0x00000002
-        }
-
-        public enum CopyProgressResult : uint
-        {
-            ProgressContinue = 0,
-            ProgressCancel = 1
-        }
-        #endregion
-
-
     }
 }

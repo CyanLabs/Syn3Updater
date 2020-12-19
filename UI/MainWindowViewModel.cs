@@ -113,11 +113,11 @@ namespace Syn3Updater.UI
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-                //else if (value == "downloads" && ApplicationManager.Instance._ivsus.Count == 0)
-                //{
-                //    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoDownloads"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                //    SetProperty(ref _currentTab, "home");
-                //}
+                else if (value == "downloads" && ApplicationManager.Instance._ivsus.Count == 0)
+                {
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoDownloads"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SetProperty(ref _currentTab, "home");
+                }
                 else if (value == "crashme")
                 {
                     int i = 11;

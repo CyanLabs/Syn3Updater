@@ -30,12 +30,12 @@ namespace Syn3Updater.UI.Tabs
             InstallMode = ApplicationManager.Instance.InstallMode;
             OnPropertyChanged("InstallMode");
 
-            //PercentageChanged += DownloadPercentageChanged;
+            PercentageChanged += DownloadPercentageChanged;
             downloadWorker.DoWork += DownloadWorkerDoWork;
             downloadWorker.WorkerReportsProgress = true;
             downloadWorker.WorkerSupportsCancellation = true;
             downloadWorker.RunWorkerCompleted += DownloadWorkerCompleted;
-            downloadWorker.ProgressChanged += DownloadProgressChanged;
+            //downloadWorker.ProgressChanged += workerProgressChanged;
             CurrentProgress = 0;
 
             DownloadQueueList = new ObservableCollection<string>();
@@ -49,13 +49,6 @@ namespace Syn3Updater.UI.Tabs
             _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
 
             downloadWorker.RunWorkerAsync();
-        }
-
-        private void DownloadProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            DownloadPercentage = e.ProgressPercentage + "%" + " downloaded";
-            CurrentProgress = e.ProgressPercentage;
-            TotalPercentage = count == 0 ? CurrentProgress : (count * 100) + e.ProgressPercentage;
         }
 
         private void CopyWorkerDoWork(object sender, DoWorkEventArgs e)
@@ -142,11 +135,16 @@ namespace Syn3Updater.UI.Tabs
 
         private string progress_bar_suffix = "";
 
-        private void CopyProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void workerProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            DownloadPercentage = e.ProgressPercentage + "% " + progress_bar_suffix;
-            CurrentProgress = e.ProgressPercentage;
-            TotalPercentage = count == 0 ? e.ProgressPercentage : (count * 100) + e.ProgressPercentage;
+            ProgressChanged(e.ProgressPercentage);
+        }
+
+        private void ProgressChanged(int percentage)
+        {
+            DownloadPercentage = percentage + "% " + progress_bar_suffix;
+            CurrentProgress = percentage;
+            TotalPercentage = count == 0 ? percentage : (count * 100) + percentage;
         }
 
         private void CancelDownloadAction()
@@ -170,9 +168,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
         {
-            DownloadPercentage = e.Value + "%" + " downloaded";
-            CurrentProgress = e.Value;
-            TotalPercentage = count == 0 ? CurrentProgress : (count * 100) + e.Value;
+            ProgressChanged(e.Value);
         }
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -183,7 +179,6 @@ namespace Syn3Updater.UI.Tabs
             count = 0;
             TotalPercentageMax = (100 * total) * 2;
 
-            //TODO Handle verification of file that has just downloaded
             foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
             {
                 if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5,
@@ -202,7 +197,7 @@ namespace Syn3Updater.UI.Tabs
                             if(i > 1) DownloadInfo = "Downloading (Attempt #" + i + "): " + item.Url;
                             await HttpGetForLargeFile(item.Url,
                                 ApplicationManager.Instance.DownloadLocation + item.FileName, tokenSource.Token);
-                            
+
                             bool validfile = ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false,downloadWorker);
                             if (validfile)
                             {
@@ -228,17 +223,21 @@ namespace Syn3Updater.UI.Tabs
                     OnPropertyChanged("DownloadQueueList");
                 });
                 count++;
-                downloadWorker.ReportProgress(100);
+                PercentageChanged.Raise(this, 100);
             }
-        }
-        private void DownloadWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            BackgroundWorker worker = sender as BackgroundWorker;
-            worker.Dispose();
+
             if (ApplicationManager.Instance._downloadonly)
                 MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
             else
                 PrepareUsb();
+        }
+        private void DownloadWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            downloadWorker.Dispose();
+            //if (ApplicationManager.Instance._downloadonly)
+            //    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+            //else
+            //    PrepareUsb();
         }
 
 
@@ -299,7 +298,7 @@ namespace Syn3Updater.UI.Tabs
             copyworker.DoWork += CopyWorkerDoWork;
             copyworker.WorkerSupportsCancellation = false;
             copyworker.WorkerReportsProgress = true;
-            copyworker.ProgressChanged += CopyProgressChanged;
+            copyworker.ProgressChanged += workerProgressChanged;
             copyworker.RunWorkerCompleted += CopyCompleted;
 
             copyworker.RunWorkerAsync();
@@ -421,7 +420,8 @@ namespace Syn3Updater.UI.Tabs
                     //TotalPercentage = (count * 100) + ((int)((double)read / size * 100));
                     if (totalBytesRead % 102400 == 0)
                     {
-                        worker.ReportProgress(CurrentProgress);
+                        PercentageChanged.Raise(this, CurrentProgress);
+                        //worker.ReportProgress(CurrentProgress);
                     }
 
                 } while (bytesRead != 0);
@@ -537,8 +537,11 @@ namespace Syn3Updater.UI.Tabs
                                 var downloadPercentage = ((totalRead * 1d) / (total * 1d)) * 100;
                                 var value = Convert.ToInt32(downloadPercentage);
 
-                                downloadWorker.ReportProgress(value);
-                                //PercentageChanged.Raise(this, value);
+                                //if (value > 0)
+                                //{
+                                    //downloadWorker.ReportProgress(value);
+                                    PercentageChanged.Raise(this, value);
+                                //}
                             }
                         }
                     }
