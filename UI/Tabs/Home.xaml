@@ -129,7 +129,7 @@
                         <ComboBox IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}" SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}"/>
+                        <ComboBox  SelectedIndex="{Binding SelectedMapVersionIndex}" IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}"/>
                     </Grid>
                 </Grid>
 

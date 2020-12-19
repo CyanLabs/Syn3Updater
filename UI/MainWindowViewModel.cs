@@ -100,6 +100,7 @@ namespace Syn3Updater.UI
             get => _currentTab;
             set
             {
+                Settings.Default.Save();
                 if (value != "about" && !Settings.Default.DisclaimerAccepted)
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater",MessageBoxButton.OK,MessageBoxImage.Warning);
@@ -109,11 +110,11 @@ namespace Syn3Updater.UI
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     SetProperty(ref _currentTab, "settings");
                 }
-                else if(value != "downloads" && ApplicationManager.Instance._ivsus.Count > 0)
+                else if(value != "downloads" && ApplicationManager.Instance.downloading)
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-                else if (value == "downloads" && ApplicationManager.Instance._ivsus.Count == 0)
+                else if (value == "downloads" && ApplicationManager.Instance.downloading == false)
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.NoDownloads"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     SetProperty(ref _currentTab, "home");

@@ -22,11 +22,10 @@ namespace Syn3Updater.UI.Tabs
     {
         public event EventHandler<EventArgs<int>> PercentageChanged;
         private BackgroundWorker downloadWorker = new BackgroundWorker();
-        private BackgroundWorker copyworker = new BackgroundWorker();
+        private BackgroundWorker copyWorker = new BackgroundWorker();
         private string _version;
         public void Init()
         {
-
             InstallMode = ApplicationManager.Instance.InstallMode;
             OnPropertyChanged("InstallMode");
 
@@ -34,8 +33,13 @@ namespace Syn3Updater.UI.Tabs
             downloadWorker.DoWork += DownloadWorkerDoWork;
             downloadWorker.WorkerReportsProgress = true;
             downloadWorker.WorkerSupportsCancellation = true;
-            downloadWorker.RunWorkerCompleted += DownloadWorkerCompleted;
-            //downloadWorker.ProgressChanged += workerProgressChanged;
+
+            copyWorker.DoWork += CopyWorkerDoWork;
+            copyWorker.WorkerSupportsCancellation = true;
+            copyWorker.WorkerReportsProgress = true;
+            copyWorker.ProgressChanged += workerProgressChanged;
+            copyWorker.RunWorkerCompleted += CopyCompleted;
+
             CurrentProgress = 0;
 
             DownloadQueueList = new ObservableCollection<string>();
@@ -47,8 +51,7 @@ namespace Syn3Updater.UI.Tabs
 
             _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
             _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
-
-            downloadWorker.RunWorkerAsync();
+            if (downloadWorker.IsBusy == false) downloadWorker.RunWorkerAsync();
         }
 
         private void CopyWorkerDoWork(object sender, DoWorkEventArgs e)
@@ -60,7 +63,7 @@ namespace Syn3Updater.UI.Tabs
             foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
             {
                 if (ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
-                    ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true,copyworker))
+                    ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true, copyWorker))
                 {
                     //TotalPercentage += 100;
                     count++;
@@ -88,20 +91,25 @@ namespace Syn3Updater.UI.Tabs
 
                             while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
                             {
+                                if (copyWorker.CancellationPending)
+                                {
+                                    e.Cancel = true;
+                                    break;
+                                }
                                 fileStream.Write(bytes, 0, bytesRead);
                                 totalReads += bytesRead;
                                 int percent =
                                     System.Convert.ToInt32(((decimal) totalReads / (decimal) totalBytes) * 100);
                                 if (percent != prevPercent)
                                 {
-                                    copyworker.ReportProgress(percent);
+                                    copyWorker.ReportProgress(percent);
                                     prevPercent = percent;
                                 }
                             }
                         }
 
                         bool validfile = ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
-                            ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true,copyworker);
+                            ApplicationManager.Instance.driveletter + @"\SyncMyRide\" + item.FileName, item.Md5, true,copyWorker);
                         if (validfile)
                         {
                             count++;
@@ -109,8 +117,8 @@ namespace Syn3Updater.UI.Tabs
                         }
                         if (i == 3)
                         {
-                            MessageBox.Show("Something has gone wrong!");
-                            //CancelCopyAction();
+                            MessageBox.Show(LanguageManager.GetValue(string.Format("MessageBox.FailedToValidate3", item.FileName)), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                            CancelAction();
                             break;
                         }
                         //count++;
@@ -118,19 +126,18 @@ namespace Syn3Updater.UI.Tabs
                 }
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    DownloadQueueList.Remove(item.Url);
+                    DownloadQueueList.Remove(ApplicationManager.Instance.DownloadLocation + item.FileName);
                     OnPropertyChanged("DownloadQueueList");
                 });
                 count++;
-                copyworker.ReportProgress(100);
+                copyWorker.ReportProgress(100);
             }
         }
 
         private void CopyCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            BackgroundWorker copyworker = sender as BackgroundWorker;
-            copyworker.Dispose();
-            // do something
+            copyWorker.Dispose();
+            ApplicationManager.Instance.downloading = false;
         }
 
         private string progress_bar_suffix = "";
@@ -147,10 +154,12 @@ namespace Syn3Updater.UI.Tabs
             TotalPercentage = count == 0 ? percentage : (count * 100) + percentage;
         }
 
-        private void CancelDownloadAction()
+        private void CancelAction()
         {
+            ApplicationManager.Instance.downloading = false;
             tokenSource.Cancel();
-            downloadWorker.CancelAsync();
+            if (downloadWorker != null && downloadWorker.IsBusy) downloadWorker.CancelAsync();
+            if(copyWorker != null && copyWorker.IsBusy) copyWorker.CancelAsync();
             Thread.Sleep(2000);
             TotalPercentage = 0;
             CurrentProgress = 0;
@@ -164,6 +173,8 @@ namespace Syn3Updater.UI.Tabs
             tokenSource.Dispose(); // Clean up old token source....
             tokenSource = new CancellationTokenSource(); // "Reset" the cancellation token source...
             ApplicationManager.Instance.FireHomeTabEvent();
+            MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelledOperation"), "Syn3 Updater",
+                MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
@@ -179,65 +190,79 @@ namespace Syn3Updater.UI.Tabs
             count = 0;
             TotalPercentageMax = (100 * total) * 2;
 
-            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
+            try
             {
-                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5,
-                    false, downloadWorker))
+                foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance._ivsus)
                 {
-                    count++;
-                }
-                else
-                {
-                    DownloadInfo = "Downloading: " + item.Url;
-                    progress_bar_suffix = "downloaded";
-                    try
+                    if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5,
+                        false, downloadWorker))
                     {
-                        for (int i = 1; i < 4; i++)
+                        count++;
+                    }
+                    else
+                    {
+                        DownloadInfo = "Downloading: " + item.Url;
+                        progress_bar_suffix = "downloaded";
+                        try
                         {
-                            if(i > 1) DownloadInfo = "Downloading (Attempt #" + i + "): " + item.Url;
-                            await HttpGetForLargeFile(item.Url,
-                                ApplicationManager.Instance.DownloadLocation + item.FileName, tokenSource.Token);
+                            for (int i = 1; i < 4; i++)
+                            {
+                                if (i > 1) DownloadInfo = "Downloading (Attempt #" + i + "): " + item.Url;
 
-                            bool validfile = ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false,downloadWorker);
-                            if (validfile)
-                            {
-                                count++;
-                                break;
-                            }
-                            if (i == 3)
-                            {
-                                MessageBox.Show("Something has gone wrong!");
-                                CancelDownloadAction();
-                                break;
+                                try
+                                {
+                                    await HttpGetForLargeFile(item.Url,
+                                        ApplicationManager.Instance.DownloadLocation + item.FileName, tokenSource.Token);
+                                }
+                                catch (System.Net.Http.HttpRequestException webException)
+                                {
+                                    MessageBox.Show(LanguageManager.GetValue(string.Format("MessageBox.WebException", webException.Message)), "Syn3 Updater",
+                                        MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                                }
+
+                                if (downloadWorker.CancellationPending)
+                                {
+                                    e.Cancel = true;
+                                    break;
+                                }
+                                bool validfile = ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false, downloadWorker);
+                                if (validfile)
+                                {
+                                    count++;
+                                    break;
+                                }
+                                if (i == 3)
+                                {
+                                    MessageBox.Show(LanguageManager.GetValue(string.Format("MessageBox.FailedToValidate3", item.FileName)), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    CancelAction();
+                                    break;
+                                }
                             }
                         }
+                        catch (TaskCanceledException)
+                        {
+                            break;
+                        }
                     }
-                    catch (TaskCanceledException)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        break;
-                    }
+                        DownloadQueueList.Remove(item.Url);
+                        OnPropertyChanged("DownloadQueueList");
+                    });
+                    count++;
+                    PercentageChanged.Raise(this, 100);
                 }
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    DownloadQueueList.Remove(item.Url);
-                    OnPropertyChanged("DownloadQueueList");
-                });
-                count++;
-                PercentageChanged.Raise(this, 100);
-            }
 
+            }
+            catch (System.InvalidOperationException exception)
+            {
+                //
+            }
+            
             if (ApplicationManager.Instance._downloadonly)
                 MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
             else
                 PrepareUsb();
-        }
-        private void DownloadWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            downloadWorker.Dispose();
-            //if (ApplicationManager.Instance._downloadonly)
-            //    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-            //else
-            //    PrepareUsb();
         }
 
 
@@ -288,6 +313,7 @@ namespace Syn3Updater.UI.Tabs
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    DownloadQueueList.Clear();
                     DownloadQueueList.Add(ApplicationManager.Instance.DownloadLocation + item.FileName);
                     OnPropertyChanged("DownloadQueueList");
                 });
@@ -295,15 +321,7 @@ namespace Syn3Updater.UI.Tabs
 
             Directory.CreateDirectory(ApplicationManager.Instance.driveletter + @"\SyncMyRide\");
 
-            copyworker.DoWork += CopyWorkerDoWork;
-            copyworker.WorkerSupportsCancellation = false;
-            copyworker.WorkerReportsProgress = true;
-            copyworker.ProgressChanged += workerProgressChanged;
-            copyworker.RunWorkerCompleted += CopyCompleted;
-
-            copyworker.RunWorkerAsync();
-
-            //CopyFiles();
+           //if(copyWorker.IsBusy == false) copyWorker.RunWorkerAsync();
         }
 
         private bool _cancelcopy;
@@ -550,8 +568,8 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
-        private ActionCommand _cancelDownload;
-        public ActionCommand CancelDownload => _cancelDownload ?? (_cancelDownload = new ActionCommand(CancelDownloadAction));
+        private ActionCommand _cancelButton;
+        public ActionCommand CancelButton => _cancelButton ?? (_cancelButton = new ActionCommand(CancelAction));
 
         public ObservableCollection<string> DownloadQueueList { get; set; }
         public bool CancelButtonEnabled { get; set; }

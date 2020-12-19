@@ -9,28 +9,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace Syn3Updater
 {
     public class ApplicationManager
     {
-        public readonly ObservableCollection<Uri> _downloadfiles = new ObservableCollection<Uri>();
         public ObservableCollection<HomeViewModel.Ivsu> _ivsus = new ObservableCollection<HomeViewModel.Ivsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
 
         public MainWindow MainWindow;
-        public bool Skipcheck, _downloadonly, SkipFormat;
+        public bool Skipcheck, _downloadonly, SkipFormat, downloading;
         public string DownloadLocation;
         public string drivenumber, driveletter, selectedmapversion, selectedrelease, selectedregion, InstallMode;
 

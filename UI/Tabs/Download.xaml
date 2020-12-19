@@ -55,7 +55,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0" Grid.Column="1">
                                 <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Margin="10" Text="{Binding DownloadFilesRemaining}"/>
-                                <Button Cursor="Hand" Command="{Binding CancelDownload}" Background="#ffff424d" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}"/>
+                                <Button Cursor="Hand" Command="{Binding CancelButton}" Background="#ffff424d" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
