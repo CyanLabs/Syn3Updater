@@ -84,3 +84,8 @@ MessageBox.Completed The download and copying of the files is now complete, simp
 String.NonNavAPIM Non Nav APIM
 String.KeepExistingMaps Keep Existing Maps
 String.NoMaps No Maps
+String.Required REQUIRED!
+String.Completed COMPLETED SUCCESSFULLY
+String.Copied copied
+String.Downloaded downloaded
+String.Validated validated
