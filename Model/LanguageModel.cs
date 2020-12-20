@@ -12,7 +12,7 @@ namespace Syn3Updater.Model
     {
         public LanguageModel(string path)
         {
-            var contents = File.ReadAllText(path);
+            string contents = File.ReadAllText(path);
             List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
                 .Select(x => x.Trim()).ToList();
 
@@ -22,7 +22,7 @@ namespace Syn3Updater.Model
             //this.Emoji = lines[3];
 
             Items = new List<LanguageItem>();
-            foreach (var s in lines.Skip(3))
+            foreach (string s in lines.Skip(3))
             {
                 string[] parts = s.Replace("  ", "\t").Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
 
@@ -66,7 +66,7 @@ namespace Syn3Updater.Model
             {
                 IEnumerable<string> files = Directory.EnumerateFiles("Languages");
 
-                foreach (var file in files)
+                foreach (string file in files)
                     try
                     {
                         Languages.Add(new LanguageModel(file));
@@ -97,7 +97,7 @@ namespace Syn3Updater.Model
                 if (l == null) return $"[{lang}:{key}]";
 
                 Debug.WriteLine($"Looking for {key} in {l.Code}");
-                var r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value
+                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value
                     .Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
                     .Replace("\\r", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
@@ -122,7 +122,7 @@ namespace Syn3Updater.Model
 
             try
             {
-                var lang = string.Empty; // "EN-US";
+                string lang = string.Empty; // "EN-US";
 
                 if (Settings.Default.Lang != null) lang = Settings.Default.Lang;
 
@@ -142,7 +142,7 @@ namespace Syn3Updater.Model
                 if (l == null)
                 {
                     //Have to hardcode path for design time :(
-                    var fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Languages{lang}.txt";
+                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Languages{lang}.txt";
 
                     if (File.Exists(fn))
                     {
@@ -155,7 +155,7 @@ namespace Syn3Updater.Model
 
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 Debug.WriteLine($"Looking for {key} in {l?.Code}");
-                var r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value
+                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value
                     .Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
                     .Replace("\\r\\n", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))

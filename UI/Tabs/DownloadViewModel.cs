@@ -141,7 +141,7 @@ namespace Syn3Updater.UI.Tabs
                     DownloadInfo = $"Copying: {item.FileName}";
                     progress_bar_suffix = "copied";
 
-                    for (var i = 1; i < 4; i++)
+                    for (int i = 1; i < 4; i++)
                     {
                         if (i > 1)
                         {
@@ -149,7 +149,7 @@ namespace Syn3Updater.UI.Tabs
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                         }
 
-                        var bufferSize = 1024 * 512;
+                        int bufferSize = 1024 * 512;
                         using (FileStream inStream =
                             new FileStream(ApplicationManager.Instance.DownloadLocation + item.FileName, FileMode.Open,
                                 FileAccess.Read, FileShare.ReadWrite))
@@ -158,10 +158,10 @@ namespace Syn3Updater.UI.Tabs
                             FileMode.OpenOrCreate, FileAccess.Write))
                         {
                             int bytesRead;
-                            var totalReads = 0;
-                            var totalBytes = inStream.Length;
+                            int totalReads = 0;
+                            long totalBytes = inStream.Length;
                             byte[] bytes = new byte[bufferSize];
-                            var prevPercent = 0;
+                            int prevPercent = 0;
 
                             while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
                             {
@@ -181,7 +181,7 @@ namespace Syn3Updater.UI.Tabs
 
                                 fileStream.Write(bytes, 0, bytesRead);
                                 totalReads += bytesRead;
-                                var percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
+                                int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
                                 if (percent != prevPercent)
                                 {
                                     PercentageChanged.Raise(this, percent);
@@ -190,7 +190,7 @@ namespace Syn3Updater.UI.Tabs
                             }
                         }
 
-                        var validfile = ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
+                        bool validfile = ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true);
                         if (validfile)
                         {
@@ -241,7 +241,7 @@ namespace Syn3Updater.UI.Tabs
 
         public static string GetOsFriendlyName()
         {
-            var result = string.Empty;
+            string result = string.Empty;
             ManagementObjectSearcher searcher =
                 new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
             foreach (ManagementBaseObject o in searcher.Get())
@@ -257,7 +257,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void GenerateLog()
         {
-            var data =
+            string data =
                 $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}";
             data += $@"Operating System: {GetOsFriendlyName()}{Environment.NewLine}";
             data += Environment.NewLine;
@@ -273,7 +273,7 @@ namespace Syn3Updater.UI.Tabs
             data += $@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}";
             data += $@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}";
 
-            var driveletter = ApplicationManager.Instance.DriveLetter;
+            string driveletter = ApplicationManager.Instance.DriveLetter;
             if (File.Exists($@"{driveletter}\reformat.lst"))
             {
                 data += Environment.NewLine;
@@ -333,7 +333,7 @@ namespace Syn3Updater.UI.Tabs
 
         private async void DoDownload()
         {
-            var total = ApplicationManager.Instance.Ivsus.Count;
+            int total = ApplicationManager.Instance.Ivsus.Count;
             count = 0;
 
             if (ApplicationManager.Instance.DownloadOnly)
@@ -364,7 +364,7 @@ namespace Syn3Updater.UI.Tabs
                         progress_bar_suffix = "downloaded";
                         try
                         {
-                            for (var i = 1; i < 4; i++)
+                            for (int i = 1; i < 4; i++)
                             {
                                 if (i > 1)
                                 {
@@ -386,7 +386,7 @@ namespace Syn3Updater.UI.Tabs
                                         MessageBoxButton.OK, MessageBoxImage.Exclamation);
                                 }
 
-                                var validfile = ValidateFile(item.Url,
+                                bool validfile = ValidateFile(item.Url,
                                     ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false);
                                 if (validfile)
                                 {
@@ -459,8 +459,8 @@ namespace Syn3Updater.UI.Tabs
             if (ApplicationManager.Instance.SkipFormat == false)
             {
                 UpdateLog("[App] Formatting USB drive");
-                var drivenumber = ApplicationManager.Instance.DriveNumber;
-                var driveletter = ApplicationManager.Instance.DriveLetter;
+                string drivenumber = ApplicationManager.Instance.DriveNumber;
+                string driveletter = ApplicationManager.Instance.DriveLetter;
 
                 using (Process p = new Process())
                 {
@@ -514,10 +514,10 @@ namespace Syn3Updater.UI.Tabs
         private void CreateAutoInstall()
         {
             UpdateLog("[App] Generating Autoinstall.lst");
-            var autoinstalllst =
+            string autoinstalllst =
                 $@"; CyanLabs Syn3Updater 2.x - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}";
 
-            var extrafiles = "";
+            string extrafiles = "";
             int baseint = 0, extraint = 0;
             foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
                 if (item.Type == @"APPS" || item.Type == @"VOICE" ||
@@ -555,8 +555,8 @@ namespace Syn3Updater.UI.Tabs
         private void CreateReformat()
         {
             UpdateLog("[App] Generating reformat.lst");
-            var reformatlst = "";
-            var i = 0;
+            string reformatlst = "";
+            int i = 0;
             foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (item.Md5 == HomeViewModel.SyncReformatToolMd5 ||
@@ -570,7 +570,7 @@ namespace Syn3Updater.UI.Tabs
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\reformat.lst", reformatlst);
 
             UpdateLog("[App] Generating autoinstall.lst");
-            var autoinstalllst =
+            string autoinstalllst =
                 $@"; CyanLabs Syn3Updater 2.x - {InstallMode} Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}";
             if (InstallMode == @"downgrade")
             {
@@ -604,7 +604,7 @@ namespace Syn3Updater.UI.Tabs
             long totalBytesRead = 0;
             using (Stream file = File.OpenRead(filename))
             {
-                var size = file.Length;
+                long size = file.Length;
                 HashAlgorithm hasher = MD5.Create();
                 int bytesRead;
                 byte[] buffer;
@@ -614,7 +614,7 @@ namespace Syn3Updater.UI.Tabs
                     bytesRead = file.Read(buffer, 0, buffer.Length);
                     totalBytesRead += bytesRead;
                     hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
-                    var read = totalBytesRead;
+                    long read = totalBytesRead;
                     //CurrentProgress = ((int)((double)read / size * 100));
                     if (totalBytesRead % 102400 == 0) PercentageChanged.Raise(this, (int) ((double) read / size * 100));
                 } while (bytesRead != 0);
@@ -626,7 +626,7 @@ namespace Syn3Updater.UI.Tabs
 
         private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
         {
-            var filename = Path.GetFileName(localfile);
+            string filename = Path.GetFileName(localfile);
             if (_ct.IsCancellationRequested)
             {
                 UpdateLog("[App] Process cancelled by user");
@@ -647,14 +647,14 @@ namespace Syn3Updater.UI.Tabs
 
             DownloadInfo = $"Validating: {localfile}";
             progress_bar_suffix = "validated";
-            var localMd5 = CalculateMd5(localfile);
+            string localMd5 = CalculateMd5(localfile);
 
             if (md5 == null)
             {
-                var filesize = new FileInfo(localfile).Length;
+                long filesize = new FileInfo(localfile).Length;
                 if (copy)
                 {
-                    var srcfilesize = new FileInfo(srcfile).Length;
+                    long srcfilesize = new FileInfo(srcfile).Length;
 
                     if (srcfilesize == filesize)
                         if (localMd5 == CalculateMd5(srcfile))
@@ -672,7 +672,7 @@ namespace Syn3Updater.UI.Tabs
 
                         if (long.TryParse(
                             httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, _ct).Result.Content
-                                .Headers.ContentLength.ToString(), out var contentLength))
+                                .Headers.ContentLength.ToString(), out long contentLength))
                             newfilesize = contentLength;
 
                         if (newfilesize == filesize)
@@ -699,17 +699,17 @@ namespace Syn3Updater.UI.Tabs
             using (HttpResponseMessage response = await client.GetAsync(path,
                 HttpCompletionOption.ResponseHeadersRead, _ct))
             {
-                var total = response.Content.Headers.ContentLength.HasValue
+                long total = response.Content.Headers.ContentLength.HasValue
                     ? response.Content.Headers.ContentLength.Value
                     : -1L;
 
-                var canReportProgress = total != -1;
+                bool canReportProgress = total != -1;
 
                 using (Stream stream = await response.Content.ReadAsStreamAsync())
                 {
-                    var totalRead = 0L;
+                    long totalRead = 0L;
                     byte[] buffer = new byte[4096];
-                    var moreToRead = true;
+                    bool moreToRead = true;
                     const int CHUNK_SIZE = 4096;
                     FileStream fileStream = File.Create(filename, CHUNK_SIZE);
                     do
@@ -727,7 +727,7 @@ namespace Syn3Updater.UI.Tabs
                             }
                         }
 
-                        var read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
+                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
 
                         if (read == 0)
                         {
@@ -744,8 +744,8 @@ namespace Syn3Updater.UI.Tabs
 
                             if (canReportProgress)
                             {
-                                var downloadPercentage = totalRead * 1d / (total * 1d) * 100;
-                                var value = Convert.ToInt32(downloadPercentage);
+                                double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
+                                int value = Convert.ToInt32(downloadPercentage);
                                 PercentageChanged.Raise(this, value);
                             }
                         }

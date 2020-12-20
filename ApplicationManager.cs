@@ -112,7 +112,7 @@ namespace Syn3Updater
                 Directory.CreateDirectory(DownloadLocation);
             }
 
-            foreach (var arg in Environment.GetCommandLineArgs())
+            foreach (string arg in Environment.GetCommandLineArgs())
                 switch (arg)
                 {
                     case "/updated":

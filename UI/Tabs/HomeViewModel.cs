@@ -254,8 +254,8 @@ namespace Syn3Updater.UI.Tabs
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
                 ManagementObject d = (ManagementObject) o;
-                var diskName = Convert.ToString(d.Properties["Caption"].Value);
-                var friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
+                string diskName = Convert.ToString(d.Properties["Caption"].Value);
+                string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
                 if (friendlySize != "0B")
                     DriveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
             }
@@ -273,7 +273,7 @@ namespace Syn3Updater.UI.Tabs
             }
             else
             {
-                var partitionQueryText =
+                string partitionQueryText =
                     $@"associators of {{{SelectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
                 ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
                 try
@@ -281,7 +281,7 @@ namespace Syn3Updater.UI.Tabs
                     foreach (ManagementBaseObject o in partitionQuery.Get())
                     {
                         ManagementObject p = (ManagementObject) o;
-                        var logicalDriveQueryText =
+                        string logicalDriveQueryText =
                             $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
                         ManagementObjectSearcher logicalDriveQuery =
                             new ManagementObjectSearcher(logicalDriveQueryText);
@@ -529,7 +529,7 @@ namespace Syn3Updater.UI.Tabs
                 foreach (Ivsus item in jsonIvsUs.data[0].ivsus)
                     if (item.ivsu.regions.Contains("ALL") || item.ivsu.regions.Contains(SelectedRegion.Code))
                     {
-                        var fileName = item.ivsu.url.Substring(
+                        string fileName = item.ivsu.url.Substring(
                             item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
                             item.ivsu.url.Length - item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);
                         IvsuList.Add(new Ivsu
@@ -546,7 +546,7 @@ namespace Syn3Updater.UI.Tabs
                         if (item.map_ivsu.regions.Contains("ALL") ||
                             item.map_ivsu.regions.Contains(SelectedRegion.Code))
                         {
-                            var fileName = item.map_ivsu.url.Substring(
+                            string fileName = item.map_ivsu.url.Substring(
                                 item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
                                 item.map_ivsu.url.Length -
                                 item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);

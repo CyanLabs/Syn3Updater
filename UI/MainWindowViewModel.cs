@@ -80,7 +80,7 @@ namespace Syn3Updater.UI
                 }
                 else if (value == "crashme")
                 {
-                    var i = 11;
+                    int i = 11;
                     i -= 11;
                     Debug.WriteLine(11 / i);
                 }

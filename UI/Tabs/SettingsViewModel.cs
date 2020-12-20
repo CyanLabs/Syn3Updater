@@ -150,7 +150,7 @@ namespace Syn3Updater.UI.Tabs
         {
             ApplicationManager.Instance.FireHomeTabEvent();
             //TODO Fix need for temp string
-            var currentSyncRegionTemp = Properties.Settings.Default.CurrentSyncRegion;
+            string currentSyncRegionTemp = Properties.Settings.Default.CurrentSyncRegion;
             SyncRegions = new ObservableCollection<SyncRegion>
             {
                 new SyncRegion {Code = "EU", Name = "Europe"},
@@ -163,7 +163,7 @@ namespace Syn3Updater.UI.Tabs
             CurrentSyncRegion = currentSyncRegionTemp;
 
             //TODO Fix need for temp string
-            var currentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != ""
+            string currentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != ""
                 ? Properties.Settings.Default.CurrentInstallMode
                 : "autodetect";
             InstallModes = new ObservableCollection<string>
@@ -194,7 +194,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void DownloadPathAction()
         {
-            var oldPath = Properties.Settings.Default.DownloadLocation;
+            string oldPath = Properties.Settings.Default.DownloadLocation;
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
                 if (Directory.Exists(oldPath))

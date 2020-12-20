@@ -40,9 +40,10 @@ namespace Syn3Updater.Helper
             _command?.Invoke();
         }
 
-        /*
-        public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, new EventArgs());
-*/
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, new EventArgs());
+        }
 
         #endregion
     }

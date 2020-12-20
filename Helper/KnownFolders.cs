@@ -61,11 +61,11 @@ namespace Syn3Updater.Helper
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags,
             bool defaultUser)
         {
-            var result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int) knownFolder]),
+            int result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int) knownFolder]),
                 (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
             if (result >= 0)
             {
-                var path = Marshal.PtrToStringUni(outPath);
+                string path = Marshal.PtrToStringUni(outPath);
                 Marshal.FreeCoTaskMem(outPath);
                 return path;
             }

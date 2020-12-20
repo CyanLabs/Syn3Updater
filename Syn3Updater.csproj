@@ -84,7 +84,7 @@
     <Compile Include="Helper\ActionCommand.cs" />
     <Compile Include="Helper\DownloadHelper.cs" />
     <Compile Include="Helper\ExceptionExtension.cs" />
-    <Compile Include="Helper\Json.cs" />
+    <Compile Include="Model\Json.cs" />
     <Compile Include="Helper\KnownFolders.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Model\LanguageModel.cs" />

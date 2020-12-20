@@ -23,7 +23,7 @@ namespace Syn3Updater.Converter
         {
             try
             {
-                var res = (value?.ToString()).GetDouble() * (parameter?.ToString()).GetDouble();
+                double res = (value?.ToString()).GetDouble() * (parameter?.ToString()).GetDouble();
 
                 if (res < 1) res = 1;
 
@@ -81,10 +81,10 @@ namespace Syn3Updater.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || value as double? == null) return new Thickness(0, 0, 0, 0);
-            var v = (double) value;
+            double v = (double) value;
 
 
-            var param = (string) parameter;
+            string param = (string) parameter;
             if (param != null && param.StartsWith("-"))
             {
                 param = param.Substring(1);
@@ -96,7 +96,7 @@ namespace Syn3Updater.Converter
 
             if (parts != null && parts.Length > 1)
             {
-                var amount = parts[1].GetDouble();
+                double amount = parts[1].GetDouble();
 
                 v *= amount;
             }

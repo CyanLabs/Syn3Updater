@@ -17,6 +17,11 @@ namespace Syn3Updater.UI.Tabs
         private ActionCommand _forumButton;
 
         private ActionCommand _websiteButton;
+        public ActionCommand WebsiteButton => _websiteButton ?? (_websiteButton = new ActionCommand(WebsiteAction));
+        public ActionCommand ForumButton => _forumButton ?? (_forumButton = new ActionCommand(ForumAction));
+        public ActionCommand DonateButton => _donateButton ?? (_donateButton = new ActionCommand(DonateAction));
+        public ActionCommand DocButton => _documentationButton ?? (_documentationButton = new ActionCommand(DocAction));
+        public ActionCommand FordHubButton => _fordhubButton ?? (_fordhubButton = new ActionCommand(FordHubAction));
 
         public bool DisclaimerAccepted
         {
@@ -28,12 +33,6 @@ namespace Syn3Updater.UI.Tabs
                 if (value) ApplicationManager.Instance.FireSettingsTabEvent();
             }
         }
-
-        public ActionCommand WebsiteButton => _websiteButton ?? (_websiteButton = new ActionCommand(WebsiteAction));
-        public ActionCommand ForumButton => _forumButton ?? (_forumButton = new ActionCommand(ForumAction));
-        public ActionCommand DonateButton => _donateButton ?? (_donateButton = new ActionCommand(DonateAction));
-        public ActionCommand DocButton => _documentationButton ?? (_documentationButton = new ActionCommand(DocAction));
-        public ActionCommand FordHubButton => _fordhubButton ?? (_fordhubButton = new ActionCommand(FordHubAction));
 
         public void Init()
         {

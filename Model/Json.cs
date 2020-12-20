@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Syn3Updater.Helper
+namespace Syn3Updater.Model
 {
     public class Data
     {

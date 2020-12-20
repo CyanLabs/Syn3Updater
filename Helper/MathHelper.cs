@@ -10,7 +10,7 @@ namespace Syn3Updater.Helper
         public static double GetDouble(this string value, double defaultValue = 0)
         {
             //Try parsing in the current culture
-            if (!double.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out var result) &&
+            if (!double.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out double result) &&
                 //Then try in US english
                 !double.TryParse(value, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out result) &&
                 //Then in neutral language
@@ -40,9 +40,9 @@ namespace Syn3Updater.Helper
             string[] suf = {"B", "KB", "MB", "GB", "TB", "PB", "EB"}; //Longs run out around EB
             if (byteCount == 0) return $"0{suf[0]}";
 
-            var bytes = Math.Abs(byteCount);
-            var place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
-            var num = Math.Round(bytes / Math.Pow(1024, place), 1);
+            long bytes = Math.Abs(byteCount);
+            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+            double num = Math.Round(bytes / Math.Pow(1024, place), 1);
             return Math.Sign(byteCount) * num + suf[place];
         }
 
