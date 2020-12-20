@@ -90,6 +90,7 @@
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Model\LanguageModel.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
+    <Compile Include="UI\AttachedProperties.cs" />
     <Compile Include="UI\CrashWindow.xaml.cs">
       <DependentUpon>CrashWindow.xaml</DependentUpon>
     </Compile>
@@ -188,5 +189,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Syn3Updater.UI"
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-        xmlns:Converter="clr-namespace:Syn3Updater.Converter" xmlns:Tabs="clr-namespace:Syn3Updater.UI.Tabs" 
+        xmlns:converter="clr-namespace:Syn3Updater.Converter" xmlns:tabs="clr-namespace:Syn3Updater.UI.Tabs" 
         x:Class="Syn3Updater.UI.MainWindow"
         mc:Ignorable="d"
         Title="Syn3 Updater" 
@@ -17,15 +17,13 @@
         Closing="Window_Closing">
     <Window.Resources>
 
-        <Converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter"/>
 
-        <Converter:MarginConverter x:Key="MarginConverter"/>
+        <converter:PercentageConverter x:Key="PercentageConverter"/>
 
-        <Converter:PercentageConverter x:Key="PercentageConverter"/>
-
-        <Converter:LocConverter x:Key="LocConverter"/>
-        <Converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter"/>
-        <Converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:LocConverter x:Key="LocConverter"/>
+        <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <DataTemplate x:Key="TabItemTemplate">
             <Grid fw:PointerTracker.Enabled="True" Margin="0,0,0,0" HorizontalAlignment="Stretch" MouseDown="Grid_MouseDown">
                 <Rectangle HorizontalAlignment="Stretch" Fill="Black" Opacity="0.5" Margin="0,0" Visibility="{Binding IsCurrent, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -128,19 +126,19 @@ Foreground="Transparent"
         </Grid>
 
         <UserControl Grid.Column="1" Visibility="{Binding CurrentTab, ConverterParameter=home, Converter={StaticResource StringMatchToVisibilityConverter}}" x:Name="InstallUserControl">
-            <Tabs:Home HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <tabs:Home HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </UserControl>
 
         <UserControl Grid.Column="1" Visibility="{Binding CurrentTab, ConverterParameter=about, Converter={StaticResource StringMatchToVisibilityConverter}}" x:Name="AboutUserControl">
-            <Tabs:About HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <tabs:About HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </UserControl>
 
         <UserControl Grid.Column="1" Visibility="{Binding CurrentTab, ConverterParameter=downloads, Converter={StaticResource StringMatchToVisibilityConverter}}" x:Name="DownloadUserControl">
-            <Tabs:Download HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <tabs:Download HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </UserControl>
 
         <UserControl Grid.Column="1" Visibility="{Binding CurrentTab, ConverterParameter=settings, Converter={StaticResource StringMatchToVisibilityConverter}}" x:Name="SettingsUserControl">
-            <Tabs:Settings HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <tabs:Settings HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </UserControl>
     </Grid>
 </Window>

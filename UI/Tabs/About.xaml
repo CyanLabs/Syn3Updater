@@ -29,7 +29,7 @@
                         <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo" TextWrapping="WrapWithOverflow"/>
                         
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="CYANLABS">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="CYANLABS" Command="{Binding WebsiteButton}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -37,7 +37,7 @@
                                     </LinearGradientBrush>
                                 </Button.Background>
                             </Button>
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}" Command="{Binding ForumButton}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -45,7 +45,7 @@
                                     </LinearGradientBrush>
                                 </Button.Background>
                             </Button>
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Content="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}" Command="{Binding DonateButton}">
                                 <Button.Background>
                                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                                         <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
@@ -62,14 +62,24 @@
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
                         <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow"/>
-                        <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Content="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}" HorizontalAlignment="Right">
-                            <Button.Background>
-                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                    <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
-                                    <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Button.Background>
-                        </Button>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Content="{Binding Language, ConverterParameter=About.FordHubButton, Converter={StaticResource LocConverter}}" Command="{Binding FordHubButton}">
+                                <Button.Background>
+                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
+                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Button.Background>
+                            </Button>
+                            <Button Cursor="Hand" Margin="0,5,5,5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Content="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}" Command="{Binding DocButton}">
+                                <Button.Background>
+                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0"/>
+                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Button.Background>
+                            </Button>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
 

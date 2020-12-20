@@ -52,7 +52,7 @@ namespace Syn3Updater.UI
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            Settings.Default.Save();
+            ApplicationManager.Instance.Exit();
         }
     }
 }

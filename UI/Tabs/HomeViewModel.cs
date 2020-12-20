@@ -68,11 +68,6 @@ namespace Syn3Updater.UI.Tabs
         }
         public void Init()
         {
-            CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
-            CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
-            CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
-            DownloadLocation = ApplicationManager.Instance.DownloadLocation;
-
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiToken);
             SyncRegions = new ObservableCollection<SyncRegion>
             {
@@ -85,9 +80,7 @@ namespace Syn3Updater.UI.Tabs
             OnPropertyChanged("SyncRegions");
             SyncVersionsEnabled = false;
             RefreshUsb();
-            IvsuList = new ObservableCollection<Ivsu>();
             SyncMapVersion = new ObservableCollection<string>();
-            OnPropertyChanged("IvsuList");
         }
 
         private void RegionInfoAction()
@@ -105,7 +98,10 @@ namespace Syn3Updater.UI.Tabs
 
         private void RefreshUsb()
         {
-            DriveList = new ObservableCollection<Drive>();
+            DriveList = new ObservableCollection<Drive>
+            {
+                new Drive {Path = "", Name = LanguageManager.GetValue("Home.NoUSB")}
+            };
             ManagementObjectSearcher driveQuery =
                 new ManagementObjectSearcher("select * from Win32_DiskDrive WHERE InterfaceType='USB'");
             foreach (ManagementBaseObject o in driveQuery.Get())
@@ -124,7 +120,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateDriveInfo()
         {
-            if (SelectedDrive == null)
+            if (SelectedDrive == null || SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB"))
             {
                 DriveLetter = "";
                 DriveName = "";
@@ -153,9 +149,9 @@ namespace Syn3Updater.UI.Tabs
                                 ApplicationManager.Instance.SkipFormat = true;
                             }
 
-                            ApplicationManager.Instance.drivefilesystem = ld.Properties["FileSystem"].Value.ToString();
-                            ApplicationManager.Instance.drivepartitiontype = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
-                            ApplicationManager.Instance.drivename = SelectedDrive.Name;
+                            ApplicationManager.Instance.DriveFileSystem = ld.Properties["FileSystem"].Value.ToString();
+                            ApplicationManager.Instance.DrivePartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
+                            ApplicationManager.Instance.DriveName = SelectedDrive.Name;
                         }
                     }
                 }
@@ -164,6 +160,7 @@ namespace Syn3Updater.UI.Tabs
                     //TODO Implement Catch
                 }
             }
+            ApplicationManager.Logger.Info(String.Format("[App] USB Drive selected - Name: {0} - FileSystem: {1} - Letter: {2}",DriveName,DriveFileSystem,DriveLetter));
             OnPropertyChanged("DriveLetter");
             OnPropertyChanged("DriveName");
             OnPropertyChanged("DriveFileSystem");
@@ -171,6 +168,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateSelectedRegion() 
         {
+            ApplicationManager.Logger.Info(String.Format("[Settings] Current Sync Details - Region: {0} - Version: {1} - Navigation: {2}", CurrentSyncRegion, CurrentSyncVersion, CurrentSyncNav));
             if (SelectedRegion.Code != "")
             {
                 IvsuList.Clear();
@@ -402,8 +400,9 @@ namespace Syn3Updater.UI.Tabs
         private void StartAction()
         {
             _canceldownload = false;
-            //DisableControls();
-            ApplicationManager.Instance._ivsus.Clear();
+            ApplicationManager.Instance.Ivsus.Clear();
+            ApplicationManager.Instance.DownloadOnly = false;
+            if(Debugger.IsAttached) ApplicationManager.Logger.Debug("[App] Debugger is attached redirecting URL's to 127.0.0.1");
             foreach (Ivsu item in IvsuList)
             {
                 if (item.Selected)
@@ -418,22 +417,22 @@ namespace Syn3Updater.UI.Tabs
                         Uri myUri = new Uri(item.Url);
                         item.Url = item.Url.Replace(myUri.Host,"127.0.0.1").Replace(myUri.Scheme,"http");  // host is "www.contoso.com"
                     }
-                    ApplicationManager.Instance._ivsus.Add(item);
+                    ApplicationManager.Instance.Ivsus.Add(item);
                 }
             }
 
             if (!CancelledDownload())
             {
-                if (ApplicationManager.Instance._downloadonly == false)
+                if (ApplicationManager.Instance.DownloadOnly == false)
                 {
-                    ApplicationManager.Instance.drivenumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
-                    ApplicationManager.Instance.driveletter = DriveLetter;
+                    ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+                    ApplicationManager.Instance.DriveLetter = DriveLetter;
                 }
-                ApplicationManager.Instance.selectedregion = SelectedRegion.Code;
-                ApplicationManager.Instance.selectedrelease = SelectedRelease;
-                ApplicationManager.Instance.selectedmapversion = SelectedMapVersion;
-                ApplicationManager.Instance.downloading = true;
-                ApplicationManager.Logger.Info($@"Starting process ({SelectedRelease} - {SelectedRegion} - {SelectedMapVersion})");
+                ApplicationManager.Instance.SelectedRegion = SelectedRegion.Code;
+                ApplicationManager.Instance.SelectedRelease = SelectedRelease;
+                ApplicationManager.Instance.SelectedMapVersion = SelectedMapVersion;
+                ApplicationManager.Instance.IsDownloading = true;
+                ApplicationManager.Logger.Info($@"[App] Starting process ({SelectedRelease} - {SelectedRegion} - {SelectedMapVersion})");
                 StartEnabled = false;
                 OnPropertyChanged("StartEnabled");
                 ApplicationManager.Instance.FireDownloadsTabEvent();
@@ -444,12 +443,13 @@ namespace Syn3Updater.UI.Tabs
         private bool CancelledDownload()
         {
             //No USB drive selected, download only?
-            if (SelectedDrive == null && _canceldownload == false)
+            if ((SelectedDrive == null || SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")) && _canceldownload == false)
             {
                 if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    ApplicationManager.Instance._downloadonly = true;
+                    ApplicationManager.Logger.Info("[App] No usb has been selected, download only mode activated");
+                    ApplicationManager.Instance.DownloadOnly = true;
                 }
                 else
                 {
@@ -457,7 +457,7 @@ namespace Syn3Updater.UI.Tabs
                 }
             }
 
-            if ((InstallMode == "reformat" || InstallMode == "downgrade") && _canceldownload == false && ApplicationManager.Instance._downloadonly == false)
+            if ((InstallMode == "reformat" || InstallMode == "downgrade") && _canceldownload == false && ApplicationManager.Instance.DownloadOnly == false)
             {
                 if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
@@ -492,7 +492,12 @@ namespace Syn3Updater.UI.Tabs
                 if (SelectedDrive != null && MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), SelectedDrive.Name, DriveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
+                    
                     ApplicationManager.Instance.SkipFormat = false;
+                }
+                else
+                {
+                    ApplicationManager.Logger.Info("[App] USB Drive not formatted, using existing filesystem and files");
                 }
             }
 
@@ -501,7 +506,7 @@ namespace Syn3Updater.UI.Tabs
 
 
             // ReSharper disable once InvertIf
-            if (ApplicationManager.Instance._downloadonly == false && _canceldownload == false && ApplicationManager.Instance.SkipFormat == false)
+            if (ApplicationManager.Instance.DownloadOnly == false && _canceldownload == false && ApplicationManager.Instance.SkipFormat == false)
             {
                 if (SelectedDrive != null && MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), SelectedDrive.Name, DriveLetter), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                     _canceldownload = true;

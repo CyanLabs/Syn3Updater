@@ -9,7 +9,7 @@ namespace Syn3Updater.Helper
             Value = value;
         }
 
-        public T Value { get; private set; }
+        public T Value { get; }
     }
 
     public static class EventRaiser

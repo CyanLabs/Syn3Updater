@@ -138,13 +138,10 @@ namespace Syn3Updater.Model
             {
                 string lang = string.Empty;// "EN-US";
 
-                //if (ApplicationManager.Instance != null)
-                //{
                 if (Settings.Default.Lang != null)
                 {
                     lang = Settings.Default.Lang;
                 }
-                //}
 
                 if (string.IsNullOrWhiteSpace(lang))
                 {
@@ -157,6 +154,11 @@ namespace Syn3Updater.Model
                 if (l == null)
                 {
                     l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
+                }
+
+                if (l == null)
+                {
+                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
                 }
 
                 if (l == null)
@@ -177,11 +179,6 @@ namespace Syn3Updater.Model
                         Languages.Add(l);
                         dbg += "\r\nLoaded";
                     }
-                }
-
-                if (l == null)
-                {
-                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
                 }
 
                 if (l == null)

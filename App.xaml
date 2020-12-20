@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:p = "clr-namespace:Syn3Updater.Properties"
     xmlns:tb="http://www.hardcodet.net/taskbar"
-    xmlns:rgbSyncPlus="clr-namespace:Syn3Updater" xmlns:Converter="clr-namespace:Syn3Updater.Converter"
+    xmlns:rgbSyncPlus="clr-namespace:Syn3Updater" xmlns:converter="clr-namespace:Syn3Updater.Converter"
     xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
@@ -16,7 +16,7 @@
                 <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Converter:LocConverter x:Key="LocConverter"/>
+            <converter:LocConverter x:Key="LocConverter"/>
 
             <Style TargetType="ListView">
                 <Setter Property="BorderThickness" Value="0"></Setter>

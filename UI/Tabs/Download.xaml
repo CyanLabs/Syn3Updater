@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
              xmlns:converter="clr-namespace:Syn3Updater.Converter"
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+             xmlns:myAttachedProperties="clr-namespace:Syn3Updater.UI"
              x:Class="Syn3Updater.UI.Tabs.Download"
              mc:Ignorable="d" 
              d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Download_OnIsVisibleChanged">
@@ -53,17 +54,14 @@
                                 <TextBlock Margin="5" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}"/>
                                 <TextBlock Margin="5" FontSize="16" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center" Text="{Binding InstallMode}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0" Grid.Column="1">
-                                <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right" Margin="10" Text="{Binding DownloadFilesRemaining}"/>
-                                <Button Cursor="Hand" Command="{Binding CancelButton}" Background="#ffff424d" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}"/>
-                            </StackPanel>
+                            <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}" Background="#ffff424d" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}"/>
                         </Grid>
                     </StackPanel>
                 </Grid>
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
                         <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
-                        <TextBox Height="160" Margin="5" xml:space="preserve"  IsReadOnly="True"></TextBox>
+                        <TextBox Height="150" Margin="5" Text="{Binding Log}" myAttachedProperties:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto"></TextBox>
                     </StackPanel>
                 </Grid>
             </StackPanel>

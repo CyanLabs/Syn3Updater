@@ -6,7 +6,6 @@ using Syn3Updater.Model;
 using Syn3Updater.UI;
 using Syn3Updater.UI.Tabs;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -17,13 +16,12 @@ namespace Syn3Updater
 {
     public class ApplicationManager
     {
-        public ObservableCollection<HomeViewModel.Ivsu> _ivsus = new ObservableCollection<HomeViewModel.Ivsu>();
+        public ObservableCollection<HomeViewModel.Ivsu> Ivsus = new ObservableCollection<HomeViewModel.Ivsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
 
         public MainWindow MainWindow;
-        public bool Skipcheck, _downloadonly, SkipFormat, downloading;
-        public string DownloadLocation, drivename, drivepartitiontype, drivefilesystem;
-        public string drivenumber, driveletter, selectedmapversion, selectedrelease, selectedregion, InstallMode;
+        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;
+        public string DownloadLocation, DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DriveLetter, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode;
 
         public void FireLanguageChangedEvent()
         {
@@ -66,14 +64,15 @@ namespace Syn3Updater
         #region Methods
         public void Initialize()
         {
-            Logger.Debug("============ Syn3 Updater is Starting ============");
+            Logger.Debug("[App] Syn3 Updater is Starting");
 
             // ReSharper disable once IdentifierTypo
+            // ReSharper disable once UnusedVariable
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (Properties.Settings.Default.Lang == "")
             {
-                Logger.Debug("Language is not set, inferring language from system culture. Lang=" + ci.TwoLetterISOLanguageName);
+                Logger.Debug("[Settings]  Language is not set, inferring language from system culture. Lang=" + ci.TwoLetterISOLanguageName);
                 Properties.Settings.Default.Lang = ci.TwoLetterISOLanguageName;
             }
 
@@ -82,12 +81,16 @@ namespace Syn3Updater
             //client = new DiscordRpcClient("");
             //client.Initialize();
 
-            DownloadLocation = Properties.Settings.Default.DownloadLocation == ""
-                ? KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\"
-                : Properties.Settings.Default.DownloadLocation;
+            if (String.IsNullOrWhiteSpace(Properties.Settings.Default.DownloadLocation))
+            {
+                Logger.Debug("[Settings] Download location is not set, defaulting to " + KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\");
+                Properties.Settings.Default.DownloadLocation = KnownFolders.GetPath(KnownFolder.Downloads) + @"\Syn3Updater\";
+            }
+            DownloadLocation = Properties.Settings.Default.DownloadLocation;
 
             if (!Directory.Exists(DownloadLocation) && DownloadLocation != "")
             {
+                Logger.Debug("[App] Download location does not exist");
                 Directory.CreateDirectory(DownloadLocation);
             }
 
@@ -95,11 +98,13 @@ namespace Syn3Updater
                switch (arg)
                {
                    case "/updated":
+                       Logger.Debug("[App] /updated detected, upgrading settings");
                        Properties.Settings.Default.Upgrade();
                        Properties.Settings.Default.Save();
                        break;
                    case "/debug":
-                       Skipcheck = true;
+                       Logger.Debug("[App] /debug flag detected, skipping all verification steps");
+                       SkipCheck = true;
                        break;
                }
 
@@ -113,20 +118,21 @@ namespace Syn3Updater
             {
                 MainWindow.WindowState = WindowState.Normal;
             }
-
-            
         }
 
         public void RestartApp()
         {
-            Logger.Debug("App is restarting.");
+            Logger.Debug("[App] Syn3 Updater is restarting.");
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
         }
 
         public void Exit()
         {
-            Logger.Debug("============ App is Shutting Down ============");
+            Logger.Debug("[Settings] Saving settings before shutdown");
+            Properties.Settings.Default.Save();
+            Logger.Debug("[App] Syn3 Updater is shutting down");
+            File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
             Application.Current.Shutdown();
         }
         #endregion

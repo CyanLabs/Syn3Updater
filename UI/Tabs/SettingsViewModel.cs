@@ -66,7 +66,6 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _currentSyncRegion, value);
                     Properties.Settings.Default.CurrentSyncRegion = value;
-                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -80,7 +79,6 @@ namespace Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _currentSyncVersion, value);
                 Properties.Settings.Default.CurrentSyncVersion = Int32.Parse(new string(value.Where(c => char.IsDigit(c)).ToArray()));
-                Properties.Settings.Default.Save();
             }
         }
 
@@ -93,7 +91,6 @@ namespace Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _currentSyncNav, value);
                 Properties.Settings.Default.CurrentSyncNav = value;
-                Properties.Settings.Default.Save();
             }
         }
 
@@ -109,7 +106,6 @@ namespace Syn3Updater.UI.Tabs
                     SetProperty(ref _downloadLocation, value);
                     ApplicationManager.Instance.DownloadLocation = value;
                     Properties.Settings.Default.DownloadLocation = value;
-                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -125,7 +121,6 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _currentInstallMode, value);
                     Properties.Settings.Default.CurrentInstallMode = value;
-                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -139,7 +134,6 @@ namespace Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _showAllReleases, value);
                 Properties.Settings.Default.ShowAllReleases = value;
-                Properties.Settings.Default.Save();
             }
         }
 
@@ -155,7 +149,6 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _licenseKey, value);
                     Properties.Settings.Default.LicenseKey = value;
-                    Properties.Settings.Default.Save();
                 }
             }
         }
@@ -173,7 +166,6 @@ namespace Syn3Updater.UI.Tabs
                     SetProperty(ref _currentLanguage, value);
                     Properties.Settings.Default.Lang = value;
                     ApplicationManager.Instance.FireLanguageChangedEvent();
-                    Properties.Settings.Default.Save();
                 }
 
             }
@@ -189,7 +181,6 @@ namespace Syn3Updater.UI.Tabs
         {
             if (CurrentSyncVersion != "" || CurrentSyncVersion != "0" || CurrentSyncRegion != "")
             {
-                Properties.Settings.Default.Save();
                 ApplicationManager.Instance.FireHomeTabEvent();
             }
             else
@@ -223,7 +214,6 @@ namespace Syn3Updater.UI.Tabs
                         }
                     }
                     DownloadLocation = dialog.SelectedPath + "\\";
-                    Properties.Settings.Default.Save();
                 }
             }
         }

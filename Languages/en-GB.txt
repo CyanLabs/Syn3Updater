@@ -26,10 +26,12 @@ Home.NewSyncVersion New Sync Version
 Home.SelectPackages Select Packages
 Home.InstallMode Install Mode:
 Home.StartButton Start
+Home.NoUSB Download Only (NO USB)
 About.AboutTitle About Syn3 Updater
 About.About Syn3 Updater is a Windows application created to make the upgrade process of Ford Sync 3 as simple as possible.
 About.ForumButton CYANLABS FORUM
 About.DonateButton DONATE
+About.FordHubButton Ford Hub
 About.DocumentationTitle Documentation
 About.Documentation To ensure that the documentation is always up to date please refer to the below webpage.
 About.DocumentationButton Syn3 Updater Documentation
@@ -76,7 +78,6 @@ MessageBox.DownloadVerificationFailed Failed to verify downloaded file 3 times, 
 MessageBox.DownloadOnlyComplete All files downloaded and validated successfully, no copying has been done!
 MessageBox.OptionalFormatUSB This USB drive has already been used by Syn3 Updater.\n\n{0}\nDrive Letter: {1}\n\nTo use existing files on the USB drive click No\nTo format the USB drive click Yes\n\nDo you want to format the selected USB drive?
 MessageBox.FailedToValidate3 Failed to validate {0} 3 times, ABORTING PROCESS!
-MessageBox.CancelledOperation Copy/Download operation has been cancelled by user, ABORTING PROCESS!
 MessageBox.WebException Failed to connect to the download server, {0}
 MessageBox.UpdateCurrentversion Would you like to update your current sync version in the app so it's correct for future use?
 MessageBox.Completed The download and copying of the files is now complete, simply eject this USB from your computer and insert it in to your car, make sure the engine is running!\nSyn3Updater will now open you directly to the relevant part of the CyanLabs tutorial for you to follow in your car.\n\nIf Syn3 Updater has been useful to you please consider donating from the "About" tab.
