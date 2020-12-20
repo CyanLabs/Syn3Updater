@@ -4,7 +4,7 @@ using System.Windows;
 namespace Syn3Updater.UI
 {
     /// <summary>
-    /// Interaction logic for CrashWindow.xaml
+    ///     Interaction logic for CrashWindow.xaml
     /// </summary>
     public partial class CrashWindow : Window
     {

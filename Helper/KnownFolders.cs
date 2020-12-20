@@ -61,11 +61,11 @@ namespace Syn3Updater.Helper
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags,
             bool defaultUser)
         {
-            int result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int)knownFolder]),
-                (uint)flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
+            var result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int) knownFolder]),
+                (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
             if (result >= 0)
             {
-                string path = Marshal.PtrToStringUni(outPath);
+                var path = Marshal.PtrToStringUni(outPath);
                 Marshal.FreeCoTaskMem(outPath);
                 return path;
             }
@@ -99,7 +99,6 @@ namespace Syn3Updater.Helper
         ///     and later operating systems, and a computer will have only folders appropriate to it
         ///     installed.
         /// </summary>
-
     }
 
     public enum KnownFolder

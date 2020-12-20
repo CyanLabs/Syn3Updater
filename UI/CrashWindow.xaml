@@ -9,31 +9,46 @@
         fw:AcrylicWindow.Enabled="True" Background="#80009AC7" Icon="/Syn3Updater;component/cyanlabs.ico">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="200"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="200" />
+            <RowDefinition />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <StackPanel Margin="20,20,20,0" Grid.Row="0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock FontFamily="Segoe UI" FontSize="100" Foreground="White" Margin="20,-20,20,0">:(</TextBlock>
                 <StackPanel>
-                    <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="36" Foreground="White"  VerticalAlignment="Center">Syn3 Updater has crashed.</TextBlock>
-                    <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="20" Foreground="White"  VerticalAlignment="Center">An error occurred and couldn't be handled.</TextBlock>
+                    <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="36" Foreground="White"
+                               VerticalAlignment="Center">
+                        Syn3 Updater has crashed.
+                    </TextBlock>
+                    <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="20" Foreground="White"
+                               VerticalAlignment="Center">
+                        An error occurred and couldn't be handled.
+                    </TextBlock>
                 </StackPanel>
 
             </StackPanel>
-            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="24" Foreground="White" x:Name="errorName">error name</TextBlock>
+            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="24" Foreground="White"
+                       x:Name="errorName">
+                error name
+            </TextBlock>
             <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="18" Foreground="White" x:Name="message">message</TextBlock>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="20"  >
+            <StackPanel Margin="20">
 
-                <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="12" Foreground="White" x:Name="stackTrace" TextWrapping="WrapWithOverflow">stacktrace</TextBlock>
+                <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="12" Foreground="White"
+                           x:Name="stackTrace" TextWrapping="WrapWithOverflow">
+                    stacktrace
+                </TextBlock>
             </StackPanel>
         </ScrollViewer>
         <Grid Row="2" Background="#80000000">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0">
-                <Button Width="80" Height="30" BorderThickness="0" Style="{StaticResource ButtonRevealStyle}" Margin="10" Click="Close_OnClick">Close</Button>
+                <Button Width="80" Height="30" BorderThickness="0" Style="{StaticResource ButtonRevealStyle}"
+                        Margin="10" Click="Close_OnClick">
+                    Close
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

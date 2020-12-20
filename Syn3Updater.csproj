@@ -84,7 +84,6 @@
     <Compile Include="Helper\ActionCommand.cs" />
     <Compile Include="Helper\DownloadHelper.cs" />
     <Compile Include="Helper\ExceptionExtension.cs" />
-    <Compile Include="Helper\Functions.cs" />
     <Compile Include="Helper\Json.cs" />
     <Compile Include="Helper\KnownFolders.cs" />
     <Compile Include="Helper\MathHelper.cs" />
@@ -94,7 +93,7 @@
     <Compile Include="UI\CrashWindow.xaml.cs">
       <DependentUpon>CrashWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\LanguageAwareBaseviewModel.cs" />
+    <Compile Include="Model\LanguageAwareBaseviewModel.cs" />
     <Compile Include="UI\MainWindowViewModel.cs" />
     <Compile Include="UI\SimpleLogger.cs" />
     <Compile Include="UI\Tabs\About.xaml.cs">
@@ -154,20 +153,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

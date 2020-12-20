@@ -34,10 +34,12 @@ namespace Syn3Updater.Helper
         public Map_Ivsu map_ivsu { get; set; }
         public Release release { get; set; }
     }
+
     public class JsonReleases
     {
         public IList<Data> data { get; set; }
     }
+
     public class Map_Ivsu
     {
         public int id { get; set; }
@@ -58,6 +60,7 @@ namespace Syn3Updater.Helper
         public string ANZ { get; set; }
         public string ROW { get; set; }
     }
+
     public class Release
     {
         public int id { get; set; }

@@ -11,10 +11,16 @@ namespace Syn3Updater.Converter
         #region Methods
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            => (value as bool?) == true ? Visibility.Visible
-                : (string.Equals(parameter?.ToString(), "true", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden : Visibility.Collapsed);
+        {
+            return value as bool? == true ? Visibility.Visible
+                : string.Equals(parameter?.ToString(), "true", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden
+                : Visibility.Collapsed;
+        }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value as Visibility? == Visibility.Visible;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value as Visibility? == Visibility.Visible;
+        }
 
         #endregion
     }
@@ -24,10 +30,16 @@ namespace Syn3Updater.Converter
         #region Methods
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            => (value as bool?) != true ? Visibility.Visible
-                : (string.Equals(parameter?.ToString(), "false", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden : Visibility.Collapsed);
+        {
+            return value as bool? != true ? Visibility.Visible
+                : string.Equals(parameter?.ToString(), "false", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden
+                : Visibility.Collapsed;
+        }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value as Visibility? != Visibility.Visible;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value as Visibility? != Visibility.Visible;
+        }
 
         #endregion
     }

@@ -12,13 +12,18 @@ namespace Syn3Updater.Converter
     {
         private static PercentageConverter _instance;
 
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return _instance ?? (_instance = new PercentageConverter());
+        }
+
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             try
             {
-                double res = (value?.ToString()).GetDouble() * (parameter?.ToString()).GetDouble();
+                var res = (value?.ToString()).GetDouble() * (parameter?.ToString()).GetDouble();
 
                 if (res < 1) res = 1;
 
@@ -36,17 +41,17 @@ namespace Syn3Updater.Converter
         }
 
         #endregion
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return _instance ?? (_instance = new PercentageConverter());
-        }
     }
 
 
     public class SubtractorConverter : MarkupExtension, IValueConverter
     {
         private static SubtractorConverter _instance;
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return _instance ?? (_instance = new SubtractorConverter());
+        }
 
         #region IValueConverter Members
 
@@ -68,39 +73,30 @@ namespace Syn3Updater.Converter
         }
 
         #endregion
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return _instance ?? (_instance = new SubtractorConverter());
-        }
     }
-
 
 
     public class MarginConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null || (value as double?) == null)
-            {
-                return new Thickness(0, 0, 0, 0);
-            }
-            double v = (double)value;
+            if (value == null || value as double? == null) return new Thickness(0, 0, 0, 0);
+            var v = (double) value;
 
 
-            string param = (string)parameter;
+            var param = (string) parameter;
             if (param != null && param.StartsWith("-"))
             {
                 param = param.Substring(1);
                 v = -v;
             }
 
-            var parts = param?.Split('|');
+            string[] parts = param?.Split('|');
             param = (parts ?? Array.Empty<string>()).First();
 
             if (parts != null && parts.Length > 1)
             {
-                double amount = parts[1].GetDouble();
+                var amount = parts[1].GetDouble();
 
                 v *= amount;
             }
@@ -116,7 +112,6 @@ namespace Syn3Updater.Converter
                 case "topright": return new Thickness(0, v, v, 0);
                 case "bottomleft": return new Thickness(v, 0, 0, v);
                 case "bottomright": return new Thickness(0, 0, v, v);
-
             }
 
             return new Thickness(0, 0, 0, 0);

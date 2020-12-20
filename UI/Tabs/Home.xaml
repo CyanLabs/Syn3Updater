@@ -1,19 +1,19 @@
 ﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
-             xmlns:converter="clr-namespace:Syn3Updater.Converter"
-             xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-             x:Class="Syn3Updater.UI.Tabs.Home"
-             mc:Ignorable="d" 
-             d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged" >
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
+    xmlns:converter="clr-namespace:Syn3Updater.Converter"
+    xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+    x:Class="Syn3Updater.UI.Tabs.Home"
+    mc:Ignorable="d"
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged">
     <UserControl.Resources>
-        <converter:LocConverter x:Key="LocConverter"/>
+        <converter:LocConverter x:Key="LocConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
-        <local:HomeViewModel/>
+        <local:HomeViewModel />
     </UserControl.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
@@ -26,38 +26,62 @@
                     </Grid.Resources>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.CurrentConfiguration, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" Text="{Binding CurrentSyncVersion}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"  Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" Text="{Binding CurrentSyncRegion}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"  Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.SyncNav, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" Text="{Binding CurrentSyncNav}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"  Margin="10,0,5,10" xml:space="preserve" Text="{Binding Language, ConverterParameter=Home.DownloadPath, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10" Text="{Binding DownloadLocation}"/>
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
+                               Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                               Text="{Binding Language, ConverterParameter=Home.CurrentConfiguration, Converter={StaticResource LocConverter}}"
+                               TextDecorations="{x:Null}" />
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                   Margin="10,0,5,10" xml:space="preserve"
+                                   Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                                   Text="{Binding CurrentSyncVersion}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                   Margin="10,0,5,10" xml:space="preserve"
+                                   Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                                   Text="{Binding CurrentSyncRegion}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                   Margin="10,0,5,10" xml:space="preserve"
+                                   Text="{Binding Language, ConverterParameter=Home.SyncNav, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                                   Text="{Binding CurrentSyncNav}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                   Margin="10,0,5,10" xml:space="preserve"
+                                   Text="{Binding Language, ConverterParameter=Home.DownloadPath, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                                   Text="{Binding DownloadLocation}" />
                     </StackPanel>
                 </Grid>
 
                 <Grid Background="#40000000" Margin="10,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
-                    <StackPanel Grid.RowSpan="3" Grid.Column="2" >
-                        <TextBlock Margin="20,15" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveTitle, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveNonNav, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveNA, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveEU, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
+                               Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                               Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}"
+                               TextDecorations="{x:Null}" />
+                    <StackPanel Grid.RowSpan="3" Grid.Column="2">
+                        <TextBlock Margin="20,15" FontWeight="Bold"
+                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveTitle, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveNonNav, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveNA, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="20,0" Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveEU, Converter={StaticResource LocConverter}}" />
                     </StackPanel>
 
                     <Grid Grid.Row="1" Grid.Column="0">
@@ -65,21 +89,36 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="25" />
                         </Grid.ColumnDefinitions>
-                        <ComboBox Margin="5,0,0,0" SelectedIndex="0" ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDrive}"/>
-                        <Button  BorderThickness="0" Cursor="Hand" FontFamily="Segoe MDL2 Assets" FontSize="16" ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xE72C;" VerticalAlignment="Center"  Foreground="White" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Command="{Binding RefreshUSB}" />
+                        <ComboBox Margin="5,0,0,0" SelectedIndex="0" ItemsSource="{Binding DriveList}"
+                                  SelectedValuePath="Path" DisplayMemberPath="Name"
+                                  SelectedItem="{Binding SelectedDrive}" />
+                        <Button BorderThickness="0" Cursor="Hand" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}"
+                                Background="#00000000" Content="&#xE72C;" VerticalAlignment="Center" Foreground="White"
+                                Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"
+                                Command="{Binding RefreshUSB}" />
                     </Grid>
-                    <StackPanel Margin="5,10,5,10" Grid.Row="2" Grid.Column="0" >
+                    <StackPanel Margin="5,10,5,10" Grid.Row="2" Grid.Column="0">
                         <StackPanel Orientation="Horizontal" Margin="0">
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveName, Converter={StaticResource LocConverter}}"/>
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding DriveName}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                       Margin="10,0,5,0"
+                                       Text="{Binding Language, ConverterParameter=Home.DriveName, Converter={StaticResource LocConverter}}" />
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                       Text="{Binding DriveName}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0">
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveLetter, Converter={StaticResource LocConverter}}"/>
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding DriveLetter}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                       Margin="10,0,5,0"
+                                       Text="{Binding Language, ConverterParameter=Home.DriveLetter, Converter={StaticResource LocConverter}}" />
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                       Text="{Binding DriveLetter}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0">
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, Converter={StaticResource LocConverter}}"/>
-                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding DriveFileSystem}"/>
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                       Margin="10,0,5,0"
+                                       Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, Converter={StaticResource LocConverter}}" />
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                       Text="{Binding DriveFileSystem}" />
                         </StackPanel>
                     </StackPanel>
 
@@ -87,71 +126,109 @@
 
                 <Grid Background="#40000000" Margin="10,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
-                    <StackPanel Grid.RowSpan="3" Grid.Column="1" >
-                        <TextBlock Margin="20,15,20,0" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Text="{Binding Notes}" Margin="20,15" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextWrapping="WrapWithOverflow" />
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
+                               Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                               Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}"
+                               TextDecorations="{x:Null}" />
+                    <StackPanel Grid.RowSpan="3" Grid.Column="1">
+                        <TextBlock Margin="20,15,20,0" FontWeight="Bold"
+                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Text="{Binding Notes}" Margin="20,15"
+                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   TextWrapping="WrapWithOverflow" />
                     </StackPanel>
 
                     <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid.Resources >
+                        <Grid.Resources>
                             <Style TargetType="{x:Type ComboBox}">
-                                <Setter Property="Margin" Value="5"/>
+                                <Setter Property="Margin" Value="5" />
                             </Style>
                             <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Margin" Value="10"/>
+                                <Setter Property="Margin" Value="10" />
                             </Style>
                         </Grid.Resources>
 
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"  Grid.Row="0" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox  ItemsSource="{Binding SyncRegions}" DisplayMemberPath="Name" SelectedValuePath="Code" SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1"/>
-                        <Button Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0" Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}" Background="#00000000" Content="&#xF142;" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RegionInfo}" />
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"
+                                   Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
+                        <ComboBox ItemsSource="{Binding SyncRegions}" DisplayMemberPath="Name" SelectedValuePath="Code"
+                                  SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" />
+                        <Button Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0"
+                                Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26"
+                                ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}"
+                                Background="#00000000" Content="&#xF142;" VerticalAlignment="Center"
+                                HorizontalAlignment="Center" Command="{Binding RegionInfo}" />
 
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox  SelectedIndex="{Binding SelectedReleaseIndex}" IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}" SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"
+                                   Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
+                        <ComboBox SelectedIndex="{Binding SelectedReleaseIndex}"
+                                  IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}"
+                                  SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1"
+                                  Grid.ColumnSpan="2" />
 
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"  HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}"/>
-                        <ComboBox SelectedIndex="{Binding SelectedMapVersionIndex}" IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}"/>
+                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"
+                                   Grid.Row="2" Grid.Column="0"
+                                   Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}" />
+                        <ComboBox SelectedIndex="{Binding SelectedMapVersionIndex}"
+                                  IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}"
+                                  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                  SelectedItem="{Binding SelectedMapVersion}" />
                     </Grid>
                 </Grid>
 
                 <StackPanel Background="#40000000" Margin="10,5">
-                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Home.SelectPackages, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}"/>
-                    <ListView Margin="5,0" Height="150" Focusable="False" Foreground="{DynamicResource SystemBaseHighColorBrush}" FontFamily="Segoe UI Light" FontSize="18" ItemsSource="{Binding IvsuList}" HorizontalAlignment="Left">
+                    <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
+                               Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                               Text="{Binding Language, ConverterParameter=Home.SelectPackages, Converter={StaticResource LocConverter}}"
+                               TextDecorations="{x:Null}" />
+                    <ListView Margin="5,0" Height="150" Focusable="False"
+                              Foreground="{DynamicResource SystemBaseHighColorBrush}" FontFamily="Segoe UI Light"
+                              FontSize="18" ItemsSource="{Binding IvsuList}" HorizontalAlignment="Left">
                         <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}"/>
+                            <Style TargetType="{x:Type ListViewItem}" />
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,2.5,0,2.5">
-                                        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="5,0" IsChecked="{Binding Selected}"></CheckBox>
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Margin="5,0" MinWidth="100" Text="{Binding Type}"/>
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Margin="5,0" MinWidth="150" Text="{Binding Name}"/>
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Margin="5,0" MinWidth="200" Text="{Binding Version}" />
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" TextAlignment="Center" Margin="5,0" Width="140" FontSize="11" TextWrapping="WrapWithOverflow" Text="{Binding Notes}"/>
-                                        <TextBlock Visibility="Collapsed" Text="{Binding Url}"/>
-                                        <TextBlock Visibility="Collapsed" Text="{Binding Md5}"/>
+                                        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0"
+                                                  IsChecked="{Binding Selected}" />
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                   TextAlignment="Center" Margin="5,0" MinWidth="100"
+                                                   Text="{Binding Type}" />
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                   TextAlignment="Center" Margin="5,0" MinWidth="150"
+                                                   Text="{Binding Name}" />
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                   TextAlignment="Center" Margin="5,0" MinWidth="200"
+                                                   Text="{Binding Version}" />
+                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                   TextAlignment="Center" Margin="5,0" Width="140" FontSize="11"
+                                                   TextWrapping="WrapWithOverflow" Text="{Binding Notes}" />
+                                        <TextBlock Visibility="Collapsed" Text="{Binding Url}" />
+                                        <TextBlock Visibility="Collapsed" Text="{Binding Md5}" />
                                     </StackPanel>
-                                    
+
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -161,14 +238,23 @@
 
                 <Grid Background="#40000000" Margin="10,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Margin="5" FontSize="16" Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}" VerticalAlignment="Center" Text="{Binding InstallMode}"/>
+                        <TextBlock Margin="5" FontSize="16" FontWeight="Bold"
+                                   Foreground="{DynamicResource SystemBaseHighColorBrush}" TextDecorations="{x:Null}"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="5" FontSize="16" Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   TextDecorations="{x:Null}" VerticalAlignment="Center" Text="{Binding InstallMode}" />
                     </StackPanel>
-                    <Button IsEnabled="{Binding StartEnabled}" Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}"  Grid.Column="1" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100" Content="{Binding Language, ConverterParameter=Home.StartButton, Converter={StaticResource LocConverter}}" Command="{Binding StartButton}"/>
+                    <Button IsEnabled="{Binding StartEnabled}"
+                            Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}" Grid.Column="1"
+                            Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI" Padding="5"
+                            Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100"
+                            Content="{Binding Language, ConverterParameter=Home.StartButton, Converter={StaticResource LocConverter}}"
+                            Command="{Binding StartButton}" />
                 </Grid>
             </StackPanel>
         </Grid>

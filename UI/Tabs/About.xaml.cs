@@ -1,20 +1,16 @@
 ﻿using System.ComponentModel;
-using System.Windows.Controls;
 
 namespace Syn3Updater.UI.Tabs
 {
     /// <summary>
-    /// Interaction logic for Install.xaml
+    ///     Interaction logic for Install.xaml
     /// </summary>
-    public partial class About : UserControl
+    public partial class About
     {
         public About()
         {
             InitializeComponent();
-            if (!DesignerProperties.GetIsInDesignMode(this))
-            {
-                (this.DataContext as AboutViewmodel)?.Init();
-            }
+            if (!DesignerProperties.GetIsInDesignMode(this)) (DataContext as AboutViewmodel)?.Init();
         }
     }
 }

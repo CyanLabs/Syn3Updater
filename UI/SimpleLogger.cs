@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Syn3Updater.UI; //using QRCoder;
 
-namespace Syn3Updater
+//using QRCoder;
+
+namespace Syn3Updater.UI
 {
     public class SimpleLogger
     {
@@ -18,6 +19,7 @@ namespace Syn3Updater
         {
             Log.Add(new LogEntry(log.ToString(), "Info", null, cmn));
         }
+
         //TODO Implement QR Code backend crashlog etc
         public void CrashWindow(Exception ex, [CallerMemberName] string callerMemberName = "")
         {
@@ -60,23 +62,22 @@ namespace Syn3Updater
 
         public class LogEntry
         {
-            public string Log { get; set; }
-            public DateTime Time { get; set; }
-            public string Caller { get; set; }
-            public string LogType { get; set; }
-            public Exception Exception { get; set; }
-            public LogEntry(string log, string logType = "Info", Exception exception = null, [CallerMemberName] string callerMemberName = "")
+            public LogEntry(string log, string logType = "Info", Exception exception = null,
+                [CallerMemberName] string callerMemberName = "")
             {
                 Log = log;
                 Time = DateTime.Now;
                 Caller = callerMemberName;
                 LogType = logType;
 
-                if (exception != null)
-                {
-                    Exception = exception;
-                }
+                if (exception != null) Exception = exception;
             }
+
+            public string Log { get; set; }
+            public DateTime Time { get; set; }
+            public string Caller { get; set; }
+            public string LogType { get; set; }
+            public Exception Exception { get; set; }
         }
     }
 }

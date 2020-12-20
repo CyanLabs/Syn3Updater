@@ -12,10 +12,8 @@ namespace Syn3Updater.Converter
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace((string)value))
-                {
+                if (!string.IsNullOrWhiteSpace((string) value))
                     return LanguageManager.GetValue(parameter?.ToString(), value.ToString());
-                }
             }
             catch
             {
