@@ -81,7 +81,7 @@
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}"
                                    TextDecorations="{x:Null}" />
-                        <TextBox Height="150" Margin="5" Text="{Binding Log}"
+                        <TextBox Height="150" Margin="5" Text="{Binding Log}" IsReadOnly="True"
                                  myAttachedProperties:TextBoxAttachedProperties.AutoScrollToEnd="True"
                                  VerticalScrollBarVisibility="Auto" />
                     </StackPanel>

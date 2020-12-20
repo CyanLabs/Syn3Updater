@@ -39,7 +39,6 @@ namespace Syn3Updater.UI.Tabs
 
         public const string DowngradePackageAppUrl =
             "https://ivsubinaries.azureedge.net/swparts/4U5T-14G381-AN_1552583626000.TAR.GZ";
-
         public const string DowngradePackageAppFileName = "4U5T-14G381-AN_1552583626000.TAR.GZ";
         public const string DowngradePackageAppName = "4U5T-14G381-AN";
         public const string DowngradePackageAppMd5 = "0553D1A474FBF9F0DB68A9C96FBDA7CB";
@@ -357,12 +356,12 @@ namespace Syn3Updater.UI.Tabs
 
                 if (!Properties.Settings.Default.CurrentSyncNav)
                 {
-                    SyncMapVersion.Add(@"Non Nav APIM");
+                    SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                 }
                 else
                 {
                     if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
-                        SyncMapVersion.Add(@"Keep Existing Maps");
+                        SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                 }
 
                 OnPropertyChanged("SyncMapVersion");
@@ -407,15 +406,15 @@ namespace Syn3Updater.UI.Tabs
                 if (Properties.Settings.Default.CurrentSyncNav)
                 {
                     SyncMapVersion.Clear();
-                    SyncMapVersion.Add("No Maps");
+                    SyncMapVersion.Add(LanguageManager.GetValue("String.NoMaps"));
                     if (Properties.Settings.Default.CurrentSyncNav)
                     {
                         if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
-                            SyncMapVersion.Add("Keep Existing Maps");
+                            SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                     }
                     else
                     {
-                        SyncMapVersion.Add("Non Nav APIM");
+                        SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                     }
 
                     _jsonMapReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringMapReleasesJson);
@@ -434,7 +433,6 @@ namespace Syn3Updater.UI.Tabs
             if (SelectedMapVersion != "")
             {
                 IvsuList.Clear();
-                //ResetControls();
 
                 //LESS THAN 3.2
                 if (Properties.Settings.Default.CurrentSyncVersion < SyncReformatVersion)
@@ -447,8 +445,8 @@ namespace Syn3Updater.UI.Tabs
                          Properties.Settings.Default.CurrentSyncVersion < SyncBlacklistedVersion)
                 {
                     //Update Nav?
-                    if (SelectedMapVersion == "No Maps" || SelectedMapVersion == "Non Nav APIM" ||
-                        SelectedMapVersion == "Keep Existing Maps")
+                    if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
+                        SelectedMapVersion == LanguageManager.GetValue("String.KeepExistingMaps"))
                         InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect"
                             ? "autoinstall"
                             : Properties.Settings.Default.CurrentInstallMode;
@@ -462,8 +460,8 @@ namespace Syn3Updater.UI.Tabs
                 else if (Properties.Settings.Default.CurrentSyncVersion >= SyncBlacklistedVersion)
                 {
                     //Update Nav?
-                    if (SelectedMapVersion == "No Maps" || SelectedMapVersion == "Non Nav APIM" ||
-                        SelectedMapVersion == "Keep Existing Maps")
+                    if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
+                        SelectedMapVersion == LanguageManager.GetValue("String.KeepExistingMaps"))
                         InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect"
                             ? "autoinstall"
                             : Properties.Settings.Default.CurrentInstallMode;
@@ -479,10 +477,10 @@ namespace Syn3Updater.UI.Tabs
                 {
                     IvsuList.Add(new Ivsu
                     {
-                        Type = "APP",
+                        Type = "APPS",
                         Name = DowngradePackageAppName,
                         Version = "",
-                        Notes = "REQUIRED!",
+                        Notes = LanguageManager.GetValue("String.Required"),
                         Url = DowngradePackageAppUrl,
                         Md5 = DowngradePackageAppMd5,
                         Selected = true,
@@ -494,7 +492,7 @@ namespace Syn3Updater.UI.Tabs
                         Type = "TOOL",
                         Name = DowngradePackageToolName,
                         Version = "",
-                        Notes = "REQUIRED!",
+                        Notes = LanguageManager.GetValue("String.Required"),
                         Url = DowngradePackageToolUrl,
                         Md5 = DowngradePackageToolMd5,
                         Selected = true,
@@ -508,7 +506,7 @@ namespace Syn3Updater.UI.Tabs
                         Type = "TOOL",
                         Name = SyncReformatToolName,
                         Version = "",
-                        Notes = "REQUIRED!",
+                        Notes = LanguageManager.GetValue("String.Required"),
                         Url = SyncReformatToolUrl,
                         Md5 = SyncReformatToolMd5,
                         Selected = true,
@@ -540,8 +538,8 @@ namespace Syn3Updater.UI.Tabs
                         });
                     }
 
-                if (SelectedMapVersion != "No Maps" && SelectedMapVersion != "Non Nav APIM" &&
-                    SelectedMapVersion != "Keep Existing Maps")
+                if (SelectedMapVersion != LanguageManager.GetValue("String.NoMaps") && SelectedMapVersion != LanguageManager.GetValue("String.NonNavAPIM") &&
+                    SelectedMapVersion != LanguageManager.GetValue("String.KeepExistingMaps"))
                     foreach (Ivsus item in jsonMapIvsUs.data[0].ivsus)
                         if (item.map_ivsu.regions.Contains("ALL") ||
                             item.map_ivsu.regions.Contains(SelectedRegion.Code))
@@ -667,9 +665,12 @@ namespace Syn3Updater.UI.Tabs
 
             if (_appsselected == false && _canceldownload == false &&
                 (InstallMode == "reformat" || InstallMode == "downgrade"))
+            {
+
                 MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater",
                     MessageBoxButton.OK, MessageBoxImage.Exclamation);
-
+                _canceldownload = true;
+            }
 
             // ReSharper disable once InvertIf
             if (ApplicationManager.Instance.DownloadOnly == false && _canceldownload == false &&
@@ -704,7 +705,6 @@ namespace Syn3Updater.UI.Tabs
             public string Notes { get; set; }
             public string Url { get; set; }
             public string Md5 { get; set; }
-
             public string FileName { get; set; }
         }
     }

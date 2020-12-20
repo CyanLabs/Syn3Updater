@@ -139,7 +139,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     UpdateLog($"[Copier] {item.FileName} is missing or invalid, copying");
                     DownloadInfo = $"Copying: {item.FileName}";
-                    progress_bar_suffix = "copied";
+                    progress_bar_suffix = LanguageManager.GetValue("String.Copied");
 
                     for (int i = 1; i < 4; i++)
                     {
@@ -223,10 +223,9 @@ namespace Syn3Updater.UI.Tabs
 
             DownloadInfo = "";
             DownloadPercentage = "";
-
-            GenerateLog();
             UpdateLog("[App] All files downloaded and copied to USB successfully!");
-            DownloadInfo = "COMPLETED SUCCESSFULLY";
+            DownloadInfo = LanguageManager.GetValue("String.Completed");
+            GenerateLog();
             if (MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Information) == MessageBoxResult.Yes)
@@ -307,6 +306,7 @@ namespace Syn3Updater.UI.Tabs
         private void CancelAction()
         {
             CancelButtonEnabled = false;
+            OnPropertyChanged("CancelButtonEnabled");
             ApplicationManager.Instance.IsDownloading = false;
             tokenSource.Cancel();
             Thread.Sleep(2000);
@@ -321,7 +321,7 @@ namespace Syn3Updater.UI.Tabs
             });
             tokenSource.Dispose();
             tokenSource = new CancellationTokenSource();
-            ApplicationManager.Instance.FireHomeTabEvent();
+
         }
 
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
@@ -361,7 +361,7 @@ namespace Syn3Updater.UI.Tabs
                     {
                         UpdateLog($"[Downloader] {item.FileName} is missing or invalid, downloading");
                         DownloadInfo = $"Downloading: {item.Url}";
-                        progress_bar_suffix = "downloaded";
+                        progress_bar_suffix = LanguageManager.GetValue("String.Downloaded");
                         try
                         {
                             for (int i = 1; i < 4; i++)
@@ -469,7 +469,7 @@ namespace Syn3Updater.UI.Tabs
                     p.StartInfo.FileName = @"diskpart.exe";
                     p.StartInfo.CreateNoWindow = true;
 
-                    //UpdateLog(@"Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
+                    UpdateLog("[App] Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
 
                     p.Start();
                     p.StandardInput.WriteLine($"SELECT DISK={drivenumber}");
@@ -547,7 +547,6 @@ namespace Syn3Updater.UI.Tabs
             if (extrafiles != "") extrafiles += @"Options = Delay,Include,Transaction";
             autoinstalllst += $@"Options = AutoInstall{Environment.NewLine}";
             autoinstalllst += extrafiles;
-            //UpdateLog($@"Creating {_mode} autoinstall.lst");
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\autoinstall.lst", autoinstalllst);
             File.Create($@"{ApplicationManager.Instance.DriveLetter}\DONTINDX.MSA");
         }
@@ -560,8 +559,8 @@ namespace Syn3Updater.UI.Tabs
             foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (item.Md5 == HomeViewModel.SyncReformatToolMd5 ||
-                    item.Md5 == HomeViewModel.DowngradePackageAppMd5 && _selectedRelease != @"Sync 3.3.19052" ||
-                    item.Md5 == HomeViewModel.DowngradePackageAppMd5) continue;
+                    (item.Md5 == HomeViewModel.DowngradePackageAppMd5 && _selectedRelease != @"Sync 3.3.19052") ||
+                    item.Md5 == HomeViewModel.DowngradePackageToolMd5) continue;
                 i++;
                 reformatlst += $@"{item.Type}={item.FileName}";
                 if (i != ApplicationManager.Instance.Ivsus.Count) reformatlst += Environment.NewLine;
@@ -593,7 +592,6 @@ namespace Syn3Updater.UI.Tabs
                         .Replace(@"\r", Environment.NewLine);
                 autoinstalllst += @"Options = AutoInstall";
             }
-            //UpdateLog($@"Creating {InstallMode} autoinstall.lst");
 
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\autoinstall.lst", autoinstalllst);
             File.Create($@"{ApplicationManager.Instance.DriveLetter}\DONTINDX.MSA");
@@ -615,7 +613,6 @@ namespace Syn3Updater.UI.Tabs
                     totalBytesRead += bytesRead;
                     hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                     long read = totalBytesRead;
-                    //CurrentProgress = ((int)((double)read / size * 100));
                     if (totalBytesRead % 102400 == 0) PercentageChanged.Raise(this, (int) ((double) read / size * 100));
                 } while (bytesRead != 0);
 
@@ -646,7 +643,7 @@ namespace Syn3Updater.UI.Tabs
             }
 
             DownloadInfo = $"Validating: {localfile}";
-            progress_bar_suffix = "validated";
+            progress_bar_suffix = LanguageManager.GetValue("String.Validated");
             string localMd5 = CalculateMd5(localfile);
 
             if (md5 == null)

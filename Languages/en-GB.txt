@@ -81,3 +81,6 @@ MessageBox.FailedToValidate3 Failed to validate {0} 3 times, ABORTING PROCESS!
 MessageBox.WebException Failed to connect to the download server, {0}
 MessageBox.UpdateCurrentversion Would you like to update your current sync version in the app so it's correct for future use?
 MessageBox.Completed The download and copying of the files is now complete, simply eject this USB from your computer and insert it in to your car, make sure the engine is running!\nSyn3Updater will now open you directly to the relevant part of the CyanLabs tutorial for you to follow in your car.\n\nIf Syn3 Updater has been useful to you please consider donating from the "About" tab.
+String.NonNavAPIM Non Nav APIM
+String.KeepExistingMaps Keep Existing Maps
+String.NoMaps No Maps
