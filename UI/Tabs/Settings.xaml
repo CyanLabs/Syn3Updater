@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+    xmlns:ui="clr-namespace:Syn3Updater.UI"
     x:Class="Syn3Updater.UI.Tabs.Settings"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750">
@@ -70,6 +71,9 @@
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="Margin" Value="5" />
                             </Style>
+                            <Style TargetType="{x:Type ui:MaskedTextBox}">
+                                <Setter Property="Margin" Value="5" />
+                            </Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Margin" Value="10" />
                             </Style>
@@ -78,10 +82,10 @@
                         <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"
                                    Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Settings.FullSyncVersion, Converter={StaticResource LocConverter}}" />
-                        <TextBox FontSize="12" Grid.Column="1"
-                                 Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}" MaxLength="9"
+                        <ui:MaskedTextBox FontSize="12" Grid.Column="1"
+                                 Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}" Mask="#.#.#####" MaxLength="9"
                                  VerticalContentAlignment="Center" TextAlignment="Center" />
-                    </Grid>
+                        </Grid>
 
 
                     <Grid Grid.Row="4" Grid.Column="1" Margin="5,0,0,0">

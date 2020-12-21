@@ -59,9 +59,12 @@ namespace Syn3Updater.UI.Tabs
             get => _currentSyncVersion;
             set
             {
-                SetProperty(ref _currentSyncVersion, value);
-                Properties.Settings.Default.CurrentSyncVersion =
-                    int.Parse(new string(value.Where(char.IsDigit).ToArray()));
+                if (value != "_._._____")
+                {
+                    SetProperty(ref _currentSyncVersion, value);
+                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(value.Replace("_", "").Replace(".", ""));
+                }
+                
             }
         }
 
@@ -173,7 +176,8 @@ namespace Syn3Updater.UI.Tabs
             OnPropertyChanged("InstallModes");
             CurrentInstallMode = currentInstallModeTemp;
 
-            CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
+            string _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
+            if (_version.Length >= 5) CurrentSyncVersion = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
 
             DownloadLocation = ApplicationManager.Instance.DownloadLocation;

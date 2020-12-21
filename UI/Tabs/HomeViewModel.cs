@@ -204,7 +204,8 @@ namespace Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
-            CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion.ToString();
+            string _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
+            if(_version.Length >= 5)  CurrentSyncVersion = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
             DownloadLocation = ApplicationManager.Instance.DownloadLocation;
