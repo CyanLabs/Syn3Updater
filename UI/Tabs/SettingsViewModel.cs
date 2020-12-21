@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
 using Ookii.Dialogs.Wpf;
@@ -59,10 +61,11 @@ namespace Syn3Updater.UI.Tabs
             get => _currentSyncVersion;
             set
             {
-                if (value != "_._._____")
+                string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+                if (value != $"_{decimalSeparator}_{decimalSeparator}_____" &&  value.Any(char.IsDigit))
                 {
                     SetProperty(ref _currentSyncVersion, value);
-                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(value.Replace("_", "").Replace(".", ""));
+                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(new String(value.Where(Char.IsDigit).ToArray()));
                 }
                 
             }
@@ -177,7 +180,8 @@ namespace Syn3Updater.UI.Tabs
             CurrentInstallMode = currentInstallModeTemp;
 
             string _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
-            if (_version.Length >= 5) CurrentSyncVersion = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
+            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            if (_version.Length >= 5) CurrentSyncVersion = $"{_version[0]}{decimalSeparator}{_version[1]}{decimalSeparator}{_version.Substring(2, _version.Length - 2)}";
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
 
             DownloadLocation = ApplicationManager.Instance.DownloadLocation;

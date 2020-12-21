@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Management;
 using System.Net;
 using System.Net.Http;
@@ -205,7 +206,8 @@ namespace Syn3Updater.UI.Tabs
         public void ReloadSettings()
         {
             string _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
-            if(_version.Length >= 5)  CurrentSyncVersion = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
+            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            if (_version.Length >= 5)  CurrentSyncVersion = $"{_version[0]}{decimalSeparator}{_version[1]}{decimalSeparator}{_version.Substring(2, _version.Length - 2)}";
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
             DownloadLocation = ApplicationManager.Instance.DownloadLocation;
