@@ -68,7 +68,8 @@
                                            TextDecorations="{x:Null}" VerticalAlignment="Center"
                                            Text="{Binding InstallMode}" />
                             </StackPanel>
-                            <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}" IsEnabled="{Binding CancelButtonEnabled}"
+                            <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
+                                    IsEnabled="{Binding CancelButtonEnabled}"
                                     Background="#ffff424d" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI"
                                     Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100"
                                     Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}" />

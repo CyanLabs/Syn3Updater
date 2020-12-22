@@ -83,9 +83,10 @@
                                    Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Settings.FullSyncVersion, Converter={StaticResource LocConverter}}" />
                         <ui:MaskedTextBox FontSize="12" Grid.Column="1"
-                                 Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}" Mask="#.#.#####" MaxLength="9"
-                                 VerticalContentAlignment="Center" TextAlignment="Center" />
-                        </Grid>
+                                          Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}"
+                                          Mask="#.#.#####" MaxLength="9"
+                                          VerticalContentAlignment="Center" TextAlignment="Center" />
+                    </Grid>
 
 
                     <Grid Grid.Row="4" Grid.Column="1" Margin="5,0,0,0">

@@ -20,8 +20,7 @@ namespace Syn3Updater.UI
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            AutoUpdater.Start(
-                $"https://cyanlabs.net/api/latest.php?product={Assembly.GetEntryAssembly().GetName().Name}");
+            AutoUpdater.Start($"https://cyanlabs.net/api/latest.php?product={Assembly.GetEntryAssembly().GetName().Name}");
         }
 
         private MainWindowViewModel Vm => (MainWindowViewModel) DataContext;

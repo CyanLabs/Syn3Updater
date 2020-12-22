@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Syn3Updater.Model;
 
 namespace Syn3Updater.Helper
 {
     public class FileHelper
     {
-        //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
         private static readonly HttpClient client = new HttpClient();
 
-        private EventHandler<EventArgs<int>> PercentageChanged;
+        private readonly EventHandler<EventArgs<int>> PercentageChanged;
 
-        public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged) {
+        public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged)
+        {
             PercentageChanged = externalPercentageChanged;
         }
 
@@ -50,9 +47,10 @@ namespace Syn3Updater.Helper
 
                         return;
                     }
+
                     fileStream.Write(bytes, 0, bytesRead);
                     totalReads += bytesRead;
-                    int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
+                    int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
                     if (percent != prevPercent)
                     {
                         PercentageChanged.Raise(this, percent);
@@ -61,15 +59,13 @@ namespace Syn3Updater.Helper
                 }
             }
         }
+        //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
 
-        public async Task HttpGetForLargeFile(string path, string filename, CancellationToken ct)
+        public async Task download_file(string path, string filename, CancellationToken ct)
         {
-            using (HttpResponseMessage response = await client.GetAsync(path,
-                HttpCompletionOption.ResponseHeadersRead, ct))
+            using (HttpResponseMessage response = await client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
-                long total = response.Content.Headers.ContentLength.HasValue
-                    ? response.Content.Headers.ContentLength.Value
-                    : -1L;
+                long total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
 
                 bool canReportProgress = total != -1;
 
@@ -140,17 +136,12 @@ namespace Syn3Updater.Helper
                     totalBytesRead += bytesRead;
                     hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                     long read = totalBytesRead;
-                    if (totalBytesRead % 102400 == 0) PercentageChanged.Raise(this, (int)((double)read / size * 100));
+                    if (totalBytesRead % 102400 == 0) PercentageChanged.Raise(this, (int) ((double) read / size * 100));
                 } while (bytesRead != 0);
 
                 hasher.TransformFinalBlock(buffer, 0, 0);
                 return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
             }
-        }
-
-        public struct ValidateResult {
-            public string Message;
-            public bool Result;
         }
 
         public ValidateResult ValidateFile(string srcfile, string localfile, string md5, bool copy, CancellationToken ct)
@@ -159,7 +150,7 @@ namespace Syn3Updater.Helper
             string filename = Path.GetFileName(localfile);
             if (ct.IsCancellationRequested)
             {
-                validateResult.Message = ("[App] Process cancelled by user");
+                validateResult.Message = "[App] Process cancelled by user";
                 validateResult.Result = false;
                 return validateResult;
             }
@@ -202,9 +193,8 @@ namespace Syn3Updater.Helper
                         long newfilesize = -1;
                         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(srcfile));
 
-                        if (long.TryParse(
-                            httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content
-                                .Headers.ContentLength.ToString(), out long contentLength))
+                        if (long.TryParse(httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content.Headers.ContentLength.ToString(),
+                            out long contentLength))
                             newfilesize = contentLength;
 
                         if (newfilesize == filesize)
@@ -226,6 +216,12 @@ namespace Syn3Updater.Helper
             validateResult.Message = $"[Validator] {filename} failed to validate";
             validateResult.Result = false;
             return validateResult;
+        }
+
+        public struct ValidateResult
+        {
+            public string Message;
+            public bool Result;
         }
     }
 }

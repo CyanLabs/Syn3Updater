@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
 using Ookii.Dialogs.Wpf;
@@ -33,14 +32,23 @@ namespace Syn3Updater.UI.Tabs
         private string _licenseKey;
 
         private bool _showAllReleases;
+        private ObservableCollection<SyncRegion> _syncRegions;
+        private ObservableCollection<string> _installModes;
 
-        public ObservableCollection<SyncRegion> SyncRegions { get; set; }
-        public ObservableCollection<string> InstallModes { get; set; }
+        public ObservableCollection<SyncRegion> SyncRegions
+        {
+            get => _syncRegions;
+            set => SetProperty(ref _syncRegions, value);
+        }
+
+        public ObservableCollection<string> InstallModes
+        {
+            get => _installModes;
+            set => SetProperty(ref _installModes, value);
+        }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
-            new ObservableCollection<LanguageOption>(
-                LanguageManager.Languages.Select(x => new LanguageOption
-                    {Name = x.NativeName, Code = x.Code, Emoji = x.Emoji}));
+            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption {Name = x.NativeName, Code = x.Code, Emoji = x.Emoji}));
 
         public string CurrentSyncRegion
         {
@@ -61,12 +69,11 @@ namespace Syn3Updater.UI.Tabs
             set
             {
                 string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                if (value != $"_{decimalSeparator}_{decimalSeparator}_____" &&  value.Any(char.IsDigit))
+                if (value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
                 {
                     SetProperty(ref _currentSyncVersion, value);
-                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(new String(value.Where(Char.IsDigit).ToArray()));
+                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
                 }
-                
             }
         }
 
@@ -145,11 +152,9 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
-        public ActionCommand DownloadPathSelector =>
-            _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
+        public ActionCommand DownloadPathSelector => _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
 
-        public ActionCommand ApplySettings =>
-            _applySettings ?? (_applySettings = new ActionCommand(ApplySettingsAction));
+        public ActionCommand ApplySettings => _applySettings ?? (_applySettings = new ActionCommand(ApplySettingsAction));
 
         public void Init()
         {
@@ -164,18 +169,16 @@ namespace Syn3Updater.UI.Tabs
                 new SyncRegion {Code = "ANZ", Name = "Australia & New Zealand"},
                 new SyncRegion {Code = "ROW", Name = "Rest Of World"}
             };
-            OnPropertyChanged("SyncRegions");
+            //OnPropertyChanged("SyncRegions");
             CurrentSyncRegion = currentSyncRegionTemp;
 
             //TODO Fix need for temp string
-            string currentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != ""
-                ? Properties.Settings.Default.CurrentInstallMode
-                : "autodetect";
+            string currentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != "" ? Properties.Settings.Default.CurrentInstallMode : "autodetect";
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect", "autoinstall", "reformat", "downgrade"
             };
-            OnPropertyChanged("InstallModes");
+            //OnPropertyChanged("InstallModes");
             CurrentInstallMode = currentInstallModeTemp;
 
             string _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
@@ -195,8 +198,7 @@ namespace Syn3Updater.UI.Tabs
             if (CurrentSyncVersion != "" || CurrentSyncVersion != "0" || CurrentSyncRegion != "")
                 ApplicationManager.Instance.FireHomeTabEvent();
             else
-                MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void DownloadPathAction()
@@ -207,15 +209,13 @@ namespace Syn3Updater.UI.Tabs
                 if (Directory.Exists(oldPath))
                 {
                     if (MessageBox.Show(
-                        string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
-                            Environment.NewLine + oldPath + Environment.NewLine,
-                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater",
-                        MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                            string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
+                                Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
+                        MessageBoxResult.Yes)
                         if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
                             try
                             {
-                                FileSystem.MoveDirectory(oldPath, dialog.SelectedPath,
-                                    UIOption.AllDialogs);
+                                FileSystem.MoveDirectory(oldPath, dialog.SelectedPath, UIOption.AllDialogs);
                             }
                             catch (OperationCanceledException)
                             {

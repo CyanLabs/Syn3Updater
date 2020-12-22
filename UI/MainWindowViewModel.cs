@@ -55,21 +55,17 @@ namespace Syn3Updater.UI
             {
                 if (value != "about" && !Settings.Default.DisclaimerAccepted)
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
-                else if (value == "home" &&
-                         (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
+                else if (value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"),
-                        "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
                 }
                 else if (value != "downloads" && ApplicationManager.Instance.IsDownloading)
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "downloads";
                 }
                 else if (value == "crashme")

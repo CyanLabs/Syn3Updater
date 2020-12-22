@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 // ReSharper disable InconsistentNaming
 
 namespace Syn3Updater.Model

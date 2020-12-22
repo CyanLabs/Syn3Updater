@@ -19,16 +19,7 @@ namespace Syn3Updater
 {
     public class ApplicationManager
     {
-        public string DownloadLocation,
-            DriveName,
-            DrivePartitionType,
-            DriveFileSystem,
-            DriveNumber,
-            DriveLetter,
-            SelectedMapVersion,
-            SelectedRelease,
-            SelectedRegion,
-            InstallMode;
+        public string DownloadLocation, DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DriveLetter, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode;
 
         public ObservableCollection<HomeViewModel.LocalIvsu> Ivsus = new ObservableCollection<HomeViewModel.LocalIvsu>();
 
@@ -86,8 +77,7 @@ namespace Syn3Updater
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (Settings.Default.Lang == "")
             {
-                Logger.Debug(
-                    $"[Settings]  Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
+                Logger.Debug($"[Settings]  Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
                 Settings.Default.Lang = ci.TwoLetterISOLanguageName;
             }
 
@@ -98,10 +88,8 @@ namespace Syn3Updater
 
             if (string.IsNullOrWhiteSpace(Settings.Default.DownloadLocation))
             {
-                Logger.Debug(
-                    $"[Settings] Download location is not set, defaulting to {KnownFolders.GetPath(KnownFolder.Downloads)}\\Syn3Updater\\");
-                Settings.Default.DownloadLocation =
-                    $@"{KnownFolders.GetPath(KnownFolder.Downloads)}\Syn3Updater\";
+                Logger.Debug($"[Settings] Download location is not set, defaulting to {KnownFolders.GetPath(KnownFolder.Downloads)}\\Syn3Updater\\");
+                Settings.Default.DownloadLocation = $@"{KnownFolders.GetPath(KnownFolder.Downloads)}\Syn3Updater\";
             }
 
             DownloadLocation = Settings.Default.DownloadLocation;

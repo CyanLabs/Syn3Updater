@@ -62,8 +62,7 @@ namespace Syn3Updater.UI
 
         public class LogEntry
         {
-            public LogEntry(string log, string logType = "Info", Exception exception = null,
-                [CallerMemberName] string callerMemberName = "")
+            public LogEntry(string log, string logType = "Info", Exception exception = null, [CallerMemberName] string callerMemberName = "")
             {
                 Log = log;
                 Time = DateTime.Now;

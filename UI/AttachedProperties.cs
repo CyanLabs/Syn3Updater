@@ -6,9 +6,8 @@ namespace Syn3Updater.UI
     public class TextBoxAttachedProperties
     {
         // Using a DependencyProperty as the backing store for AutoScrollToEnd.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty AutoScrollToEndProperty =
-            DependencyProperty.RegisterAttached("AutoScrollToEnd", typeof(bool), typeof(TextBoxAttachedProperties),
-                new PropertyMetadata(false, AutoScrollToEndPropertyChanged));
+        public static readonly DependencyProperty AutoScrollToEndProperty = DependencyProperty.RegisterAttached("AutoScrollToEnd", typeof(bool), typeof(TextBoxAttachedProperties),
+            new PropertyMetadata(false, AutoScrollToEndPropertyChanged));
 
         public static bool GetAutoScrollToEnd(DependencyObject obj)
         {

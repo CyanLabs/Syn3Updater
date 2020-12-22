@@ -12,9 +12,8 @@ namespace Syn3Updater.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value as bool? == true ? Visibility.Visible
-                : string.Equals(parameter?.ToString(), "true", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden
-                : Visibility.Collapsed;
+            return value as bool? == true ? Visibility.Visible :
+                string.Equals(parameter?.ToString(), "true", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -31,9 +30,8 @@ namespace Syn3Updater.Converter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value as bool? != true ? Visibility.Visible
-                : string.Equals(parameter?.ToString(), "false", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden
-                : Visibility.Collapsed;
+            return value as bool? != true ? Visibility.Visible :
+                string.Equals(parameter?.ToString(), "false", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
