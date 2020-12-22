@@ -72,12 +72,6 @@ namespace Syn3Updater.UI
                         MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "downloads";
                 }
-                else if (value == "downloads" && ApplicationManager.Instance.IsDownloading == false)
-                {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoDownloads"), "Syn3 Updater",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    value = "home";
-                }
                 else if (value == "crashme")
                 {
                     int i = 11;

@@ -88,35 +88,40 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateLog(string text)
         {
-            Log += text + Environment.NewLine;
+            Log += DateTime.Now + " " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
         }
 
+        private Task downloadTask;
         public void Init()
         {
-            _selectedRelease = ApplicationManager.Instance.SelectedRelease;
-            _selectedRegion = ApplicationManager.Instance.SelectedRegion;
-            _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
-            UpdateLog(
-                $"[App] Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}");
+            if (ApplicationManager.Instance.IsDownloading && (downloadTask == null || !downloadTask.Status.Equals(TaskStatus.Running)))
+            {
+                _selectedRelease = ApplicationManager.Instance.SelectedRelease;
+                _selectedRegion = ApplicationManager.Instance.SelectedRegion;
+                _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
+                UpdateLog(
+                    $"[App] Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}");
 
-            CancelButtonEnabled = true;
-            InstallMode = ApplicationManager.Instance.InstallMode;
-            UpdateLog($"[App] Install mode set to {InstallMode}");
-            OnPropertyChanged("InstallMode");
-            PercentageChanged += DownloadPercentageChanged;
-            CurrentProgress = 0;
+                CancelButtonEnabled = true;
+                InstallMode = ApplicationManager.Instance.InstallMode;
+                UpdateLog($"[App] Install mode set to {InstallMode}");
+                OnPropertyChanged("InstallMode");
+                PercentageChanged += DownloadPercentageChanged;
+                CurrentProgress = 0;
 
-            DownloadQueueList = new ObservableCollection<string>();
-            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
-            OnPropertyChanged("DownloadQueueList");
+                DownloadQueueList = new ObservableCollection<string>();
+                foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
+                OnPropertyChanged("DownloadQueueList");
 
-            _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
-            _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
+                _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
+                _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
 
 
-            _ct = tokenSource.Token;
-            Task.Run(DoDownload, tokenSource.Token);
+                _ct = tokenSource.Token;
+                Log = "";
+                downloadTask =  Task.Run(DoDownload, tokenSource.Token);
+            }
         }
 
         private void DoCopy()

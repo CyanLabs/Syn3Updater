@@ -30,7 +30,6 @@ namespace Syn3Updater.UI.Tabs
 
         private ActionCommand _downloadPathSelector;
 
-
         private string _licenseKey;
 
         private bool _showAllReleases;
