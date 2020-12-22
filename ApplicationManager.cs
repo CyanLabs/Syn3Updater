@@ -30,7 +30,7 @@ namespace Syn3Updater
             SelectedRegion,
             InstallMode;
 
-        public ObservableCollection<HomeViewModel.Ivsu> Ivsus = new ObservableCollection<HomeViewModel.Ivsu>();
+        public ObservableCollection<HomeViewModel.LocalIvsu> Ivsus = new ObservableCollection<HomeViewModel.LocalIvsu>();
 
         public MainWindow MainWindow;
         public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;

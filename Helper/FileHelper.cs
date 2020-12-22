@@ -1,0 +1,231 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Syn3Updater.Model;
+
+namespace Syn3Updater.Helper
+{
+    public class FileHelper
+    {
+        //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
+        private static readonly HttpClient client = new HttpClient();
+
+        private EventHandler<EventArgs<int>> PercentageChanged;
+
+        public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged) {
+            PercentageChanged = externalPercentageChanged;
+        }
+
+        public void copy_file(string source, string destination, CancellationToken ct)
+        {
+            int bufferSize = 1024 * 512;
+            using (FileStream inStream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fileStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                int bytesRead;
+                int totalReads = 0;
+                long totalBytes = inStream.Length;
+                byte[] bytes = new byte[bufferSize];
+                int prevPercent = 0;
+
+                while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
+                {
+                    if (ct.IsCancellationRequested)
+                    {
+                        fileStream.Close();
+                        fileStream.Dispose();
+                        try
+                        {
+                            File.Delete(destination);
+                        }
+                        catch (IOException)
+                        {
+                        }
+
+                        return;
+                    }
+                    fileStream.Write(bytes, 0, bytesRead);
+                    totalReads += bytesRead;
+                    int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
+                    if (percent != prevPercent)
+                    {
+                        PercentageChanged.Raise(this, percent);
+                        prevPercent = percent;
+                    }
+                }
+            }
+        }
+
+        public async Task HttpGetForLargeFile(string path, string filename, CancellationToken ct)
+        {
+            using (HttpResponseMessage response = await client.GetAsync(path,
+                HttpCompletionOption.ResponseHeadersRead, ct))
+            {
+                long total = response.Content.Headers.ContentLength.HasValue
+                    ? response.Content.Headers.ContentLength.Value
+                    : -1L;
+
+                bool canReportProgress = total != -1;
+
+                using (Stream stream = await response.Content.ReadAsStreamAsync())
+                {
+                    long totalRead = 0L;
+                    byte[] buffer = new byte[4096];
+                    bool moreToRead = true;
+                    const int CHUNK_SIZE = 4096;
+                    FileStream fileStream = File.Create(filename, CHUNK_SIZE);
+                    do
+                    {
+                        if (ct.IsCancellationRequested)
+                        {
+                            fileStream.Close();
+                            fileStream.Dispose();
+                            try
+                            {
+                                File.Delete(filename);
+                            }
+                            catch (IOException)
+                            {
+                            }
+
+                            return;
+                        }
+
+                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+
+                        if (read == 0)
+                        {
+                            moreToRead = false;
+                            fileStream.Close();
+                            fileStream.Dispose();
+                        }
+                        else
+                        {
+                            byte[] data = new byte[read];
+                            buffer.ToList().CopyTo(0, data, 0, read);
+                            await fileStream.WriteAsync(buffer, 0, read, ct);
+                            totalRead += read;
+
+                            if (canReportProgress)
+                            {
+                                double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
+                                int value = Convert.ToInt32(downloadPercentage);
+                                PercentageChanged.Raise(this, value);
+                            }
+                        }
+                    } while (moreToRead);
+                }
+            }
+        }
+
+        public string CalculateMd5(string filename)
+        {
+            long totalBytesRead = 0;
+            using (Stream file = File.OpenRead(filename))
+            {
+                long size = file.Length;
+                HashAlgorithm hasher = MD5.Create();
+                int bytesRead;
+                byte[] buffer;
+                do
+                {
+                    buffer = new byte[4096];
+                    bytesRead = file.Read(buffer, 0, buffer.Length);
+                    totalBytesRead += bytesRead;
+                    hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
+                    long read = totalBytesRead;
+                    if (totalBytesRead % 102400 == 0) PercentageChanged.Raise(this, (int)((double)read / size * 100));
+                } while (bytesRead != 0);
+
+                hasher.TransformFinalBlock(buffer, 0, 0);
+                return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
+            }
+        }
+
+        public struct ValidateResult {
+            public string Message;
+            public bool Result;
+        }
+
+        public ValidateResult ValidateFile(string srcfile, string localfile, string md5, bool copy, CancellationToken ct)
+        {
+            ValidateResult validateResult = new ValidateResult();
+            string filename = Path.GetFileName(localfile);
+            if (ct.IsCancellationRequested)
+            {
+                validateResult.Message = ("[App] Process cancelled by user");
+                validateResult.Result = false;
+                return validateResult;
+            }
+
+            if (ApplicationManager.Instance.SkipCheck)
+            {
+                validateResult.Message = $"[Validator] SkipCheck activated, spoofing validation check for {filename}";
+                validateResult.Result = true;
+                return validateResult;
+            }
+
+            if (!File.Exists(localfile))
+            {
+                validateResult.Message = $"[Validator] {filename} is missing";
+                validateResult.Result = false;
+                return validateResult;
+            }
+
+            string localMd5 = CalculateMd5(localfile);
+
+            if (md5 == null)
+            {
+                long filesize = new FileInfo(localfile).Length;
+                if (copy)
+                {
+                    long srcfilesize = new FileInfo(srcfile).Length;
+
+                    if (srcfilesize == filesize)
+                        if (localMd5 == CalculateMd5(srcfile))
+                        {
+                            validateResult.Message = $"[Validator] {filename} checksum matches already verified local copy";
+                            validateResult.Result = true;
+                            return validateResult;
+                        }
+                }
+                else
+                {
+                    using (HttpClient httpClient = new HttpClient())
+                    {
+                        long newfilesize = -1;
+                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(srcfile));
+
+                        if (long.TryParse(
+                            httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content
+                                .Headers.ContentLength.ToString(), out long contentLength))
+                            newfilesize = contentLength;
+
+                        if (newfilesize == filesize)
+                        {
+                            validateResult.Message = $"[Validator] no source checksum available for {filename} comparing filesize only";
+                            validateResult.Result = true;
+                            return validateResult;
+                        }
+                    }
+                }
+            }
+            else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))
+            {
+                validateResult.Message = $"[Validator] {filename} matches known good checksum";
+                validateResult.Result = true;
+                return validateResult;
+            }
+
+            validateResult.Message = $"[Validator] {filename} failed to validate";
+            validateResult.Result = false;
+            return validateResult;
+        }
+    }
+}

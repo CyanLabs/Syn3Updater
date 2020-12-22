@@ -19,7 +19,7 @@ namespace Syn3Updater.UI.Tabs
     public class DownloadViewModel : LanguageAwareBaseViewModel
     {
         //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
-        private static readonly HttpClient client = new HttpClient();
+        // private static readonly HttpClient client = new HttpClient();
 
         private ActionCommand _cancelButton;
         private CancellationToken _ct;
@@ -93,6 +93,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private Task downloadTask;
+        private FileHelper fileHelper;
         public void Init()
         {
             if (ApplicationManager.Instance.IsDownloading && (downloadTask == null || !downloadTask.Status.Equals(TaskStatus.Running)))
@@ -104,6 +105,7 @@ namespace Syn3Updater.UI.Tabs
                     $"[App] Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}");
 
                 CancelButtonEnabled = true;
+                OnPropertyChanged("CancelButtonEnabled");
                 InstallMode = ApplicationManager.Instance.InstallMode;
                 UpdateLog($"[App] Install mode set to {InstallMode}");
                 OnPropertyChanged("InstallMode");
@@ -111,22 +113,23 @@ namespace Syn3Updater.UI.Tabs
                 CurrentProgress = 0;
 
                 DownloadQueueList = new ObservableCollection<string>();
-                foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
+                foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
                 OnPropertyChanged("DownloadQueueList");
 
                 _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
                 _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
 
-
                 _ct = tokenSource.Token;
                 Log = "";
+
+                fileHelper = new FileHelper(PercentageChanged);
                 downloadTask =  Task.Run(DoDownload, tokenSource.Token);
-            }
+            }            
         }
 
         private void DoCopy()
-        {
-            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+        {      
+            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (_ct.IsCancellationRequested)
                 {
@@ -154,46 +157,7 @@ namespace Syn3Updater.UI.Tabs
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                         }
 
-                        int bufferSize = 1024 * 512;
-                        using (FileStream inStream =
-                            new FileStream(ApplicationManager.Instance.DownloadLocation + item.FileName, FileMode.Open,
-                                FileAccess.Read, FileShare.ReadWrite))
-                        using (FileStream fileStream = new FileStream(
-                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}",
-                            FileMode.OpenOrCreate, FileAccess.Write))
-                        {
-                            int bytesRead;
-                            int totalReads = 0;
-                            long totalBytes = inStream.Length;
-                            byte[] bytes = new byte[bufferSize];
-                            int prevPercent = 0;
-
-                            while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
-                            {
-                                if (_ct.IsCancellationRequested)
-                                {
-                                    fileStream.Close();
-                                    fileStream.Dispose();
-                                    try
-                                    {
-                                        File.Delete(
-                                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}");
-                                    }
-                                    catch (IOException)
-                                    {
-                                    }
-                                }
-
-                                fileStream.Write(bytes, 0, bytesRead);
-                                totalReads += bytesRead;
-                                int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
-                                if (percent != prevPercent)
-                                {
-                                    PercentageChanged.Raise(this, percent);
-                                    prevPercent = percent;
-                                }
-                            }
-                        }
+                        fileHelper.copy_file(ApplicationManager.Instance.DownloadLocation + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
 
                         bool validfile = ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true);
@@ -206,6 +170,7 @@ namespace Syn3Updater.UI.Tabs
 
                         if (i == 3)
                         {
+                            if (_ct.IsCancellationRequested) return;
                             UpdateLog(
                                 $"[Copier] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
                             MessageBox.Show(
@@ -348,7 +313,7 @@ namespace Syn3Updater.UI.Tabs
 
             try
             {
-                foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+                foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
                 {
                     if (_ct.IsCancellationRequested)
                     {
@@ -380,8 +345,7 @@ namespace Syn3Updater.UI.Tabs
 
                                 try
                                 {
-                                    await HttpGetForLargeFile(item.Url,
-                                        ApplicationManager.Instance.DownloadLocation + item.FileName, _ct);
+                                    await fileHelper.HttpGetForLargeFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, _ct);
                                 }
                                 catch (HttpRequestException webException)
                                 {
@@ -402,6 +366,7 @@ namespace Syn3Updater.UI.Tabs
 
                                 if (i == 3)
                                 {
+                                    if (_ct.IsCancellationRequested) return;
                                     UpdateLog(
                                         $"[Downloader] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
                                     MessageBox.Show(
@@ -504,7 +469,7 @@ namespace Syn3Updater.UI.Tabs
                     break;
             }
 
-            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     DownloadQueueList.Add(ApplicationManager.Instance.DownloadLocation + item.FileName);
@@ -524,7 +489,7 @@ namespace Syn3Updater.UI.Tabs
 
             string extrafiles = "";
             int baseint = 0, extraint = 0;
-            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
                 if (item.Type == @"APPS" || item.Type == @"VOICE" ||
                     item.Type == @"ENH_DAB" || item.Type == @"MAP_LICENSE" || item.Type == @"VOICE_NAV")
                 {
@@ -561,7 +526,7 @@ namespace Syn3Updater.UI.Tabs
             UpdateLog("[App] Generating reformat.lst");
             string reformatlst = "";
             int i = 0;
-            foreach (HomeViewModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (item.Md5 == HomeViewModel.SyncReformatToolMd5 ||
                     (item.Md5 == HomeViewModel.DowngradePackageAppMd5 && _selectedRelease != @"Sync 3.3.19052") ||
@@ -602,158 +567,82 @@ namespace Syn3Updater.UI.Tabs
             File.Create($@"{ApplicationManager.Instance.DriveLetter}\DONTINDX.MSA");
         }
 
-        public string CalculateMd5(string filename)
-        {
-            long totalBytesRead = 0;
-            using (Stream file = File.OpenRead(filename))
-            {
-                long size = file.Length;
-                HashAlgorithm hasher = MD5.Create();
-                int bytesRead;
-                byte[] buffer;
-                do
-                {
-                    buffer = new byte[4096];
-                    bytesRead = file.Read(buffer, 0, buffer.Length);
-                    totalBytesRead += bytesRead;
-                    hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
-                    long read = totalBytesRead;
-                    if (totalBytesRead % 102400 == 0) PercentageChanged.Raise(this, (int) ((double) read / size * 100));
-                } while (bytesRead != 0);
-
-                hasher.TransformFinalBlock(buffer, 0, 0);
-                return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
-            }
-        }
-
         private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
         {
-            string filename = Path.GetFileName(localfile);
-            if (_ct.IsCancellationRequested)
-            {
-                UpdateLog("[App] Process cancelled by user");
-                return false;
-            }
-
-            if (ApplicationManager.Instance.SkipCheck)
-            {
-                UpdateLog($"[Validator] SkipCheck activated, spoofing validation check for {filename}");
-                return true;
-            }
-
-            if (!File.Exists(localfile))
-            {
-                UpdateLog($"[Validator] {filename} is missing");
-                return false;
-            }
-
             DownloadInfo = $"Validating: {localfile}";
             progress_bar_suffix = LanguageManager.GetValue("String.Validated");
-            string localMd5 = CalculateMd5(localfile);
+            FileHelper.ValidateResult validateResult = fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
+            UpdateLog(validateResult.Message);
+            return validateResult.Result;
 
-            if (md5 == null)
-            {
-                long filesize = new FileInfo(localfile).Length;
-                if (copy)
-                {
-                    long srcfilesize = new FileInfo(srcfile).Length;
+            // string filename = Path.GetFileName(localfile);
+            // if (_ct.IsCancellationRequested)
+            // {
+            //     UpdateLog("[App] Process cancelled by user");
+            //     return false;
+            // }
 
-                    if (srcfilesize == filesize)
-                        if (localMd5 == CalculateMd5(srcfile))
-                        {
-                            UpdateLog($"[Validator] {filename} checksum matches already verified local copy");
-                            return true;
-                        }
-                }
-                else
-                {
-                    using (HttpClient httpClient = new HttpClient())
-                    {
-                        long newfilesize = -1;
-                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(srcfile));
+            // if (ApplicationManager.Instance.SkipCheck)
+            // {
+            //     UpdateLog($"[Validator] SkipCheck activated, spoofing validation check for {filename}");
+            //     return true;
+            // }
 
-                        if (long.TryParse(
-                            httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, _ct).Result.Content
-                                .Headers.ContentLength.ToString(), out long contentLength))
-                            newfilesize = contentLength;
+            // if (!File.Exists(localfile))
+            // {
+            //     UpdateLog($"[Validator] {filename} is missing");
+            //     return false;
+            // }
 
-                        if (newfilesize == filesize)
-                        {
-                            UpdateLog(
-                                $"[Validator] no source checksum available for {filename} comparing filesize only");
-                            return true;
-                        }
-                    }
-                }
-            }
-            else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))
-            {
-                UpdateLog($"[Validator] {filename} matches known good checksum");
-                return true;
-            }
+            // DownloadInfo = $"Validating: {localfile}";
+            // progress_bar_suffix = LanguageManager.GetValue("String.Validated");
+            // string localMd5 = fileHelper.CalculateMd5(localfile);
 
-            UpdateLog($"[Validator] {filename} failed to validate");
-            return false;
+            // if (md5 == null)
+            // {
+            //     long filesize = new FileInfo(localfile).Length;
+            //     if (copy)
+            //     {
+            //         long srcfilesize = new FileInfo(srcfile).Length;
+
+            //         if (srcfilesize == filesize)
+            //             if (localMd5 == fileHelper.CalculateMd5(srcfile))
+            //             {
+            //                 UpdateLog($"[Validator] {filename} checksum matches already verified local copy");
+            //                 return true;
+            //             }
+            //     }
+            //     else
+            //     {
+            //         using (HttpClient httpClient = new HttpClient())
+            //         {
+            //             long newfilesize = -1;
+            //             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(srcfile));
+
+            //             if (long.TryParse(
+            //                 httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, _ct).Result.Content
+            //                     .Headers.ContentLength.ToString(), out long contentLength))
+            //                 newfilesize = contentLength;
+
+            //             if (newfilesize == filesize)
+            //             {
+            //                 UpdateLog(
+            //                     $"[Validator] no source checksum available for {filename} comparing filesize only");
+            //                 return true;
+            //             }
+            //         }
+            //     }
+            // }
+            // else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))
+            // {
+            //     UpdateLog($"[Validator] {filename} matches known good checksum");
+            //     return true;
+            // }
+
+            // UpdateLog($"[Validator] {filename} failed to validate");
+            // return false;
         }
 
-        public async Task HttpGetForLargeFile(string path, string filename, CancellationToken token)
-        {
-            using (HttpResponseMessage response = await client.GetAsync(path,
-                HttpCompletionOption.ResponseHeadersRead, _ct))
-            {
-                long total = response.Content.Headers.ContentLength.HasValue
-                    ? response.Content.Headers.ContentLength.Value
-                    : -1L;
-
-                bool canReportProgress = total != -1;
-
-                using (Stream stream = await response.Content.ReadAsStreamAsync())
-                {
-                    long totalRead = 0L;
-                    byte[] buffer = new byte[4096];
-                    bool moreToRead = true;
-                    const int CHUNK_SIZE = 4096;
-                    FileStream fileStream = File.Create(filename, CHUNK_SIZE);
-                    do
-                    {
-                        if (token.IsCancellationRequested)
-                        {
-                            fileStream.Close();
-                            fileStream.Dispose();
-                            try
-                            {
-                                File.Delete(filename);
-                            }
-                            catch (IOException)
-                            {
-                            }
-                        }
-
-                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, token);
-
-                        if (read == 0)
-                        {
-                            moreToRead = false;
-                            fileStream.Close();
-                            fileStream.Dispose();
-                        }
-                        else
-                        {
-                            byte[] data = new byte[read];
-                            buffer.ToList().CopyTo(0, data, 0, read);
-                            await fileStream.WriteAsync(buffer, 0, read, _ct);
-                            totalRead += read;
-
-                            if (canReportProgress)
-                            {
-                                double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
-                                int value = Convert.ToInt32(downloadPercentage);
-                                PercentageChanged.Raise(this, value);
-                            }
-                        }
-                    } while (moreToRead);
-                }
-            }
-        }
+        
     }
 }

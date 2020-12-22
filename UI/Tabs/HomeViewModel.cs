@@ -90,13 +90,33 @@ namespace Syn3Updater.UI.Tabs
         private string _stringCompatibility;
 
         private string _stringReleasesJson, _stringMapReleasesJson, _stringDownloadJson, _stringMapDownloadJson;
+
+        private ObservableCollection<Drive> _driveList;
+        private string _driveLetter;
+        private string _driveName;
+        private string _driveFileSystem;
+
         public ActionCommand RefreshUSB => _refreshUSB ?? (_refreshUSB = new ActionCommand(RefreshUsb));
         public ActionCommand RegionInfo => _regionInfo ?? (_regionInfo = new ActionCommand(RegionInfoAction));
         public ActionCommand StartButton => _startButton ?? (_startButton = new ActionCommand(StartAction));
 
-        public string DriveLetter { get; set; }
-        public string DriveName { get; set; }
-        public string DriveFileSystem { get; set; }
+        public string DriveLetter
+        {
+            get => _driveLetter;
+            set => SetProperty(ref _driveLetter, value);
+        }
+
+        public string DriveName
+        {
+            get => _driveName;
+            set => SetProperty(ref _driveName, value);
+        }
+
+        public string DriveFileSystem
+        {
+            get => _driveFileSystem;
+            set => SetProperty(ref _driveFileSystem, value);
+        }
 
         public Drive SelectedDrive
         {
@@ -150,7 +170,11 @@ namespace Syn3Updater.UI.Tabs
             set => SetProperty(ref _selectedReleaseIndex, value);
         }
 
-        public ObservableCollection<Drive> DriveList { get; set; }
+        public ObservableCollection<Drive> DriveList
+        {
+            get => _driveList;
+            set => SetProperty(ref _driveList, value);
+        }
 
         public ObservableCollection<SyncRegion> SyncRegions { get; set; }
 
@@ -163,7 +187,7 @@ namespace Syn3Updater.UI.Tabs
 
         public string Notes { get; set; }
 
-        public ObservableCollection<Ivsu> IvsuList { get; set; }
+        public ObservableCollection<LocalIvsu> IvsuList { get; set; }
 
         public string CurrentSyncRegion
         {
@@ -215,7 +239,7 @@ namespace Syn3Updater.UI.Tabs
             SelectedReleaseIndex = -1;
             StartEnabled = false;
             OnPropertyChanged("StartEnabled");
-            IvsuList = new ObservableCollection<Ivsu>();
+            IvsuList = new ObservableCollection<LocalIvsu>();
             OnPropertyChanged("IvsuList");
             InstallMode = "";
             OnPropertyChanged("InstallMode");
@@ -247,72 +271,26 @@ namespace Syn3Updater.UI.Tabs
 
         private void RefreshUsb()
         {
-            DriveList = new ObservableCollection<Drive>
-            {
-                new Drive {Path = "", Name = LanguageManager.GetValue("Home.NoUSB")}
-            };
-            ManagementObjectSearcher driveQuery =
-                new ManagementObjectSearcher("select * from Win32_DiskDrive WHERE InterfaceType='USB'");
-            foreach (ManagementBaseObject o in driveQuery.Get())
-            {
-                ManagementObject d = (ManagementObject) o;
-                string diskName = Convert.ToString(d.Properties["Caption"].Value);
-                string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
-                if (friendlySize != "0B")
-                    DriveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
-            }
-
-            OnPropertyChanged("DriveList");
+            DriveList = USBHelper.refresh_devices();
         }
 
         private void UpdateDriveInfo()
         {
-            if (SelectedDrive == null || SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB"))
-            {
-                DriveLetter = "";
-                DriveName = "";
-                DriveFileSystem = "";
-            }
-            else
-            {
-                string partitionQueryText =
-                    $@"associators of {{{SelectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
-                ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
-                try
-                {
-                    foreach (ManagementBaseObject o in partitionQuery.Get())
-                    {
-                        ManagementObject p = (ManagementObject) o;
-                        string logicalDriveQueryText =
-                            $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
-                        ManagementObjectSearcher logicalDriveQuery =
-                            new ManagementObjectSearcher(logicalDriveQueryText);
-                        foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
-                        {
-                            ManagementObject ld = (ManagementObject) managementBaseObject;
-                            DriveLetter = Convert.ToString(ld.Properties["DeviceId"].Value);
-                            DriveFileSystem = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
-                            DriveFileSystem += $" {Convert.ToString(ld.Properties["FileSystem"].Value)}";
-                            DriveName = ld.Properties["VolumeName"].Value.ToString();
-                            if (ld.Properties["FileSystem"].Value.ToString() == "exFAT" &&
-                                !p.Properties["Type"].Value.ToString().Contains("GPT:") &&
-                                DriveName == "CYANLABS") ApplicationManager.Instance.SkipFormat = true;
+            USBHelper.DriveInfo drive_info = USBHelper.UpdateDriveInfo(SelectedDrive);
 
-                            ApplicationManager.Instance.DriveFileSystem = ld.Properties["FileSystem"].Value.ToString();
-                            ApplicationManager.Instance.DrivePartitionType =
-                                p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
-                            ApplicationManager.Instance.DriveName = SelectedDrive.Name;
-                        }
-                    }
-                }
-                catch (ManagementException)
-                {
-                    //TODO Implement Catch
-                }
-            }
+            // Update app level vars
+            ApplicationManager.Instance.DriveFileSystem = drive_info.FileSystem;
+            ApplicationManager.Instance.DrivePartitionType = drive_info.PartitionType;
+            ApplicationManager.Instance.DriveName = drive_info.Name;
+            ApplicationManager.Instance.SkipFormat = drive_info.SkipFormat;
+
+            // Update local level vars
+            DriveLetter = drive_info.Letter;
+            DriveFileSystem = drive_info.PartitionType + " " + drive_info.FileSystem;
+            DriveName = drive_info.Name;
 
             ApplicationManager.Logger.Info(
-                $"[App] USB Drive selected - Name: {DriveName} - FileSystem: {DriveFileSystem} - Letter: {DriveLetter}");
+                $"[App] USB Drive selected - Name: {drive_info.Name} - FileSystem: {drive_info.FileSystem} - PartitionType: {drive_info.PartitionType} - Letter: {drive_info.Letter}");
             OnPropertyChanged("DriveLetter");
             OnPropertyChanged("DriveName");
             OnPropertyChanged("DriveFileSystem");
@@ -478,7 +456,7 @@ namespace Syn3Updater.UI.Tabs
 
                 if (InstallMode == "downgrade")
                 {
-                    IvsuList.Add(new Ivsu
+                    IvsuList.Add(new LocalIvsu
                     {
                         Type = "APPS",
                         Name = DowngradePackageAppName,
@@ -490,7 +468,7 @@ namespace Syn3Updater.UI.Tabs
                         FileName = DowngradePackageAppFileName
                     });
 
-                    IvsuList.Add(new Ivsu
+                    IvsuList.Add(new LocalIvsu
                     {
                         Type = "TOOL",
                         Name = DowngradePackageToolName,
@@ -504,7 +482,7 @@ namespace Syn3Updater.UI.Tabs
                 }
 
                 if (InstallMode == "reformat" || InstallMode == "downgrade")
-                    IvsuList.Add(new Ivsu
+                    IvsuList.Add(new LocalIvsu
                     {
                         Type = "TOOL",
                         Name = SyncReformatToolName,
@@ -533,7 +511,7 @@ namespace Syn3Updater.UI.Tabs
                         string fileName = item.ivsu.url.Substring(
                             item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
                             item.ivsu.url.Length - item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);
-                        IvsuList.Add(new Ivsu
+                        IvsuList.Add(new LocalIvsu
                         {
                             Type = item.ivsu.type, Name = item.ivsu.name, Version = item.ivsu.version,
                             Notes = item.ivsu.notes, Url = item.ivsu.url, Md5 = item.ivsu.md5, Selected = true,
@@ -551,7 +529,7 @@ namespace Syn3Updater.UI.Tabs
                                 item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
                                 item.map_ivsu.url.Length -
                                 item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);
-                            IvsuList.Add(new Ivsu
+                            IvsuList.Add(new LocalIvsu
                             {
                                 Type = item.map_ivsu.type, Name = item.map_ivsu.name, Version = item.map_ivsu.version,
                                 Notes = item.map_ivsu.notes, Url = item.map_ivsu.url, Md5 = item.map_ivsu.md5,
@@ -572,7 +550,7 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DownloadOnly = false;
             if (Debugger.IsAttached)
                 ApplicationManager.Logger.Debug("[App] Debugger is attached redirecting URL's to 127.0.0.1");
-            foreach (Ivsu item in IvsuList)
+            foreach (LocalIvsu item in IvsuList)
                 if (item.Selected)
                 {
                     if (item.Type == "APPS") _appsselected = true;
@@ -699,7 +677,7 @@ namespace Syn3Updater.UI.Tabs
             public string Name { get; set; }
         }
 
-        public class Ivsu
+        public class LocalIvsu
         {
             public bool Selected { get; set; }
             public string Type { get; set; }

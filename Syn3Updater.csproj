@@ -83,8 +83,10 @@
     </ApplicationDefinition>
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="Helper\ActionCommand.cs" />
-    <Compile Include="Helper\DownloadHelper.cs" />
+    <Compile Include="Helper\EventHelper.cs" />
     <Compile Include="Helper\ExceptionExtension.cs" />
+    <Compile Include="Helper\FileHelper.cs" />
+    <Compile Include="Helper\USBHelper.cs" />
     <Compile Include="Model\Json.cs" />
     <Compile Include="Helper\KnownFolders.cs" />
     <Compile Include="Helper\MathHelper.cs" />
