@@ -320,6 +320,8 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateSelectedRegion()
         {
+            Notes = "";
+            OnPropertyChanged("Notes");
             ApplicationManager.Logger.Info(
                 $"[Settings] Current Sync Details - Region: {CurrentSyncRegion} - Version: {CurrentSyncVersion} - Navigation: {CurrentSyncNav}");
             if (SelectedRegion.Code != "")
@@ -359,12 +361,15 @@ namespace Syn3Updater.UI.Tabs
 
                 if (!Properties.Settings.Default.CurrentSyncNav)
                 {
-                    SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
+                    if(!SyncMapVersion.Contains(LanguageManager.GetValue("String.NonNavAPIM"))) SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                 }
                 else
                 {
                     if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
-                        SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
+                    {
+                        if (!SyncMapVersion.Contains(LanguageManager.GetValue("String.KeepExistingMaps"))) SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
+                    }
+                        
                 }
 
                 OnPropertyChanged("SyncMapVersion");
@@ -372,7 +377,7 @@ namespace Syn3Updater.UI.Tabs
                 _jsonReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringReleasesJson);
                 SyncVersion = new ObservableCollection<string>();
                 foreach (Data item in _jsonReleases.data)
-                    if (item.regions.Contains(SelectedRegion.Code))
+                    if (item.regions.Contains(SelectedRegion.Code)) 
                         SyncVersion.Add(item.name);
                 OnPropertyChanged("SyncVersion");
 
@@ -388,6 +393,7 @@ namespace Syn3Updater.UI.Tabs
         {
             if (SelectedRelease != "")
             {
+                Notes = "";
                 SelectedMapVersion = null;
                 OnPropertyChanged("SelectedMapVersion");
                 IvsuList.Clear();
@@ -409,15 +415,18 @@ namespace Syn3Updater.UI.Tabs
                 if (Properties.Settings.Default.CurrentSyncNav)
                 {
                     SyncMapVersion.Clear();
-                    SyncMapVersion.Add(LanguageManager.GetValue("String.NoMaps"));
+                   if (!SyncMapVersion.Contains(LanguageManager.GetValue("String.NoMaps"))) SyncMapVersion.Add(LanguageManager.GetValue("String.NoMaps"));
                     if (Properties.Settings.Default.CurrentSyncNav)
                     {
                         if (Properties.Settings.Default.CurrentSyncVersion >= SyncReformatVersion)
-                            SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
+                        {
+                            if (!SyncMapVersion.Contains(LanguageManager.GetValue("String.KeepExistingMaps"))) SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
+                        }
+                            
                     }
                     else
                     {
-                        SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
+                        if (!SyncMapVersion.Contains(LanguageManager.GetValue("String.NonNavAPIM"))) SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                     }
 
                     _jsonMapReleases = JsonConvert.DeserializeObject<JsonReleases>(_stringMapReleasesJson);
@@ -435,6 +444,7 @@ namespace Syn3Updater.UI.Tabs
         {
             if (SelectedMapVersion != "")
             {
+                Notes = "";
                 IvsuList.Clear();
 
                 //LESS THAN 3.2
