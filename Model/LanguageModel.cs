@@ -18,15 +18,16 @@ namespace Syn3Updater.Model
             string contents = File.ReadAllText(path);
             List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).Select(x => x.Trim()).ToList();
 
-            Code = lines[0];
-            EnglishName = lines[2];
-            NativeName = lines[1];
+            Code = lines[0].Replace(";", "").Replace("#", "");
+            EnglishName = lines[2].Replace(";", "").Replace("#", "");
+            NativeName = lines[1].Replace(";", "").Replace("#", "");
             //this.Emoji = lines[3];
 
             Items = new List<LanguageItem>();
             foreach (string s in lines.Skip(3))
             {
-                string[] parts = s.Replace("  ", "\t").Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
+                if (s.StartsWith("#") || s.StartsWith(";")) continue;
+                string[] parts = s.Replace(" = ", "\t").Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (parts.Length == 1 && parts[0].Contains(" "))
                 {
@@ -159,7 +160,7 @@ namespace Syn3Updater.Model
                 if (l == null)
                 {
                     //Have to hardcode path for design time :(
-                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Languages{lang}.txt";
+                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Languages\\{lang}.txt";
 
                     if (File.Exists(fn))
                     {
