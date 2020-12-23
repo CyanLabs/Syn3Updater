@@ -76,6 +76,7 @@ namespace Syn3Updater.UI
                 {
                     int i = 11;
                     i -= 11;
+                    // ReSharper disable once IntDivisionByZero
                     Debug.WriteLine(11 / i);
                 }
 

@@ -2,9 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Management;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,17 +13,22 @@ namespace Syn3Updater.UI.Tabs
 {
     internal class DownloadViewModel : LanguageAwareBaseViewModel
     {
+        #region Events
+
+        public event EventHandler<EventArgs<int>> PercentageChanged;
+
+        #endregion
+
         #region Constructors
+
         private ActionCommand _cancelButton;
         public ActionCommand CancelButton => _cancelButton ?? (_cancelButton = new ActionCommand(CancelAction));
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
-        #endregion
 
-        #region Events
-        public event EventHandler<EventArgs<int>> PercentageChanged;
         #endregion
 
         #region Properties & Fields
+
         private int _currentProgress, _totalPercentage, _totalPercentageMax, _count;
         private string _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _selectedMapVersion, _progressBarSuffix, _installMode;
         private bool _cancelButtonEnabled;
@@ -34,6 +37,7 @@ namespace Syn3Updater.UI.Tabs
         private CancellationToken _ct;
 
         private ObservableCollection<string> _downloadQueueList;
+
         public ObservableCollection<string> DownloadQueueList
         {
             get => _downloadQueueList;
@@ -81,6 +85,7 @@ namespace Syn3Updater.UI.Tabs
             get => _downloadInfo;
             set => SetProperty(ref _downloadInfo, value);
         }
+
         public string Log
         {
             get => _log;
@@ -92,12 +97,14 @@ namespace Syn3Updater.UI.Tabs
             Log += DateTime.Now + " " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
         }
+
         #endregion
 
         #region Methods
+
         public void Init()
         {
-            if (!ApplicationManager.Instance.IsDownloading || (_downloadTask != null && _downloadTask.Status.Equals(TaskStatus.Running))) return;
+            if (!ApplicationManager.Instance.IsDownloading || _downloadTask != null && _downloadTask.Status.Equals(TaskStatus.Running)) return;
 
             _selectedRelease = ApplicationManager.Instance.SelectedRelease;
             _selectedRegion = ApplicationManager.Instance.SelectedRegion;
@@ -110,14 +117,14 @@ namespace Syn3Updater.UI.Tabs
             CancelButtonEnabled = true;
             Log = "";
             CurrentProgress = 0;
-            
+
             PercentageChanged += DownloadPercentageChanged;
 
             DownloadQueueList = new ObservableCollection<string>();
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
-            
+
             _ct = _tokenSource.Token;
-            
+
             _fileHelper = new FileHelper(PercentageChanged);
             _downloadTask = Task.Run(DoDownload, _tokenSource.Token);
         }
@@ -153,7 +160,8 @@ namespace Syn3Updater.UI.Tabs
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                         }
 
-                        _fileHelper.copy_file(ApplicationManager.Instance.DownloadLocation + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
+                        _fileHelper.CopyFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
+                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
 
                         if (ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
@@ -188,7 +196,7 @@ namespace Syn3Updater.UI.Tabs
                 Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
                 ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
             }
-                
+
             MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
             Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
             CancelAction();
@@ -203,10 +211,7 @@ namespace Syn3Updater.UI.Tabs
             CurrentProgress = 0;
             DownloadInfo = "";
             DownloadPercentage = "";
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                DownloadQueueList.Clear();
-            });
+            Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
             _tokenSource.Dispose();
             _tokenSource = new CancellationTokenSource();
             ApplicationManager.Instance.FireHomeTabEvent();
@@ -288,11 +293,12 @@ namespace Syn3Updater.UI.Tabs
                         }
                     }
 
-                    Application.Current.Dispatcher.Invoke(() =>{DownloadQueueList.Remove(item.Url);});
+                    Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Remove(item.Url); });
                     _count++;
                     PercentageChanged.Raise(this, 100);
                 }
-                Application.Current.Dispatcher.Invoke(() => {DownloadQueueList.Clear();});
+
+                Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
             }
             catch (InvalidOperationException)
             {
@@ -360,10 +366,8 @@ namespace Syn3Updater.UI.Tabs
             }
 
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
-            {
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadLocation + item.FileName));
-            }
-            
+
             Directory.CreateDirectory($@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\");
             Task.Run(DoCopy, _tokenSource.Token);
         }
@@ -455,6 +459,7 @@ namespace Syn3Updater.UI.Tabs
             UpdateLog(validateResult.Message);
             return validateResult.Result;
         }
+
         #endregion
     }
 }

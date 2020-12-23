@@ -12,7 +12,7 @@ namespace Syn3Updater.UI
         public static readonly DependencyProperty MaskProperty =
             DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBox), new UIPropertyMetadata(OnMaskPropertyChanged));
 
-        private MaskedTextProvider maskProvider;
+        private MaskedTextProvider _maskProvider;
 
         public string Mask
         {
@@ -74,7 +74,7 @@ namespace Syn3Updater.UI
             if (!IsReadOnly)
             {
                 int position = SelectionStart;
-                position = UpdateText(e.Text, position);
+                UpdateText(e.Text, position);
                 base.OnPreviewTextInput(e);
             }
         }
@@ -82,20 +82,20 @@ namespace Syn3Updater.UI
         private static void OnMaskPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             MaskedTextBox control = (MaskedTextBox) d;
-            control.maskProvider = new MaskedTextProvider(control.Mask) {ResetOnSpace = false};
-            control.maskProvider.Set(control.Text);
+            control._maskProvider = new MaskedTextProvider(control.Mask) {ResetOnSpace = false};
+            control._maskProvider.Set(control.Text);
             control.RefreshText(control.SelectionStart);
         }
 
         private int GetEditPositionFrom(int startPosition)
         {
-            int position = maskProvider.FindEditPositionFrom(startPosition, true);
+            int position = _maskProvider.FindEditPositionFrom(startPosition, true);
             return position == -1 ? startPosition : position;
         }
 
         private int GetEditPositionTo(int endPosition)
         {
-            while (endPosition >= 0 && !maskProvider.IsEditPosition(endPosition)) endPosition--;
+            while (endPosition >= 0 && !_maskProvider.IsEditPosition(endPosition)) endPosition--;
 
             return endPosition;
         }
@@ -103,44 +103,39 @@ namespace Syn3Updater.UI
         private bool IsValidKey(Key key, int position)
         {
             char virtualKey = (char) KeyInterop.VirtualKeyFromKey(key);
-            MaskedTextResultHint resultHint;
-            return maskProvider.VerifyChar(virtualKey, position, out resultHint);
+            return _maskProvider.VerifyChar(virtualKey, position, out MaskedTextResultHint _);
         }
 
         private void RefreshText(int position)
         {
-            if (!IsFocused)
-                Text = maskProvider.ToString(false, true);
-            else
-                Text = maskProvider.ToDisplayString();
+            Text = !IsFocused ? _maskProvider.ToString(false, true) : _maskProvider.ToDisplayString();
 
             SelectionStart = position;
         }
 
         private void RemoveRange(int position, int selectionLength)
         {
-            if (maskProvider.RemoveAt(position, position + selectionLength - 1)) RefreshText(position);
+            if (_maskProvider.RemoveAt(position, position + selectionLength - 1)) RefreshText(position);
         }
 
         private void RemoveChar(int position)
         {
-            if (maskProvider.RemoveAt(position)) RefreshText(position);
+            if (_maskProvider.RemoveAt(position)) RefreshText(position);
         }
 
-        private int UpdateText(string text, int position)
+        private void UpdateText(string text, int position)
         {
             if (position < Text.Length)
             {
                 position = GetEditPositionFrom(position);
 
-                if (Keyboard.IsKeyToggled(Key.Insert) && maskProvider.Replace(text, position) || maskProvider.InsertAt(text, position))
+                if (Keyboard.IsKeyToggled(Key.Insert) && _maskProvider.Replace(text, position) || _maskProvider.InsertAt(text, position))
                     position++;
 
                 position = GetEditPositionFrom(position);
             }
 
             RefreshText(position);
-            return position;
         }
 
         #endregion

@@ -64,7 +64,7 @@ namespace Syn3Updater
 
         #region Properties & Fields
 
-        private MainWindow MainWindow;
+        private MainWindow _mainWindow;
 
         public string DownloadLocation,
             DriveName,
@@ -136,9 +136,9 @@ namespace Syn3Updater
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
 
-            if (MainWindow == null) MainWindow = new MainWindow();
-            if (!MainWindow.IsVisible) MainWindow.Show();
-            if (MainWindow.WindowState == WindowState.Minimized) MainWindow.WindowState = WindowState.Normal;
+            if (_mainWindow == null) _mainWindow = new MainWindow();
+            if (!_mainWindow.IsVisible) _mainWindow.Show();
+            if (_mainWindow.WindowState == WindowState.Minimized) _mainWindow.WindowState = WindowState.Normal;
         }
 
         public void RestartApp()

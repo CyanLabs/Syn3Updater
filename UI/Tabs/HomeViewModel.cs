@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,23 +15,27 @@ namespace Syn3Updater.UI.Tabs
     internal class HomeViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
+
         private static readonly HttpClient Client = new HttpClient();
-        
+
         private ActionCommand _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
         public ActionCommand RefreshUSB => _refreshUSB ?? (_refreshUSB = new ActionCommand(RefreshUsb));
         public ActionCommand RegionInfo => _regionInfo ?? (_regionInfo = new ActionCommand(RegionInfoAction));
         public ActionCommand StartButton => _startButton ?? (_startButton = new ActionCommand(StartAction));
+
         #endregion
 
         #region Properties & Fields
+
         private string _apiAppReleases, _apiMapReleases;
         private bool _appsselected, _canceldownload;
         private string _stringCompatibility, _stringReleasesJson, _stringMapReleasesJson, _stringDownloadJson, _stringMapDownloadJson;
         private Api.JsonReleases _jsonMapReleases, _jsonReleases;
 
         private string _driveLetter;
+
         public string DriveLetter
         {
             get => _driveLetter;
@@ -40,6 +43,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _driveName;
+
         public string DriveName
         {
             get => _driveName;
@@ -47,6 +51,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _driveFileSystem;
+
         public string DriveFileSystem
         {
             get => _driveFileSystem;
@@ -54,6 +59,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private USBHelper.Drive _selectedDrive;
+
         public USBHelper.Drive SelectedDrive
         {
             get => _selectedDrive;
@@ -65,6 +71,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private SyncModel.SyncRegion _selectedRegion;
+
         public SyncModel.SyncRegion SelectedRegion
         {
             get => _selectedRegion;
@@ -76,6 +83,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _selectedRelease;
+
         public string SelectedRelease
         {
             get => _selectedRelease;
@@ -85,7 +93,9 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null) UpdateSelectedRelease();
             }
         }
+
         private string _selectedMapVersion;
+
         public string SelectedMapVersion
         {
             get => _selectedMapVersion;
@@ -97,6 +107,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private int _selectedMapVersionIndex;
+
         public int SelectedMapVersionIndex
         {
             get => _selectedMapVersionIndex;
@@ -104,6 +115,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private int _selectedReleaseIndex;
+
         public int SelectedReleaseIndex
         {
             get => _selectedReleaseIndex;
@@ -111,6 +123,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private ObservableCollection<USBHelper.Drive> _driveList;
+
         public ObservableCollection<USBHelper.Drive> DriveList
         {
             get => _driveList;
@@ -118,6 +131,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private ObservableCollection<SyncModel.SyncRegion> _syncRegions;
+
         public ObservableCollection<SyncModel.SyncRegion> SyncRegions
         {
             get => _syncRegions;
@@ -125,6 +139,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private ObservableCollection<string> _syncVersion;
+
         public ObservableCollection<string> SyncVersion
         {
             get => _syncVersion;
@@ -132,6 +147,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private ObservableCollection<string> _syncMapVersion;
+
         public ObservableCollection<string> SyncMapVersion
         {
             get => _syncMapVersion;
@@ -139,6 +155,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private bool _syncVersionsEnabled;
+
         public bool SyncVersionsEnabled
         {
             get => _syncVersionsEnabled;
@@ -146,6 +163,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private bool _syncMapVersionsEnabled;
+
         public bool SyncMapVersionsEnabled
         {
             get => _syncMapVersionsEnabled;
@@ -153,6 +171,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _notes;
+
         public string Notes
         {
             get => _notes;
@@ -160,6 +179,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private ObservableCollection<SyncModel.SyncIvsu> _ivsuList;
+
         public ObservableCollection<SyncModel.SyncIvsu> IvsuList
         {
             get => _ivsuList;
@@ -167,6 +187,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _currentSyncRegion;
+
         public string CurrentSyncRegion
         {
             get => _currentSyncRegion;
@@ -181,6 +202,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _currentSyncVersion;
+
         public string CurrentSyncVersion
         {
             get => _currentSyncVersion;
@@ -188,6 +210,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _currentSyncNav;
+
         public string CurrentSyncNav
         {
             get => _currentSyncNav;
@@ -195,6 +218,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _downloadLocation;
+
         public string DownloadLocation
         {
             get => _downloadLocation;
@@ -205,6 +229,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _installMode;
+
         public string InstallMode
         {
             get => _installMode;
@@ -212,14 +237,17 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private bool _startEnabled;
+
         public bool StartEnabled
         {
             get => _startEnabled;
             set => SetProperty(ref _startEnabled, value);
         }
+
         #endregion
 
         #region Methods
+
         public void ReloadSettings()
         {
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
@@ -263,21 +291,21 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateDriveInfo()
         {
-            USBHelper.DriveInfo drive_info = USBHelper.UpdateDriveInfo(SelectedDrive);
+            USBHelper.DriveInfo driveInfo = USBHelper.UpdateDriveInfo(SelectedDrive);
 
             // Update app level vars
-            ApplicationManager.Instance.DriveFileSystem = drive_info.FileSystem;
-            ApplicationManager.Instance.DrivePartitionType = drive_info.PartitionType;
-            ApplicationManager.Instance.DriveName = drive_info.Name;
-            ApplicationManager.Instance.SkipFormat = drive_info.SkipFormat;
+            ApplicationManager.Instance.DriveFileSystem = driveInfo.FileSystem;
+            ApplicationManager.Instance.DrivePartitionType = driveInfo.PartitionType;
+            ApplicationManager.Instance.DriveName = driveInfo.Name;
+            ApplicationManager.Instance.SkipFormat = driveInfo.SkipFormat;
 
             // Update local level vars
-            DriveLetter = drive_info.Letter;
-            DriveFileSystem = drive_info.PartitionType + " " + drive_info.FileSystem;
-            DriveName = drive_info.Name;
+            DriveLetter = driveInfo.Letter;
+            DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
+            DriveName = driveInfo.Name;
 
             ApplicationManager.Logger.Info(
-                $"[App] USB Drive selected - Name: {drive_info.Name} - FileSystem: {drive_info.FileSystem} - PartitionType: {drive_info.PartitionType} - Letter: {drive_info.Letter}");
+                $"[App] USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
         }
 
         private void UpdateSelectedRegion()
@@ -296,8 +324,10 @@ namespace Syn3Updater.UI.Tabs
                 }
                 else
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[status][in]=published,private&filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
-                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[status][in]=published,private&filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
+                        $"filter[status][in]=published,private&filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
+                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
+                        $"filter[status][in]=published,private&filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
                 }
 
                 try
@@ -597,6 +627,7 @@ namespace Syn3Updater.UI.Tabs
                     _canceldownload = true;
             return _canceldownload;
         }
+
         #endregion
     }
 }

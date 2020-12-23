@@ -6,7 +6,7 @@ namespace Syn3Updater.UI
     /// <summary>
     ///     Interaction logic for CrashWindow.xaml
     /// </summary>
-    public partial class CrashWindow : Window
+    public partial class CrashWindow
     {
         public CrashWindow()
         {
@@ -18,11 +18,13 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.Exit();
         }
 
+/*
         public class CrashContainer
         {
             public string ErrorName { get; set; }
             public string ErrorLocation { get; set; }
             public List<SimpleLogger.LogEntry> Logs { get; set; } = new List<SimpleLogger.LogEntry>();
         }
+*/
     }
 }

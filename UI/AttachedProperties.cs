@@ -24,10 +24,10 @@ namespace Syn3Updater.UI
         private static void AutoScrollToEndPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TextBox textbox && e.NewValue is bool mustAutoScroll && mustAutoScroll)
-                textbox.TextChanged += (s, ee) => AutoScrollToEnd(s, ee, textbox);
+                textbox.TextChanged += (s, ee) => AutoScrollToEnd(textbox);
         }
 
-        private static void AutoScrollToEnd(object sender, TextChangedEventArgs e, TextBox textbox)
+        private static void AutoScrollToEnd(TextBox textbox)
         {
             textbox.ScrollToEnd();
         }

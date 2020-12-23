@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Syn3Updater.Properties;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Syn3Updater.Model
 {

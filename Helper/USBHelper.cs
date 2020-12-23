@@ -33,7 +33,7 @@ namespace Syn3Updater.Helper
 
         public static ObservableCollection<Drive> refresh_devices()
         {
-            ObservableCollection<Drive> DriveList = new ObservableCollection<Drive>
+            ObservableCollection<Drive> driveList = new ObservableCollection<Drive>
             {
                 new Drive {Path = "", Name = LanguageManager.GetValue("Home.NoUSB")}
             };
@@ -45,19 +45,19 @@ namespace Syn3Updater.Helper
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
                 if (friendlySize != "0B")
                     // Add to array of drives
-                    DriveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
+                    driveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
             }
 
             // Return a list of drives
-            return DriveList;
+            return driveList;
         }
 
-        public static DriveInfo UpdateDriveInfo(Drive SelectedDrive)
+        public static DriveInfo UpdateDriveInfo(Drive selectedDrive)
         {
-            DriveInfo drive_info = new DriveInfo();
-            if (SelectedDrive == null || SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")) return drive_info;
+            DriveInfo driveInfo = new DriveInfo();
+            if (selectedDrive == null || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")) return driveInfo;
 
-            string partitionQueryText = $@"associators of {{{SelectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
+            string partitionQueryText = $@"associators of {{{selectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
             ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
             try
             {
@@ -69,12 +69,12 @@ namespace Syn3Updater.Helper
                     foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                     {
                         ManagementObject ld = (ManagementObject) managementBaseObject;
-                        drive_info.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
-                        drive_info.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
-                        drive_info.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
-                        drive_info.Name = ld.Properties["VolumeName"].Value.ToString();
+                        driveInfo.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
+                        driveInfo.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
+                        driveInfo.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
+                        driveInfo.Name = ld.Properties["VolumeName"].Value.ToString();
 
-                        if (drive_info.FileSystem == "exFAT" && drive_info.PartitionType == "MBR" && drive_info.Name == "CYANLABS") drive_info.SkipFormat = true;
+                        if (driveInfo.FileSystem == "exFAT" && driveInfo.PartitionType == "MBR" && driveInfo.Name == "CYANLABS") driveInfo.SkipFormat = true;
                     }
                 }
             }
@@ -83,7 +83,7 @@ namespace Syn3Updater.Helper
                 //TODO Implement Catch
             }
 
-            return drive_info;
+            return driveInfo;
         }
 
         public static void GenerateLog(string log)

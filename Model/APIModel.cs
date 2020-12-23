@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable CollectionNeverUpdated.Global
 
 namespace Syn3Updater.Model
 {

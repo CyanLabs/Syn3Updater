@@ -39,7 +39,7 @@ namespace Syn3Updater.Helper
 
         #region Methods
 
-        public void copy_file(string source, string destination, CancellationToken ct)
+        public void CopyFile(string source, string destination, CancellationToken ct)
         {
             int bufferSize = 1024 * 512;
             using (FileStream inStream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -94,8 +94,8 @@ namespace Syn3Updater.Helper
                     long totalRead = 0L;
                     byte[] buffer = new byte[4096];
                     bool moreToRead = true;
-                    const int CHUNK_SIZE = 4096;
-                    FileStream fileStream = File.Create(filename, CHUNK_SIZE);
+                    const int chunkSize = 4096;
+                    FileStream fileStream = File.Create(filename, chunkSize);
                     do
                     {
                         if (ct.IsCancellationRequested)
