@@ -14,6 +14,7 @@ namespace Syn3Updater.UI
     public partial class MainWindow : Window
     {
         #region Methods
+
         public MainWindow()
         {
             InitializeComponent();
@@ -46,6 +47,7 @@ namespace Syn3Updater.UI
         {
             ApplicationManager.Instance.Exit();
         }
+
         #endregion
     }
 }

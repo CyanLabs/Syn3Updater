@@ -8,6 +8,7 @@ namespace Syn3Updater.UI
     public class MaskedTextBox : TextBox
     {
         #region Properties & Fields
+
         public static readonly DependencyProperty MaskProperty =
             DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBox), new UIPropertyMetadata(OnMaskPropertyChanged));
 
@@ -18,9 +19,11 @@ namespace Syn3Updater.UI
             get => (string) GetValue(MaskProperty);
             set => SetValue(MaskProperty, value);
         }
+
         #endregion
 
         #region Methods
+
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -139,6 +142,7 @@ namespace Syn3Updater.UI
             RefreshText(position);
             return position;
         }
+
         #endregion
     }
 }

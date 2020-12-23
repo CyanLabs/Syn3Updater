@@ -9,6 +9,7 @@ namespace Syn3Updater.Converter
     public class StringMatchToVisibilityConverter : IValueConverter
     {
         #region Methods
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value?.ToString() == parameter?.ToString()) return Visibility.Visible;
@@ -21,6 +22,7 @@ namespace Syn3Updater.Converter
         {
             return value as Visibility? == Visibility.Visible;
         }
+
         #endregion
     }
 
@@ -28,6 +30,7 @@ namespace Syn3Updater.Converter
     public class InvertedStringMatchToVisibilityConverter : IValueConverter
     {
         #region Methods
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value?.ToString() != parameter?.ToString()) return Visibility.Visible;
@@ -40,6 +43,7 @@ namespace Syn3Updater.Converter
         {
             return value as Visibility? == Visibility.Visible;
         }
+
         #endregion
     }
 }

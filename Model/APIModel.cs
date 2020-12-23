@@ -10,6 +10,7 @@ namespace Syn3Updater.Model
     public class Api
     {
         #region Properties & Fields
+
         private const string Base = "https://api.cyanlabs.net/fordsyncdownloader/";
         public const string AppReleasesConst = Base + "items/releases?sort=-name&limit=-1&[published]";
         public const string MapReleasesConst = Base + "items/map_releases?sort=-name&limit=-1&[regionplaceholder]&[published]";
@@ -90,6 +91,7 @@ namespace Syn3Updater.Model
             public string notes { get; set; }
             public IList<string> regions { get; set; }
         }
+
         #endregion
     }
 }

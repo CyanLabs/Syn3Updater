@@ -4,6 +4,7 @@ using System.IO;
 using System.Management;
 using System.Reflection;
 using Syn3Updater.Model;
+using Syn3Updater.Properties;
 
 namespace Syn3Updater.Helper
 {
@@ -25,9 +26,11 @@ namespace Syn3Updater.Helper
             public string Path { get; set; }
             public string Name { get; set; }
         }
+
         #endregion
 
         #region Methods
+
         public static ObservableCollection<Drive> refresh_devices()
         {
             ObservableCollection<Drive> DriveList = new ObservableCollection<Drive>
@@ -42,7 +45,7 @@ namespace Syn3Updater.Helper
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
                 if (friendlySize != "0B")
                     // Add to array of drives
-                    DriveList.Add(new Drive { Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
+                    DriveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
             }
 
             // Return a list of drives
@@ -90,10 +93,10 @@ namespace Syn3Updater.Helper
             data += Environment.NewLine;
             data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
             data += $@"Version: {ApplicationManager.Instance.SyncVersion}{Environment.NewLine}";
-            data += $@"Region: {Properties.Settings.Default.CurrentSyncRegion}{Environment.NewLine}";
-            data += $@"Navigation: {Properties.Settings.Default.CurrentSyncNav}{Environment.NewLine}";
+            data += $@"Region: {Settings.Default.CurrentSyncRegion}{Environment.NewLine}";
+            data += $@"Navigation: {Settings.Default.CurrentSyncNav}{Environment.NewLine}";
             data +=
-                $@"Mode: {(Properties.Settings.Default.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{Properties.Settings.Default.CurrentInstallMode} FORCED")}{Environment.NewLine}";
+                $@"Mode: {(Settings.Default.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{Settings.Default.CurrentInstallMode} FORCED")}{Environment.NewLine}";
             data += Environment.NewLine;
             data += $@"USB DETAILS{Environment.NewLine}";
             data += $@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}";
@@ -130,6 +133,7 @@ namespace Syn3Updater.Helper
             data += log;
             File.WriteAllText($@"{driveletter}\log.txt", data);
         }
+
         #endregion
     }
 }

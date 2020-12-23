@@ -12,6 +12,7 @@ namespace Syn3Updater.Helper
     public static class SystemHelper
     {
         #region Properties & Fields
+
         [DllImport("Shell32.dll")]
         private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
 
@@ -59,9 +60,11 @@ namespace Syn3Updater.Helper
             SavedSearches,
             Videos
         }
+
         #endregion
 
         #region Methods
+
         /// <summary>
         ///     Gets the current path to the specified known folder as currently configured. This does
         ///     not require the folder to be existent.
@@ -105,6 +108,7 @@ namespace Syn3Updater.Helper
                 Marshal.FreeCoTaskMem(outPath);
                 return path;
             }
+
             throw new ExternalException("Unable to retrieve the known folder path. It may not " + "be available on this system.", result);
         }
 
@@ -114,13 +118,14 @@ namespace Syn3Updater.Helper
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
             foreach (ManagementBaseObject o in searcher.Get())
             {
-                ManagementObject os = (ManagementObject)o;
+                ManagementObject os = (ManagementObject) o;
                 result = os["Caption"].ToString();
                 break;
             }
 
             return $"{result} ({Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "")})";
         }
+
         #endregion
     }
 }

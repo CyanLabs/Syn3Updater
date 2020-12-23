@@ -17,7 +17,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void Settings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue && (bool)e.OldValue == false) (DataContext as SettingsViewModel)?.ReloadSettings();
+            if ((bool) e.NewValue && (bool) e.OldValue == false) (DataContext as SettingsViewModel)?.ReloadSettings();
         }
     }
 }

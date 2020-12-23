@@ -9,6 +9,7 @@ namespace Syn3Updater.Converter
     public class LocConverter : IValueConverter
     {
         #region Methods
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             try
@@ -28,6 +29,7 @@ namespace Syn3Updater.Converter
         {
             throw new NotImplementedException();
         }
+
         #endregion
     }
 
@@ -35,6 +37,7 @@ namespace Syn3Updater.Converter
     public class ValueLocConverter : IValueConverter
     {
         #region Methods
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return LanguageManager.GetValue(value?.ToString().Replace(" ", ""));
@@ -44,6 +47,7 @@ namespace Syn3Updater.Converter
         {
             throw new NotImplementedException();
         }
+
         #endregion
     }
 }

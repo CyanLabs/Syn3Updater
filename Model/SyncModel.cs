@@ -1,10 +1,9 @@
-﻿using System.Collections.ObjectModel;
-
-namespace Syn3Updater.Model
+﻿namespace Syn3Updater.Model
 {
     public static class SyncModel
     {
         #region Properties & Fields
+
         public class SyncRegion
         {
             public string Code { get; set; }
@@ -22,6 +21,7 @@ namespace Syn3Updater.Model
             public string Md5 { get; set; }
             public string FileName { get; set; }
         }
+
         #endregion
     }
 }

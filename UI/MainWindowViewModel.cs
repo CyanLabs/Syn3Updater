@@ -11,6 +11,7 @@ namespace Syn3Updater.UI
     public class MainWindowViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
+
         public MainWindowViewModel()
         {
             ApplicationManager.Instance.LanguageChangedEvent += delegate
@@ -36,9 +37,11 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.ShowSettingsTab += delegate { CurrentTab = "settings"; };
             ApplicationManager.Instance.ShowHomeTab += delegate { CurrentTab = "home"; };
         }
+
         #endregion
 
         #region Properties & Fields
+
         private string _currentTab = "home";
         private bool _hamburgerExtended;
         private ObservableCollection<TabItem> _tabItems = new ObservableCollection<TabItem>();
@@ -126,6 +129,7 @@ namespace Syn3Updater.UI
                 set => SetProperty(ref _isCurrent, value);
             }
         }
+
         #endregion
     }
 }

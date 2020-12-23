@@ -11,22 +11,27 @@ using System.Windows;
 using Newtonsoft.Json;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
+using Syn3Updater.Properties;
 using Syn3Updater.UI;
-using Settings = Syn3Updater.Properties.Settings;
 
 namespace Syn3Updater
 {
     public class ApplicationManager
     {
         #region Constructors
-        private ApplicationManager() { }
+
+        private ApplicationManager()
+        {
+        }
 
         public static readonly SimpleLogger Logger = new SimpleLogger();
         public ObservableCollection<SyncModel.SyncIvsu> Ivsus = new ObservableCollection<SyncModel.SyncIvsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
+
         #endregion
 
         #region Events
+
         public void FireLanguageChangedEvent()
         {
             LanguageChangedEvent?.Invoke(this, new EventArgs());
@@ -58,9 +63,23 @@ namespace Syn3Updater
         #endregion
 
         #region Properties & Fields
+
         private MainWindow MainWindow;
-        public string DownloadLocation, DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DriveLetter, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode, SyncVersion;
+
+        public string DownloadLocation,
+            DriveName,
+            DrivePartitionType,
+            DriveFileSystem,
+            DriveNumber,
+            DriveLetter,
+            SelectedMapVersion,
+            SelectedRelease,
+            SelectedRegion,
+            InstallMode,
+            SyncVersion;
+
         public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;
+
         #endregion
 
         #region Methods
@@ -137,6 +156,7 @@ namespace Syn3Updater
             File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
             Application.Current.Shutdown();
         }
+
         #endregion
     }
 }

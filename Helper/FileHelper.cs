@@ -10,28 +10,35 @@ namespace Syn3Updater.Helper
 {
     public class FileHelper
     {
+        #region Events
+
+        private readonly EventHandler<EventArgs<int>> _percentageChanged;
+
+        #endregion
+
+        #region Properties & Fields
+
+        public struct ValidateResult
+        {
+            public string Message;
+            public bool Result;
+        }
+
+        #endregion
+
         #region Constructors
+
         private static readonly HttpClient Client = new HttpClient();
 
         public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged)
         {
             _percentageChanged = externalPercentageChanged;
         }
-        #endregion
 
-        #region Events
-        private readonly EventHandler<EventArgs<int>> _percentageChanged;
-        #endregion
-
-        #region Properties & Fields
-        public struct ValidateResult
-        {
-            public string Message;
-            public bool Result;
-        }
         #endregion
 
         #region Methods
+
         public void copy_file(string source, string destination, CancellationToken ct)
         {
             int bufferSize = 1024 * 512;
@@ -63,7 +70,7 @@ namespace Syn3Updater.Helper
 
                     fileStream.Write(bytes, 0, bytesRead);
                     totalReads += bytesRead;
-                    int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
+                    int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
                     if (percent != prevPercent)
                     {
                         _percentageChanged.Raise(this, percent);
@@ -223,13 +230,14 @@ namespace Syn3Updater.Helper
                     totalBytesRead += bytesRead;
                     hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                     long read = totalBytesRead;
-                    if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100));
+                    if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int) ((double) read / size * 100));
                 } while (bytesRead != 0);
 
                 hasher.TransformFinalBlock(buffer, 0, 0);
                 return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
             }
         }
+
         #endregion
     }
 }

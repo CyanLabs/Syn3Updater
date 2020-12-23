@@ -14,14 +14,18 @@ namespace Syn3Updater.UI.Tabs
     internal class SettingsViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
+
         private ActionCommand _downloadPathSelector;
         private ActionCommand _applySettings;
         public ActionCommand DownloadPathSelector => _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
         public ActionCommand ApplySettings => _applySettings ?? (_applySettings = new ActionCommand(ApplySettingsAction));
+
         #endregion
 
         #region Properties & Fields
+
         private ObservableCollection<SyncModel.SyncRegion> _syncRegions;
+
         public ObservableCollection<SyncModel.SyncRegion> SyncRegions
         {
             get => _syncRegions;
@@ -29,6 +33,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private ObservableCollection<string> _installModes;
+
         public ObservableCollection<string> InstallModes
         {
             get => _installModes;
@@ -36,9 +41,10 @@ namespace Syn3Updater.UI.Tabs
         }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
-            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption { Name = x.NativeName, Code = x.Code, Emoji = x.Emoji }));
+            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption {Name = x.NativeName, Code = x.Code, Emoji = x.Emoji}));
 
         private string _currentSyncRegion;
+
         public string CurrentSyncRegion
         {
             get => _currentSyncRegion;
@@ -53,6 +59,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _currentSyncVersion;
+
         public string CurrentSyncVersion
         {
             get => _currentSyncVersion;
@@ -69,6 +76,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private bool _currentSyncNav;
+
         public bool CurrentSyncNav
         {
             get => _currentSyncNav;
@@ -80,6 +88,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _downloadLocation;
+
         public string DownloadLocation
         {
             get => _downloadLocation;
@@ -95,6 +104,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _currentInstallMode;
+
         public string CurrentInstallMode
         {
             get => _currentInstallMode;
@@ -109,6 +119,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private bool _showAllReleases;
+
         public bool ShowAllReleases
         {
             get => _showAllReleases;
@@ -120,6 +131,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _licenseKey;
+
         public string LicenseKey
         {
             get => _licenseKey;
@@ -134,6 +146,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         private string _currentLanguage;
+
         public string CurrentLanguage
         {
             get => _currentLanguage;
@@ -148,15 +161,18 @@ namespace Syn3Updater.UI.Tabs
                 }
             }
         }
+
         public class LanguageOption
         {
             public string Emoji { get; set; }
             public string Name { get; set; }
             public string Code { get; set; }
         }
+
         #endregion
 
         #region Methods
+
         public void Init()
         {
             ApplicationManager.Instance.FireHomeTabEvent();
@@ -210,7 +226,7 @@ namespace Syn3Updater.UI.Tabs
                 if (Directory.Exists(oldPath))
                 {
                     if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
-                                Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
+                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
                         MessageBoxResult.Yes)
                         if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
                             try
@@ -225,6 +241,7 @@ namespace Syn3Updater.UI.Tabs
                     DownloadLocation = dialog.SelectedPath + "\\";
                 }
         }
+
         #endregion
     }
 }
