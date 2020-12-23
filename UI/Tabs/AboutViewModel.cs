@@ -4,24 +4,22 @@ using Syn3Updater.Model;
 
 namespace Syn3Updater.UI.Tabs
 {
-    public class AboutViewmodel : LanguageAwareBaseViewModel
+    internal class AboutViewmodel : LanguageAwareBaseViewModel
     {
-        private bool _disclaimerAccepted;
+        #region Properties & Fields
 
         private ActionCommand _documentationButton;
-
         private ActionCommand _donateButton;
-
         private ActionCommand _fordhubButton;
-
         private ActionCommand _forumButton;
-
         private ActionCommand _websiteButton;
         public ActionCommand WebsiteButton => _websiteButton ?? (_websiteButton = new ActionCommand(WebsiteAction));
         public ActionCommand ForumButton => _forumButton ?? (_forumButton = new ActionCommand(ForumAction));
         public ActionCommand DonateButton => _donateButton ?? (_donateButton = new ActionCommand(DonateAction));
         public ActionCommand DocButton => _documentationButton ?? (_documentationButton = new ActionCommand(DocAction));
         public ActionCommand FordHubButton => _fordhubButton ?? (_fordhubButton = new ActionCommand(FordHubAction));
+
+        private bool _disclaimerAccepted;
 
         public bool DisclaimerAccepted
         {
@@ -33,6 +31,10 @@ namespace Syn3Updater.UI.Tabs
                 if (value) ApplicationManager.Instance.FireSettingsTabEvent();
             }
         }
+
+        #endregion
+
+        #region Constructors
 
         public void Init()
         {
@@ -63,5 +65,7 @@ namespace Syn3Updater.UI.Tabs
         {
             Process.Start("https://cyanlabs.net/ford");
         }
+
+        #endregion
     }
 }

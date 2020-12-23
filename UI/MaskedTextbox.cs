@@ -2,174 +2,142 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Markup;
 
 namespace Syn3Updater.UI
 {
-	public class MaskedTextBox : TextBox
-	{
-		public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
-			"Mask",
-			typeof(string),
-			typeof(MaskedTextBox),
-			new UIPropertyMetadata(OnMaskPropertyChanged));
+    public class MaskedTextBox : TextBox
+    {
+        #region Properties & Fields
 
-		private MaskedTextProvider maskProvider;
+        public static readonly DependencyProperty MaskProperty =
+            DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBox), new UIPropertyMetadata(OnMaskPropertyChanged));
 
-		public string Mask
-		{
-			get { return (string)this.GetValue(MaskProperty); }
-			set { this.SetValue(MaskProperty, value); }
-		}
+        private MaskedTextProvider _maskProvider;
 
-		protected override void OnPreviewKeyDown(KeyEventArgs e)
-		{
-			base.OnPreviewKeyDown(e);
+        public string Mask
+        {
+            get => (string) GetValue(MaskProperty);
+            set => SetValue(MaskProperty, value);
+        }
 
-			var position = this.SelectionStart;
-			var selectionLength = this.SelectionLength;
+        #endregion
 
-			switch (e.Key)
-			{
-				case Key.Back:
-					if (selectionLength == 0)
-					{
-						this.RemoveChar(this.GetEditPositionTo(--position));
-					}
-					else
-					{
-						this.RemoveRange(position, selectionLength);
-					}
+        #region Methods
 
-					e.Handled = true;
-					break;
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
 
-				case Key.Delete:
-					if (selectionLength == 0)
-					{
-						this.RemoveChar(this.GetEditPositionFrom(position));
-					}
-					else
-					{
-						this.RemoveRange(position, selectionLength);
-					}
+            int position = SelectionStart;
+            int selectionLength = SelectionLength;
 
-					e.Handled = true;
-					break;
+            switch (e.Key)
+            {
+                case Key.Back:
+                    if (selectionLength == 0)
+                        RemoveChar(GetEditPositionTo(--position));
+                    else
+                        RemoveRange(position, selectionLength);
 
-				case Key.Space:
-					if (selectionLength != 0 && this.IsValidKey(e.Key, position))
-					{
-						this.RemoveRange(position, selectionLength);
-					}
-					else
-					{
-						this.UpdateText(" ", position);
-					}
+                    e.Handled = true;
+                    break;
 
-					e.Handled = true;
-					break;
+                case Key.Delete:
+                    if (selectionLength == 0)
+                        RemoveChar(GetEditPositionFrom(position));
+                    else
+                        RemoveRange(position, selectionLength);
 
-				default:
-					if (selectionLength != 0 && this.IsValidKey(e.Key, position))
-					{
-						this.RemoveRange(position, selectionLength);
-					}
+                    e.Handled = true;
+                    break;
 
-					break;
-			}
-		}
+                case Key.Space:
+                    if (selectionLength != 0 && IsValidKey(e.Key, position))
+                        RemoveRange(position, selectionLength);
+                    else
+                        UpdateText(" ", position);
 
-		protected override void OnPreviewTextInput(TextCompositionEventArgs e)
-		{
-			e.Handled = true;
+                    e.Handled = true;
+                    break;
 
-			if (!this.IsReadOnly)
-			{
-				var position = this.SelectionStart;
-				position = UpdateText(e.Text, position);
-				base.OnPreviewTextInput(e);
-			}
-		}
+                default:
+                    if (selectionLength != 0 && IsValidKey(e.Key, position)) RemoveRange(position, selectionLength);
 
-		private static void OnMaskPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var control = (MaskedTextBox)d;
-			control.maskProvider = new MaskedTextProvider(control.Mask) { ResetOnSpace = false };
-			control.maskProvider.Set(control.Text);
-			control.RefreshText(control.SelectionStart);
-		}
+                    break;
+            }
+        }
 
-		private int GetEditPositionFrom(int startPosition)
-		{
-			var position = this.maskProvider.FindEditPositionFrom(startPosition, true);
-			return position == -1 ? startPosition : position;
-		}
+        protected override void OnPreviewTextInput(TextCompositionEventArgs e)
+        {
+            e.Handled = true;
 
-		private int GetEditPositionTo(int endPosition)
-		{
-			while (endPosition >= 0 && !this.maskProvider.IsEditPosition(endPosition))
-			{
-				endPosition--;
-			}
+            if (!IsReadOnly)
+            {
+                int position = SelectionStart;
+                UpdateText(e.Text, position);
+                base.OnPreviewTextInput(e);
+            }
+        }
 
-			return endPosition;
-		}
+        private static void OnMaskPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            MaskedTextBox control = (MaskedTextBox) d;
+            control._maskProvider = new MaskedTextProvider(control.Mask) {ResetOnSpace = false};
+            control._maskProvider.Set(control.Text);
+            control.RefreshText(control.SelectionStart);
+        }
 
-		private bool IsValidKey(Key key, int position)
-		{
-			char virtualKey = (char)KeyInterop.VirtualKeyFromKey(key);
-			MaskedTextResultHint resultHint;
-			return this.maskProvider.VerifyChar(virtualKey, position, out resultHint);
-		}
+        private int GetEditPositionFrom(int startPosition)
+        {
+            int position = _maskProvider.FindEditPositionFrom(startPosition, true);
+            return position == -1 ? startPosition : position;
+        }
 
-		private void RefreshText(int position)
-		{
-			if (!this.IsFocused)
-			{
-				this.Text = this.maskProvider.ToString(false, true);
-			}
-			else
-			{
-				this.Text = this.maskProvider.ToDisplayString();
-			}
+        private int GetEditPositionTo(int endPosition)
+        {
+            while (endPosition >= 0 && !_maskProvider.IsEditPosition(endPosition)) endPosition--;
 
-			this.SelectionStart = position;
-		}
+            return endPosition;
+        }
 
-		private void RemoveRange(int position, int selectionLength)
-		{
-			if (this.maskProvider.RemoveAt(position, position + selectionLength - 1))
-			{
-				this.RefreshText(position);
-			}
-		}
+        private bool IsValidKey(Key key, int position)
+        {
+            char virtualKey = (char) KeyInterop.VirtualKeyFromKey(key);
+            return _maskProvider.VerifyChar(virtualKey, position, out MaskedTextResultHint _);
+        }
 
-		private void RemoveChar(int position)
-		{
-			if (this.maskProvider.RemoveAt(position))
-			{
-				this.RefreshText(position);
-			}
-		}
+        private void RefreshText(int position)
+        {
+            Text = !IsFocused ? _maskProvider.ToString(false, true) : _maskProvider.ToDisplayString();
 
-		private int UpdateText(string text, int position)
-		{
-			if (position < this.Text.Length)
-			{
-				position = this.GetEditPositionFrom(position);
+            SelectionStart = position;
+        }
 
-				if ((Keyboard.IsKeyToggled(Key.Insert) && this.maskProvider.Replace(text, position)) ||
-					this.maskProvider.InsertAt(text, position))
-				{
-					position++;
-				}
+        private void RemoveRange(int position, int selectionLength)
+        {
+            if (_maskProvider.RemoveAt(position, position + selectionLength - 1)) RefreshText(position);
+        }
 
-				position = this.GetEditPositionFrom(position);
-			}
+        private void RemoveChar(int position)
+        {
+            if (_maskProvider.RemoveAt(position)) RefreshText(position);
+        }
 
-			this.RefreshText(position);
-			return position;
-		}
-	}
+        private void UpdateText(string text, int position)
+        {
+            if (position < Text.Length)
+            {
+                position = GetEditPositionFrom(position);
+
+                if (Keyboard.IsKeyToggled(Key.Insert) && _maskProvider.Replace(text, position) || _maskProvider.InsertAt(text, position))
+                    position++;
+
+                position = GetEditPositionFrom(position);
+            }
+
+            RefreshText(position);
+        }
+
+        #endregion
+    }
 }

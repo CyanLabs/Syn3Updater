@@ -5,16 +5,18 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Syn3Updater.Properties;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Syn3Updater.Model
 {
     public class LanguageModel
     {
+        #region Constructor
+
         public LanguageModel(string path)
         {
             string contents = File.ReadAllText(path);
-            List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
-                .Select(x => x.Trim()).ToList();
+            List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).Select(x => x.Trim()).ToList();
 
             Code = lines[0];
             EnglishName = lines[2];
@@ -45,6 +47,10 @@ namespace Syn3Updater.Model
             }
         }
 
+        #endregion
+
+        #region Properties & Fields
+
         public string Code { get; set; }
         public string EnglishName { get; set; }
         public string NativeName { get; set; }
@@ -56,10 +62,14 @@ namespace Syn3Updater.Model
             public string Key { get; set; }
             public string Value { get; set; }
         }
+
+        #endregion
     }
 
     public static class LanguageManager
     {
+        #region Constructors
+
         static LanguageManager()
         {
             try
@@ -82,7 +92,15 @@ namespace Syn3Updater.Model
             }
         }
 
+        #endregion
+
+        #region Properties & Fields
+
         public static List<LanguageModel> Languages { get; set; } = new List<LanguageModel>();
+
+        #endregion
+
+        #region Methods
 
         public static string GetValue(string key, string lang)
         {
@@ -97,8 +115,7 @@ namespace Syn3Updater.Model
                 if (l == null) return $"[{lang}:{key}]";
 
                 Debug.WriteLine($"Looking for {key} in {l.Code}");
-                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value
-                    .Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
+                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
                     .Replace("\\r", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
                 {
@@ -155,8 +172,7 @@ namespace Syn3Updater.Model
 
                 // ReSharper disable once ConstantConditionalAccessQualifier
                 Debug.WriteLine($"Looking for {key} in {l?.Code}");
-                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value
-                    .Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
+                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
                     .Replace("\\r\\n", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
                 {
@@ -171,5 +187,7 @@ namespace Syn3Updater.Model
                 return e.Message;
             }
         }
+
+        #endregion
     }
 }

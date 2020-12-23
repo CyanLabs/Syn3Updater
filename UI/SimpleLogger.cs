@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 //using QRCoder;
@@ -8,7 +9,37 @@ namespace Syn3Updater.UI
 {
     public class SimpleLogger
     {
+        #region Constructors
+
         public List<LogEntry> Log = new List<LogEntry>();
+
+        #endregion
+
+        #region Properties & Fields
+
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public class LogEntry
+        {
+            public LogEntry(string log, string logType = "Info", Exception exception = null, [CallerMemberName] string callerMemberName = "")
+            {
+                Log = log;
+                Time = DateTime.Now;
+                Caller = callerMemberName;
+                LogType = logType;
+
+                if (exception != null) Exception = exception;
+            }
+
+            public string Log { get; set; }
+            public DateTime Time { get; set; }
+            public string Caller { get; set; }
+            public string LogType { get; set; }
+            public Exception Exception { get; set; }
+        }
+
+        #endregion
+
+        #region Methods
 
         public void Debug(object log, [CallerMemberName] string cmn = "")
         {
@@ -60,24 +91,6 @@ namespace Syn3Updater.UI
         //    }
         //}
 
-        public class LogEntry
-        {
-            public LogEntry(string log, string logType = "Info", Exception exception = null,
-                [CallerMemberName] string callerMemberName = "")
-            {
-                Log = log;
-                Time = DateTime.Now;
-                Caller = callerMemberName;
-                LogType = logType;
-
-                if (exception != null) Exception = exception;
-            }
-
-            public string Log { get; set; }
-            public DateTime Time { get; set; }
-            public string Caller { get; set; }
-            public string LogType { get; set; }
-            public Exception Exception { get; set; }
-        }
+        #endregion
     }
 }

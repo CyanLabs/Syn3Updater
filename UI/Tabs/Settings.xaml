@@ -8,7 +8,7 @@
     xmlns:ui="clr-namespace:Syn3Updater.UI"
     x:Class="Syn3Updater.UI.Tabs.Settings"
     mc:Ignorable="d"
-    d:DesignHeight="610" d:DesignWidth="750">
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Settings_OnIsVisibleChanged">
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -83,9 +83,10 @@
                                    Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Settings.FullSyncVersion, Converter={StaticResource LocConverter}}" />
                         <ui:MaskedTextBox FontSize="12" Grid.Column="1"
-                                 Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}" Mask="#.#.#####" MaxLength="9"
-                                 VerticalContentAlignment="Center" TextAlignment="Center" />
-                        </Grid>
+                                          Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}"
+                                          Mask="#.#.#####" MaxLength="9"
+                                          VerticalContentAlignment="Center" TextAlignment="Center" />
+                    </Grid>
 
 
                     <Grid Grid.Row="4" Grid.Column="1" Margin="5,0,0,0">
@@ -167,7 +168,7 @@
                              Text="{Binding DownloadLocation}" VerticalContentAlignment="Center" />
                     <Button BorderThickness="0" Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}"
                             Margin="0,6,3,6" Grid.Row="1" Grid.Column="3" FontFamily="Segoe MDL2 Assets" FontSize="24"
-                            ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}"
+                            ToolTip="{Binding Language, ConverterParameter=Settings.Downloads, Converter={StaticResource LocConverter}}"
                             Background="#00000000" Content="&#xE838;" VerticalAlignment="Center"
                             HorizontalAlignment="Right" Grid.ColumnSpan="2" Command="{Binding DownloadPathSelector}" />
                     <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"

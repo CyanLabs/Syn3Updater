@@ -11,30 +11,26 @@ using System.Windows;
 using Newtonsoft.Json;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
+using Syn3Updater.Properties;
 using Syn3Updater.UI;
-using Syn3Updater.UI.Tabs;
-using Settings = Syn3Updater.Properties.Settings;
 
 namespace Syn3Updater
 {
     public class ApplicationManager
     {
-        public string DownloadLocation,
-            DriveName,
-            DrivePartitionType,
-            DriveFileSystem,
-            DriveNumber,
-            DriveLetter,
-            SelectedMapVersion,
-            SelectedRelease,
-            SelectedRegion,
-            InstallMode;
+        #region Constructors
 
-        public ObservableCollection<HomeViewModel.Ivsu> Ivsus = new ObservableCollection<HomeViewModel.Ivsu>();
+        private ApplicationManager()
+        {
+        }
 
-        public MainWindow MainWindow;
-        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;
+        public static readonly SimpleLogger Logger = new SimpleLogger();
+        public ObservableCollection<SyncModel.SyncIvsu> Ivsus = new ObservableCollection<SyncModel.SyncIvsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
+
+        #endregion
+
+        #region Events
 
         public void FireLanguageChangedEvent()
         {
@@ -64,13 +60,25 @@ namespace Syn3Updater
 
         public event EventHandler ShowSettingsTab;
 
-        #region Constructors
+        #endregion
 
-        private ApplicationManager()
-        {
-        }
+        #region Properties & Fields
 
-        public static readonly SimpleLogger Logger = new SimpleLogger();
+        private MainWindow _mainWindow;
+
+        public string DownloadLocation,
+            DriveName,
+            DrivePartitionType,
+            DriveFileSystem,
+            DriveNumber,
+            DriveLetter,
+            SelectedMapVersion,
+            SelectedRelease,
+            SelectedRegion,
+            InstallMode,
+            SyncVersion;
+
+        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;
 
         #endregion
 
@@ -84,10 +92,9 @@ namespace Syn3Updater
             // ReSharper disable once UnusedVariable
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            if (Settings.Default.Lang == "")
+            if (string.IsNullOrWhiteSpace(Settings.Default.Lang))
             {
-                Logger.Debug(
-                    $"[Settings]  Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
+                Logger.Debug($"[Settings]  Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
                 Settings.Default.Lang = ci.TwoLetterISOLanguageName;
             }
 
@@ -98,10 +105,9 @@ namespace Syn3Updater
 
             if (string.IsNullOrWhiteSpace(Settings.Default.DownloadLocation))
             {
-                Logger.Debug(
-                    $"[Settings] Download location is not set, defaulting to {KnownFolders.GetPath(KnownFolder.Downloads)}\\Syn3Updater\\");
-                Settings.Default.DownloadLocation =
-                    $@"{KnownFolders.GetPath(KnownFolder.Downloads)}\Syn3Updater\";
+                string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
+                Logger.Debug($"[Settings] Download location is not set, defaulting to {downloads}\\Syn3Updater\\");
+                Settings.Default.DownloadLocation = $@"{downloads}\Syn3Updater\";
             }
 
             DownloadLocation = Settings.Default.DownloadLocation;
@@ -126,10 +132,13 @@ namespace Syn3Updater
                         break;
                 }
 
-            if (MainWindow == null) MainWindow = new MainWindow();
-            if (!MainWindow.IsVisible) MainWindow.Show();
+            string version = Settings.Default.CurrentSyncVersion.ToString();
+            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
 
-            if (MainWindow.WindowState == WindowState.Minimized) MainWindow.WindowState = WindowState.Normal;
+            if (_mainWindow == null) _mainWindow = new MainWindow();
+            if (!_mainWindow.IsVisible) _mainWindow.Show();
+            if (_mainWindow.WindowState == WindowState.Minimized) _mainWindow.WindowState = WindowState.Normal;
         }
 
         public void RestartApp()

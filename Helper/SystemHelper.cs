@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Management;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace Syn3Updater.Helper
 {
@@ -7,9 +9,20 @@ namespace Syn3Updater.Helper
     ///     Class containing methods to retrieve specific file system paths.
     ///     https://stackoverflow.com/a/21953690
     /// </summary>
-    public static class KnownFolders
+    public static class SystemHelper
     {
-        private static readonly string[] _knownFolderGuids =
+        #region Properties & Fields
+
+        [DllImport("Shell32.dll")]
+        private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+
+        [Flags]
+        private enum KnownFolderFlags : uint
+        {
+            DontVerify = 0x00004000,
+        }
+
+        private static readonly string[] KnownFolderGuids =
         {
             "{56784854-C6CB-462B-8169-88E350ACB882}", // Contacts
             "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}", // Desktop
@@ -23,6 +36,16 @@ namespace Syn3Updater.Helper
             "{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}", // SavedSearches
             "{18989B1D-99B5-455B-841C-AB7C74E4DDFC}" // Videos
         };
+
+        public enum KnownFolder
+        {
+            Desktop,
+            Downloads,
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Gets the current path to the specified known folder as currently configured. This does
@@ -60,7 +83,7 @@ namespace Syn3Updater.Helper
 
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags, bool defaultUser)
         {
-            int result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int) knownFolder]), (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
+            int result = SHGetKnownFolderPath(new Guid(KnownFolderGuids[(int) knownFolder]), (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
             if (result >= 0)
             {
                 string path = Marshal.PtrToStringUni(outPath);
@@ -71,43 +94,20 @@ namespace Syn3Updater.Helper
             throw new ExternalException("Unable to retrieve the known folder path. It may not " + "be available on this system.", result);
         }
 
-        [DllImport("Shell32.dll")]
-        private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
-
-        [Flags]
-        private enum KnownFolderFlags : uint
+        public static string GetOsFriendlyName()
         {
-            SimpleIDList = 0x00000100,
-            NotParentRelative = 0x00000200,
-            DefaultPath = 0x00000400,
-            Init = 0x00000800,
-            NoAlias = 0x00001000,
-            DontUnexpand = 0x00002000,
-            DontVerify = 0x00004000,
-            Create = 0x00008000,
-            NoAppcontainerRedirection = 0x00010000,
-            AliasOnly = 0x80000000
+            string result = string.Empty;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
+            foreach (ManagementBaseObject o in searcher.Get())
+            {
+                ManagementObject os = (ManagementObject) o;
+                result = os["Caption"].ToString();
+                break;
+            }
+
+            return $"{result} ({Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "")})";
         }
 
-        /// <summary>
-        ///     Standard folders registered with the system. These folders are installed with Windows Vista
-        ///     and later operating systems, and a computer will have only folders appropriate to it
-        ///     installed.
-        /// </summary>
-    }
-
-    public enum KnownFolder
-    {
-        Contacts,
-        Desktop,
-        Documents,
-        Downloads,
-        Favorites,
-        Links,
-        Music,
-        Pictures,
-        SavedGames,
-        SavedSearches,
-        Videos
+        #endregion
     }
 }

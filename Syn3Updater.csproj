@@ -27,7 +27,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -40,6 +40,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>cyanlabs.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoUpdater.NET, Version=1.6.4.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
@@ -83,13 +86,17 @@
     </ApplicationDefinition>
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="Helper\ActionCommand.cs" />
-    <Compile Include="Helper\DownloadHelper.cs" />
+    <Compile Include="Helper\EventHelper.cs" />
     <Compile Include="Helper\ExceptionExtension.cs" />
-    <Compile Include="Model\Json.cs" />
-    <Compile Include="Helper\KnownFolders.cs" />
+    <Compile Include="Helper\FileHelper.cs" />
+    <Compile Include="Helper\USBHelper.cs" />
+    <Compile Include="Model\APIModel.cs" />
+    <Compile Include="Helper\SystemHelper.cs" />
     <Compile Include="Helper\MathHelper.cs" />
+    <Compile Include="Model\APISecretModel.cs" />
     <Compile Include="Model\LanguageModel.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
+    <Compile Include="Model\SyncModel.cs" />
     <Compile Include="UI\AttachedProperties.cs" />
     <Compile Include="UI\CrashWindow.xaml.cs">
       <DependentUpon>CrashWindow.xaml</DependentUpon>
@@ -177,6 +184,9 @@
     <Resource Include="UI\Tabs\syncversion.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Languages\es-ES.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Languages\en-GB.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

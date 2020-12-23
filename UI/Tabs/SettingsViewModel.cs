@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
 using Ookii.Dialogs.Wpf;
@@ -14,33 +14,37 @@ namespace Syn3Updater.UI.Tabs
 {
     internal class SettingsViewModel : LanguageAwareBaseViewModel
     {
-        private ActionCommand _applySettings;
-
-        private string _currentInstallMode;
-
-        private string _currentLanguage;
-
-        private bool _currentSyncNav;
-
-        private string _currentSyncRegion;
-
-        private string _currentSyncVersion;
-
-        private string _downloadLocation;
+        #region Constructors
 
         private ActionCommand _downloadPathSelector;
+        private ActionCommand _applySettings;
+        public ActionCommand DownloadPathSelector => _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
+        public ActionCommand ApplySettings => _applySettings ?? (_applySettings = new ActionCommand(ApplySettingsAction));
 
-        private string _licenseKey;
+        #endregion
 
-        private bool _showAllReleases;
+        #region Properties & Fields
 
-        public ObservableCollection<SyncRegion> SyncRegions { get; set; }
-        public ObservableCollection<string> InstallModes { get; set; }
+        private ObservableCollection<SyncModel.SyncRegion> _syncRegions;
+
+        public ObservableCollection<SyncModel.SyncRegion> SyncRegions
+        {
+            get => _syncRegions;
+            set => SetProperty(ref _syncRegions, value);
+        }
+
+        private ObservableCollection<string> _installModes;
+
+        public ObservableCollection<string> InstallModes
+        {
+            get => _installModes;
+            set => SetProperty(ref _installModes, value);
+        }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
-            new ObservableCollection<LanguageOption>(
-                LanguageManager.Languages.Select(x => new LanguageOption
-                    {Name = x.NativeName, Code = x.Code, Emoji = x.Emoji}));
+            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption {Name = x.NativeName, Code = x.Code, Emoji = x.Emoji}));
+
+        private string _currentSyncRegion;
 
         public string CurrentSyncRegion
         {
@@ -55,20 +59,24 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
+        private string _currentSyncVersion;
+
         public string CurrentSyncVersion
         {
             get => _currentSyncVersion;
             set
             {
                 string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                if (value != $"_{decimalSeparator}_{decimalSeparator}_____" &&  value.Any(char.IsDigit))
+                if (value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
                 {
                     SetProperty(ref _currentSyncVersion, value);
-                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(new String(value.Where(Char.IsDigit).ToArray()));
+                    ApplicationManager.Instance.SyncVersion = value;
+                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
                 }
-                
             }
         }
+
+        private bool _currentSyncNav;
 
         public bool CurrentSyncNav
         {
@@ -79,6 +87,8 @@ namespace Syn3Updater.UI.Tabs
                 Properties.Settings.Default.CurrentSyncNav = value;
             }
         }
+
+        private string _downloadLocation;
 
         public string DownloadLocation
         {
@@ -94,6 +104,8 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
+        private string _currentInstallMode;
+
         public string CurrentInstallMode
         {
             get => _currentInstallMode;
@@ -107,6 +119,8 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
+        private bool _showAllReleases;
+
         public bool ShowAllReleases
         {
             get => _showAllReleases;
@@ -116,6 +130,8 @@ namespace Syn3Updater.UI.Tabs
                 Properties.Settings.Default.ShowAllReleases = value;
             }
         }
+
+        private string _licenseKey;
 
         public string LicenseKey
         {
@@ -129,6 +145,8 @@ namespace Syn3Updater.UI.Tabs
                 }
             }
         }
+
+        private string _currentLanguage;
 
         public string CurrentLanguage
         {
@@ -145,58 +163,61 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
-        public ActionCommand DownloadPathSelector =>
-            _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public class LanguageOption
+        {
+            public string Emoji { get; set; }
+            public string Name { get; set; }
+            public string Code { get; set; }
+        }
 
-        public ActionCommand ApplySettings =>
-            _applySettings ?? (_applySettings = new ActionCommand(ApplySettingsAction));
+        #endregion
+
+        #region Methods
 
         public void Init()
         {
             ApplicationManager.Instance.FireHomeTabEvent();
             //TODO Fix need for temp string
             string currentSyncRegionTemp = Properties.Settings.Default.CurrentSyncRegion;
-            SyncRegions = new ObservableCollection<SyncRegion>
+            SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
             {
-                new SyncRegion {Code = "EU", Name = "Europe"},
-                new SyncRegion {Code = "NA", Name = "North America & Canada"},
-                new SyncRegion {Code = "CN", Name = "China"},
-                new SyncRegion {Code = "ANZ", Name = "Australia & New Zealand"},
-                new SyncRegion {Code = "ROW", Name = "Rest Of World"}
+                new SyncModel.SyncRegion {Code = "EU", Name = "Europe"},
+                new SyncModel.SyncRegion {Code = "NA", Name = "North America & Canada"},
+                new SyncModel.SyncRegion {Code = "CN", Name = "China"},
+                new SyncModel.SyncRegion {Code = "ANZ", Name = "Australia & New Zealand"},
+                new SyncModel.SyncRegion {Code = "ROW", Name = "Rest Of World"}
             };
-            OnPropertyChanged("SyncRegions");
             CurrentSyncRegion = currentSyncRegionTemp;
 
             //TODO Fix need for temp string
-            string currentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != ""
-                ? Properties.Settings.Default.CurrentInstallMode
-                : "autodetect";
+            string currentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != "" ? Properties.Settings.Default.CurrentInstallMode : "autodetect";
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect", "autoinstall", "reformat", "downgrade"
             };
-            OnPropertyChanged("InstallModes");
             CurrentInstallMode = currentInstallModeTemp;
 
-            string _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
-            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            if (_version.Length >= 5) CurrentSyncVersion = $"{_version[0]}{decimalSeparator}{_version[1]}{decimalSeparator}{_version.Substring(2, _version.Length - 2)}";
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
 
             DownloadLocation = ApplicationManager.Instance.DownloadLocation;
-
             ShowAllReleases = Properties.Settings.Default.ShowAllReleases;
             LicenseKey = Properties.Settings.Default.LicenseKey;
             CurrentLanguage = Properties.Settings.Default.Lang;
         }
 
+        public void ReloadSettings()
+        {
+            CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
+        }
+
         private void ApplySettingsAction()
         {
-            if (CurrentSyncVersion != "" || CurrentSyncVersion != "0" || CurrentSyncRegion != "")
+            string trimmedversion = CurrentSyncVersion.Replace("_", "").Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, "");
+            if (trimmedversion.Length >= 5 && CurrentSyncRegion != "")
                 ApplicationManager.Instance.FireHomeTabEvent();
             else
-                MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void DownloadPathAction()
@@ -206,16 +227,13 @@ namespace Syn3Updater.UI.Tabs
             if (dialog.ShowDialog().GetValueOrDefault())
                 if (Directory.Exists(oldPath))
                 {
-                    if (MessageBox.Show(
-                        string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
-                            Environment.NewLine + oldPath + Environment.NewLine,
-                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater",
-                        MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
+                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
+                        MessageBoxResult.Yes)
                         if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
                             try
                             {
-                                FileSystem.MoveDirectory(oldPath, dialog.SelectedPath,
-                                    UIOption.AllDialogs);
+                                FileSystem.MoveDirectory(oldPath, dialog.SelectedPath, UIOption.AllDialogs);
                             }
                             catch (OperationCanceledException)
                             {
@@ -226,17 +244,6 @@ namespace Syn3Updater.UI.Tabs
                 }
         }
 
-        public class SyncRegion
-        {
-            public string Code { get; set; }
-            public string Name { get; set; }
-        }
-
-        public class LanguageOption
-        {
-            public string Emoji { get; set; }
-            public string Name { get; set; }
-            public string Code { get; set; }
-        }
+        #endregion
     }
 }

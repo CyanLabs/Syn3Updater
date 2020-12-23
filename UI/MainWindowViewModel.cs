@@ -10,11 +10,7 @@ namespace Syn3Updater.UI
 {
     public class MainWindowViewModel : LanguageAwareBaseViewModel
     {
-        private string _currentTab = "home";
-
-        private bool _hamburgerExtended;
-
-        private ObservableCollection<TabItem> _tabItems = new ObservableCollection<TabItem>();
+        #region Constructors
 
         public MainWindowViewModel()
         {
@@ -42,6 +38,14 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.ShowHomeTab += delegate { CurrentTab = "home"; };
         }
 
+        #endregion
+
+        #region Properties & Fields
+
+        private string _currentTab = "home";
+        private bool _hamburgerExtended;
+        private ObservableCollection<TabItem> _tabItems = new ObservableCollection<TabItem>();
+
         public bool HamburgerExtended
         {
             get => _hamburgerExtended;
@@ -55,27 +59,24 @@ namespace Syn3Updater.UI
             {
                 if (value != "about" && !Settings.Default.DisclaimerAccepted)
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
-                else if (value == "home" &&
-                         (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
+                else if (value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"),
-                        "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
                 }
                 else if (value != "downloads" && ApplicationManager.Instance.IsDownloading)
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "downloads";
                 }
                 else if (value == "crashme")
                 {
                     int i = 11;
                     i -= 11;
+                    // ReSharper disable once IntDivisionByZero
                     Debug.WriteLine(11 / i);
                 }
 
@@ -93,9 +94,7 @@ namespace Syn3Updater.UI
         public class TabItem : LanguageAwareBaseViewModel
         {
             private string _icon;
-
             private bool _isCurrent;
-
             private string _key;
             private string _name;
 
@@ -131,5 +130,7 @@ namespace Syn3Updater.UI
                 set => SetProperty(ref _isCurrent, value);
             }
         }
+
+        #endregion
     }
 }
