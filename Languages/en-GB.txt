@@ -7,6 +7,7 @@ Main.Downloads Downloads
 Main.News News
 Main.Crashme Crash
 Main.Settings Settings
+Home.Refresh Refresh
 Home.CurrentConfiguration Current Configuration
 Home.SyncVersion Version:
 Home.SyncRegion Region:
@@ -21,7 +22,7 @@ Home.RecommendedUSBFlashDriveTitle Recommended USB Flash Drive sizes
 Home.RecommendedUSBFlashDriveNonNav Non Navigation APIM's should be fine with 8GB
 Home.RecommendedUSBFlashDriveNA NA, ROW, ANZ APIM's will require atleast 16GB
 Home.RecommendedUSBFlashDriveEU EU APIM's will require atleast 32GB
-Home.Refresh Refresh
+Home.Notes Notes:
 Home.NewSyncVersion New Sync Version
 Home.SelectPackages Select Packages
 Home.InstallMode Install Mode:
@@ -61,6 +62,7 @@ Settings.PaidOptions Paid Options
 Settings.LicenseKeyInfo Enter your license key below to gain access to any custom packages you have purchased!
 Settings.LicenseKey License Key:
 Settings.Apply Apply Settings
+Settings.Downloads Browse
 MessageBox.DisclaimerNotAccepted Please read and accept the disclaimer before continuing. You will not be able to continue unless you agree to the terms.
 MessageBox.NoSyncVersionOrRegionSelected You have not set your current Sync Version or Sync Region!
 MessageBox.DownloadPathChangeCopy Would you like to move existing files from {0} to {1}

@@ -31,6 +31,10 @@
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    Text="This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo"
                                    TextWrapping="WrapWithOverflow" />
+                        <TextBlock TextAlignment="Right" Margin="10,0,10,10" FontSize="14" FontFamily="Segoe UI Light"
+                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                   Text="Copyright © 2021 CyanLabs."
+                                   TextWrapping="WrapWithOverflow" />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White"
