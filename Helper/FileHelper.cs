@@ -10,15 +10,28 @@ namespace Syn3Updater.Helper
 {
     public class FileHelper
     {
-        private static readonly HttpClient client = new HttpClient();
-
-        private readonly EventHandler<EventArgs<int>> PercentageChanged;
+        #region Constructors
+        private static readonly HttpClient Client = new HttpClient();
 
         public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged)
         {
-            PercentageChanged = externalPercentageChanged;
+            _percentageChanged = externalPercentageChanged;
         }
+        #endregion
 
+        #region Events
+        private readonly EventHandler<EventArgs<int>> _percentageChanged;
+        #endregion
+
+        #region Properties & Fields
+        public struct ValidateResult
+        {
+            public string Message;
+            public bool Result;
+        }
+        #endregion
+
+        #region Methods
         public void copy_file(string source, string destination, CancellationToken ct)
         {
             int bufferSize = 1024 * 512;
@@ -50,20 +63,20 @@ namespace Syn3Updater.Helper
 
                     fileStream.Write(bytes, 0, bytesRead);
                     totalReads += bytesRead;
-                    int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
+                    int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
                     if (percent != prevPercent)
                     {
-                        PercentageChanged.Raise(this, percent);
+                        _percentageChanged.Raise(this, percent);
                         prevPercent = percent;
                     }
                 }
             }
         }
-        //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
 
+        //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
         public async Task download_file(string path, string filename, CancellationToken ct)
         {
-            using (HttpResponseMessage response = await client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
                 long total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
 
@@ -112,7 +125,7 @@ namespace Syn3Updater.Helper
                             {
                                 double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
                                 int value = Convert.ToInt32(downloadPercentage);
-                                PercentageChanged.Raise(this, value);
+                                _percentageChanged.Raise(this, value);
                             }
                         }
                     } while (moreToRead);
@@ -120,31 +133,7 @@ namespace Syn3Updater.Helper
             }
         }
 
-        public string CalculateMd5(string filename)
-        {
-            long totalBytesRead = 0;
-            using (Stream file = File.OpenRead(filename))
-            {
-                long size = file.Length;
-                HashAlgorithm hasher = MD5.Create();
-                int bytesRead;
-                byte[] buffer;
-                do
-                {
-                    buffer = new byte[4096];
-                    bytesRead = file.Read(buffer, 0, buffer.Length);
-                    totalBytesRead += bytesRead;
-                    hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
-                    long read = totalBytesRead;
-                    if (totalBytesRead % 102400 == 0) PercentageChanged.Raise(this, (int) ((double) read / size * 100));
-                } while (bytesRead != 0);
-
-                hasher.TransformFinalBlock(buffer, 0, 0);
-                return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
-            }
-        }
-
-        public ValidateResult ValidateFile(string srcfile, string localfile, string md5, bool copy, CancellationToken ct)
+        public ValidateResult validate_file(string srcfile, string localfile, string md5, bool copy, CancellationToken ct)
         {
             ValidateResult validateResult = new ValidateResult();
             string filename = Path.GetFileName(localfile);
@@ -169,7 +158,7 @@ namespace Syn3Updater.Helper
                 return validateResult;
             }
 
-            string localMd5 = CalculateMd5(localfile);
+            string localMd5 = md5_helper(localfile);
 
             if (md5 == null)
             {
@@ -179,7 +168,7 @@ namespace Syn3Updater.Helper
                     long srcfilesize = new FileInfo(srcfile).Length;
 
                     if (srcfilesize == filesize)
-                        if (localMd5 == CalculateMd5(srcfile))
+                        if (localMd5 == md5_helper(srcfile))
                         {
                             validateResult.Message = $"[Validator] {filename} checksum matches already verified local copy";
                             validateResult.Result = true;
@@ -218,10 +207,29 @@ namespace Syn3Updater.Helper
             return validateResult;
         }
 
-        public struct ValidateResult
+        public string md5_helper(string filename)
         {
-            public string Message;
-            public bool Result;
+            long totalBytesRead = 0;
+            using (Stream file = File.OpenRead(filename))
+            {
+                long size = file.Length;
+                HashAlgorithm hasher = MD5.Create();
+                int bytesRead;
+                byte[] buffer;
+                do
+                {
+                    buffer = new byte[4096];
+                    bytesRead = file.Read(buffer, 0, buffer.Length);
+                    totalBytesRead += bytesRead;
+                    hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
+                    long read = totalBytesRead;
+                    if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100));
+                } while (bytesRead != 0);
+
+                hasher.TransformFinalBlock(buffer, 0, 0);
+                return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
+            }
         }
+        #endregion
     }
 }

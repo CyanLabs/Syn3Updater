@@ -8,7 +8,7 @@
     xmlns:ui="clr-namespace:Syn3Updater.UI"
     x:Class="Syn3Updater.UI.Tabs.Settings"
     mc:Ignorable="d"
-    d:DesignHeight="610" d:DesignWidth="750">
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Settings_OnIsVisibleChanged">
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>

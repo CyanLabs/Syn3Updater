@@ -1,18 +1,38 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Management;
+using System.Reflection;
 using Syn3Updater.Model;
-using Syn3Updater.UI.Tabs;
 
 namespace Syn3Updater.Helper
 {
-    public class USBHelper
+    public static class USBHelper
     {
-        public static ObservableCollection<HomeViewModel.Drive> refresh_devices()
+        #region Properties & Fields
+
+        public struct DriveInfo
         {
-            ObservableCollection<HomeViewModel.Drive> DriveList = new ObservableCollection<HomeViewModel.Drive>
+            public string Letter;
+            public string Name;
+            public string FileSystem;
+            public string PartitionType;
+            public bool SkipFormat;
+        }
+
+        public class Drive
+        {
+            public string Path { get; set; }
+            public string Name { get; set; }
+        }
+        #endregion
+
+        #region Methods
+        public static ObservableCollection<Drive> refresh_devices()
+        {
+            ObservableCollection<Drive> DriveList = new ObservableCollection<Drive>
             {
-                new HomeViewModel.Drive {Path = "", Name = LanguageManager.GetValue("Home.NoUSB")}
+                new Drive {Path = "", Name = LanguageManager.GetValue("Home.NoUSB")}
             };
             ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive WHERE InterfaceType='USB'");
             foreach (ManagementBaseObject o in driveQuery.Get())
@@ -22,14 +42,14 @@ namespace Syn3Updater.Helper
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
                 if (friendlySize != "0B")
                     // Add to array of drives
-                    DriveList.Add(new HomeViewModel.Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
+                    DriveList.Add(new Drive { Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
             }
 
             // Return a list of drives
             return DriveList;
         }
 
-        public static DriveInfo UpdateDriveInfo(HomeViewModel.Drive SelectedDrive)
+        public static DriveInfo UpdateDriveInfo(Drive SelectedDrive)
         {
             DriveInfo drive_info = new DriveInfo();
             if (SelectedDrive == null || SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")) return drive_info;
@@ -63,13 +83,53 @@ namespace Syn3Updater.Helper
             return drive_info;
         }
 
-        public struct DriveInfo
+        public static void GenerateLog(string log)
         {
-            public string Letter;
-            public string Name;
-            public string FileSystem;
-            public string PartitionType;
-            public bool SkipFormat;
+            string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}";
+            data += $@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}";
+            data += Environment.NewLine;
+            data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
+            data += $@"Version: {ApplicationManager.Instance.SyncVersion}{Environment.NewLine}";
+            data += $@"Region: {Properties.Settings.Default.CurrentSyncRegion}{Environment.NewLine}";
+            data += $@"Navigation: {Properties.Settings.Default.CurrentSyncNav}{Environment.NewLine}";
+            data +=
+                $@"Mode: {(Properties.Settings.Default.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{Properties.Settings.Default.CurrentInstallMode} FORCED")}{Environment.NewLine}";
+            data += Environment.NewLine;
+            data += $@"USB DETAILS{Environment.NewLine}";
+            data += $@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}";
+            data += $@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}";
+            data += $@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}";
+
+            string driveletter = ApplicationManager.Instance.DriveLetter;
+            if (File.Exists($@"{driveletter}\reformat.lst"))
+            {
+                data += Environment.NewLine;
+                data += $@"REFORMAT.LST{Environment.NewLine}";
+                data += File.ReadAllText($@"{driveletter}\reformat.lst") + Environment.NewLine;
+            }
+
+            if (File.Exists($@"{driveletter}\autoinstall.lst"))
+            {
+                data += Environment.NewLine;
+                data += $@"AUTOINSTALL.LST{Environment.NewLine}";
+                data += File.ReadAllText($@"{driveletter}\autoinstall.lst") + Environment.NewLine;
+            }
+
+            if (Directory.Exists($@"{driveletter}\SyncMyRide"))
+            {
+                data += Environment.NewLine;
+                DirectoryInfo di = new DirectoryInfo($@"{driveletter}\SyncMyRide");
+                FileInfo[] allFiles = di.GetFiles("*", SearchOption.AllDirectories);
+                data += $@"SYNCMYRIDE FILES ({allFiles.Length}){Environment.NewLine}";
+                foreach (FileInfo file in allFiles)
+                    data += $"{file.Name} ({MathHelper.BytesToString(file.Length)}){Environment.NewLine}";
+                data += Environment.NewLine;
+            }
+
+            data += $@"LOG{Environment.NewLine}";
+            data += log;
+            File.WriteAllText($@"{driveletter}\log.txt", data);
         }
+        #endregion
     }
 }

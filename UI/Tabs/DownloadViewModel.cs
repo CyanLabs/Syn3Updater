@@ -8,29 +8,32 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 
 namespace Syn3Updater.UI.Tabs
 {
-    public class DownloadViewModel : LanguageAwareBaseViewModel
+    internal class DownloadViewModel : LanguageAwareBaseViewModel
     {
+        #region Constructors
         private ActionCommand _cancelButton;
-        private CancellationToken _ct;
+        public ActionCommand CancelButton => _cancelButton ?? (_cancelButton = new ActionCommand(CancelAction));
+        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
+        #endregion
+
+        #region Events
+        public event EventHandler<EventArgs<int>> PercentageChanged;
+        #endregion
+
+        #region Properties & Fields
         private int _currentProgress, _totalPercentage, _totalPercentageMax, _count;
-        private string _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _selectedMapVersion, _version, _progressBarSuffix;
+        private string _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _selectedMapVersion, _progressBarSuffix, _installMode;
+        private bool _cancelButtonEnabled;
         private Task _downloadTask;
         private FileHelper _fileHelper;
-        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
+        private CancellationToken _ct;
+
         private ObservableCollection<string> _downloadQueueList;
-        private bool _cancelButtonEnabled;
-        private string _installMode;
-
-        public event EventHandler<EventArgs<int>> PercentageChanged;
-
-        public ActionCommand CancelButton => _cancelButton ?? (_cancelButton = new ActionCommand(CancelAction));
-
         public ObservableCollection<string> DownloadQueueList
         {
             get => _downloadQueueList;
@@ -89,42 +92,39 @@ namespace Syn3Updater.UI.Tabs
             Log += DateTime.Now + " " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
         }
+        #endregion
 
+        #region Methods
         public void Init()
         {
-            if (ApplicationManager.Instance.IsDownloading && (_downloadTask == null || !_downloadTask.Status.Equals(TaskStatus.Running)))
-            {
-                _selectedRelease = ApplicationManager.Instance.SelectedRelease;
-                _selectedRegion = ApplicationManager.Instance.SelectedRegion;
-                _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
-                UpdateLog($"[App] Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}");
+            if (!ApplicationManager.Instance.IsDownloading || (_downloadTask != null && _downloadTask.Status.Equals(TaskStatus.Running))) return;
 
-                CancelButtonEnabled = true;
-                //OnPropertyChanged("CancelButtonEnabled");
-                InstallMode = ApplicationManager.Instance.InstallMode;
-                UpdateLog($"[App] Install mode set to {InstallMode}");
-                //OnPropertyChanged("InstallMode");
-                PercentageChanged += DownloadPercentageChanged;
-                CurrentProgress = 0;
+            _selectedRelease = ApplicationManager.Instance.SelectedRelease;
+            _selectedRegion = ApplicationManager.Instance.SelectedRegion;
+            _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
+            UpdateLog($"[App] Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}");
 
-                DownloadQueueList = new ObservableCollection<string>();
-                foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
-                //OnPropertyChanged("DownloadQueueList");
+            InstallMode = ApplicationManager.Instance.InstallMode;
+            UpdateLog($"[App] Install mode set to {InstallMode}");
 
-                _version = Properties.Settings.Default.CurrentSyncVersion.ToString();
-                _version = $"{_version[0]}.{_version[1]}.{_version.Substring(2, _version.Length - 2)}";
+            CancelButtonEnabled = true;
+            Log = "";
+            CurrentProgress = 0;
+            
+            PercentageChanged += DownloadPercentageChanged;
 
-                _ct = _tokenSource.Token;
-                Log = "";
-
-                _fileHelper = new FileHelper(PercentageChanged);
-                _downloadTask = Task.Run(DoDownload, _tokenSource.Token);
-            }
+            DownloadQueueList = new ObservableCollection<string>();
+            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
+            
+            _ct = _tokenSource.Token;
+            
+            _fileHelper = new FileHelper(PercentageChanged);
+            _downloadTask = Task.Run(DoDownload, _tokenSource.Token);
         }
 
         private void DoCopy()
         {
-            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (_ct.IsCancellationRequested)
                 {
@@ -153,12 +153,10 @@ namespace Syn3Updater.UI.Tabs
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                         }
 
-                        _fileHelper.copy_file(ApplicationManager.Instance.DownloadLocation + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}",
-                            _ct);
+                        _fileHelper.copy_file(ApplicationManager.Instance.DownloadLocation + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
 
-                        bool validfile = ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
-                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true);
-                        if (validfile)
+                        if (ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
+                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
                         {
                             UpdateLog($"[Copier] copied {item.FileName} and successfully validated");
                             _count++;
@@ -167,7 +165,6 @@ namespace Syn3Updater.UI.Tabs
 
                         if (i == 3)
                         {
-                            
                             UpdateLog($"[Copier] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
                             MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
                                 MessageBoxImage.Error);
@@ -177,97 +174,31 @@ namespace Syn3Updater.UI.Tabs
                     }
                 }
 
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    DownloadQueueList.Remove(ApplicationManager.Instance.DownloadLocation + item.FileName);
-                    //OnPropertyChanged("DownloadQueueList");
-                });
+                Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(ApplicationManager.Instance.DownloadLocation + item.FileName));
                 _count++;
                 PercentageChanged.Raise(this, 100);
             }
 
-            DownloadInfo = "";
-            DownloadPercentage = "";
             UpdateLog("[App] All files downloaded and copied to USB successfully!");
             DownloadInfo = LanguageManager.GetValue("String.Completed");
-            GenerateLog();
+            USBHelper.GenerateLog(Log);
             if (MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
                 MessageBoxResult.Yes)
+            {
                 Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
+                ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
+            }
+                
             MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
             Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
             CancelAction();
         }
 
-        public static string GetOsFriendlyName()
-        {
-            string result = string.Empty;
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
-            foreach (ManagementBaseObject o in searcher.Get())
-            {
-                ManagementObject os = (ManagementObject) o;
-                result = os["Caption"].ToString();
-                break;
-            }
-
-            return $"{result} ({Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "")})";
-        }
-
-        private void GenerateLog()
-        {
-            string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}";
-            data += $@"Operating System: {GetOsFriendlyName()}{Environment.NewLine}";
-            data += Environment.NewLine;
-            data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
-            data += $@"Version: {_version}{Environment.NewLine}";
-            data += $@"Region: {Properties.Settings.Default.CurrentSyncRegion}{Environment.NewLine}";
-            data += $@"Navigation: {Properties.Settings.Default.CurrentSyncNav}{Environment.NewLine}";
-            data +=
-                $@"Mode: {(Properties.Settings.Default.CurrentInstallMode == @"autodetect" ? InstallMode : $"{Properties.Settings.Default.CurrentInstallMode} FORCED")}{Environment.NewLine}";
-            data += Environment.NewLine;
-            data += $@"USB DETAILS{Environment.NewLine}";
-            data += $@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}";
-            data += $@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}";
-            data += $@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}";
-
-            string driveletter = ApplicationManager.Instance.DriveLetter;
-            if (File.Exists($@"{driveletter}\reformat.lst"))
-            {
-                data += Environment.NewLine;
-                data += $@"REFORMAT.LST{Environment.NewLine}";
-                data += File.ReadAllText($@"{driveletter}\reformat.lst") + Environment.NewLine;
-            }
-
-            if (File.Exists($@"{driveletter}\autoinstall.lst"))
-            {
-                data += Environment.NewLine;
-                data += $@"AUTOINSTALL.LST{Environment.NewLine}";
-                data += File.ReadAllText($@"{driveletter}\autoinstall.lst") + Environment.NewLine;
-            }
-
-            if (Directory.Exists($@"{driveletter}\SyncMyRide"))
-            {
-                data += Environment.NewLine;
-                DirectoryInfo di = new DirectoryInfo($@"{driveletter}\SyncMyRide");
-                FileInfo[] allFiles = di.GetFiles("*", SearchOption.AllDirectories);
-                data += $@"SYNCMYRIDE FILES ({allFiles.Length}){Environment.NewLine}";
-                foreach (FileInfo file in allFiles)
-                    data += $"{file.Name} ({MathHelper.BytesToString(file.Length)}){Environment.NewLine}";
-                data += Environment.NewLine;
-            }
-
-            data += $@"LOG{Environment.NewLine}";
-            data += Log;
-            File.WriteAllText($@"{driveletter}\log.txt", data);
-        }
-
         private void CancelAction()
         {
             CancelButtonEnabled = false;
-            //OnPropertyChanged("CancelButtonEnabled");
             ApplicationManager.Instance.IsDownloading = false;
             _tokenSource.Cancel();
-            //Thread.Sleep(2000);
             TotalPercentage = 0;
             CurrentProgress = 0;
             DownloadInfo = "";
@@ -275,10 +206,10 @@ namespace Syn3Updater.UI.Tabs
             Application.Current.Dispatcher.Invoke(() =>
             {
                 DownloadQueueList.Clear();
-                //OnPropertyChanged("DownloadQueueList");
             });
             _tokenSource.Dispose();
             _tokenSource = new CancellationTokenSource();
+            ApplicationManager.Instance.FireHomeTabEvent();
         }
 
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
@@ -290,14 +221,12 @@ namespace Syn3Updater.UI.Tabs
 
         private async void DoDownload()
         {
-            int total = ApplicationManager.Instance.Ivsus.Count;
             _count = 0;
-
-            TotalPercentageMax = 100 * total * (ApplicationManager.Instance.DownloadOnly ? 2 : 4);
+            TotalPercentageMax = 100 * ApplicationManager.Instance.Ivsus.Count * (ApplicationManager.Instance.DownloadOnly ? 2 : 4);
 
             try
             {
-                foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
+                foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
                 {
                     if (_ct.IsCancellationRequested)
                     {
@@ -336,8 +265,7 @@ namespace Syn3Updater.UI.Tabs
                                         MessageBoxImage.Exclamation);
                                 }
 
-                                bool validfile = ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false);
-                                if (validfile)
+                                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false))
                                 {
                                     UpdateLog($"[Downloader] downloaded {item.FileName} and successfully validated");
                                     _count++;
@@ -360,20 +288,11 @@ namespace Syn3Updater.UI.Tabs
                         }
                     }
 
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        DownloadQueueList.Remove(item.Url);
-                        //OnPropertyChanged("DownloadQueueList");
-                    });
+                    Application.Current.Dispatcher.Invoke(() =>{DownloadQueueList.Remove(item.Url);});
                     _count++;
                     PercentageChanged.Raise(this, 100);
                 }
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    DownloadQueueList.Clear();
-                    //OnPropertyChanged("DownloadQueueList");
-                });
+                Application.Current.Dispatcher.Invoke(() => {DownloadQueueList.Clear();});
             }
             catch (InvalidOperationException)
             {
@@ -403,9 +322,6 @@ namespace Syn3Updater.UI.Tabs
             if (ApplicationManager.Instance.SkipFormat == false)
             {
                 UpdateLog("[App] Formatting USB drive");
-                string drivenumber = ApplicationManager.Instance.DriveNumber;
-                string driveletter = ApplicationManager.Instance.DriveLetter;
-
                 using (Process p = new Process())
                 {
                     p.StartInfo.UseShellExecute = false;
@@ -416,12 +332,12 @@ namespace Syn3Updater.UI.Tabs
                     UpdateLog("[App] Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
 
                     p.Start();
-                    p.StandardInput.WriteLine($"SELECT DISK={drivenumber}");
+                    p.StandardInput.WriteLine($"SELECT DISK={ApplicationManager.Instance.DriveNumber}");
                     p.StandardInput.WriteLine("CLEAN");
                     p.StandardInput.WriteLine("CONVERT MBR");
                     p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
                     p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
-                    p.StandardInput.WriteLine($"ASSIGN {driveletter.Replace(":", "")}");
+                    p.StandardInput.WriteLine($"ASSIGN {ApplicationManager.Instance.DriveLetter.Replace(":", "")}");
                     p.StandardInput.WriteLine("EXIT");
 
                     p.WaitForExit();
@@ -443,15 +359,12 @@ namespace Syn3Updater.UI.Tabs
                     break;
             }
 
-            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    DownloadQueueList.Add(ApplicationManager.Instance.DownloadLocation + item.FileName);
-                    //OnPropertyChanged("DownloadQueueList");
-                });
-
+            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
+            {
+                Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadLocation + item.FileName));
+            }
+            
             Directory.CreateDirectory($@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\");
-
             Task.Run(DoCopy, _tokenSource.Token);
         }
 
@@ -463,7 +376,7 @@ namespace Syn3Updater.UI.Tabs
 
             string extrafiles = "";
             int baseint = 0, extraint = 0;
-            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
                 if (item.Type == @"APPS" || item.Type == @"VOICE" || item.Type == @"ENH_DAB" || item.Type == @"MAP_LICENSE" || item.Type == @"VOICE_NAV")
                 {
                     baseint++;
@@ -475,7 +388,7 @@ namespace Syn3Updater.UI.Tabs
                     if (extraint == 10)
                     {
                         extraint = 0;
-                        extrafiles += $@"Options = Delay,Include,Transaction{Environment.NewLine}[SYNCGen3.0_{_version}]{Environment.NewLine}";
+                        extrafiles += $@"Options = Delay,Include,Transaction{Environment.NewLine}[SYNCGen3.0_{ApplicationManager.Instance.SyncVersion}]{Environment.NewLine}";
                     }
 
                     extraint++;
@@ -494,10 +407,10 @@ namespace Syn3Updater.UI.Tabs
             UpdateLog("[App] Generating reformat.lst");
             string reformatlst = "";
             int i = 0;
-            foreach (HomeViewModel.LocalIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
             {
-                if (item.Md5 == HomeViewModel.SyncReformatToolMd5 || item.Md5 == HomeViewModel.DowngradePackageAppMd5 && _selectedRelease != @"Sync 3.3.19052" ||
-                    item.Md5 == HomeViewModel.DowngradePackageToolMd5) continue;
+                if (item.Md5 == Api.ReformatToolMd5 || item.Md5 == Api.DowngradeAppMd5 && _selectedRelease != @"Sync 3.3.19052" ||
+                    item.Md5 == Api.DowngradeToolMd5) continue;
                 i++;
                 reformatlst += $@"{item.Type}={item.FileName}";
                 if (i != ApplicationManager.Instance.Ivsus.Count) reformatlst += Environment.NewLine;
@@ -511,21 +424,21 @@ namespace Syn3Updater.UI.Tabs
             if (InstallMode == @"downgrade")
             {
                 autoinstalllst +=
-                    $@"Item1 = TOOL - {HomeViewModel.DowngradePackageToolFileName}\rOpen1 = SyncMyRide\{HomeViewModel.DowngradePackageToolFileName}\r".Replace(@"\r",
+                    $@"Item1 = TOOL - {Api.DowngradeToolFileName}\rOpen1 = SyncMyRide\{Api.DowngradeToolFileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst +=
-                    $@"Item2 = APP - {HomeViewModel.DowngradePackageAppFileName}\rOpen2 = SyncMyRide\{HomeViewModel.DowngradePackageAppFileName}\r".Replace(@"\r",
+                    $@"Item2 = APP - {Api.DowngradeAppFileName}\rOpen2 = SyncMyRide\{Api.DowngradeAppFileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst += $@"Options = AutoInstall{Environment.NewLine}[SYNCGen3.0_ALL]{Environment.NewLine}";
                 autoinstalllst +=
-                    $@"Item1 = REFORMAT TOOL - {HomeViewModel.SyncReformatToolFileName}\rOpen1 = SyncMyRide\{HomeViewModel.SyncReformatToolFileName}\r".Replace(@"\r",
+                    $@"Item1 = REFORMAT TOOL - {Api.ReformatToolFileName}\rOpen1 = SyncMyRide\{Api.ReformatToolFileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst += $@"Options = AutoInstall,Include,Transaction{Environment.NewLine}";
             }
             else if (InstallMode == @"reformat")
             {
                 autoinstalllst +=
-                    $@"Item1 = REFORMAT TOOL  - {HomeViewModel.SyncReformatToolFileName}\rOpen1 = SyncMyRide\{HomeViewModel.SyncReformatToolFileName}\r".Replace(@"\r",
+                    $@"Item1 = REFORMAT TOOL  - {Api.ReformatToolFileName}\rOpen1 = SyncMyRide\{Api.ReformatToolFileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst += @"Options = AutoInstall";
             }
@@ -538,9 +451,10 @@ namespace Syn3Updater.UI.Tabs
         {
             DownloadInfo = $"Validating: {localfile}";
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");
-            FileHelper.ValidateResult validateResult = _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
+            FileHelper.ValidateResult validateResult = _fileHelper.validate_file(srcfile, localfile, md5, copy, _ct);
             UpdateLog(validateResult.Message);
             return validateResult.Result;
         }
+        #endregion
     }
 }

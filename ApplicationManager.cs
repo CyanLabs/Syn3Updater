@@ -12,21 +12,21 @@ using Newtonsoft.Json;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Syn3Updater.UI;
-using Syn3Updater.UI.Tabs;
 using Settings = Syn3Updater.Properties.Settings;
 
 namespace Syn3Updater
 {
     public class ApplicationManager
     {
-        public string DownloadLocation, DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DriveLetter, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode;
+        #region Constructors
+        private ApplicationManager() { }
 
-        public ObservableCollection<HomeViewModel.LocalIvsu> Ivsus = new ObservableCollection<HomeViewModel.LocalIvsu>();
-
-        public MainWindow MainWindow;
-        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;
+        public static readonly SimpleLogger Logger = new SimpleLogger();
+        public ObservableCollection<SyncModel.SyncIvsu> Ivsus = new ObservableCollection<SyncModel.SyncIvsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
+        #endregion
 
+        #region Events
         public void FireLanguageChangedEvent()
         {
             LanguageChangedEvent?.Invoke(this, new EventArgs());
@@ -55,14 +55,12 @@ namespace Syn3Updater
 
         public event EventHandler ShowSettingsTab;
 
-        #region Constructors
+        #endregion
 
-        private ApplicationManager()
-        {
-        }
-
-        public static readonly SimpleLogger Logger = new SimpleLogger();
-
+        #region Properties & Fields
+        private MainWindow MainWindow;
+        public string DownloadLocation, DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DriveLetter, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode, SyncVersion;
+        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;
         #endregion
 
         #region Methods
@@ -75,7 +73,7 @@ namespace Syn3Updater
             // ReSharper disable once UnusedVariable
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            if (Settings.Default.Lang == "")
+            if (string.IsNullOrWhiteSpace(Settings.Default.Lang))
             {
                 Logger.Debug($"[Settings]  Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
                 Settings.Default.Lang = ci.TwoLetterISOLanguageName;
@@ -88,8 +86,9 @@ namespace Syn3Updater
 
             if (string.IsNullOrWhiteSpace(Settings.Default.DownloadLocation))
             {
-                Logger.Debug($"[Settings] Download location is not set, defaulting to {KnownFolders.GetPath(KnownFolder.Downloads)}\\Syn3Updater\\");
-                Settings.Default.DownloadLocation = $@"{KnownFolders.GetPath(KnownFolder.Downloads)}\Syn3Updater\";
+                string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
+                Logger.Debug($"[Settings] Download location is not set, defaulting to {downloads}\\Syn3Updater\\");
+                Settings.Default.DownloadLocation = $@"{downloads}\Syn3Updater\";
             }
 
             DownloadLocation = Settings.Default.DownloadLocation;
@@ -114,9 +113,12 @@ namespace Syn3Updater
                         break;
                 }
 
+            string version = Settings.Default.CurrentSyncVersion.ToString();
+            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
+
             if (MainWindow == null) MainWindow = new MainWindow();
             if (!MainWindow.IsVisible) MainWindow.Show();
-
             if (MainWindow.WindowState == WindowState.Minimized) MainWindow.WindowState = WindowState.Normal;
         }
 
@@ -135,7 +137,6 @@ namespace Syn3Updater
             File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
             Application.Current.Shutdown();
         }
-
         #endregion
     }
 }

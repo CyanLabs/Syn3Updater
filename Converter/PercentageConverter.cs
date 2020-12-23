@@ -10,6 +10,7 @@ namespace Syn3Updater.Converter
 {
     public class PercentageConverter : MarkupExtension, IValueConverter
     {
+        #region Methods
         private static PercentageConverter _instance;
 
         public override object ProvideValue(IServiceProvider serviceProvider)
@@ -41,11 +42,12 @@ namespace Syn3Updater.Converter
         }
 
         #endregion
+        #endregion
     }
-
 
     public class SubtractorConverter : MarkupExtension, IValueConverter
     {
+        #region Methods
         private static SubtractorConverter _instance;
 
         public override object ProvideValue(IServiceProvider serviceProvider)
@@ -73,11 +75,12 @@ namespace Syn3Updater.Converter
         }
 
         #endregion
+        #endregion
     }
-
 
     public class MarginConverter : IValueConverter
     {
+        #region Methods
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || value as double? == null) return new Thickness(0, 0, 0, 0);
@@ -121,5 +124,6 @@ namespace Syn3Updater.Converter
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }

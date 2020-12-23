@@ -8,8 +8,11 @@ namespace Syn3Updater.UI
 {
     public class SimpleLogger
     {
+        #region Constructors
         public List<LogEntry> Log = new List<LogEntry>();
+        #endregion
 
+        #region Methods
         public void Debug(object log, [CallerMemberName] string cmn = "")
         {
             Log.Add(new LogEntry(log.ToString(), "Debug", null, cmn));
@@ -59,7 +62,9 @@ namespace Syn3Updater.UI
         //        return bitmapimage;
         //    }
         //}
+        #endregion
 
+        #region Properties & Fields
         public class LogEntry
         {
             public LogEntry(string log, string logType = "Info", Exception exception = null, [CallerMemberName] string callerMemberName = "")
@@ -78,5 +83,6 @@ namespace Syn3Updater.UI
             public string LogType { get; set; }
             public Exception Exception { get; set; }
         }
+        #endregion
     }
 }

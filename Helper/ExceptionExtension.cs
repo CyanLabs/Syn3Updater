@@ -5,7 +5,6 @@ namespace Syn3Updater.Helper
     public static class ExceptionExtension
     {
         #region Methods
-
         public static string GetFullMessage(this Exception ex, string message = "")
         {
             if (ex == null) return string.Empty;
@@ -17,17 +16,6 @@ namespace Syn3Updater.Helper
 
             return message;
         }
-
-        /*
-                private static readonly Action EmptyDelegate = delegate { };
-
-                public static void Refresh(this UIElement uiElement)
-
-                {
-                    uiElement?.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-                }
-        */
-
         #endregion
     }
 }

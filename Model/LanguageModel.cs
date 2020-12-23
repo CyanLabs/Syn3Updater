@@ -10,10 +10,11 @@ namespace Syn3Updater.Model
 {
     public class LanguageModel
     {
+        #region Constructor
         public LanguageModel(string path)
         {
             string contents = File.ReadAllText(path);
-            List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).Select(x => x.Trim()).ToList();
+            List<string> lines = contents.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Select(x => x.Trim()).ToList();
 
             Code = lines[0];
             EnglishName = lines[2];
@@ -23,7 +24,7 @@ namespace Syn3Updater.Model
             Items = new List<LanguageItem>();
             foreach (string s in lines.Skip(3))
             {
-                string[] parts = s.Replace("  ", "\t").Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = s.Replace("  ", "\t").Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (parts.Length == 1 && parts[0].Contains(" "))
                 {
@@ -43,7 +44,9 @@ namespace Syn3Updater.Model
                     Debug.WriteLine(parts);
             }
         }
+        #endregion
 
+        #region Properties & Fields
         public string Code { get; set; }
         public string EnglishName { get; set; }
         public string NativeName { get; set; }
@@ -55,10 +58,12 @@ namespace Syn3Updater.Model
             public string Key { get; set; }
             public string Value { get; set; }
         }
+        #endregion
     }
 
     public static class LanguageManager
     {
+        #region Constructors
         static LanguageManager()
         {
             try
@@ -80,9 +85,13 @@ namespace Syn3Updater.Model
                 // ignored
             }
         }
+        #endregion
 
+        #region Properties & Fields
         public static List<LanguageModel> Languages { get; set; } = new List<LanguageModel>();
+        #endregion
 
+        #region Methods
         public static string GetValue(string key, string lang)
         {
             try
@@ -168,5 +177,6 @@ namespace Syn3Updater.Model
                 return e.Message;
             }
         }
+        #endregion
     }
 }

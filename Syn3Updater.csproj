@@ -87,11 +87,13 @@
     <Compile Include="Helper\ExceptionExtension.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Helper\USBHelper.cs" />
-    <Compile Include="Model\Json.cs" />
-    <Compile Include="Helper\KnownFolders.cs" />
+    <Compile Include="Model\APIModel.cs" />
+    <Compile Include="Helper\SystemHelper.cs" />
     <Compile Include="Helper\MathHelper.cs" />
+    <Compile Include="Model\APISecretModel.cs" />
     <Compile Include="Model\LanguageModel.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
+    <Compile Include="Model\SyncModel.cs" />
     <Compile Include="UI\AttachedProperties.cs" />
     <Compile Include="UI\CrashWindow.xaml.cs">
       <DependentUpon>CrashWindow.xaml</DependentUpon>

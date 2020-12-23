@@ -4,8 +4,16 @@ namespace Syn3Updater.Model
 {
     public class LanguageAwareBaseViewModel : BaseViewModel
     {
+        #region Properties & Fields
         private string _language;
+        public string Language
+        {
+            get => _language;
+            set => SetProperty(ref _language, value);
+        }
+        #endregion
 
+        #region Constructors
         public LanguageAwareBaseViewModel()
         {
             try
@@ -21,11 +29,6 @@ namespace Syn3Updater.Model
                 // ignored
             }
         }
-
-        public string Language
-        {
-            get => _language;
-            set => SetProperty(ref _language, value);
-        }
+        #endregion
     }
 }

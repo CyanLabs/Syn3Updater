@@ -4,18 +4,13 @@ using Syn3Updater.Model;
 
 namespace Syn3Updater.UI.Tabs
 {
-    public class AboutViewmodel : LanguageAwareBaseViewModel
+    internal class AboutViewmodel : LanguageAwareBaseViewModel
     {
-        private bool _disclaimerAccepted;
-
+        #region Properties & Fields
         private ActionCommand _documentationButton;
-
         private ActionCommand _donateButton;
-
         private ActionCommand _fordhubButton;
-
         private ActionCommand _forumButton;
-
         private ActionCommand _websiteButton;
         public ActionCommand WebsiteButton => _websiteButton ?? (_websiteButton = new ActionCommand(WebsiteAction));
         public ActionCommand ForumButton => _forumButton ?? (_forumButton = new ActionCommand(ForumAction));
@@ -23,6 +18,7 @@ namespace Syn3Updater.UI.Tabs
         public ActionCommand DocButton => _documentationButton ?? (_documentationButton = new ActionCommand(DocAction));
         public ActionCommand FordHubButton => _fordhubButton ?? (_fordhubButton = new ActionCommand(FordHubAction));
 
+        private bool _disclaimerAccepted;
         public bool DisclaimerAccepted
         {
             get => _disclaimerAccepted;
@@ -33,35 +29,15 @@ namespace Syn3Updater.UI.Tabs
                 if (value) ApplicationManager.Instance.FireSettingsTabEvent();
             }
         }
+        #endregion
 
-        public void Init()
-        {
-            DisclaimerAccepted = Properties.Settings.Default.DisclaimerAccepted;
-        }
-
-        private void WebsiteAction()
-        {
-            Process.Start("https://cyanlabs.net");
-        }
-
-        private void ForumAction()
-        {
-            Process.Start("https://community.cyanlabs.net");
-        }
-
-        private void DonateAction()
-        {
-            Process.Start("https://paypal.me/cyanlabs");
-        }
-
-        private void DocAction()
-        {
-            Process.Start("https://cyanlabs.net/applications/syn3-updater/");
-        }
-
-        private void FordHubAction()
-        {
-            Process.Start("https://cyanlabs.net/ford");
-        }
+        #region Constructors
+        public void Init() => DisclaimerAccepted = Properties.Settings.Default.DisclaimerAccepted;
+        private void WebsiteAction() => Process.Start("https://cyanlabs.net");
+        private void ForumAction() => Process.Start("https://community.cyanlabs.net");
+        private void DonateAction() => Process.Start("https://paypal.me/cyanlabs");
+        private void DocAction() => Process.Start("https://cyanlabs.net/applications/syn3-updater/");
+        private void FordHubAction() => Process.Start("https://cyanlabs.net/ford");
+        #endregion 
     }
 }
