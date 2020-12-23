@@ -93,7 +93,7 @@
                                   SelectedValuePath="Path" DisplayMemberPath="Name"
                                   SelectedItem="{Binding SelectedDrive}" />
                         <Button BorderThickness="0" Cursor="Hand" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}"
+                                ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                                 Background="#00000000" Content="&#xE72C;" VerticalAlignment="Center" Foreground="White"
                                 Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"
                                 Command="{Binding RefreshUSB}" />
@@ -174,7 +174,6 @@
                                   SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" />
                         <Button Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="0"
                                 Grid.Column="2" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26"
-                                ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}"
                                 Background="#00000000" Content="&#xF142;" VerticalAlignment="Center"
                                 HorizontalAlignment="Center" Command="{Binding RegionInfo}" />
 

@@ -21,7 +21,7 @@ Home.RecommendedUSBFlashDriveTitle Recommended USB Flash Drive sizes
 Home.RecommendedUSBFlashDriveNonNav Non Navigation APIM's should be fine with 8GB
 Home.RecommendedUSBFlashDriveNA NA, ROW, ANZ APIM's will require atleast 16GB
 Home.RecommendedUSBFlashDriveEU EU APIM's will require atleast 32GB
-Home.Notes Notes: 
+Home.Refresh Refresh
 Home.NewSyncVersion New Sync Version
 Home.SelectPackages Select Packages
 Home.InstallMode Install Mode:

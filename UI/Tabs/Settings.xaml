@@ -168,7 +168,7 @@
                              Text="{Binding DownloadLocation}" VerticalContentAlignment="Center" />
                     <Button BorderThickness="0" Cursor="Hand" Foreground="{DynamicResource SystemBaseHighColorBrush}"
                             Margin="0,6,3,6" Grid.Row="1" Grid.Column="3" FontFamily="Segoe MDL2 Assets" FontSize="24"
-                            ToolTip="{Binding Language, ConverterParameter=Main.Help, Converter={StaticResource LocConverter}}"
+                            ToolTip="{Binding Language, ConverterParameter=Settings.Downloads, Converter={StaticResource LocConverter}}"
                             Background="#00000000" Content="&#xE838;" VerticalAlignment="Center"
                             HorizontalAlignment="Right" Grid.ColumnSpan="2" Command="{Binding DownloadPathSelector}" />
                     <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"
