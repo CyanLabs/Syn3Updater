@@ -1,2 +1,3 @@
 # Auto detect text files and perform LF normalization
-*.properties text=auto
+* text=auto
+*.properties text
