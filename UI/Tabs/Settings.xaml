@@ -51,8 +51,8 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Image Margin="5" Source="syncversion.png" Grid.Column="0" StretchDirection="UpOnly" />
-                        <StackPanel Background="DarkRed" Grid.Column="1" Margin="5" Grid.ColumnSpan="3">
+                        <Image Margin="5" Source="syncversion.png" Grid.Column="0" Grid.ColumnSpan="2" StretchDirection="UpOnly" />
+                        <StackPanel Background="DarkRed" Grid.Column="2" Margin="5" Grid.ColumnSpan="2">
                             <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" TextAlignment="Center"
                                        Text="{Binding Language, ConverterParameter=Settings.EnterSyncVersion, Converter={StaticResource LocConverter}}" />
                             <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" TextAlignment="Center"
