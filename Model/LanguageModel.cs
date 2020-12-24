@@ -18,13 +18,12 @@ namespace Syn3Updater.Model
             string contents = File.ReadAllText(path);
             List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).Select(x => x.Trim()).ToList();
 
-            Code = lines[0].Replace(";", "").Replace("#", "");
-            EnglishName = lines[2].Replace(";", "").Replace("#", "");
-            NativeName = lines[1].Replace(";", "").Replace("#", "");
-            //this.Emoji = lines[3];
+            Code = Path.GetFileName(path).Replace(".properties","");
+            EnglishName = new CultureInfo(Code, false).DisplayName;
+            NativeName = new CultureInfo(Code, false).NativeName;
 
             Items = new List<LanguageItem>();
-            foreach (string s in lines.Skip(3))
+            foreach (string s in lines)
             {
                 if (s.StartsWith("#") || s.StartsWith(";")) continue;
                 string[] parts = s.Replace("=", "\t").Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);

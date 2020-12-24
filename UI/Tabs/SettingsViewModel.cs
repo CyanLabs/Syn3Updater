@@ -42,7 +42,7 @@ namespace Syn3Updater.UI.Tabs
         }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
-            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption {Name = x.NativeName, Code = x.Code, Emoji = x.Emoji}));
+            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption {Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji}));
 
         private string _currentSyncRegion;
 
