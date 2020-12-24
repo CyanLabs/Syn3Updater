@@ -351,5 +351,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Private information
 Model/APISecretModel.cs
 accent.json
+
