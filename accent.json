@@ -1,0 +1,10 @@
+{
+  "apiUrl": "https://translate.cyanlabs.net",
+  "files": [
+    {
+      "format": "java_properties",
+      "source": "Languages/en-GB.properties",
+      "target": "Languages/%slug%.properties"
+    }
+  ]
+}

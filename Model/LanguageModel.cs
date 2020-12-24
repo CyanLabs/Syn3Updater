@@ -27,7 +27,7 @@ namespace Syn3Updater.Model
             foreach (string s in lines.Skip(3))
             {
                 if (s.StartsWith("#") || s.StartsWith(";")) continue;
-                string[] parts = s.Replace(" = ", "\t").Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = s.Replace("=", "\t").Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (parts.Length == 1 && parts[0].Contains(" "))
                 {
@@ -160,7 +160,7 @@ namespace Syn3Updater.Model
                 if (l == null)
                 {
                     //Have to hardcode path for design time :(
-                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Languages\\{lang}.txt";
+                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Languages\\{lang}.properties";
 
                     if (File.Exists(fn))
                     {

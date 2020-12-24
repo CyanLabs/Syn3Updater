@@ -184,10 +184,7 @@
     <Resource Include="UI\Tabs\syncversion.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Languages\es-ES.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Languages\en-GB.txt">
+    <Content Include="Languages\*.properties">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
