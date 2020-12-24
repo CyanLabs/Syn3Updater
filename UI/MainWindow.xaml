@@ -17,18 +17,15 @@
     Closing="Window_Closing">
     <Window.Resources>
 
-        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
-
-        <converter:PercentageConverter x:Key="PercentageConverter" />
-
-        <converter:LocConverter x:Key="LocConverter" />
         <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="TabItemTemplate">
             <Grid fw:PointerTracker.Enabled="True" Margin="0,0,0,0" HorizontalAlignment="Stretch"
                   MouseDown="Grid_MouseDown">
+                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                 <Rectangle HorizontalAlignment="Stretch" Fill="Black" Opacity="0.5" Margin="0,0"
                            Visibility="{Binding IsCurrent, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                 <Grid Visibility="{Binding IsCurrent, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Rectangle Width="4" HorizontalAlignment="Left" Margin="0,0" Visibility="Visible" Fill="White" />
                 </Grid>
@@ -50,7 +47,7 @@
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" ToolTip="{Binding Name}"
+                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" ToolTip="{Binding Name}" 
                                Text="{Binding Icon}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" />
                     <TextBlock
                         Grid.Column="1"
@@ -79,9 +76,6 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-        <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
-            <VirtualizingStackPanel IsItemsHost="True" Margin="0" />
-        </ItemsPanelTemplate>
     </Window.Resources>
     <Window.DataContext>
         <local:MainWindowViewModel />

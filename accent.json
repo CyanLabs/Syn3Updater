@@ -1,6 +1,5 @@
 {
-  "apiUrl": "https://translate.cyanlabs.net",
-  "files": [
+ "files": [
     {
       "format": "java_properties",
       "source": "Languages/en-GB.properties",

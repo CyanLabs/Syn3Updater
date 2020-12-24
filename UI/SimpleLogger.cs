@@ -55,10 +55,10 @@ namespace Syn3Updater.UI
         public void CrashWindow(Exception ex, [CallerMemberName] string callerMemberName = "")
         {
             CrashWindow crashWindow = new CrashWindow();
-            crashWindow.errorName.Text = ex.GetType().ToString();
-            crashWindow.message.Text = ex.Message;
+            crashWindow.ErrorName.Text = ex.GetType().ToString();
+            crashWindow.Message.Text = ex.Message;
 
-            crashWindow.stackTrace.Text = ex.StackTrace;
+            crashWindow.StackTrace.Text = ex.StackTrace;
             crashWindow.Show();
 
             Log.Add(new LogEntry(ex.GetType().ToString(), "Crash", ex));

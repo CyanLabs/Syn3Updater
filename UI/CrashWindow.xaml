@@ -29,16 +29,16 @@
 
             </StackPanel>
             <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="24" Foreground="White"
-                       x:Name="errorName">
+                       x:Name="ErrorName">
                 error name
             </TextBlock>
-            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="18" Foreground="White" x:Name="message">message</TextBlock>
+            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="18" Foreground="White" x:Name="Message">message</TextBlock>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="20">
 
                 <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="12" Foreground="White"
-                           x:Name="stackTrace" TextWrapping="WrapWithOverflow">
+                           x:Name="StackTrace" TextWrapping="WrapWithOverflow">
                     stacktrace
                 </TextBlock>
             </StackPanel>

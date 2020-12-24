@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Syn3Updater.UI.Tabs
 {
     /// <summary>
     ///     Interaction logic for Install.xaml
     /// </summary>
-    public partial class Home : UserControl
+    public partial class Home
     {
         public Home()
         {

@@ -4,13 +4,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
-    xmlns:converter="clr-namespace:Syn3Updater.Converter"
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     x:Class="Syn3Updater.UI.Tabs.Home"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged">
     <UserControl.Resources>
-        <converter:LocConverter x:Key="LocConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <local:HomeViewModel />
@@ -62,6 +60,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
@@ -72,7 +71,7 @@
                                Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}"
                                TextDecorations="{x:Null}" />
-                    <StackPanel Grid.RowSpan="3" Grid.Column="2">
+                    <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="2">
                         <TextBlock Margin="20,15" FontWeight="Bold"
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveTitle, Converter={StaticResource LocConverter}}" />
@@ -85,6 +84,10 @@
                     </StackPanel>
 
                     <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="25" />
@@ -138,7 +141,7 @@
                                Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}"
                                TextDecorations="{x:Null}" />
-                    <StackPanel Grid.RowSpan="3" Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
                         <TextBlock Margin="20,15,20,0" FontWeight="Bold"
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />

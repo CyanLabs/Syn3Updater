@@ -48,6 +48,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Image Margin="5" Source="syncversion.png" Grid.Column="0" StretchDirection="UpOnly" />
                         <StackPanel Background="DarkRed" Grid.Column="1" Margin="5" Grid.ColumnSpan="3">
@@ -258,9 +260,6 @@
                 </Grid>
 
                 <Grid Background="#40000000" Margin="10,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
                     <Button Cursor="Hand" Command="{Binding ApplySettings}" Margin="10,10" HorizontalAlignment="Right"
                             FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}"
                             Width="150"
