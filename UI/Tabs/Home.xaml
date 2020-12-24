@@ -4,11 +4,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
+    xmlns:converter="clr-namespace:Syn3Updater.Converter"
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     x:Class="Syn3Updater.UI.Tabs.Home"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged">
     <UserControl.Resources>
+        <converter:LocConverter x:Key="LocConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <local:HomeViewModel />
@@ -31,34 +33,41 @@
                                Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                Text="{Binding Language, ConverterParameter=Home.CurrentConfiguration, Converter={StaticResource LocConverter}}"
                                TextDecorations="{x:Null}" />
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
-                                   Margin="10,0,5,10" xml:space="preserve"
-                                   Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                    <WrapPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" 
+                                HorizontalAlignment="Center" MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                       Margin="10,0,5,10" 
+                                       Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
                                    Text="{Binding CurrentSyncVersion}" />
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
-                                   Margin="10,0,5,10" xml:space="preserve"
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                   Margin="10,0,5,10"
                                    Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
                                    Text="{Binding CurrentSyncRegion}" />
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
-                                   Margin="10,0,5,10" xml:space="preserve"
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                   Margin="10,0,5,10"
                                    Text="{Binding Language, ConverterParameter=Home.SyncNav, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
                                    Text="{Binding CurrentSyncNav}" />
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
-                                   Margin="10,0,5,10" xml:space="preserve"
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                   Margin="10,0,5,10"
                                    Text="{Binding Language, ConverterParameter=Home.DownloadPath, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,0,10,10"
                                    Text="{Binding DownloadLocation}" />
-                    </StackPanel>
+                        </StackPanel>
+                    </WrapPanel>
                 </Grid>
 
                 <Grid Background="#40000000" Margin="10,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
@@ -71,7 +80,7 @@
                                Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}"
                                TextDecorations="{x:Null}" />
-                    <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="2">
+                    <StackPanel Grid.RowSpan="3" Grid.Column="2">
                         <TextBlock Margin="20,15" FontWeight="Bold"
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveTitle, Converter={StaticResource LocConverter}}" />
@@ -84,15 +93,11 @@
                     </StackPanel>
 
                     <Grid Grid.Row="1" Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="25" />
                         </Grid.ColumnDefinitions>
-                        <ComboBox Margin="5,0,0,0" SelectedIndex="0" ItemsSource="{Binding DriveList}"
+                        <ComboBox Margin="10,0,0,0" SelectedIndex="0" ItemsSource="{Binding DriveList}"
                                   SelectedValuePath="Path" DisplayMemberPath="Name"
                                   SelectedItem="{Binding SelectedDrive}" />
                         <Button BorderThickness="0" Cursor="Hand" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -141,7 +146,7 @@
                                Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}"
                                TextDecorations="{x:Null}" />
-                    <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+                    <StackPanel Grid.RowSpan="3" Grid.Column="1">
                         <TextBlock Margin="20,15,20,0" FontWeight="Bold"
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />
