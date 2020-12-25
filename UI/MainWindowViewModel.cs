@@ -21,6 +21,7 @@ namespace Syn3Updater.UI
                     new TabItem("0xE700", "", ""),
                     new TabItem("0xE946", "About", "about"),
                     new TabItem("0xE80F", "Home", "home", true),
+                    new TabItem("0xE7EC", "Utility", "utility"),
                     new TabItem("0xE896", "Downloads", "downloads")
                     //TODO Implement Profiles and News in the future
                     //new TabItem("0xF163","Profiles","profiles"),

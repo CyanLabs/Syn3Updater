@@ -112,6 +112,10 @@
       <DependentUpon>Download.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Tabs\DownloadViewModel.cs" />
+    <Compile Include="UI\Tabs\UtilityViewModel.cs" />
+    <Compile Include="UI\Tabs\Utility.xaml.cs">
+      <DependentUpon>Utility.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Tabs\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
@@ -146,6 +150,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Tabs\Download.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Tabs\Utility.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

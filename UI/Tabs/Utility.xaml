@@ -1,0 +1,89 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
+    xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+    x:Class="Syn3Updater.UI.Tabs.Utility"
+    mc:Ignorable="d"
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Utility_OnIsVisibleChanged">
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <local:UtilityViewModel/>
+    </UserControl.DataContext>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical">
+                <Grid Background="#40000000" Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="10" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="5,5,5,0" FontSize="18" FontFamily="Segoe UI Light"
+                               Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                               Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}"
+                               TextDecorations="{x:Null}" />
+
+                    <StackPanel Margin="5,10,5,10" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" Margin="0">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                       Margin="10,0,5,0"
+                                       Text="{Binding Language, ConverterParameter=Home.DriveName, Converter={StaticResource LocConverter}}" />
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                       Text="{Binding DriveName}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                       Margin="10,0,5,0"
+                                       Text="{Binding Language, ConverterParameter=Home.DriveLetter, Converter={StaticResource LocConverter}}" />
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                       Text="{Binding DriveLetter}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0">
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold"
+                                       Margin="10,0,5,0"
+                                       Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, Converter={StaticResource LocConverter}}" />
+                            <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                       Text="{Binding DriveFileSystem}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="25" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Margin="10,0,0,0" SelectedIndex="0" ItemsSource="{Binding DriveList}"
+                                  SelectedValuePath="Path" DisplayMemberPath="Name"
+                                  SelectedItem="{Binding SelectedDrive}" />
+                        <Button BorderThickness="0" Cursor="Hand" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
+                                Background="#00000000" Content="&#xE72C;" VerticalAlignment="Center" Foreground="White"
+                                Grid.Column="1" HorizontalAlignment="Center"
+                                Command="{Binding RefreshUSB}" />
+                    </Grid>
+                </Grid>
+
+            <StackPanel Background="#40000000" Margin="10,5" Orientation="Horizontal">
+                <StackPanel>
+                    <TextBlock  Margin="5" FontSize="18" FontFamily="Segoe UI Light" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Utility.CreateLogTitle, Converter={StaticResource LocConverter}}" TextDecorations="{x:Null}" />
+                    <TextBlock Margin="10,5" TextWrapping="Wrap" Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.CreateLogDesc, Converter={StaticResource LocConverter}}" />
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5">
+                        <Button Cursor="Hand" Command="{Binding LogPrepareUSB}" Margin="5,10" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Content="{Binding Language, ConverterParameter=Utility.CreateLogStep1, Converter={StaticResource LocConverter}}" Background="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2Brush}" />
+                        <TextBlock Margin="10,10" Padding="10" TextAlignment="Center" FontWeight="Bold" Foreground="{DynamicResource SystemBaseHighColorBrush}" Text="{Binding Language, ConverterParameter=Utility.CreateLogStep2, Converter={StaticResource LocConverter}}" />
+                        <Button Cursor="Hand" Command="{Binding LogParseXml}" Margin="0,10" FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Content="{Binding Language, ConverterParameter=Utility.CreateLogStep3, Converter={StaticResource LocConverter}}" Background="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2Brush}" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Visibility="{Binding ToggleLogXMLDetails}">
+                    <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,5,5,0" Text="{Binding Language, ConverterParameter=Utility.LogXMLTitle, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" FontWeight="Bold" Margin="10,5,5,0" Text="{Binding LogXMLDetails}" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
