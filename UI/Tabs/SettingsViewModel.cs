@@ -98,8 +98,8 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _downloadLocation, value);
-                    ApplicationManager.Instance.DownloadLocation = value;
-                    Properties.Settings.Default.DownloadLocation = value;
+                    ApplicationManager.Instance.DownloadPath = value;
+                    Properties.Settings.Default.DownloadPath = value;
                 }
             }
         }
@@ -200,7 +200,7 @@ namespace Syn3Updater.UI.Tabs
 
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
 
-            DownloadLocation = ApplicationManager.Instance.DownloadLocation;
+            DownloadLocation = ApplicationManager.Instance.DownloadPath;
             ShowAllReleases = Properties.Settings.Default.ShowAllReleases;
             LicenseKey = Properties.Settings.Default.LicenseKey;
             CurrentLanguage = Properties.Settings.Default.Lang;
@@ -222,7 +222,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void DownloadPathAction()
         {
-            string oldPath = Properties.Settings.Default.DownloadLocation;
+            string oldPath = Properties.Settings.Default.DownloadPath;
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
                 if (Directory.Exists(oldPath))

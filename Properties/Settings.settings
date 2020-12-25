@@ -16,7 +16,7 @@
     <Setting Name="CurrentSyncNav" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DownloadLocation" Type="System.String" Scope="User">
+    <Setting Name="DownloadPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CurrentInstallMode" Type="System.String" Scope="User">

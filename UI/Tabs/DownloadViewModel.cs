@@ -139,7 +139,7 @@ namespace Syn3Updater.UI.Tabs
                     return;
                 }
 
-                if (ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
+                if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
                     true))
                 {
                     UpdateLog($"[Copier] {item.FileName} exists and successfully validated, skipping copy");
@@ -160,10 +160,10 @@ namespace Syn3Updater.UI.Tabs
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                         }
 
-                        _fileHelper.CopyFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
+                        _fileHelper.CopyFile(ApplicationManager.Instance.DownloadPath + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
 
-                        if (ValidateFile(ApplicationManager.Instance.DownloadLocation + item.FileName,
+                        if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
                         {
                             UpdateLog($"[Copier] copied {item.FileName} and successfully validated");
@@ -182,7 +182,7 @@ namespace Syn3Updater.UI.Tabs
                     }
                 }
 
-                Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(ApplicationManager.Instance.DownloadLocation + item.FileName));
+                Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(ApplicationManager.Instance.DownloadPath + item.FileName));
                 _count++;
                 PercentageChanged.Raise(this, 100);
             }
@@ -239,7 +239,7 @@ namespace Syn3Updater.UI.Tabs
                         return;
                     }
 
-                    if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false))
+                    if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                     {
                         UpdateLog($"[Downloader] {item.FileName} exists and successfully validated, skipping download");
                         _count++;
@@ -262,7 +262,7 @@ namespace Syn3Updater.UI.Tabs
 
                                 try
                                 {
-                                    await _fileHelper.download_file(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, _ct);
+                                    await _fileHelper.download_file(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
                                 }
                                 catch (HttpRequestException webException)
                                 {
@@ -270,7 +270,7 @@ namespace Syn3Updater.UI.Tabs
                                         MessageBoxImage.Exclamation);
                                 }
 
-                                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadLocation + item.FileName, item.Md5, false))
+                                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                                 {
                                     UpdateLog($"[Downloader] downloaded {item.FileName} and successfully validated");
                                     _count++;
@@ -366,7 +366,7 @@ namespace Syn3Updater.UI.Tabs
             }
 
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
-                Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadLocation + item.FileName));
+                Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadPath + item.FileName));
 
             Directory.CreateDirectory($@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\");
             Task.Run(DoCopy, _tokenSource.Token);

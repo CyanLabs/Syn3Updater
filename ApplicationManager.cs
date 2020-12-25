@@ -66,7 +66,7 @@ namespace Syn3Updater
 
         private MainWindow _mainWindow;
 
-        public string DownloadLocation,
+        public string DownloadPath,
             DriveName,
             DrivePartitionType,
             DriveFileSystem,
@@ -103,19 +103,19 @@ namespace Syn3Updater
             //client = new DiscordRpcClient("");
             //client.Initialize();
 
-            if (string.IsNullOrWhiteSpace(Settings.Default.DownloadLocation))
+            if (string.IsNullOrWhiteSpace(Settings.Default.DownloadPath))
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"[Settings] Download location is not set, defaulting to {downloads}\\Syn3Updater\\");
-                Settings.Default.DownloadLocation = $@"{downloads}\Syn3Updater\";
+                Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
             }
 
-            DownloadLocation = Settings.Default.DownloadLocation;
+            DownloadPath = Settings.Default.DownloadPath;
 
-            if (!Directory.Exists(DownloadLocation) && DownloadLocation != "")
+            if (!Directory.Exists(DownloadPath) && DownloadPath != "")
             {
                 Logger.Debug("[App] Download location does not exist");
-                Directory.CreateDirectory(DownloadLocation);
+                Directory.CreateDirectory(DownloadPath);
             }
 
             foreach (string arg in Environment.GetCommandLineArgs())

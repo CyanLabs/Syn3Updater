@@ -253,7 +253,7 @@ namespace Syn3Updater.UI.Tabs
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
             CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
-            DownloadLocation = ApplicationManager.Instance.DownloadLocation;
+            DownloadLocation = ApplicationManager.Instance.DownloadPath;
             SelectedMapVersionIndex = -1;
             SelectedReleaseIndex = -1;
             StartEnabled = false;
@@ -286,7 +286,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void RefreshUsb()
         {
-            DriveList = USBHelper.refresh_devices();
+            DriveList = USBHelper.refresh_devices(true);
         }
 
         private void UpdateDriveInfo()
