@@ -148,6 +148,7 @@ namespace Syn3Updater.UI.Tabs
                 }
                 else
                 {
+                    if (_ct.IsCancellationRequested) return;
                     UpdateLog($"[Copier] {item.FileName} is missing or invalid, copying");
                     DownloadInfo = $"Copying: {item.FileName}";
                     _progressBarSuffix = LanguageManager.GetValue("String.Copied");
@@ -276,6 +277,7 @@ namespace Syn3Updater.UI.Tabs
                     }
                     else
                     {
+                        if (_ct.IsCancellationRequested) return;
                         UpdateLog($"[Downloader] {item.FileName} is missing or invalid, downloading");
                         DownloadInfo = $"Downloading: {item.Url}";
                         _progressBarSuffix = LanguageManager.GetValue("String.Downloaded");

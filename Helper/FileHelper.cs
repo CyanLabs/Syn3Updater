@@ -146,12 +146,6 @@ namespace Syn3Updater.Helper
         {
             ValidateResult validateResult = new ValidateResult();
             string filename = Path.GetFileName(localfile);
-            if (ct.IsCancellationRequested)
-            {
-                validateResult.Message = "[App] Process cancelled by user";
-                validateResult.Result = false;
-                return validateResult;
-            }
 
             if (ApplicationManager.Instance.SkipCheck)
             {
@@ -168,7 +162,6 @@ namespace Syn3Updater.Helper
             }
 
             string localMd5 = md5_helper(localfile,ct);
-
             if (md5 == null)
             {
                 long filesize = new FileInfo(localfile).Length;
@@ -208,6 +201,12 @@ namespace Syn3Updater.Helper
             {
                 validateResult.Message = $"[Validator] {filename} matches known good checksum";
                 validateResult.Result = true;
+                return validateResult;
+            }
+            if (ct.IsCancellationRequested)
+            {
+                validateResult.Message = "[App] Process cancelled by user";
+                validateResult.Result = false;
                 return validateResult;
             }
 
