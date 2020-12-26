@@ -37,6 +37,7 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.ShowDownloadsTab += delegate { CurrentTab = "downloads"; };
             ApplicationManager.Instance.ShowSettingsTab += delegate { CurrentTab = "settings"; };
             ApplicationManager.Instance.ShowHomeTab += delegate { CurrentTab = "home"; };
+            ApplicationManager.Instance.ShowUtilityTab += delegate { CurrentTab = "utility"; };
         }
 
         #endregion

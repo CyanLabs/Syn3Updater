@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Newtonsoft.Json;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable CollectionNeverUpdated.Global
@@ -19,26 +23,60 @@ namespace Syn3Updater.Model
         public const string MapReleasesConst = Base + "items/map_releases?sort=-name&limit=-1&[regionplaceholder]&[published]";
         public const string AppReleaseSingle = Base + "items/releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         public const string MapReleaseSingle = Base + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
+        public const string IVSUSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
 
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 
-        public const string ReformatToolUrl = "https://cyanlabs.net/api/Syn3Updater/reformat.php";
-        public const string ReformatToolFileName = "1u5t-14g386-cb.tar.gz";
-        public const string ReformatToolName = "1u5t-14g386-cb";
-        public const string ReformatToolMd5 = "75E08C3EED8D2039BAF65B6156F79106";
+        public static readonly SyncModel.SyncIvsu ReformatTool = new SyncModel.SyncIvsu
+        {
+            Type = "TOOL",
+            Name = "1u5t-14g386-cb",
+            Version = "",
+            Notes = LanguageManager.GetValue("String.Required") + " Factory Reformat Tool - Production Cert",
+            Url = "https://cyanlabs.net/api/Syn3Updater/reformat.php",
+            Md5 = "75E08C3EED8D2039BAF65B6156F79106",
+            Selected = true,
+            FileName = "1u5t-14g386-cb.tar.gz"
+        };
 
-        public const string DowngradeAppUrl = "https://ivsubinaries.azureedge.net/swparts/4U5T-14G381-AN_1552583626000.TAR.GZ";
-        public const string DowngradeAppFileName = "4U5T-14G381-AN_1552583626000.TAR.GZ";
-        public const string DowngradeAppName = "4U5T-14G381-AN";
-        public const string DowngradeAppMd5 = "0553D1A474FBF9F0DB68A9C96FBDA7CB";
+        public static readonly SyncModel.SyncIvsu DowngradeApp = new SyncModel.SyncIvsu
+        {
+            Type = "APPS",
+            Name = "4U5T-14G381-AN",
+            Version = "3.3.19052",
+            Notes = LanguageManager.GetValue("String.Required"),
+            Url = "https://ivsubinaries.azureedge.net/swparts/4U5T-14G381-AN_1552583626000.TAR.GZ",
+            Md5 = "0553D1A474FBF9F0DB68A9C96FBDA7CB",
+            Selected = true,
+            FileName = "4U5T-14G381-AN_1552583626000.TAR.GZ"
+        };
 
-        public const string DowngradeToolUrl = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz";
-        public const string DowngradeToolFileName = "GB5T-14G386-SC_85041.tar.gz";
-        public const string DowngradeToolName = "GB5T-14G386-SC";
-        public const string DowngradeToolMd5 = "E16F5E01D816E738E2B68592BDC22F3F";
+        public static readonly SyncModel.SyncIvsu DowngradeTool = new SyncModel.SyncIvsu
+        {
+            Type = "TOOL",
+            Name = "GB5T-14G386-SC",
+            Version = "",
+            Notes = LanguageManager.GetValue("String.Required"),
+            Url = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz",
+            Md5 = "E16F5E01D816E738E2B68592BDC22F3F",
+            Selected = true,
+            FileName = "GB5T-14G386-SC_85041.tar.gz"
+        };
 
-        public class Data
+        public static readonly SyncModel.SyncIvsu InterrogatorTool = new SyncModel.SyncIvsu
+        {
+            Type = "TOOL",
+            Name = "GB5T-14G386-AC",
+            Version = "",
+            Notes = LanguageManager.GetValue("String.Required"),
+            Url = "http://ivsu.binaries.ford.com/swparts/GB5T-14G386-AC_1587495565000.TAR.GZ",
+            Md5 = "1D8A92F839324C96C7A9AD95A2AFC39E",
+            Selected = true,
+            FileName = "GB5T-14G386-AC_1587495565000.TAR.GZ"
+        };
+
+    public class Data
         {
             public int id { get; set; }
             public string name { get; set; }
@@ -47,6 +85,7 @@ namespace Syn3Updater.Model
             public string status { get; set; }
             public string version { get; set; }
             public IList<Ivsus> ivsus { get; set; }
+
         }
 
         public class Ivsu
@@ -93,6 +132,12 @@ namespace Syn3Updater.Model
             public string map_version { get; set; }
             public string notes { get; set; }
             public IList<string> regions { get; set; }
+        }
+
+        public class Root
+        {
+            [JsonProperty("data")]
+            public Data Data { get; set; }
         }
 
         #endregion

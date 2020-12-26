@@ -47,6 +47,11 @@ namespace Syn3Updater
             ShowHomeTab?.Invoke(this, new EventArgs());
         }
 
+        public void FireUtilityTabEvent()
+        {
+            ShowUtilityTab?.Invoke(this, new EventArgs());
+        }
+
         public void FireSettingsTabEvent()
         {
             ShowSettingsTab?.Invoke(this, new EventArgs());
@@ -57,6 +62,8 @@ namespace Syn3Updater
         public event EventHandler ShowDownloadsTab;
 
         public event EventHandler ShowHomeTab;
+
+        public event EventHandler ShowUtilityTab;
 
         public event EventHandler ShowSettingsTab;
 
@@ -76,9 +83,10 @@ namespace Syn3Updater
             SelectedRelease,
             SelectedRegion,
             InstallMode,
-            SyncVersion;
+            SyncVersion,
+            Action;
 
-        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading;
+        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
 
         #endregion
 

@@ -30,7 +30,7 @@ namespace Syn3Updater.UI.Tabs
         #region Properties & Fields
 
         private string _apiAppReleases, _apiMapReleases;
-        private bool _appsselected, _canceldownload;
+        private bool _canceldownload;
         private string _stringCompatibility, _stringReleasesJson, _stringMapReleasesJson, _stringDownloadJson, _stringMapDownloadJson;
         private Api.JsonReleases _jsonMapReleases, _jsonReleases;
 
@@ -443,44 +443,14 @@ namespace Syn3Updater.UI.Tabs
 
                 if (InstallMode == "downgrade")
                 {
-                    IvsuList.Add(new SyncModel.SyncIvsu
-                    {
-                        Type = "APPS",
-                        Name = Api.DowngradeAppName,
-                        Version = "",
-                        Notes = LanguageManager.GetValue("String.Required"),
-                        Url = Api.DowngradeAppUrl,
-                        Md5 = Api.DowngradeAppMd5,
-                        Selected = true,
-                        FileName = Api.DowngradeAppFileName
-                    });
-
-                    IvsuList.Add(new SyncModel.SyncIvsu
-                    {
-                        Type = "TOOL",
-                        Name = Api.DowngradeToolName,
-                        Version = "",
-                        Notes = LanguageManager.GetValue("String.Required"),
-                        Url = Api.DowngradeToolUrl,
-                        Md5 = Api.DowngradeToolMd5,
-                        Selected = true,
-                        FileName = Api.DowngradeToolFileName
-                    });
+                    IvsuList.Add(Api.DowngradeApp);
+                    IvsuList.Add(Api.DowngradeTool);
                 }
 
                 if (InstallMode == "reformat" || InstallMode == "downgrade")
-                    IvsuList.Add(new SyncModel.SyncIvsu
-                    {
-                        Type = "TOOL",
-                        Name = Api.ReformatToolName,
-                        Version = "",
-                        Notes = LanguageManager.GetValue("String.Required"),
-                        Url = Api.ReformatToolUrl,
-                        Md5 = Api.ReformatToolMd5,
-                        Selected = true,
-                        FileName = Api.ReformatToolFileName
-                    });
+                    IvsuList.Add(Api.ReformatTool);
 
+                ApplicationManager.Instance.Action = "main";
                 ApplicationManager.Instance.InstallMode = InstallMode;
 
                 HttpResponseMessage response = Client.GetAsync(Api.AppReleaseSingle + SelectedRelease).Result;
@@ -534,7 +504,7 @@ namespace Syn3Updater.UI.Tabs
             foreach (SyncModel.SyncIvsu item in IvsuList)
                 if (item.Selected)
                 {
-                    if (item.Type == "APPS") _appsselected = true;
+                    if (item.Type == "APPS") ApplicationManager.Instance.AppsSelected = true;
 
                     if (Debugger.IsAttached)
                     {
@@ -545,7 +515,31 @@ namespace Syn3Updater.UI.Tabs
                     ApplicationManager.Instance.Ivsus.Add(item);
                 }
 
-            if (!CancelledDownload())
+            bool canceldownload = false;
+            //Install Mode is reformat or downgrade My20 warning
+            if (InstallMode == "reformat" || InstallMode == "downgrade")
+            {
+                if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                        canceldownload = true;
+                }
+                canceldownload = true;
+            }
+
+            //Warn is users region is different to new selection
+            if (SelectedRegion.Code != Properties.Settings.Default.CurrentSyncRegion)
+                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                    canceldownload = true;
+
+            //Cancel no apps package selected
+            if (ApplicationManager.Instance.AppsSelected == false && (InstallMode == "reformat" || InstallMode == "downgrade"))
+            {
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                canceldownload = true;
+            }
+
+            if (!canceldownload && !SanityCheckHelper.CancelDownloadCheck(SelectedDrive))
             {
                 if (ApplicationManager.Instance.DownloadOnly == false)
                 {
@@ -561,71 +555,6 @@ namespace Syn3Updater.UI.Tabs
                 StartEnabled = false;
                 ApplicationManager.Instance.FireDownloadsTabEvent();
             }
-        }
-
-        private bool CancelledDownload()
-        {
-            //No USB drive selected, download only?
-            if ((SelectedDrive == null || SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")) && _canceldownload == false)
-            {
-                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
-                    ApplicationManager.Logger.Info("[App] No usb has been selected, download only mode activated");
-                    ApplicationManager.Instance.DownloadOnly = true;
-                }
-                else
-                {
-                    _canceldownload = true;
-                }
-            }
-
-            if ((InstallMode == "reformat" || InstallMode == "downgrade") && _canceldownload == false && ApplicationManager.Instance.DownloadOnly == false)
-            {
-                if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
-                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
-                        MessageBoxResult.Yes)
-                        _canceldownload = true;
-                }
-                else
-                {
-                    _canceldownload = true;
-                }
-            }
-
-            //Check region is the same.
-            if (SelectedRegion.Code != Properties.Settings.Default.CurrentSyncRegion && _canceldownload == false)
-                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
-                    MessageBoxResult.Yes)
-                    _canceldownload = true;
-
-
-            if (!string.IsNullOrEmpty(DriveLetter))
-                if (DownloadLocation.Contains(DriveLetter) && _canceldownload == false)
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-
-            if (!string.IsNullOrEmpty(DriveLetter) && ApplicationManager.Instance.SkipFormat)
-            {
-                if (SelectedDrive != null && MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), SelectedDrive.Name, DriveLetter),
-                    "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                    ApplicationManager.Instance.SkipFormat = false;
-                else
-                    ApplicationManager.Logger.Info("[App] USB Drive not formatted, using existing filesystem and files");
-            }
-
-            if (_appsselected == false && _canceldownload == false && (InstallMode == "reformat" || InstallMode == "downgrade"))
-            {
-                MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                _canceldownload = true;
-            }
-
-            // ReSharper disable once InvertIf
-            if (ApplicationManager.Instance.DownloadOnly == false && _canceldownload == false && ApplicationManager.Instance.SkipFormat == false)
-                if (SelectedDrive != null && MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), SelectedDrive.Name, DriveLetter), "Syn3 Updater",
-                    MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                    _canceldownload = true;
-            return _canceldownload;
         }
 
         #endregion
