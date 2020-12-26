@@ -16,7 +16,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void Utility_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool) e.NewValue && (bool) e.OldValue == false) (DataContext as UtilityViewModel)?.ReloadSettings();
+            if ((bool) e.NewValue && (bool) e.OldValue == false) (DataContext as UtilityViewModel)?.ReloadTab();
         }
     }
 }

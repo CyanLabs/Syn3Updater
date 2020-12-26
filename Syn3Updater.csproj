@@ -89,11 +89,13 @@
     <Compile Include="Helper\EventHelper.cs" />
     <Compile Include="Helper\ExceptionExtension.cs" />
     <Compile Include="Helper\FileHelper.cs" />
+    <Compile Include="Helper\SanityCheckHelper.cs" />
     <Compile Include="Helper\USBHelper.cs" />
     <Compile Include="Model\APIModel.cs" />
     <Compile Include="Helper\SystemHelper.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Model\APISecretModel.cs" />
+    <Compile Include="Model\Interrogator.cs" />
     <Compile Include="Model\LanguageModel.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
     <Compile Include="Model\SyncModel.cs" />

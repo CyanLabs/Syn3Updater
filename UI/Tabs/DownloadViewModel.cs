@@ -30,7 +30,7 @@ namespace Syn3Updater.UI.Tabs
         #region Properties & Fields
 
         private int _currentProgress, _totalPercentage, _totalPercentageMax, _count;
-        private string _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _selectedMapVersion, _progressBarSuffix, _installMode;
+        private string _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _selectedMapVersion, _progressBarSuffix, _installMode, _action;
         private bool _cancelButtonEnabled;
         private Task _downloadTask;
         private FileHelper _fileHelper;
@@ -112,6 +112,7 @@ namespace Syn3Updater.UI.Tabs
             UpdateLog($"[App] Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}");
 
             InstallMode = ApplicationManager.Instance.InstallMode;
+            _action = ApplicationManager.Instance.Action;
             UpdateLog($"[App] Install mode set to {InstallMode}");
 
             CancelButtonEnabled = true;
@@ -189,17 +190,28 @@ namespace Syn3Updater.UI.Tabs
 
             UpdateLog("[App] All files downloaded and copied to USB successfully!");
             DownloadInfo = LanguageManager.GetValue("String.Completed");
+            ApplicationManager.Instance.IsDownloading = false;
             USBHelper.GenerateLog(Log);
-            if (MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
-                MessageBoxResult.Yes)
+            if (_action == "main")
             {
-                Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
-                ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
+                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                {
+                    Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
+                    ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
+                }
+
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
+                ApplicationManager.Instance.FireHomeTabEvent();
+            }
+            else if(_action == "logutility")
+            {
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                ApplicationManager.Instance.UtilityCreateLogStep1Complete = true;
+                ApplicationManager.Instance.FireUtilityTabEvent();
             }
 
-            MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-            Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
-            CancelAction();
+            Reset();
         }
 
         private void CancelAction()
@@ -215,6 +227,20 @@ namespace Syn3Updater.UI.Tabs
             _tokenSource.Dispose();
             _tokenSource = new CancellationTokenSource();
             ApplicationManager.Instance.FireHomeTabEvent();
+        }
+
+        private void Reset()
+        {
+            CancelButtonEnabled = false;
+            ApplicationManager.Instance.IsDownloading = false;
+            _tokenSource.Cancel();
+            TotalPercentage = 0;
+            CurrentProgress = 0;
+            DownloadInfo = "";
+            DownloadPercentage = "";
+            Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
+            _tokenSource.Dispose();
+            _tokenSource = new CancellationTokenSource();
         }
 
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
@@ -266,8 +292,9 @@ namespace Syn3Updater.UI.Tabs
                                 }
                                 catch (HttpRequestException webException)
                                 {
-                                    MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException", webException.Message)), "Syn3 Updater", MessageBoxButton.OK,
+                                    MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException"), webException.InnerException?.InnerException?.Message), "Syn3 Updater", MessageBoxButton.OK,
                                         MessageBoxImage.Exclamation);
+                                    CancelAction();
                                 }
 
                                 if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
@@ -325,7 +352,7 @@ namespace Syn3Updater.UI.Tabs
         private void PrepareUsb()
         {
             UpdateLog("[App] Preparing USB drive");
-            if (ApplicationManager.Instance.SkipFormat == false)
+            if (ApplicationManager.Instance.SkipFormat == false && ApplicationManager.Instance.DownloadOnly == false)
             {
                 UpdateLog("[App] Formatting USB drive");
                 using (Process p = new Process())
@@ -352,18 +379,30 @@ namespace Syn3Updater.UI.Tabs
                 Thread.Sleep(5000);
             }
 
-            switch (InstallMode)
+            if (_action == "main")
             {
-                case "autoinstall":
-                    CreateAutoInstall();
-                    break;
-                case "downgrade":
-                    CreateReformat();
-                    break;
-                case "reformat":
-                    CreateReformat();
-                    break;
+                switch (InstallMode)
+                {
+                    case "autoinstall":
+                        CreateAutoInstall();
+                        break;
+                    case "downgrade":
+                        CreateReformat();
+                        break;
+                    case "reformat":
+                        CreateReformat();
+                        break;
+                }
             }
+            else if(_action == "logutility")
+            {
+                CreateAutoInstall();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
 
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadPath + item.FileName));
@@ -381,12 +420,12 @@ namespace Syn3Updater.UI.Tabs
             string extrafiles = "";
             int baseint = 0, extraint = 0;
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
-                if (item.Type == @"APPS" || item.Type == @"VOICE" || item.Type == @"ENH_DAB" || item.Type == @"MAP_LICENSE" || item.Type == @"VOICE_NAV")
+                if (item.Type == @"APPS" || item.Type == @"VOICE" || item.Type == @"ENH_DAB" || item.Type == @"MAP_LICENSE" || item.Type == @"VOICE_NAV" || ApplicationManager.Instance.AppsSelected == false)
                 {
                     baseint++;
                     autoinstalllst += $@"Item{baseint} = {item.Type} - {item.FileName}\rOpen{baseint} = SyncMyRide\{item.FileName}\r".Replace(@"\r", Environment.NewLine);
                 }
-                else
+                else if (ApplicationManager.Instance.AppsSelected)
                 {
                     if (extrafiles == "") extrafiles = $@"[SYNCGen3.0_ALL]{Environment.NewLine}";
                     if (extraint == 10)
@@ -397,6 +436,10 @@ namespace Syn3Updater.UI.Tabs
 
                     extraint++;
                     extrafiles += $@"Item{extraint} = {item.Type} - {item.FileName}\rOpen{extraint} = SyncMyRide\{item.FileName}\r".Replace(@"\r", Environment.NewLine);
+                }
+                else
+                {
+                    //TODO
                 }
 
             if (extrafiles != "") extrafiles += @"Options = Delay,Include,Transaction";
@@ -413,8 +456,8 @@ namespace Syn3Updater.UI.Tabs
             int i = 0;
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
             {
-                if (item.Md5 == Api.ReformatToolMd5 || item.Md5 == Api.DowngradeAppMd5 && _selectedRelease != @"Sync 3.3.19052" ||
-                    item.Md5 == Api.DowngradeToolMd5) continue;
+                if (item.Md5 == Api.ReformatTool.Md5 || item.Md5 == Api.DowngradeApp.Md5 && _selectedRelease != @"Sync 3.3.19052" ||
+                    item.Md5 == Api.DowngradeTool.Md5) continue;
                 i++;
                 reformatlst += $@"{item.Type}={item.FileName}";
                 if (i != ApplicationManager.Instance.Ivsus.Count) reformatlst += Environment.NewLine;
@@ -428,21 +471,21 @@ namespace Syn3Updater.UI.Tabs
             if (InstallMode == @"downgrade")
             {
                 autoinstalllst +=
-                    $@"Item1 = TOOL - {Api.DowngradeToolFileName}\rOpen1 = SyncMyRide\{Api.DowngradeToolFileName}\r".Replace(@"\r",
+                    $@"Item1 = TOOL - {Api.DowngradeTool.FileName}\rOpen1 = SyncMyRide\{Api.DowngradeTool.FileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst +=
-                    $@"Item2 = APP - {Api.DowngradeAppFileName}\rOpen2 = SyncMyRide\{Api.DowngradeAppFileName}\r".Replace(@"\r",
+                    $@"Item2 = APP - {Api.DowngradeApp.FileName}\rOpen2 = SyncMyRide\{Api.DowngradeApp.FileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst += $@"Options = AutoInstall{Environment.NewLine}[SYNCGen3.0_ALL]{Environment.NewLine}";
                 autoinstalllst +=
-                    $@"Item1 = REFORMAT TOOL - {Api.ReformatToolFileName}\rOpen1 = SyncMyRide\{Api.ReformatToolFileName}\r".Replace(@"\r",
+                    $@"Item1 = REFORMAT TOOL - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst += $@"Options = AutoInstall,Include,Transaction{Environment.NewLine}";
             }
             else if (InstallMode == @"reformat")
             {
                 autoinstalllst +=
-                    $@"Item1 = REFORMAT TOOL  - {Api.ReformatToolFileName}\rOpen1 = SyncMyRide\{Api.ReformatToolFileName}\r".Replace(@"\r",
+                    $@"Item1 = REFORMAT TOOL  - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r".Replace(@"\r",
                         Environment.NewLine);
                 autoinstalllst += @"Options = AutoInstall";
             }
