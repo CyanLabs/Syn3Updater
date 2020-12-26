@@ -522,7 +522,10 @@ namespace Syn3Updater.UI.Tabs
                     if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                         canceldownload = true;
                 }
-                canceldownload = true;
+                else
+                {
+                    canceldownload = true;
+                }
             }
 
             //Warn is users region is different to new selection
