@@ -14,7 +14,7 @@
     <UserControl.DataContext>
         <local:SettingsViewModel />
     </UserControl.DataContext>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" fw:PointerTracker.Enabled="True">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="9*" />
@@ -130,7 +130,7 @@
                         <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    HorizontalAlignment="Right" Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Settings.SyncNavigation, Converter={StaticResource LocConverter}}" />
-                        <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Grid.Row="0"
+                        <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Grid.Row="0" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" BorderBrush="White"
                                   Grid.Column="1" IsChecked="{Binding CurrentSyncNav}" />
                     </Grid>
                 </Grid>
@@ -144,6 +144,7 @@
                         <ColumnDefinition Width="25" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
@@ -178,6 +179,11 @@
                                Text="{Binding Language, ConverterParameter=Settings.Language, Converter={StaticResource LocConverter}}" />
                     <ComboBox ItemsSource="{Binding Languages}" SelectedValuePath="Code" DisplayMemberPath="Name"
                               VerticalContentAlignment="Center" SelectedValue="{Binding CurrentLanguage}" Grid.Row="2"
+                              Grid.Column="3" Grid.ColumnSpan="2" />
+                    <TextBlock Foreground="{DynamicResource SystemBaseHighColorBrush}" HorizontalAlignment="Right"
+                               Grid.Row="3" Grid.Column="2"
+                               Text="{Binding Language, ConverterParameter=Settings.Theme, Converter={StaticResource LocConverter}}" />
+                    <ComboBox ItemsSource="{Binding Themes}" VerticalContentAlignment="Center" SelectedValue="{Binding CurrentTheme}" Grid.Row="3"
                               Grid.Column="3" Grid.ColumnSpan="2" />
                 </Grid>
 
@@ -218,7 +224,7 @@
                         <TextBlock Grid.Row="2" Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                    HorizontalAlignment="Right" Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Settings.ShowAllReleases, Converter={StaticResource LocConverter}}" />
-                        <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Grid.Row="2"
+                        <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Grid.Row="2" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" BorderBrush="White" 
                                   Grid.Column="1" IsChecked="{Binding ShowAllReleases}" />
                     </Grid>
 
@@ -260,16 +266,9 @@
                 </Grid>
 
                 <Grid Background="#40000000" Margin="10,5">
-                    <Button Cursor="Hand" Command="{Binding ApplySettings}" Margin="10,10" HorizontalAlignment="Right"
-                            FontFamily="Segoe UI" Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                            Width="150"
+                    <Button Cursor="Hand" Command="{Binding ApplySettings}" Margin="10,10" HorizontalAlignment="Right" Foreground="White"
+                            FontFamily="Segoe UI" Padding="5" Width="150" Style="{StaticResource ButtonAccentRevealStyle}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}"
                             Content="{Binding Language, ConverterParameter=Settings.Apply, Converter={StaticResource LocConverter}}">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}" Offset="0" />
-                                <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}" Offset="1" />
-                            </LinearGradientBrush>
-                        </Button.Background>
                     </Button>
                 </Grid>
             </StackPanel>

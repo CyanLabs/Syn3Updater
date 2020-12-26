@@ -19,7 +19,6 @@ namespace Syn3Updater.UI
             Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
             AutoUpdater.Start($"https://cyanlabs.net/api/latest.php?product={Assembly.GetEntryAssembly()?.GetName().Name}");
         }
 

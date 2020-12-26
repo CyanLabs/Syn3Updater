@@ -6,14 +6,15 @@
     xmlns:local="clr-namespace:Syn3Updater.UI"
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     xmlns:converter="clr-namespace:Syn3Updater.Converter" xmlns:tabs="clr-namespace:Syn3Updater.UI.Tabs"
+    xmlns:fa5="http://schemas.fontawesome.com/icons/"
     x:Class="Syn3Updater.UI.MainWindow"
     mc:Ignorable="d"
     Title="Syn3 Updater"
     Height="640"
     Width="800"
     MinHeight="640"
-    MinWidth="800"
-    fw:AcrylicWindow.Enabled="True" Icon="/Syn3Updater;component/cyanlabs.ico"
+    MinWidth="800" 
+    fw:AcrylicWindow.Enabled="True" fw:AcrylicWindow.TintOpacity="0.8" Icon="/Syn3Updater;component/cyanlabs.ico"
     Closing="Window_Closing">
     <Window.Resources>
 
@@ -47,8 +48,7 @@
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
-                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" ToolTip="{Binding Name}" 
-                               Text="{Binding Icon}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" />
+                    <fa5:FontAwesome Icon="{Binding Icon}" FontSize="24" ToolTip="{Binding Name}" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="White" />
                     <TextBlock
                         Grid.Column="1"
                         Margin="10,0"
@@ -86,7 +86,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Width="auto" Background="{x:Null}" fw:PointerTracker.Enabled="True">
-            <Grid Background="{x:Static SystemParameters.WindowGlassBrush}" Opacity="0.5" />
+            <Grid Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" Opacity="0.5" />
             <ListView
                 ItemsSource="{Binding TabItems, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}"
                 ItemTemplate="{DynamicResource TabItemTemplate}" Background="{x:Null}" BorderBrush="{x:Null}"
@@ -121,9 +121,10 @@
                         Grid.ColumnSpan="2" Grid.Column="0">
                         <Rectangle Width="4" HorizontalAlignment="Left" Margin="0,0" Fill="White" />
                     </Grid>
-                    <TextBlock Grid.Column="0" FontFamily="Segoe MDL2 Assets" FontSize="24"
-                               ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}"
-                               Text="&#xE713;" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" />
+                    <fa5:FontAwesome Icon="Solid_Cog" Grid.Column="0" FontSize="24"
+                                     ToolTip="{Binding Language, ConverterParameter=Main.Settings, Converter={StaticResource LocConverter}}"
+                                     VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" />
+                    
                     <TextBlock Grid.Column="1" Margin="20,0,0,0" FontSize="20" FontWeight="Light"
                                FontFamily="Segoe UI Light" Foreground="White" VerticalAlignment="Center"
                                HorizontalAlignment="Left"

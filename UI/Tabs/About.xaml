@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+    xmlns:fa5="http://schemas.fontawesome.com/icons/"
     x:Class="Syn3Updater.UI.Tabs.About"
     mc:Ignorable="d"
     d:DesignHeight="425" d:DesignWidth="800">
@@ -16,8 +17,8 @@
 
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <Grid Background="#40000000">
+            <StackPanel fw:PointerTracker.Enabled="True">
+                <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
@@ -37,49 +38,30 @@
                                    TextWrapping="WrapWithOverflow" />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White"
-                                    Width="140" Content="CYANLABS" Command="{Binding WebsiteButton}">
-                                <Button.Background>
-                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}"
-                                                      Offset="0" />
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}"
-                                                      Offset="1" />
-                                    </LinearGradientBrush>
-                                </Button.Background>
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Command="{Binding WebsiteButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <fa5:FontAwesome Icon="Solid_GlobeAmericas" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
+                                    <TextBlock Text="CYANLABS"  VerticalAlignment="Center" ></TextBlock>
+                                </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White"
-                                    Width="140"
-                                    Content="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}"
-                                    Command="{Binding ForumButton}">
-                                <Button.Background>
-                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}"
-                                                      Offset="0" />
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}"
-                                                      Offset="1" />
-                                    </LinearGradientBrush>
-                                </Button.Background>
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Command="{Binding ForumButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:FontAwesome Icon="Brands_Discourse" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
+                                    <TextBlock Text="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center" ></TextBlock>
+                                </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White"
-                                    Width="140"
-                                    Content="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}"
-                                    Command="{Binding DonateButton}">
-                                <Button.Background>
-                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}"
-                                                      Offset="0" />
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}"
-                                                      Offset="1" />
-                                    </LinearGradientBrush>
-                                </Button.Background>
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Command="{Binding DonateButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:FontAwesome Icon="Brands_Paypal" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
+                                    <TextBlock Text="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center" ></TextBlock>
+                                </StackPanel>
                             </Button>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
 
 
-                <Grid Background="#40000000">
+                <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
@@ -90,38 +72,25 @@
                                    Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}"
                                    TextWrapping="WrapWithOverflow" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White"
-                                    Width="180"
-                                    Content="{Binding Language, ConverterParameter=About.FordHubButton, Converter={StaticResource LocConverter}}"
-                                    Command="{Binding FordHubButton}">
-                                <Button.Background>
-                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}"
-                                                      Offset="0" />
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}"
-                                                      Offset="1" />
-                                    </LinearGradientBrush>
-                                </Button.Background>
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="160" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}" Command="{Binding FordHubButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:FontAwesome Icon="Solid_Car" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
+                                    <TextBlock Text="{Binding Language, ConverterParameter=About.FordHubButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="0,5,5,5" FontFamily="Segoe UI" Padding="5" Foreground="White"
-                                    Width="180"
-                                    Content="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}"
-                                    Command="{Binding DocButton}">
-                                <Button.Background>
-                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark2}"
-                                                      Offset="0" />
-                                        <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}"
-                                                      Offset="1" />
-                                    </LinearGradientBrush>
-                                </Button.Background>
+                            <Button Cursor="Hand" Margin="0,5,5,5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="250" Command="{Binding DocButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:FontAwesome Icon="Solid_Book" FontSize="24"  VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}"></TextBlock>
+                                </StackPanel>
+                                
                             </Button>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
 
 
-                <Grid Background="#40000000" VerticalAlignment="Bottom">
+                <Grid VerticalAlignment="Bottom">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
                                    Foreground="{DynamicResource SystemBaseHighColorBrush}"
@@ -133,7 +102,7 @@
                                    Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}" />
 
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Margin="10"
+                            <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Margin="10" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" BorderBrush="White"
                                       IsChecked="{Binding DisclaimerAccepted}" />
                             <TextBlock VerticalAlignment="Center"
                                        Foreground="{DynamicResource SystemBaseHighColorBrush}"

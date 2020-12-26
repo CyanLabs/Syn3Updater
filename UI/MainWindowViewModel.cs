@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using FontAwesome5;
+using SourceChord.FluentWPF;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
 
@@ -14,15 +16,31 @@ namespace Syn3Updater.UI
 
         public MainWindowViewModel()
         {
+            switch (Settings.Default.Theme)
+            {
+                case "Dark":
+                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+                    break;
+                case "Light":
+                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
+                    break;
+                case "System":
+                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Default;
+                    break;
+                default:
+                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+                    break;
+            }
+
             ApplicationManager.Instance.LanguageChangedEvent += delegate
             {
                 ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
                 {
-                    new TabItem("0xE700", "", ""),
-                    new TabItem("0xE946", "About", "about"),
-                    new TabItem("0xE80F", "Home", "home", true),
-                    new TabItem("0xE7EC", "Utility", "utility"),
-                    new TabItem("0xE896", "Downloads", "downloads")
+                    new TabItem(EFontAwesomeIcon.Solid_Bars, "", ""),
+                    new TabItem(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
+                    new TabItem(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
+                    new TabItem(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
+                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads")
                     //TODO Implement Profiles and News in the future
                     //new TabItem("0xF163","Profiles","profiles"),
                     //new TabItem("0xF582","News","news"),
@@ -100,9 +118,9 @@ namespace Syn3Updater.UI
             private string _key;
             private string _name;
 
-            public TabItem(string icon, string name, string key, bool current = false)
+            public TabItem(FontAwesome5.EFontAwesomeIcon icon, string name, string key, bool current = false)
             {
-                Icon = ((char) Convert.ToInt32(icon, 16)).ToString();
+                Icon = icon.ToString();
                 Name = name;
                 Key = key;
                 IsCurrent = current;

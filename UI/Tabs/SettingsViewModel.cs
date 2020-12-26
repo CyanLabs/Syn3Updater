@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
 using Ookii.Dialogs.Wpf;
+using SourceChord.FluentWPF;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 
@@ -39,6 +40,14 @@ namespace Syn3Updater.UI.Tabs
         {
             get => _installModes;
             set => SetProperty(ref _installModes, value);
+        }
+
+        private ObservableCollection<string> _themes;
+
+        public ObservableCollection<string> Themes
+        {
+            get => _themes;
+            set => SetProperty(ref _themes, value);
         }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
@@ -115,6 +124,33 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _currentInstallMode, value);
                     Properties.Settings.Default.CurrentInstallMode = value;
+                }
+            }
+        }
+
+        private string _currentTheme;
+
+        public string CurrentTheme
+        {
+            get => _currentTheme;
+            set
+            {
+                if (value != null)
+                {
+                    SetProperty(ref _currentTheme, value);
+                    Properties.Settings.Default.Theme = value;
+                    if (Properties.Settings.Default.Theme == "Dark")
+                    {
+                        ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+                    }
+                    else if (Properties.Settings.Default.Theme == "Light")
+                    {
+                        ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
+                    }
+                    else
+                    {
+                        ResourceDictionaryEx.GlobalTheme = ElementTheme.Default;
+                    }
                 }
             }
         }
@@ -196,6 +232,12 @@ namespace Syn3Updater.UI.Tabs
                 "autodetect", "autoinstall", "reformat", "downgrade"
             };
             CurrentInstallMode = currentInstallModeTemp;
+
+            Themes = new ObservableCollection<string>
+            {
+                "Dark", "Light", "System"
+            };
+            CurrentTheme = Properties.Settings.Default.Theme;
 
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
 

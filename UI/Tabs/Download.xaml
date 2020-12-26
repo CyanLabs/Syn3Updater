@@ -34,8 +34,8 @@
                         <ProgressBar Height="20" Value="{Binding CurrentProgress}">
                             <ProgressBar.Foreground>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccent}" Offset="0" />
-                                    <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}"
+                                    <GradientStop Color="{Binding Path=(fw:AccentColors.ImmersiveSystemAccent)}" Offset="0" />
+                                    <GradientStop Color="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark3)}"
                                                   Offset="1" />
                                 </LinearGradientBrush>
                             </ProgressBar.Foreground>
@@ -47,8 +47,8 @@
                                      Maximum="{Binding TotalPercentageMax}">
                             <ProgressBar.Foreground>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccent}" Offset="0" />
-                                    <GradientStop Color="{x:Static fw:AccentColors.ImmersiveSystemAccentDark3}"
+                                    <GradientStop Color="{Binding Path=(fw:AccentColors.ImmersiveSystemAccent)}" Offset="0" />
+                                    <GradientStop Color="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark3)}"
                                                   Offset="1" />
                                 </LinearGradientBrush>
                             </ProgressBar.Foreground>
@@ -69,8 +69,7 @@
                                            Text="{Binding InstallMode}" />
                             </StackPanel>
                             <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
-                                    IsEnabled="{Binding CancelButtonEnabled}"
-                                    Background="{x:Static fw:AccentColors.ImmersiveSystemAccentBrush}" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI"
+                                    IsEnabled="{Binding CancelButtonEnabled}" Style="{StaticResource ButtonAccentRevealStyle}" Margin="5" HorizontalAlignment="Right" FontFamily="Segoe UI"
                                     Padding="5" Foreground="{DynamicResource SystemBaseHighColorBrush}" Width="100"
                                     Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}" />
                         </Grid>
