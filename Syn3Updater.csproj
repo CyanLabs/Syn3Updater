@@ -95,7 +95,7 @@
     <Compile Include="Helper\SystemHelper.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Model\APISecretModel.cs" />
-    <Compile Include="Model\Interrogator.cs" />
+    <Compile Include="Model\InterrogatorModel.cs" />
     <Compile Include="Model\LanguageModel.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
     <Compile Include="Model\SyncModel.cs" />

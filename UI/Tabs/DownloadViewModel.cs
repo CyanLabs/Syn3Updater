@@ -209,6 +209,10 @@ namespace Syn3Updater.UI.Tabs
                 MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                 ApplicationManager.Instance.UtilityCreateLogStep1Complete = true;
                 ApplicationManager.Instance.FireUtilityTabEvent();
+            } else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
+            {
+                MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                ApplicationManager.Instance.FireUtilityTabEvent();
             }
 
             Reset();
@@ -307,7 +311,7 @@ namespace Syn3Updater.UI.Tabs
                                 if (i == 3)
                                 {
                                     UpdateLog($"[Downloader] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
-                                    MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3", item.FileName)), "Syn3 Updater", MessageBoxButton.OK,
+                                    MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
                                         MessageBoxImage.Error);
                                     CancelAction();
                                     break;
@@ -394,7 +398,7 @@ namespace Syn3Updater.UI.Tabs
                         break;
                 }
             }
-            else if(_action == "logutility")
+            else if(_action == "logutility" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
             {
                 CreateAutoInstall();
             }

@@ -33,8 +33,7 @@ namespace Syn3Updater.Helper
 
         public static ObservableCollection<Drive> refresh_devices(bool fakeusb)
         {
-            ObservableCollection<Drive> driveList = new ObservableCollection<Drive>();
-            driveList.Add(new Drive { Path = "", Name = fakeusb ? LanguageManager.GetValue("Home.NoUSB") : ""});
+            ObservableCollection<Drive> driveList = new ObservableCollection<Drive> {new Drive {Path = "", Name = fakeusb ? LanguageManager.GetValue("Home.NoUSB") : ""}};
             ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive WHERE InterfaceType='USB'");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {

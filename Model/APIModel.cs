@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
@@ -76,7 +74,31 @@ namespace Syn3Updater.Model
             FileName = "GB5T-14G386-AC_1587495565000.TAR.GZ"
         };
 
-    public class Data
+        public static readonly SyncModel.SyncIvsu GracenotesRemoval = new SyncModel.SyncIvsu
+        {
+            Type = "TOOL",
+            Name = "GB5T-14G386-SC",
+            Version = "",
+            Notes = "Remove Gracenotes Deletes",
+            Url = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz",
+            Md5 = "E16F5E01D816E738E2B68592BDC22F3F",
+            Selected = true,
+            FileName = "GB5T-14G386-SC_85041.tar.gz"
+        };
+
+        public static readonly SyncModel.SyncIvsu SmallVoicePackage = new SyncModel.SyncIvsu
+        {
+            Type = "VOICE",
+            Name = "5U5T-14G391-CM",
+            Version = "3.2.20142",
+            Notes = "",
+            Url = "https://ivsubinaries.azureedge.net/swparts/5U5T-14G391-CM_1598635923000.TAR.GZ",
+            Md5 = "07BA3A81B976701ED18E2718D866418B",
+            Selected = true,
+            FileName = "5U5T-14G391-CM_1598635923000.TAR.GZ"
+        };
+
+        public class Data
         {
             public int id { get; set; }
             public string name { get; set; }

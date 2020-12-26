@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-
 namespace Syn3Updater.Model
 {
-
-    public partial class Interrogator
+    public class InterrogatorModel
     {
         [JsonProperty("?xml")]
         public Xml Xml { get; set; }
@@ -17,7 +14,7 @@ namespace Syn3Updater.Model
         public POtaModuleSnapShot POtaModuleSnapShot { get; set; }
     }
 
-    public partial class POtaModuleSnapShot
+    public class POtaModuleSnapShot
     {
         [JsonProperty("@xmlns:d2p1")]
         public string XmlnsD2P1 { get; set; }
@@ -50,7 +47,7 @@ namespace Syn3Updater.Model
         public PNode PNode { get; set; }
     }
 
-    public partial class PNode
+    public class PNode
     {
         [JsonProperty("@isFlashed")]
         [JsonConverter(typeof(PurpleParseStringConverter))]
@@ -72,7 +69,7 @@ namespace Syn3Updater.Model
         public D2P1AdditionalAttributes D2P1AdditionalAttributes { get; set; }
     }
 
-    public partial class D2P1AdditionalAttributes
+    public class D2P1AdditionalAttributes
     {
         [JsonProperty("@logGeneratedDateTime")]
         public DateTimeOffset LogGeneratedDateTime { get; set; }
@@ -94,7 +91,7 @@ namespace Syn3Updater.Model
         public string D2P1SyncData { get; set; }
     }
 
-    public partial class D2P1PartitionHealth
+    public class D2P1PartitionHealth
     {
         [JsonProperty("@type")]
         public string Type { get; set; }
@@ -106,7 +103,7 @@ namespace Syn3Updater.Model
         public string Available { get; set; }
     }
 
-    public partial class D2P1EcuAcronym
+    public class D2P1EcuAcronym
     {
         [JsonProperty("@name")]
         public string Name { get; set; }
@@ -115,13 +112,13 @@ namespace Syn3Updater.Model
         public D2P1State D2P1State { get; set; }
     }
 
-    public partial class D2P1State
+    public class D2P1State
     {
         [JsonProperty("d2p1:Gateway")]
         public D2P1Gateway D2P1Gateway { get; set; }
     }
 
-    public partial class D2P1Gateway
+    public class D2P1Gateway
     {
         [JsonProperty("@gatewayType")]
         public string GatewayType { get; set; }
@@ -130,7 +127,7 @@ namespace Syn3Updater.Model
         public D2P1Did[] D2P1Did { get; set; }
     }
 
-    public partial class D2P1Did
+    public class D2P1Did
     {
         [JsonProperty("@didFormat", NullValueHandling = NullValueHandling.Ignore)]
         public string DidFormat { get; set; }
@@ -153,7 +150,7 @@ namespace Syn3Updater.Model
         public bool D2P1IsConfig { get; set; }
     }
 
-    public partial class D2P1OdlNetwork
+    public class D2P1OdlNetwork
     {
         [JsonProperty("@d2p1:NetworkDataRate")]
         [JsonConverter(typeof(FluffyParseStringConverter))]
@@ -172,7 +169,7 @@ namespace Syn3Updater.Model
         public string D2P1Pins { get; set; }
     }
 
-    public partial class PRequestRole
+    public class PRequestRole
     {
         [JsonProperty("d2p1:Role")]
         public string D2P1Role { get; set; }
@@ -187,7 +184,7 @@ namespace Syn3Updater.Model
         public string D2P1RoleId { get; set; }
     }
 
-    public partial class Xml
+    public class Xml
     {
         [JsonProperty("@version")]
         public string Version { get; set; }
@@ -235,7 +232,6 @@ namespace Syn3Updater.Model
             var value = (bool)untypedValue;
             var boolString = value ? "true" : "false";
             serializer.Serialize(writer, boolString);
-            return;
         }
 
         public static readonly PurpleParseStringConverter Singleton = new PurpleParseStringConverter();
@@ -266,7 +262,6 @@ namespace Syn3Updater.Model
             }
             var value = (long)untypedValue;
             serializer.Serialize(writer, value.ToString());
-            return;
         }
 
         public static readonly FluffyParseStringConverter Singleton = new FluffyParseStringConverter();

@@ -30,7 +30,6 @@ namespace Syn3Updater.UI.Tabs
         #region Properties & Fields
 
         private string _apiAppReleases, _apiMapReleases;
-        private bool _canceldownload;
         private string _stringCompatibility, _stringReleasesJson, _stringMapReleasesJson, _stringDownloadJson, _stringMapDownloadJson;
         private Api.JsonReleases _jsonMapReleases, _jsonReleases;
 
@@ -496,7 +495,6 @@ namespace Syn3Updater.UI.Tabs
 
         private void StartAction()
         {
-            _canceldownload = false;
             ApplicationManager.Instance.Ivsus.Clear();
             ApplicationManager.Instance.DownloadOnly = false;
             if (Debugger.IsAttached)

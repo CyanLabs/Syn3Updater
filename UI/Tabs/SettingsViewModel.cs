@@ -163,7 +163,6 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public class LanguageOption
         {
             public string Emoji { get; set; }
