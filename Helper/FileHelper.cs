@@ -167,7 +167,7 @@ namespace Syn3Updater.Helper
                 return validateResult;
             }
 
-            string localMd5 = md5_helper(localfile);
+            string localMd5 = md5_helper(localfile,ct);
 
             if (md5 == null)
             {
@@ -177,7 +177,7 @@ namespace Syn3Updater.Helper
                     long srcfilesize = new FileInfo(srcfile).Length;
 
                     if (srcfilesize == filesize)
-                        if (localMd5 == md5_helper(srcfile))
+                        if (localMd5 == md5_helper(srcfile,ct))
                         {
                             validateResult.Message = $"[Validator] {filename} checksum matches already verified local copy";
                             validateResult.Result = true;
@@ -216,7 +216,7 @@ namespace Syn3Updater.Helper
             return validateResult;
         }
 
-        public string md5_helper(string filename)
+        public string md5_helper(string filename, CancellationToken ct)
         {
             long totalBytesRead = 0;
             using (Stream file = File.OpenRead(filename))
@@ -227,6 +227,10 @@ namespace Syn3Updater.Helper
                 byte[] buffer;
                 do
                 {
+                    if (ct.IsCancellationRequested)
+                    {
+                        return null;
+                    }
                     buffer = new byte[4096];
                     bytesRead = file.Read(buffer, 0, buffer.Length);
                     totalBytesRead += bytesRead;
