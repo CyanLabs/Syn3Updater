@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
+using ModernWpf.Controls;
+using ModernWpf.Controls.Primitives;
 using Newtonsoft.Json;
 using Formatting = Newtonsoft.Json.Formatting;
 

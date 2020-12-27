@@ -11,6 +11,7 @@ using Ookii.Dialogs.Wpf;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
+using MessageBox = ModernWpf.MessageBox;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Syn3Updater.UI.Tabs
@@ -259,7 +260,7 @@ namespace Syn3Updater.UI.Tabs
             if (trimmedversion.Length >= 5 && CurrentSyncRegion != "")
                 ApplicationManager.Instance.FireHomeTabEvent();
             else
-                MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void DownloadPathAction()
@@ -269,7 +270,7 @@ namespace Syn3Updater.UI.Tabs
             if (dialog.ShowDialog().GetValueOrDefault())
                 if (Directory.Exists(oldPath))
                 {
-                    if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
+                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
                             Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
                         MessageBoxResult.Yes)
                         if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
