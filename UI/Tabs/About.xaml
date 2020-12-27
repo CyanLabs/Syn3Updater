@@ -19,7 +19,7 @@
             <StackPanel>
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}"  />
+                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}"  />
                         <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.About, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
                         <TextBlock Margin="10,0,5,10" FontSize="14" Text="This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo" TextWrapping="WrapWithOverflow" />
                         <TextBlock TextAlignment="Right" Margin="10,0,10,10" Text="Copyright © 2021 CyanLabs." TextWrapping="WrapWithOverflow" />
@@ -49,7 +49,7 @@
 
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" />
                         <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Cursor="Hand" Margin="5" Padding="5" Width="160" Style="{DynamicResource AccentButtonStyle}" Command="{Binding FordHubButton}">
@@ -70,7 +70,7 @@
 
                 <Grid VerticalAlignment="Bottom">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}"/>
                         <TextBlock Margin="10,0,5,10" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
                             <controls:ToggleSwitch Cursor="Hand" VerticalAlignment="Center" Margin="10" IsOn="{Binding DisclaimerAccepted}" OnContent="" OffContent="" Width="40" />

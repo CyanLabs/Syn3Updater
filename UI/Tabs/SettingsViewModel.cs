@@ -5,6 +5,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media.Media3D;
+using FontAwesome5;
 using Microsoft.VisualBasic.FileIO;
 using ModernWpf;
 using Ookii.Dialogs.Wpf;
@@ -146,12 +148,15 @@ namespace Syn3Updater.UI.Tabs
                     {
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                         ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+
                     }
                     else if (value == "Light")
                     {
                         ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     }
+                    ApplicationManager.Instance.FireThemeIconEvent();
+                    
                 }
             }
         }
@@ -252,6 +257,7 @@ namespace Syn3Updater.UI.Tabs
         public void ReloadSettings()
         {
             CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
+            CurrentTheme = Properties.Settings.Default.Theme;
         }
 
         private void ApplySettingsAction()

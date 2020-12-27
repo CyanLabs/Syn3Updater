@@ -2,12 +2,16 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using FontAwesome5;
 using ModernWpf;
+using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
+using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using MessageBox = ModernWpf.MessageBox;
+using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Syn3Updater.UI
 {
@@ -17,24 +21,31 @@ namespace Syn3Updater.UI
 
         public MainWindowViewModel()
         {
+            AppTitle = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
             switch (Settings.Default.Theme)
             {
                 case "Dark":
                     SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Dark;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                    ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
                 case "Light":
                     SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Light;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                    ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
                 case "System":
                     SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Default;
+
                     break;
                 default:
                     SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Dark;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                    ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
             }
+            CurrentTheme = Settings.Default.Theme;
+
             ApplicationManager.Instance.LanguageChangedEvent += delegate
             {
                 ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
@@ -58,7 +69,24 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.ShowSettingsTab += delegate { CurrentTab = "settings"; };
             ApplicationManager.Instance.ShowHomeTab += delegate { CurrentTab = "home"; };
             ApplicationManager.Instance.ShowUtilityTab += delegate { CurrentTab = "utility"; };
+            ApplicationManager.Instance.ThemeIcon += delegate
+            {
+                switch (Settings.Default.Theme)
+                {
+                    case "Dark":
+                        ThemeIcon = EFontAwesomeIcon.Solid_Moon;
+                        break;
+                    case "Light":
+                        ThemeIcon = EFontAwesomeIcon.Solid_Sun;
+                        break;
+                    default:
+                        break;
+                }
+            };
         }
+
+        private ActionCommand _changeTheme;
+        public ActionCommand ChangeTheme => _changeTheme ?? (_changeTheme = new ActionCommand(ChangeThemeAction));
 
         #endregion
 
@@ -151,6 +179,54 @@ namespace Syn3Updater.UI
                 get => _isCurrent;
                 set => SetProperty(ref _isCurrent, value);
             }
+        }
+
+        private string _appTitle;
+
+        public string AppTitle
+        {
+            get => _appTitle;
+            set => SetProperty(ref _appTitle, value);
+        }
+
+        private string _CurrentTheme;
+
+        public string CurrentTheme
+        {
+            get => _CurrentTheme;
+            set => SetProperty(ref _CurrentTheme, value);
+        }
+
+        private FontAwesome5.EFontAwesomeIcon _themeIcon;
+        public FontAwesome5.EFontAwesomeIcon ThemeIcon
+        {
+            get => _themeIcon;
+            set => SetProperty(ref _themeIcon, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void ChangeThemeAction()
+        {
+            string theme = Properties.Settings.Default.Theme;
+            if (theme == "Dark")
+            {
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Light;
+                Properties.Settings.Default.Theme = "Light";
+                ThemeIcon = EFontAwesomeIcon.Solid_Sun;
+            }
+            else if (theme == "Light")
+            {
+                ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                Properties.Settings.Default.Theme = "Dark";
+               
+                ThemeIcon = EFontAwesomeIcon.Solid_Moon;
+            }
+
         }
 
         #endregion

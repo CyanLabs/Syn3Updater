@@ -16,9 +16,24 @@
     Width="800"
     MinHeight="640"
     MinWidth="800" 
-    fw:AcrylicWindow.Enabled="True" fw:AcrylicWindow.TintOpacity="0.75"  Icon="/Syn3Updater;component/cyanlabs.ico"
-    Closing="Window_Closing" ui:ThemeManager.IsThemeAware="True">
+    fw:AcrylicWindow.Enabled="True" 
+    fw:AcrylicWindow.TintOpacity="0.75"
+    ui:WindowHelper.UseModernWindowStyle="True"
+    Icon="/Syn3Updater;component/cyanlabs.ico"
+    Closing="Window_Closing" 
+    ui:ThemeManager.IsThemeAware="True"
+    WindowStartupLocation="CenterOwner"
+    Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
+    ui:TitleBar.Style="{DynamicResource AppTitleBarStyle}"
+    WindowStyle="None"
+    >
     <Window.Resources>
+        <Style x:Key="AppTitleBarStyle" TargetType="ui:TitleBarControl">
+            <Setter Property="ui:ThemeManager.RequestedTheme" Value="Dark" />
+        </Style>
+
         <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="TabItemTemplate">
@@ -81,13 +96,35 @@
     <Window.DataContext>
         <local:MainWindowViewModel />
     </Window.DataContext>
-    <Grid Background="{x:Null}" x:Name="ContainingGrid" VerticalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid x:Name="AppTitleBar" Background="{DynamicResource SystemControlBackgroundAccentBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Margin="10,2,0,0" VerticalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="5">
+                <fa5:FontAwesome Icon="Solid_Car" FontSize="26" Margin="0,0,12,0" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True" Foreground="White"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding AppTitle}" Foreground="White" />
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Right" Grid.Column="4" Orientation="Horizontal" Margin="0,0,150,0">
+                <Button WindowChrome.IsHitTestVisibleInChrome="True" Width="NaN" Padding="6,3" Command="{Binding ChangeTheme}" Cursor="Hand">
+                    <fa5:FontAwesome VerticalAlignment="Center" Icon="{Binding ThemeIcon}" FontSize="16" Foreground="White"></fa5:FontAwesome>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Background="{x:Null}" x:Name="ContainingGrid" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Width="auto" Background="{x:Null}" fw:PointerTracker.Enabled="True">
-            <Grid Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" Opacity="0.5" />
+                <Grid Background="{DynamicResource SystemControlBackgroundAccentBrush}" />
             <ListView 
                 ItemsSource="{Binding TabItems, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}"
                 ItemTemplate="{DynamicResource TabItemTemplate}" Background="{x:Null}" BorderBrush="{x:Null}"
@@ -165,4 +202,5 @@
             <tabs:Settings HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </UserControl>
     </Grid>
+        </Grid>
 </Window>
