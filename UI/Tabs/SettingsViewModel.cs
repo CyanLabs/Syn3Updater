@@ -6,10 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
+using ModernWpf;
 using Ookii.Dialogs.Wpf;
-using SourceChord.FluentWPF;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
+using ElementTheme = SourceChord.FluentWPF.ElementTheme;
+using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Syn3Updater.UI.Tabs
 {
@@ -76,7 +78,7 @@ namespace Syn3Updater.UI.Tabs
             set
             {
                 string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                if (value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
+                if (value != null && value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
                 {
                     SetProperty(ref _currentSyncVersion, value);
                     ApplicationManager.Instance.SyncVersion = value;
@@ -139,17 +141,15 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _currentTheme, value);
                     Properties.Settings.Default.Theme = value;
-                    if (Properties.Settings.Default.Theme == "Dark")
+                    if (value == "Dark")
                     {
+                        ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                         ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
                     }
-                    else if (Properties.Settings.Default.Theme == "Light")
+                    else if (value == "Light")
                     {
                         ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
-                    }
-                    else
-                    {
-                        ResourceDictionaryEx.GlobalTheme = ElementTheme.Default;
+                        ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     }
                 }
             }
@@ -235,7 +235,8 @@ namespace Syn3Updater.UI.Tabs
 
             Themes = new ObservableCollection<string>
             {
-                "Dark", "Light", "System"
+                "Dark", "Light"
+
             };
             CurrentTheme = Properties.Settings.Default.Theme;
 

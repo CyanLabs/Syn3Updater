@@ -5,19 +5,44 @@
     xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
     x:Class="Syn3Updater.App"
     Exit="App_OnExit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--  FluentWPF Controls  -->
-                <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+                <!-- FluentWPF Controls -->
+                <ResourceDictionary Source="/FluentWPF;component/Styles/Controls.xaml" />
+                <ui:ThemeResources>
+                    <ui:ThemeResources.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+                            <ResourceDictionary.MergedDictionaries>
+                                <!-- FluentWPF theme resources -->
+                                <ResourceDictionary Source="/FluentWPF;component/Styles/Colors.Light.xaml" />
+                                <ResourceDictionary Source="/FluentWPF;component/Styles/Brushes.xaml" />
+                                <!-- ModernWPF theme resources -->
+                                <ResourceDictionary Source="/ModernWpf;component/ThemeResources/Light.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Dark">
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="/FluentWPF;component/Styles/Colors.Dark.xaml" />
+                                <ResourceDictionary Source="/FluentWPF;component/Styles/Brushes.xaml" />
+                                <ResourceDictionary Source="/ModernWpf;component/ThemeResources/Dark.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                            <SolidColorBrush x:Key="NavigationViewSelectionIndicatorForeground" Color="{StaticResource SystemBaseHighColor}" />
+                        </ResourceDictionary>
+                    </ui:ThemeResources.ThemeDictionaries>
+                </ui:ThemeResources>
 
+                <!-- ModernWPF controls resources -->
+                <ui:XamlControlsResources />
+
+            </ResourceDictionary.MergedDictionaries>
             <converter:LocConverter x:Key="LocConverter" />
 
             <!-- Tab Menu -->
-            <Style TargetType="ListView">
+            <Style TargetType="ListView" >
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Padding" Value="0,0,0,20" />
                 <Setter Property="Background" Value="Transparent" />
@@ -51,330 +76,6 @@
                                     <Setter Property="Background" Value="#80808080" />
                                 </Trigger>
 
-
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Color x:Key="ColorGainsboro">#FFDCDCDC</Color>
-            <Color x:Key="ColorBuckinghamGray">#FF2A2A2A</Color>
-            <Color x:Key="ColorBuckinghamGrayTransparent">#B82A2A2A</Color>
-            <Color x:Key="ColorJetBlack">#111111</Color>
-            <Color x:Key="ColorJetBlackTransparent">#B8111111</Color>
-            <Color x:Key="ColorJetBlackSuperTransparent">#60111111</Color>
-            <Color x:Key="ColorBlackTransparent">#50000000</Color>
-            <Color x:Key="ColorBananaYellow">#FFFFFFFF</Color>
-
-            <!-- ### Brushes ### -->
-            <SolidColorBrush x:Key="BrushBackground" presentationOptions:Freeze="True" Color="{StaticResource ColorJetBlack}" />
-            <SolidColorBrush x:Key="BrushForeground" presentationOptions:Freeze="True" Color="{StaticResource ColorGainsboro}" />
-
-            <!-- Window -->
-            <SolidColorBrush x:Key="BrushWindowBorder" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorBlackTransparent}" />
-            <SolidColorBrush x:Key="BrushWindowBackground" presentationOptions:Freeze="True" Color="#de000000" />
-
-            <!-- Box -->
-            <SolidColorBrush x:Key="BrushBoxBorder" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlackTransparent}" />
-            <SolidColorBrush x:Key="BrushBoxBackground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlackSuperTransparent}" />
-
-            <!-- ToolTip -->
-            <!--<SolidColorBrush x:Key="BrushTooltipForeground" presentationOptions:Freeze="True" Color="{StaticResource ColorGainsboro}" />
-    <SolidColorBrush x:Key="BrushTooltipBorder" presentationOptions:Freeze="True" Color="{StaticResource ColorJetBlack}" />
-    <SolidColorBrush x:Key="BrushTooltipBackground" presentationOptions:Freeze="True" Color="{StaticResource ColorJetBlackTransparent}" />-->
-
-            <!-- ComboBox -->
-            <SolidColorBrush x:Key="BrushComboBoxForeground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorGainsboro}" />
-            <SolidColorBrush x:Key="BrushComboBoxBackground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorBuckinghamGrayTransparent}" />
-            <SolidColorBrush x:Key="BrushComboBoxBackgroundPopup" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorBuckinghamGray}" />
-            <SolidColorBrush x:Key="BrushComboBoxBorder" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlackTransparent}" />
-            <SolidColorBrush x:Key="BrushComboBoxHover" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlack}" />
-            <SolidColorBrush x:Key="BrushComboBoxBackgroundGroupHeader" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlackSuperTransparent}" />
-
-            <!-- Button -->
-            <SolidColorBrush x:Key="BrushButtonForeground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorGainsboro}" />
-            <SolidColorBrush x:Key="BrushButtonBackground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorBuckinghamGrayTransparent}" />
-            <SolidColorBrush x:Key="BrushButtonBorder" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlackTransparent}" />
-            <SolidColorBrush x:Key="BrushButtonHover" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlack}" />
-
-            <!-- CheckBox -->
-            <SolidColorBrush x:Key="BrushCheckBoxForeground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorGainsboro}" />
-            <SolidColorBrush x:Key="BrushCheckBoxBackground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorBuckinghamGrayTransparent}" />
-            <SolidColorBrush x:Key="BrushCheckBoxBorder" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlackTransparent}" />
-            <SolidColorBrush x:Key="BrushCheckBoxHover" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlack}" />
-
-            <!-- ListBox -->
-            <SolidColorBrush x:Key="BrushListBoxForeground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorGainsboro}" />
-            <SolidColorBrush x:Key="BrushListBoxScrollButtonBackground" presentationOptions:Freeze="True"
-                             Color="Transparent" />
-            <SolidColorBrush x:Key="BrushListBoxScrollButtonBackgroundHover" presentationOptions:Freeze="True"
-                             Color="Transparent" />
-            <SolidColorBrush x:Key="BrushListBoxScrollButtonBorder" presentationOptions:Freeze="True"
-                             Color="Transparent" />
-            <SolidColorBrush x:Key="BrushListBoxItemBackground" presentationOptions:Freeze="True" Color="#00111111" />
-            <Color x:Key="ColorListBoxItemBackgroundHover">#60111111</Color>
-            <Color x:Key="ColorListBoxItemBackgroundSelected">#B8111111</Color>
-
-            <!-- ListView -->
-            <SolidColorBrush x:Key="BrushListViewForeground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorGainsboro}" />
-            <SolidColorBrush x:Key="BrushListViewScrollButtonBackground" presentationOptions:Freeze="True"
-                             Color="Transparent" />
-            <SolidColorBrush x:Key="BrushListViewScrollButtonBackgroundHover" presentationOptions:Freeze="True"
-                             Color="Transparent" />
-            <SolidColorBrush x:Key="BrushListViewScrollButtonBorder" presentationOptions:Freeze="True"
-                             Color="Transparent" />
-            <SolidColorBrush x:Key="BrushListViewItemBackground" presentationOptions:Freeze="True" Color="#00111111" />
-            <Color x:Key="ColorListViewItemBackgroundHover">#60111111</Color>
-            <Color x:Key="ColorListViewItemBackgroundSelected">#B8111111</Color>
-
-
-            <!-- TextBox -->
-            <SolidColorBrush x:Key="BrushTextBoxForeground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorGainsboro}" />
-            <SolidColorBrush x:Key="BrushTextBoxBackground" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorBuckinghamGrayTransparent}" />
-            <SolidColorBrush x:Key="BrushTextBoxBorder" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlackTransparent}" />
-            <SolidColorBrush x:Key="BrushTextBoxBorderHover" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlack}" />
-            <SolidColorBrush x:Key="BrushTextBoxBorderFocused" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorJetBlack}" />
-
-            <!-- Navigation -->
-            <SolidColorBrush x:Key="BrushNavigationItem" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorGainsboro}" />
-            <SolidColorBrush x:Key="BrushNavigationItemBlur" presentationOptions:Freeze="True"
-                             Color="{StaticResource ColorBananaYellow}" />
-
-
-            <!-- ### Border'n'stuff ### -->
-            <system:Double x:Key="DoubleNavigationBlurRadius">40</system:Double>
-
-
-            <!-- ### Fonts ### -->
-            <system:Double x:Key="FontSizeDefault">14</system:Double>
-            <system:Double x:Key="FontSizeTooltip">14</system:Double>
-            <system:Double x:Key="FontSizeNavigation">22</system:Double>
-
-            <Style TargetType="Button" x:Key="SmallSquareIcon" BasedOn="{StaticResource ButtonRevealStyle}">
-                <!--BasedOn="{StaticResource ButtonRevealStyle}" >-->
-                <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
-                <Setter Property="FontSize" Value="24" />
-                <Setter Property="Foreground" Value="White" />
-                <Setter Property="Margin" Value="8,0" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Padding" Value="8" />
-            </Style>
-
-            <Style TargetType="Button" x:Key="FloatingCircularButton">
-                <Setter Property="Foreground" Value="{DynamicResource SystemBaseHighColorBrush}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Foreground" Value="{DynamicResource SystemBaseMediumHighColorBrush}" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style TargetType="Button" x:Key="TransparentHoverButton">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{x:Null}" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-
-            <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
-                <Setter Property="SnapsToDevicePixels" Value="true" />
-                <Setter Property="OverridesDefaultStyle" Value="true" />
-                <Setter Property="IsTabStop" Value="false" />
-                <Setter Property="Focusable" Value="false" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="RepeatButton">
-                            <Border BorderThickness="1" BorderBrush="{DynamicResource SystemBaseHighColorBrush}"
-                                    Background="{DynamicResource SystemBaseHighColorBrush}" Height="3" />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonAccentRevealStyle}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsEnabled" Value="false">
-                                    <Setter Property="Background" TargetName="border" Value="DarkRed"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
-                <Setter Property="SnapsToDevicePixels" Value="true" />
-                <Setter Property="OverridesDefaultStyle" Value="true" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="RepeatButton">
-                            <Border SnapsToDevicePixels="True"
-                                    Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}"
-                                    BorderThickness="1"
-                                    BorderBrush="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}"
-                                    Height="3" />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style x:Key="SliderThumb" TargetType="Thumb">
-                <Setter Property="SnapsToDevicePixels" Value="true" />
-                <Setter Property="OverridesDefaultStyle" Value="true" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Thumb">
-                            <Border Height="24" Width="8" CornerRadius="4"
-                                    Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <ControlTemplate x:Key="Slider" TargetType="Slider">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Track Grid.Row="1" x:Name="PART_Track">
-                        <Track.DecreaseRepeatButton>
-                            <RepeatButton Style="{StaticResource SliderRepeatButton1}" Command="Slider.DecreaseLarge" />
-                        </Track.DecreaseRepeatButton>
-                        <Track.Thumb>
-                            <Thumb Style="{StaticResource SliderThumb}" />
-                        </Track.Thumb>
-                        <Track.IncreaseRepeatButton>
-                            <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
-                        </Track.IncreaseRepeatButton>
-                    </Track>
-                </Grid>
-            </ControlTemplate>
-
-            <Style TargetType="Slider">
-                <Setter Property="Focusable" Value="False" />
-                <Setter Property="SnapsToDevicePixels" Value="true" />
-                <Setter Property="OverridesDefaultStyle" Value="true" />
-                <Style.Triggers>
-                    <Trigger Property="Orientation" Value="Horizontal">
-                        <Setter Property="MinHeight" Value="21" />
-                        <Setter Property="MinWidth" Value="104" />
-                        <Setter Property="Template" Value="{StaticResource Slider}" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style TargetType="CheckBox">
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type CheckBox}">
-                            <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <StackPanel x:Name="swatches">
-                                    <Border x:Name="optionMark" CornerRadius="10"
-                                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0"
-                                            Background="{TemplateBinding Background}"
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Width="44" Height="20">
-                                        <Border Background="{TemplateBinding BorderBrush}" Width="10" Height="10"
-                                                CornerRadius="5" HorizontalAlignment="Right" Margin="5,0" />
-                                    </Border>
-
-                                    <Border x:Name="noOptionMark" CornerRadius="10"
-                                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2"
-                                            Background="{x:Null}"
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Width="44" Height="20">
-                                        <Border Background="{TemplateBinding BorderBrush}" Width="10" Height="10"
-                                                CornerRadius="5" HorizontalAlignment="Left" Margin="4,0" />
-                                    </Border>
-                                </StackPanel>
-                                <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False"
-                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="HasContent" Value="true">
-                                    <Setter Property="Padding" Value="4,-1,0,0" />
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Opacity" TargetName="swatches" Value="0.8" />
-                                </Trigger>
-                                <Trigger Property="IsChecked" Value="true">
-                                    <Setter Property="Visibility" TargetName="optionMark" Value="Visible" />
-                                    <Setter Property="Visibility" TargetName="noOptionMark" Value="Collapsed" />
-                                    <Setter Property="Opacity" TargetName="optionMark" Value="1" />
-                                    <Setter Property="Opacity" TargetName="noOptionMark" Value="0" />
-                                </Trigger>
-                                <Trigger Property="IsChecked" Value="false">
-                                    <Setter Property="Visibility" TargetName="optionMark" Value="Collapsed" />
-                                    <Setter Property="Visibility" TargetName="noOptionMark" Value="Visible" />
-                                    <Setter Property="Opacity" TargetName="optionMark" Value="0" />
-                                    <Setter Property="Opacity" TargetName="noOptionMark" Value="1" />
-                                </Trigger>
 
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

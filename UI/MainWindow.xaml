@@ -6,7 +6,9 @@
     xmlns:local="clr-namespace:Syn3Updater.UI"
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     xmlns:converter="clr-namespace:Syn3Updater.Converter" xmlns:tabs="clr-namespace:Syn3Updater.UI.Tabs"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
+    xmlns:fa5="http://schemas.fontawesome.com/icons/" 
+    xmlns:helper="clr-namespace:Syn3Updater.Helper"
     x:Class="Syn3Updater.UI.MainWindow"
     mc:Ignorable="d"
     Title="Syn3 Updater"
@@ -14,10 +16,9 @@
     Width="800"
     MinHeight="640"
     MinWidth="800" 
-    fw:AcrylicWindow.Enabled="True" fw:AcrylicWindow.TintOpacity="0.8" Icon="/Syn3Updater;component/cyanlabs.ico"
-    Closing="Window_Closing">
+    fw:AcrylicWindow.Enabled="True" fw:AcrylicWindow.TintOpacity="0.75"  Icon="/Syn3Updater;component/cyanlabs.ico"
+    Closing="Window_Closing" ui:ThemeManager.IsThemeAware="True">
     <Window.Resources>
-
         <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <DataTemplate x:Key="TabItemTemplate">
@@ -87,12 +88,12 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Width="auto" Background="{x:Null}" fw:PointerTracker.Enabled="True">
             <Grid Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" Opacity="0.5" />
-            <ListView
+            <ListView 
                 ItemsSource="{Binding TabItems, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}"
                 ItemTemplate="{DynamicResource TabItemTemplate}" Background="{x:Null}" BorderBrush="{x:Null}"
                 HorizontalAlignment="Left" Padding="0" Margin="0,0" ScrollViewer.VerticalScrollBarVisibility="Auto" />
 
-            <Grid>
+            <Grid Width="40">
                 <Grid HorizontalAlignment="Stretch" Margin="0,4" VerticalAlignment="Bottom"
                       MouseDown="Grid_MouseDown_1" Height="40">
                     <Grid.ColumnDefinitions>

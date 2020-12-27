@@ -8,9 +8,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows;
 using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using System.Xml.XPath;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using Syn3Updater.Helper;
@@ -126,7 +123,7 @@ namespace Syn3Updater.UI.Tabs
         public void ReloadTab()
         {
             ToggleLogXmlDetails = Visibility.Hidden;
-            UtiltyButtonStatus = !string.IsNullOrWhiteSpace(SelectedDrive.Name);
+            UtiltyButtonStatus = !string.IsNullOrWhiteSpace(SelectedDrive?.Name);
         }
 
         public void Init()

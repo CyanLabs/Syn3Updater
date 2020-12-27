@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using FontAwesome5;
-using SourceChord.FluentWPF;
+using ModernWpf;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
 
@@ -19,24 +19,25 @@ namespace Syn3Updater.UI
             switch (Settings.Default.Theme)
             {
                 case "Dark":
-                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Dark;
+                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                     break;
                 case "Light":
-                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
+                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Light;
+                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     break;
                 case "System":
-                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Default;
+                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Default;
                     break;
                 default:
-                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Dark;
+                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                     break;
             }
-
             ApplicationManager.Instance.LanguageChangedEvent += delegate
             {
                 ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
                 {
-                    new TabItem(EFontAwesomeIcon.Solid_Bars, "", ""),
                     new TabItem(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
                     new TabItem(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
                     new TabItem(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),

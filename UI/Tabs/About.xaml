@@ -4,53 +4,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
-    xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/"
+    xmlns:fa5="http://schemas.fontawesome.com/icons/" 
+    xmlns:controls="http://schemas.modernwpf.com/2019"
     x:Class="Syn3Updater.UI.Tabs.About"
     mc:Ignorable="d"
-    d:DesignHeight="425" d:DesignWidth="800">
-    <UserControl.Resources>
-    </UserControl.Resources>
+    d:DesignHeight="825" d:DesignWidth="800" FontSize="14" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+    <UserControl.Resources/>
     <UserControl.DataContext>
         <local:AboutViewmodel />
     </UserControl.DataContext>
 
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel fw:PointerTracker.Enabled="True">
+            <StackPanel>
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}"
-                                   TextDecorations="{x:Null}" />
-                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   Text="{Binding Language, ConverterParameter=About.About, Converter={StaticResource LocConverter}}"
-                                   TextWrapping="WrapWithOverflow" />
-                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   Text="This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo"
-                                   TextWrapping="WrapWithOverflow" />
-                        <TextBlock TextAlignment="Right" Margin="10,0,10,10" FontSize="14" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   Text="Copyright © 2021 CyanLabs."
-                                   TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}"  />
+                        <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.About, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="10,0,5,10" FontSize="14" Text="This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo" TextWrapping="WrapWithOverflow" />
+                        <TextBlock TextAlignment="Right" Margin="10,0,10,10" Text="Copyright © 2021 CyanLabs." TextWrapping="WrapWithOverflow" />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Command="{Binding WebsiteButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <fa5:FontAwesome Icon="Solid_GlobeAmericas" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
-                                    <TextBlock Text="CYANLABS"  VerticalAlignment="Center" ></TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="180" Command="{Binding ForumButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
+                            <Button Cursor="Hand" Margin="5" Padding="5" Width="150" Command="{Binding WebsiteButton}" Style="{DynamicResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:FontAwesome Icon="Brands_Discourse" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
-                                    <TextBlock Text="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center" ></TextBlock>
+                                    <fa5:FontAwesome Icon="Solid_GlobeAmericas" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                    <TextBlock Text="CYANLABS" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Command="{Binding DonateButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
+                            <Button Cursor="Hand" Margin="5" Padding="5" Width="180" Command="{Binding ForumButton}" Style="{DynamicResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:FontAwesome Icon="Brands_Discourse" FontSize="24" Margin="0,0,10,0" Foreground="White" />
+                                    <TextBlock Text="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Command="{Binding DonateButton}" Style="{DynamicResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa5:FontAwesome Icon="Brands_Paypal" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
                                     <TextBlock Text="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center" ></TextBlock>
@@ -60,53 +47,34 @@
                     </StackPanel>
                 </Grid>
 
-
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}"
-                                   TextDecorations="{x:Null}" />
-                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}"
-                                   TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="160" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}" Command="{Binding FordHubButton}">
+                            <Button Cursor="Hand" Margin="5" Padding="5" Width="160" Style="{DynamicResource AccentButtonStyle}" Command="{Binding FordHubButton}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:FontAwesome Icon="Solid_Car" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
-                                    <TextBlock Text="{Binding Language, ConverterParameter=About.FordHubButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center"></TextBlock>
+                                    <fa5:FontAwesome Icon="Solid_Car" FontSize="24" Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding Language, ConverterParameter=About.FordHubButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="0,5,5,5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="250" Command="{Binding DocButton}" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentDark1Brush)}" Style="{StaticResource ButtonAccentRevealStyle}">
+                            <Button Cursor="Hand" Margin="0,5,5,5" Padding="5" Width="250" Command="{Binding DocButton}" Style="{DynamicResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:FontAwesome Icon="Solid_Book" FontSize="24"  VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}"></TextBlock>
+                                    <fa5:FontAwesome Icon="Solid_Book" FontSize="24" Margin="0,0,10,0"/>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}"/>
                                 </StackPanel>
-                                
                             </Button>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
 
-
                 <Grid VerticalAlignment="Bottom">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <TextBlock Margin="5" FontSize="18" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}"
-                                   TextDecorations="{x:Null}" />
-                        <TextBlock Margin="10,0,5,10" FontSize="14" FontFamily="Segoe UI Light"
-                                   Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                   TextWrapping="WrapWithOverflow"
-                                   Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}" />
-
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Margin="10" Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" BorderBrush="White"
-                                      IsChecked="{Binding DisclaimerAccepted}" />
-                            <TextBlock VerticalAlignment="Center"
-                                       Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                                       Text="{Binding Language, ConverterParameter=About.DisclaimerAgreement, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}"/>
+                        <TextBlock Margin="10,0,5,10" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                            <controls:ToggleSwitch Cursor="Hand" VerticalAlignment="Center" Margin="10" IsOn="{Binding DisclaimerAccepted}" OnContent="" OffContent="" Width="40" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=About.DisclaimerAgreement, Converter={StaticResource LocConverter}}" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>

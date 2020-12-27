@@ -243,12 +243,20 @@ namespace Syn3Updater.UI.Tabs
             set => SetProperty(ref _startEnabled, value);
         }
 
+        private Visibility _driveDetailsVisible;
+        public Visibility DriveDetailsVisible
+        {
+            get => _driveDetailsVisible;
+            set => SetProperty(ref _driveDetailsVisible, value);
+        }
+
         #endregion
 
         #region Methods
 
         public void ReloadSettings()
         {
+            DriveDetailsVisible = SelectedDrive?.Name == LanguageManager.GetValue("Home.NoUSB") ? Visibility.Hidden : Visibility.Visible;
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
             CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
@@ -302,7 +310,7 @@ namespace Syn3Updater.UI.Tabs
             DriveLetter = driveInfo.Letter;
             DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
             DriveName = driveInfo.Name;
-
+            DriveDetailsVisible = SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB") ? Visibility.Hidden : Visibility.Visible;
             ApplicationManager.Logger.Info(
                 $"[App] USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
         }
