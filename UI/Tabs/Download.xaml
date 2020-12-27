@@ -45,7 +45,7 @@
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
                         <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5" Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" />
-                        <TextBox  Height="180" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True" myAttachedProperties:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" FontSize="12"/>
+                        <TextBox  Height="180" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True" myAttachedProperties:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" FontSize="11"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

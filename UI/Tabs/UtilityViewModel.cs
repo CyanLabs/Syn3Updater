@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
+using System.Xml.Linq;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Syn3Updater.UI.Tabs
 {
     internal class UtilityViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
+
+        private ActionCommand viewAsBuilt;
+        public ActionCommand ViewAsBuilt => viewAsBuilt ?? (viewAsBuilt = new ActionCommand(UploadFile));
 
         private ActionCommand _refreshUSB;
         public ActionCommand RefreshUSB => _refreshUSB ?? (_refreshUSB = new ActionCommand(RefreshUsbAction));
@@ -176,6 +183,7 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
+        private XDocument node;
         private void LogParseXmlAction()
         {
             VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
@@ -192,8 +200,9 @@ namespace Syn3Updater.UI.Tabs
                     D2P1Did[] d2P1Did = interrogatorLog.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
                     string syncappname = d2P1Did.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.SyncVersion")} {syncappname}{Environment.NewLine}";
-                    LogXmlDetails +=
-                        $"{LanguageManager.GetValue("Utility.APIMModel")} {d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single()}{Environment.NewLine}";
+
+                    string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
+                    LogXmlDetails +=  $"{LanguageManager.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
 
                     string apimsize = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/").Select(x => x.Total)
                         .Single();
@@ -232,10 +241,13 @@ namespace Syn3Updater.UI.Tabs
                         LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
                     }
 
+                    List<DID> asBuiltValues = new List<DID>();
+
                     LogXmlDetails += $"{Environment.NewLine}{Environment.NewLine}APIM AsBuilt (Ford/UCDS)";
                     foreach (D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
                     {
                         LogXmlDetails += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
+                        asBuiltValues.Add(new DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
                     }
 
                     ToggleLogXmlDetails = Visibility.Visible;
@@ -243,22 +255,49 @@ namespace Syn3Updater.UI.Tabs
                     Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
                     HttpResponseMessage response = Client.GetAsync(Api.IVSUSingle + syncappname).Result;
                     Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
-
-                    if (syncversion.data[0].version != ApplicationManager.Instance.SyncVersion)
+                    string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                    if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
                     {
-                        if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), syncversion.data[0].version), "Syn3 Updater",
+                        if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
                             MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                         {
                             Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
-                            ApplicationManager.Instance.SyncVersion = syncversion.data[0].version;
+                            ApplicationManager.Instance.SyncVersion = convertedsyncversion;
                         }
                     }
+
+                    DirectConfiguration asbult = new DirectConfiguration
+                    {
+                        VEHICLE = new VEHICLE
+                        {
+                            MODULE = "Syn3Updater",
+                            VIN = interrogatorLog.POtaModuleSnapShot.PVin,
+                            VEHICLEID = apimmodel,
+                            VEHICLEYEAR = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime.ToString(),
+                            DID = asBuiltValues
+                        }
+                    };
+                    json = JsonConvert.SerializeObject(asbult, Formatting.Indented);
+                    node = JsonConvert.DeserializeXNode(json, "DirectConfiguration");
 
                 }
                 catch (NullReferenceException)
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            }
+        }
+
+        private async void UploadFile()
+        {
+            if (node != null)
+            {
+                var formContent = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("xml", node.ToString()), });
+                var response = await Client.PostAsync(Api.AsBuiltPost, formContent);
+                var definition = new { filename = "", status = "" };
+                var contents = await response.Content.ReadAsStringAsync();
+                var output = JsonConvert.DeserializeAnonymousType(contents, definition);
+                Process.Start(Api.AsBuiltOutput + output.filename);
             }
         }
 

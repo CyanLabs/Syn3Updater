@@ -298,6 +298,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateDriveInfo()
         {
+            StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             USBHelper.DriveInfo driveInfo = USBHelper.UpdateDriveInfo(SelectedDrive);
 
             // Update app level vars
@@ -310,7 +311,7 @@ namespace Syn3Updater.UI.Tabs
             DriveLetter = driveInfo.Letter;
             DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
             DriveName = driveInfo.Name;
-            DriveDetailsVisible = SelectedDrive.Name == LanguageManager.GetValue("Home.NoUSB") ? Visibility.Hidden : Visibility.Visible;
+            DriveDetailsVisible = driveInfo.Name == null ? Visibility.Hidden : Visibility.Visible;
             ApplicationManager.Logger.Info(
                 $"[App] USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
         }
@@ -368,7 +369,7 @@ namespace Syn3Updater.UI.Tabs
                         SyncVersion.Add(item.name);
 
                 SyncVersionsEnabled = true;
-                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             }
         }
 

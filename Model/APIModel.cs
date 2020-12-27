@@ -98,6 +98,10 @@ namespace Syn3Updater.Model
             FileName = "5U5T-14G391-CM_1598635923000.TAR.GZ"
         };
 
+        private const string AsBuiltBase = "https://devtest.home.jiminald.co.uk/";
+        public const string AsBuiltPost = AsBuiltBase + "/api/post-xml";
+        public const string AsBuiltOutput = AsBuiltBase + "?filename=";
+
         public class Data
         {
             public int id { get; set; }

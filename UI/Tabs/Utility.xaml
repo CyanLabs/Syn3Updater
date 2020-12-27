@@ -72,24 +72,33 @@
                     <ColumnDefinition Width="260" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="70" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.CreateLogTitle, Converter={StaticResource LocConverter}}" />
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Margin="5,5,0,0" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.CreateLogTitle, Converter={StaticResource LocConverter}}" />
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="10,5" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.CreateLogDesc, Converter={StaticResource LocConverter}}" />
                 <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0">
-                    <Button MaxWidth="150" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding LogPrepareUSB}" Margin="5,10" Padding="5" Style="{DynamicResource AccentButtonStyle}">
+                    <Button MaxWidth="150" Height="50" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding LogPrepareUSB}" Margin="5,10" Padding="5" Style="{DynamicResource AccentButtonStyle}">
                         <TextBlock Text="{Binding Language, ConverterParameter=Utility.CreateLogStep1, Converter={StaticResource LocConverter}}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Button>
-                    <TextBlock MaxWidth="200" VerticalAlignment="Center" Margin="5,5" Padding="5" TextAlignment="Center" FontWeight="Bold" Text="{Binding Language, ConverterParameter=Utility.CreateLogStep2, Converter={StaticResource LocConverter}}" />
-                    <Button Cursor="Hand" MaxWidth="150" Command="{Binding LogParseXml}" Margin="0,10" FontFamily="Segoe UI" Padding="5" Style="{DynamicResource AccentButtonStyle}">
+                    <TextBlock MaxWidth="200" Height="50" VerticalAlignment="Center" Margin="5,5" Padding="5" TextAlignment="Center" FontWeight="Bold" Text="{Binding Language, ConverterParameter=Utility.CreateLogStep2, Converter={StaticResource LocConverter}}" />
+                    <Button Cursor="Hand" Height="50" MaxWidth="150" Command="{Binding LogParseXml}" Margin="0,10" Padding="5" Style="{DynamicResource AccentButtonStyle}">
                         <TextBlock Foreground="White" Text="{Binding Language, ConverterParameter=Utility.CreateLogStep3, Converter={StaticResource LocConverter}}" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Button>
                 </StackPanel>
-                <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Visibility="{Binding ToggleLogXmlDetails}" Margin="5,0,5,5">
-                    <TextBlock Margin="5,5" FontWeight="Bold" Text="{Binding Language, ConverterParameter=Utility.LogXMLTitle, Converter={StaticResource LocConverter}}" />
-                    <TextBox MaxHeight="160px" Padding="0px" FontSize="11" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Text="{Binding LogXmlDetails}" />
+                <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Visibility="{Binding ToggleLogXmlDetails}" Margin="0,0,5,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Margin="5,7" Grid.Column="0" FontWeight="Bold" Text="{Binding Language, ConverterParameter=Utility.LogXMLTitle, Converter={StaticResource LocConverter}}" />
+                        <Button Cursor="Hand" Grid.Column="1" Command="{Binding ViewAsBuilt}" Margin="0,0" FontFamily="Segoe UI" Padding="5,2" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right">
+                            <TextBlock Foreground="White" Text="{Binding Language, ConverterParameter=Utility.ViewAsBuilt, Converter={StaticResource LocConverter}}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button>
+                    </Grid>
+                    <TextBox MaxHeight="120px" Padding="0px" FontSize="11" VerticalScrollBarVisibility="Auto" IsReadOnly="True" Text="{Binding LogXmlDetails}" />
                 </StackPanel>
             </Grid>
 
@@ -102,7 +111,7 @@
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.GracenotesRemovalTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.GracenotesRemovalDesc, Converter={StaticResource LocConverter}}" />
                 </StackPanel>
-                <Button Grid.Column="1" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding GracenotesRemovalUSB}" Margin="15,10" Padding="5,15" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>
+                <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding GracenotesRemovalUSB}" Margin="15,10" Padding="5,15" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>
             </Grid>
 
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
@@ -114,7 +123,7 @@
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.VoiceShrinkerTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.VoiceShrinkerDesc, Converter={StaticResource LocConverter}}" />
             </StackPanel>
-                <Button Grid.Column="1" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding SmallVoiceUSB}" Margin="15,10" Padding="5,15" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>
+                <Button Grid.Column="1"  Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding SmallVoiceUSB}" Margin="15,10" Padding="5,15" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>
             </Grid>
 
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
@@ -126,7 +135,7 @@
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.DowngradeTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.DowngradeDesc, Converter={StaticResource LocConverter}}" />
             </StackPanel>
-                <Button Grid.Column="1" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding DowngradeUSB}" Margin="15,10"  Padding="5,15" Foreground="White" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>
+                <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding DowngradeUSB}" Margin="15,10"  Padding="5,15" Foreground="White" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>
             </Grid>
         </StackPanel>
     </ScrollViewer>

@@ -163,8 +163,7 @@
                         <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
                         <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallMode}" />
                     </StackPanel>
-                    <Button IsEnabled="{Binding StartEnabled}" Grid.Column="1" Margin="5" HorizontalAlignment="Right" Padding="7" Width="100" Foreground="White" Content="{Binding Language, ConverterParameter=Home.StartButton, Converter={StaticResource LocConverter}}"
-                            Command="{Binding StartButton}" Cursor="Hand" />
+                    <Button IsEnabled="{Binding StartEnabled}" Grid.Column="1" Margin="5" HorizontalAlignment="Right" Padding="7" Width="100" Style="{DynamicResource AccentButtonStyle}" Content="{Binding Language, ConverterParameter=Home.StartButton, Converter={StaticResource LocConverter}}" Command="{Binding StartButton}" Cursor="Hand" />
                 </Grid>
             </StackPanel>
         </Grid>
