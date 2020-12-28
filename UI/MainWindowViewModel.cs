@@ -34,10 +34,6 @@ namespace Syn3Updater.UI
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
-                case "System":
-                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Default;
-
-                    break;
                 default:
                     SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Dark;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
@@ -211,24 +207,23 @@ namespace Syn3Updater.UI
         private void ChangeThemeAction()
         {
             string theme = Properties.Settings.Default.Theme;
-            if (theme == "Dark")
+            if (theme == "Light")
             {
+                ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                Properties.Settings.Default.Theme = "Dark";
+                ThemeIcon = EFontAwesomeIcon.Solid_Moon;
+            }
+            else
+            {
+                
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                 SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Light;
                 Properties.Settings.Default.Theme = "Light";
                 ThemeIcon = EFontAwesomeIcon.Solid_Sun;
             }
-            else if (theme == "Light")
-            {
-                ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                Properties.Settings.Default.Theme = "Dark";
-               
-                ThemeIcon = EFontAwesomeIcon.Solid_Moon;
-            }
 
         }
-
         #endregion
     }
 }

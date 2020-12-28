@@ -450,15 +450,6 @@ namespace Syn3Updater.UI.Tabs
                         InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? "downgrade" : Properties.Settings.Default.CurrentInstallMode;
                 }
 
-                if (InstallMode == "downgrade")
-                {
-                    IvsuList.Add(Api.DowngradeApp);
-                    IvsuList.Add(Api.DowngradeTool);
-                }
-
-                if (InstallMode == "reformat" || InstallMode == "downgrade")
-                    IvsuList.Add(Api.ReformatTool);
-
                 ApplicationManager.Instance.Action = "main";
                 ApplicationManager.Instance.InstallMode = InstallMode;
 
@@ -506,6 +497,19 @@ namespace Syn3Updater.UI.Tabs
         private void StartAction()
         {
             ApplicationManager.Instance.Ivsus.Clear();
+
+            if (InstallMode == "downgrade")
+            {
+                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
+                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeTool);
+            }
+
+            if (InstallMode == "reformat" || InstallMode == "downgrade")
+            {
+                ApplicationManager.Instance.Ivsus.Add(Api.ReformatTool);
+            }
+
+
             ApplicationManager.Instance.DownloadOnly = false;
             if (Debugger.IsAttached)
                 ApplicationManager.Logger.Debug("[App] Debugger is attached redirecting URL's to 127.0.0.1");

@@ -21,8 +21,8 @@
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Download.Queue, Converter={StaticResource LocConverter}}" />
                         <ListBox Height="160" ItemsSource="{Binding DownloadQueueList}" Background="{StaticResource SystemBaseLowColorBrush}" />
                         <Grid Margin="0,5,0,5">
-                            <TextBlock Margin="5" Text="{Binding DownloadInfo}" />
-                            <TextBlock HorizontalAlignment="Right" TextAlignment="Right" Margin="5" Text="{Binding DownloadPercentage}" />
+                            <TextBlock FontSize="12" Margin="5" Text="{Binding DownloadInfo}" />
+                            <TextBlock FontSize="12" HorizontalAlignment="Right" TextAlignment="Right" Margin="5" Text="{Binding DownloadPercentage}" />
                         </Grid>
 
                         <ProgressBar Value="{Binding CurrentProgress}" Margin="10,0"/>
