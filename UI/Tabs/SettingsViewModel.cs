@@ -155,8 +155,7 @@ namespace Syn3Updater.UI.Tabs
                         ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     }
-                    ApplicationManager.Instance.FireThemeIconEvent();
-                    
+
                 }
             }
         }

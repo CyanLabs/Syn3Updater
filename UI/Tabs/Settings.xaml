@@ -9,7 +9,7 @@
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
     x:Class="Syn3Updater.UI.Tabs.Settings"
     mc:Ignorable="d"
-    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Settings_OnIsVisibleChanged" FontSize="14" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Settings_OnIsVisibleChanged" FontSize="12" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
         <Style TargetType="{x:Type ui:MaskedTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
     </UserControl.Resources>

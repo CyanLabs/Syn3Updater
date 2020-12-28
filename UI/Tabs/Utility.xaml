@@ -7,7 +7,7 @@
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
     x:Class="Syn3Updater.UI.Tabs.Utility"
     mc:Ignorable="d"
-    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Utility_OnIsVisibleChanged" FontSize="14" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Utility_OnIsVisibleChanged" FontSize="12" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>

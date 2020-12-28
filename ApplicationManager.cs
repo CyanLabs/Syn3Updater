@@ -59,10 +59,6 @@ namespace Syn3Updater
             ShowSettingsTab?.Invoke(this, new EventArgs());
         }
 
-        public void FireThemeIconEvent()
-        {
-            ThemeIcon?.Invoke(this, new EventArgs());
-        }
 
         public event EventHandler LanguageChangedEvent;
 
@@ -73,8 +69,6 @@ namespace Syn3Updater
         public event EventHandler ShowUtilityTab;
 
         public event EventHandler ShowSettingsTab;
-
-        public event EventHandler ThemeIcon;
         #endregion
 
         #region Properties & Fields

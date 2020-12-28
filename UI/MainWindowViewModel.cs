@@ -65,24 +65,7 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.ShowSettingsTab += delegate { CurrentTab = "settings"; };
             ApplicationManager.Instance.ShowHomeTab += delegate { CurrentTab = "home"; };
             ApplicationManager.Instance.ShowUtilityTab += delegate { CurrentTab = "utility"; };
-            ApplicationManager.Instance.ThemeIcon += delegate
-            {
-                switch (Settings.Default.Theme)
-                {
-                    case "Dark":
-                        ThemeIcon = EFontAwesomeIcon.Solid_Moon;
-                        break;
-                    case "Light":
-                        ThemeIcon = EFontAwesomeIcon.Solid_Sun;
-                        break;
-                    default:
-                        break;
-                }
-            };
         }
-
-        private ActionCommand _changeTheme;
-        public ActionCommand ChangeTheme => _changeTheme ?? (_changeTheme = new ActionCommand(ChangeThemeAction));
 
         #endregion
 

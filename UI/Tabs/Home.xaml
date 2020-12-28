@@ -8,7 +8,7 @@
     xmlns:controls="http://schemas.modernwpf.com/2019"
     x:Class="Syn3Updater.UI.Tabs.Home"
     mc:Ignorable="d"
-    d:DesignHeight="640" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged" FontSize="14" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+    d:DesignHeight="640" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged" FontSize="12" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>
