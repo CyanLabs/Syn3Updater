@@ -324,6 +324,7 @@ namespace Syn3Updater.UI.Tabs
                 IvsuList.Clear();
                 SelectedMapVersion = null;
                 SelectedRelease = null;
+                SyncMapVersion.Clear();
                 if (Properties.Settings.Default.ShowAllReleases)
                 {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");

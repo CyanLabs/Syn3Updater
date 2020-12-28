@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Threading;
+using System.Windows;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 
@@ -32,6 +34,17 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
+        private Visibility _englishEndorsement;
+
+        public Visibility EnglishEndorsement
+        {
+            get => _englishEndorsement;
+            set
+            {
+                SetProperty(ref _englishEndorsement, value);
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -39,6 +52,11 @@ namespace Syn3Updater.UI.Tabs
         public void Init()
         {
             DisclaimerAccepted = Properties.Settings.Default.DisclaimerAccepted;
+        }
+
+        public void Reload()
+        {
+            EnglishEndorsement = Properties.Settings.Default.Lang.Contains("en-") ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void WebsiteAction()
