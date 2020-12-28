@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Newtonsoft.Json;
@@ -100,6 +101,12 @@ namespace Syn3Updater
         #region Methods
         public void Initialize()
         {
+            if (Settings.Default.UpgradeRequired)
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save();
+            }
 
             if (!Debugger.IsAttached) { AutoUpdaterHelper autoupdaterhelper = new AutoUpdaterHelper(); }
             
@@ -148,6 +155,8 @@ namespace Syn3Updater
                         SkipCheck = true;
                         break;
                 }
+
+
 
             string version = Settings.Default.CurrentSyncVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
