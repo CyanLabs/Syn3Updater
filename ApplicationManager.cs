@@ -13,6 +13,7 @@ using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
 using Syn3Updater.UI;
+using Application = System.Windows.Application;
 
 namespace Syn3Updater
 {
@@ -97,13 +98,15 @@ namespace Syn3Updater
         #endregion
 
         #region Methods
-
         public void Initialize()
         {
-            Logger.Debug("[App] Syn3 Updater is Starting");
 
+            if (!Debugger.IsAttached) { AutoUpdaterHelper autoupdaterhelper = new AutoUpdaterHelper(); }
+            
+            Logger.Debug("[App] Syn3 Updater is Starting");
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
+
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (string.IsNullOrWhiteSpace(Settings.Default.Lang))

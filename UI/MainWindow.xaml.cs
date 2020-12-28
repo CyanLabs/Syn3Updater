@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
@@ -18,11 +19,18 @@ namespace Syn3Updater.UI
         #region Methods
         public MainWindow()
         {
-            InitializeComponent();
-            Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            AutoUpdater.Start($"https://cyanlabs.net/api/latest.php?product={Assembly.GetEntryAssembly()?.GetName().Name}");
+            try
+            {
+                InitializeComponent();
+                Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //AutoUpdater.Start($"https://cyanlabs.net/api/latest.php?product={Assembly.GetEntryAssembly()?.GetName().Name}");
+            }
+            catch (System.NullReferenceException e)
+            {
+
+            }
         }
 
         private MainWindowViewModel Vm => (MainWindowViewModel) DataContext;
