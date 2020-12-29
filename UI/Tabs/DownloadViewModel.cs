@@ -176,8 +176,8 @@ namespace Syn3Updater.UI.Tabs
                         if (i == 3)
                         {
                             UpdateLog($"[Copier] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
-                            ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
-                                MessageBoxImage.Error);
+                            Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
+                                MessageBoxImage.Error));
                             CancelAction();
                             break;
                         }
@@ -193,28 +193,34 @@ namespace Syn3Updater.UI.Tabs
             DownloadInfo = LanguageManager.GetValue("String.Completed");
             ApplicationManager.Instance.IsDownloading = false;
             USBHelper.GenerateLog(Log);
-            if (_action == "main")
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (_action == "main")
                 {
-                    Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
-                    ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
-                }
+                    if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo,
+                        MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
+                        ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
+                    }
 
-                ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
-                ApplicationManager.Instance.FireHomeTabEvent();
-            }
-            else if(_action == "logutility")
-            {
-                ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                ApplicationManager.Instance.UtilityCreateLogStep1Complete = true;
-                ApplicationManager.Instance.FireUtilityTabEvent();
-            } else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
-            {
-                ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                ApplicationManager.Instance.FireUtilityTabEvent();
-            }
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
+                    ApplicationManager.Instance.FireHomeTabEvent();
+                }
+                else if (_action == "logutility")
+                {
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ApplicationManager.Instance.UtilityCreateLogStep1Complete = true;
+                    ApplicationManager.Instance.FireUtilityTabEvent();
+                }
+                else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
+                {
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ApplicationManager.Instance.FireUtilityTabEvent();
+                }
+            });
+            
 
             Reset();
         }
@@ -313,8 +319,7 @@ namespace Syn3Updater.UI.Tabs
                                 if (i == 3)
                                 {
                                     UpdateLog($"[Downloader] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
-                                    ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
-                                        MessageBoxImage.Error);
+                                    Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error));
                                     CancelAction();
                                     break;
                                 }
@@ -344,7 +349,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     UpdateLog("[App] Process completed successfully (download only)");
                     DownloadInfo = LanguageManager.GetValue("Strings.Completed");
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information));
                     ApplicationManager.Instance.IsDownloading = false;
                     CancelAction();
                 }
