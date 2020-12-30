@@ -274,12 +274,14 @@ namespace Syn3Updater.UI.Tabs
             oldPath = oldPath.TrimEnd('\\');
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
+            {
                 if (Directory.Exists(oldPath))
                 {
-                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
-                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
-                        MessageBoxResult.Yes)
-                        if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
+                    if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
+                    {
+                        if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
+                                Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                        {
                             try
                             {
                                 FileSystem.MoveDirectory(oldPath, dialog.SelectedPath, UIOption.AllDialogs);
@@ -288,9 +290,12 @@ namespace Syn3Updater.UI.Tabs
                             {
                                 //TODO Catch better
                             }
-
-                    DownloadLocation = dialog.SelectedPath + "\\";
+                        }
+                    }
                 }
+            }
+                
+            DownloadLocation = dialog.SelectedPath + "\\";
         }
 
         #endregion
