@@ -18,7 +18,7 @@ namespace Syn3Updater.Helper
 
             //No USB drive selected, download only?
 
-                if ((string.IsNullOrWhiteSpace(selectedDrive.Name) || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")))
+                if ((string.IsNullOrWhiteSpace(selectedDrive.Path) || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")))
                 {
                     if (allowDownloadonly)
                     {
@@ -45,7 +45,7 @@ namespace Syn3Updater.Helper
                     ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
             //Optional Format
-            if (!string.IsNullOrWhiteSpace(selectedDrive.Name) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
+            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
             {
                 if (selectedDrive != null && ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
@@ -55,7 +55,7 @@ namespace Syn3Updater.Helper
             }
 
             //Format USB Drive
-            if (!string.IsNullOrWhiteSpace(selectedDrive.Name) && ApplicationManager.Instance.DownloadOnly == false && ApplicationManager.Instance.SkipFormat == false)
+            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && ApplicationManager.Instance.DownloadOnly == false && ApplicationManager.Instance.SkipFormat == false)
                 if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                     return true;

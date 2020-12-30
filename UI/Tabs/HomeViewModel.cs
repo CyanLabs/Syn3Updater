@@ -256,7 +256,6 @@ namespace Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
-            DriveDetailsVisible = SelectedDrive?.Name == LanguageManager.GetValue("Home.NoUSB") ? Visibility.Hidden : Visibility.Visible;
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
             CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
@@ -266,6 +265,9 @@ namespace Syn3Updater.UI.Tabs
             StartEnabled = false;
             IvsuList = new ObservableCollection<SyncModel.SyncIvsu>();
             InstallMode = "";
+            RefreshUsb();
+            SyncMapVersion = new ObservableCollection<string>();
+            DriveDetailsVisible = (SelectedDrive == null || SelectedDrive.Path == "") ? Visibility.Hidden : Visibility.Visible;
         }
 
         public void Init()
@@ -280,8 +282,6 @@ namespace Syn3Updater.UI.Tabs
                 new SyncModel.SyncRegion {Code = "ROW", Name = "Rest Of World"}
             };
             SyncVersionsEnabled = false;
-            RefreshUsb();
-            SyncMapVersion = new ObservableCollection<string>();
         }
 
         private void RegionInfoAction()
@@ -412,7 +412,7 @@ namespace Syn3Updater.UI.Tabs
                 }
 
                 SyncMapVersionsEnabled = true;
-                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             }
         }
 
@@ -490,7 +490,7 @@ namespace Syn3Updater.UI.Tabs
                             });
                         }
 
-                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             }
         }
 
