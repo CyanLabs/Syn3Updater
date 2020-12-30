@@ -271,6 +271,7 @@ namespace Syn3Updater.UI.Tabs
         private void DownloadPathAction()
         {
             string oldPath = Properties.Settings.Default.DownloadPath;
+            oldPath = oldPath.TrimEnd('\\');
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
                 if (Directory.Exists(oldPath))
