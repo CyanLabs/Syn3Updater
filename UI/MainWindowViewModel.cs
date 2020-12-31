@@ -53,8 +53,8 @@ namespace Syn3Updater.UI
                     //TODO Implement Profiles and News in the future
                     //new TabItem("0xF163","Profiles","profiles"),
                     //new TabItem("0xF582","News","news"),
-                    new TabItem(EFontAwesomeIcon.Solid_Bug,"Crash","crashme")
                 };
+                if (Debugger.IsAttached) ti.Add(new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"));
 
                 foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
                     tabItem.Name = LanguageManager.GetValue($"Main.{tabItem.Key}", Language);
