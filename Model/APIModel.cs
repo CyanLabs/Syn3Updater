@@ -99,9 +99,8 @@ namespace Syn3Updater.Model
         };
 
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
-        public const string AsBuiltPost = AsBuiltBase + "/api/post-xml";
+        public const string AsBuiltPost =  "https://cyanlabs.net/api/Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
-
         public class Data
         {
             public int id { get; set; }

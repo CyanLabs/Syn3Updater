@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Newtonsoft.Json;
-//using QRCoder;
+using QRCoder;
 using Syn3Updater.UI;
 
 namespace Syn3Updater
@@ -39,16 +39,17 @@ namespace Syn3Updater
 
             Log.Add(new LogEntry(ex.GetType().ToString(), "Crash", ex));
             string guid = crashWindow.SendReport(ex);
-            string url = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=" + guid;
+            var definition = new { uuid = "", status = "" };
+            var output = JsonConvert.DeserializeAnonymousType(guid, definition);
+            string url = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=" + output.uuid;
             crashWindow.ErrorReportUrl = url;
 
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
 
-            //QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            //QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
-            //QRCode qrCode = new QRCode(qrCodeData);
-            //Bitmap qrCodeImage = qrCode.GetGraphic(20);
-
-            //crashWindow.qrcode.Source = BitmapToImageSource(qrCodeImage);
+            crashWindow.qrcode.Source = BitmapToImageSource(qrCodeImage);
         }
 
         BitmapImage BitmapToImageSource(Bitmap bitmap)

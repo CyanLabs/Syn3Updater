@@ -13,8 +13,8 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.RowSpan="2" HorizontalAlignment="Right" Width="165" Height="165" VerticalAlignment="Top" Margin="10" Click="ClickQRCode" BorderThickness="0">
-            <Image Width="160" Height="160" Margin="0" x:Name="qrcode"></Image>
+        <Button Grid.RowSpan="2" HorizontalAlignment="Right" Width="165" Height="165" VerticalAlignment="Top" Margin="10" Padding="0" Click="ClickQRCode" BorderThickness="0">
+            <Image Width="165" Height="165" Margin="0" x:Name="qrcode"></Image>
         </Button>
         <StackPanel Margin="20,20,20,0" Grid.Row="0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

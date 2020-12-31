@@ -11,13 +11,12 @@
         WindowStyle="ToolWindow"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        MaxWidth="600"
         
         ui:WindowHelper.UseModernWindowStyle="True">
     <ui:SimpleStackPanel Orientation="Vertical" Margin="10 5 10 10" Spacing="10">
         <ui:SimpleStackPanel Orientation="Horizontal" Spacing="10">
             <ui:FontIcon x:Name="symbolIcon" Visibility="Collapsed"  FontSize="30" />
-            <TextBlock MaxWidth="550" x:Name="messageText" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" />
+            <TextBlock MaxWidth="600" Margin="10" x:Name="messageText" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" />
         </ui:SimpleStackPanel>
         <ui:SimpleStackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
             <Button x:Name="okButton" Content="OK" Width="75" Visibility="Collapsed" />

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -127,10 +128,116 @@ namespace Syn3Updater.UI.Tabs
             _ct = _tokenSource.Token;
 
             _fileHelper = new FileHelper(PercentageChanged);
-            _downloadTask = Task.Run(DoDownload, _tokenSource.Token);
+
+            _downloadTask = Task.Run(DoDownload, _tokenSource.Token).ContinueWith((t) => 
+            {
+                if (t.IsFaulted)
+                {
+                    Debug.WriteLine("Exception Count - Download - " + t.Exception.InnerExceptions.Count);
+                    Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
+                    CancelAction();
+                }
+                if (t.IsCompleted && t.IsFaulted == false) DownloadComplete();
+            }, _tokenSource.Token); 
         }
 
-        private void DoCopy()
+        private async Task DoDownload()
+        {
+            _count = 0;
+            TotalPercentageMax = 100 * ApplicationManager.Instance.Ivsus.Count * (ApplicationManager.Instance.DownloadOnly ? 2 : 4);
+
+            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
+            {
+                if (_ct.IsCancellationRequested)
+                {
+                    UpdateLog("[App] Process cancelled by user");
+                    return;
+                }
+
+                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
+                {
+                    UpdateLog($"[Downloader] {item.FileName} exists and successfully validated, skipping download");
+                    _count++;
+                }
+                else
+                {
+                    if (_ct.IsCancellationRequested) return;
+                    UpdateLog($"[Downloader] {item.FileName} is missing or invalid, downloading");
+                    DownloadInfo = $"Downloading: {item.Url}";
+                    _progressBarSuffix = LanguageManager.GetValue("String.Downloaded");
+                    try
+                    {
+                        for (int i = 1; i < 4; i++)
+                        {
+                            if (_ct.IsCancellationRequested) return;
+                            if (i > 1)
+                            {
+                                UpdateLog($"[Downloader] {item.FileName} is missing or invalid, downloading (Attempt #{i})");
+                                DownloadInfo = $"Downloading (Attempt #{i}): {item.Url}";
+                            }
+
+                            try
+                            {
+                                await _fileHelper.download_file(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
+                            }
+                            catch (HttpRequestException webException)
+                            {
+                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException"), webException.InnerException?.InnerException?.Message), "Syn3 Updater", MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation));
+                                CancelAction();
+                            }
+
+                            if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
+                            {
+                                UpdateLog($"[Downloader] downloaded {item.FileName} and successfully validated");
+                                _count++;
+                                break;
+                            }
+
+                            if (i == 3)
+                            {
+                                UpdateLog($"[Downloader] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
+                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error));
+                                CancelAction();
+                                break;
+                            }
+                        }
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        break;
+                    }
+                }
+
+                Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Remove(item.Url); });
+                _count++;
+                PercentageChanged.Raise(this, 100);
+            }
+
+            Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
+        }
+
+        private void DownloadComplete()
+        {
+
+            if (_ct.IsCancellationRequested == false)
+            {
+                if (ApplicationManager.Instance.DownloadOnly)
+                {
+                    UpdateLog("[App] Process completed successfully (download only)");
+                    DownloadInfo = LanguageManager.GetValue("Strings.Completed");
+                    Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information));
+                    ApplicationManager.Instance.IsDownloading = false;
+                    CancelAction();
+                }
+                else
+                {
+                    PrepareUsb();
+                }
+            }
+        }
+
+        private async Task DoCopy()
         {
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
             {
@@ -188,7 +295,11 @@ namespace Syn3Updater.UI.Tabs
                 _count++;
                 PercentageChanged.Raise(this, 100);
             }
+        }
 
+        private void CopyComplete()
+        {
+            CancelButtonEnabled = false;
             UpdateLog("[App] All files downloaded and copied to USB successfully!");
             DownloadInfo = LanguageManager.GetValue("String.Completed");
             ApplicationManager.Instance.IsDownloading = false;
@@ -220,7 +331,7 @@ namespace Syn3Updater.UI.Tabs
                     ApplicationManager.Instance.FireUtilityTabEvent();
                 }
             });
-            
+
 
             Reset();
         }
@@ -259,105 +370,6 @@ namespace Syn3Updater.UI.Tabs
             DownloadPercentage = $"{e.Value}% {_progressBarSuffix}";
             CurrentProgress = e.Value;
             TotalPercentage = _count == 0 ? e.Value : _count * 100 + e.Value;
-        }
-
-        private async void DoDownload()
-        {
-            _count = 0;
-            TotalPercentageMax = 100 * ApplicationManager.Instance.Ivsus.Count * (ApplicationManager.Instance.DownloadOnly ? 2 : 4);
-
-            try
-            {
-                foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
-                {
-                    if (_ct.IsCancellationRequested)
-                    {
-                        UpdateLog("[App] Process cancelled by user");
-                        return;
-                    }
-
-                    if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
-                    {
-                        UpdateLog($"[Downloader] {item.FileName} exists and successfully validated, skipping download");
-                        _count++;
-                    }
-                    else
-                    {
-                        if (_ct.IsCancellationRequested) return;
-                        UpdateLog($"[Downloader] {item.FileName} is missing or invalid, downloading");
-                        DownloadInfo = $"Downloading: {item.Url}";
-                        _progressBarSuffix = LanguageManager.GetValue("String.Downloaded");
-                        try
-                        {
-                            for (int i = 1; i < 4; i++)
-                            {
-                                if (_ct.IsCancellationRequested) return;
-                                if (i > 1)
-                                {
-                                    UpdateLog($"[Downloader] {item.FileName} is missing or invalid, downloading (Attempt #{i})");
-                                    DownloadInfo = $"Downloading (Attempt #{i}): {item.Url}";
-                                }
-
-                                try
-                                {
-                                    await _fileHelper.download_file(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
-                                }
-                                catch (HttpRequestException webException)
-                                {
-                                    ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException"), webException.InnerException?.InnerException?.Message), "Syn3 Updater", MessageBoxButton.OK,
-                                        MessageBoxImage.Exclamation);
-                                    CancelAction();
-                                }
-
-                                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
-                                {
-                                    UpdateLog($"[Downloader] downloaded {item.FileName} and successfully validated");
-                                    _count++;
-                                    break;
-                                }
-
-                                if (i == 3)
-                                {
-                                    UpdateLog($"[Downloader] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!");
-                                    Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error));
-                                    CancelAction();
-                                    break;
-                                }
-                            }
-                        }
-                        catch (TaskCanceledException)
-                        {
-                            break;
-                        }
-                    }
-
-                    Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Remove(item.Url); });
-                    _count++;
-                    PercentageChanged.Raise(this, 100);
-                }
-
-                Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
-            }
-            catch (InvalidOperationException)
-            {
-                //
-            }
-
-            if (_ct.IsCancellationRequested == false)
-            {
-                if (ApplicationManager.Instance.DownloadOnly)
-                {
-                    UpdateLog("[App] Process completed successfully (download only)");
-                    DownloadInfo = LanguageManager.GetValue("Strings.Completed");
-                    Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information));
-                    ApplicationManager.Instance.IsDownloading = false;
-                    CancelAction();
-                }
-                else
-                {
-                    PrepareUsb();
-                }
-            }
         }
 
         private void PrepareUsb()
@@ -409,17 +421,22 @@ namespace Syn3Updater.UI.Tabs
             {
                 CreateAutoInstall();
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
 
 
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadPath + item.FileName));
 
             Directory.CreateDirectory($@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\");
-            Task.Run(DoCopy, _tokenSource.Token);
+            Task.Run(DoCopy, _tokenSource.Token).ContinueWith((t) =>
+            {
+                if (t.IsFaulted)
+                {
+                    Debug.WriteLine("Exception Count - Copy - " + t.Exception.InnerExceptions.Count);
+                    Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
+                    CancelAction();
+                }
+                if (t.IsCompleted && t.IsFaulted == false) CopyComplete();
+            }, _tokenSource.Token);
         }
 
         private void CreateAutoInstall()

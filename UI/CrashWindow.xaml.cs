@@ -21,7 +21,7 @@ namespace Syn3Updater.UI
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            ApplicationManager.Instance.Exit();
         }
 
         public async Task<string> Send_Report(object sender, RoutedEventArgs e)
@@ -51,7 +51,7 @@ namespace Syn3Updater.UI
             StackFrame frame = st.GetFrame(st.FrameCount - 1);
 
             crashContainer.ErrorName = exception.GetType().ToString();
-            crashContainer.ErrorLocation = frame.GetFileName() + " / " + frame.GetMethod().Name + " / " + frame.GetFileLineNumber();
+            if(frame != null) crashContainer.ErrorLocation = frame.GetFileName() + " / " + frame.GetMethod().Name + " / " + frame.GetFileLineNumber();
             crashContainer.Logs = ApplicationManager.Logger.Log;
 
             string text = JsonConvert.SerializeObject(crashContainer);
@@ -84,8 +84,6 @@ namespace Syn3Updater.UI
 
         public class CrashContainer
         {
-            public string SimpleLedUserName { get; set; }
-            public Guid SimpleLedUserId { get; set; }
             public string ErrorName { get; set; }
             public string ErrorLocation { get; set; }
             public List<SimpleLogger.LogEntry> Logs { get; set; } = new List<SimpleLogger.LogEntry>();
