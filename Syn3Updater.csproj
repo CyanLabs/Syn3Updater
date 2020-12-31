@@ -106,7 +106,7 @@
     <Compile Include="UI\MessageBox\Extensions\SymbolGlyphExtensions.cs" />
     <Compile Include="UI\MessageBox\MessageBox.cs" />
     <Compile Include="UI\MessageBox\SymbolGlyph.cs" />
-    <Compile Include="UI\SimpleLogger.cs" />
+    <Compile Include="SimpleLogger.cs" />
     <Compile Include="UI\Tabs\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>

@@ -49,11 +49,11 @@ namespace Syn3Updater.UI
                     new TabItem(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
                     new TabItem(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
                     new TabItem(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
-                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads")
+                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"),
                     //TODO Implement Profiles and News in the future
                     //new TabItem("0xF163","Profiles","profiles"),
                     //new TabItem("0xF582","News","news"),
-                    //new TabItem("0xEBE8","Crash","crashme")
+                    new TabItem(EFontAwesomeIcon.Solid_Bug,"Crash","crashme")
                 };
 
                 foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))

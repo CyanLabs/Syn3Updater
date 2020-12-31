@@ -1,11 +1,18 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows;
+using Newtonsoft.Json;
+using Syn3Updater.Helper;
 
 namespace Syn3Updater.UI
 {
     /// <summary>
-    ///     Interaction logic for CrashWindow.xaml
+    /// Interaction logic for CrashWindow.xaml
     /// </summary>
-    public partial class CrashWindow
+    public partial class CrashWindow : Window
     {
         public CrashWindow()
         {
@@ -14,16 +21,74 @@ namespace Syn3Updater.UI
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplicationManager.Instance.Exit();
+            this.Close();
         }
 
-/*
+        public async Task<string> Send_Report(object sender, RoutedEventArgs e)
+        {
+            string text = JsonConvert.SerializeObject(ApplicationManager.Logger.Log);
+
+            HttpClient client = new HttpClient();
+            var values = new Dictionary<string, string>
+            {
+                { "detail", text }
+            };
+
+            var content = new FormUrlEncodedContent(values);
+
+            var response = client.PostAsync("https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php", content).Result;
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            this.Close();
+            return responseString;
+        }
+
+        public string SendReport(Exception exception)
+        {
+            CrashContainer crashContainer = new CrashContainer();
+
+            StackTrace st = new StackTrace(exception, true);
+            StackFrame frame = st.GetFrame(st.FrameCount - 1);
+
+            crashContainer.ErrorName = exception.GetType().ToString();
+            crashContainer.ErrorLocation = frame.GetFileName() + " / " + frame.GetMethod().Name + " / " + frame.GetFileLineNumber();
+            crashContainer.Logs = ApplicationManager.Logger.Log;
+
+            string text = JsonConvert.SerializeObject(crashContainer);
+
+            HttpClient client = new HttpClient();
+            var values = new Dictionary<string, string>
+            {
+                { "detail", text }
+            };
+
+            var content = new FormUrlEncodedContent(values);
+
+            var response = client.PostAsync("https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php", content).Result;
+
+            var responseString = response.Content.ReadAsStringAsync().Result;
+
+            return responseString;
+        }
+
+        public string ErrorReportUrl;
+        private void ClickQRCode(object sender, RoutedEventArgs e)
+        {
+            Process.Start(ErrorReportUrl);
+        }
+
+        private void ViewReport(object sender, RoutedEventArgs e)
+        {
+            Process.Start(ErrorReportUrl);
+        }
+
         public class CrashContainer
         {
+            public string SimpleLedUserName { get; set; }
+            public Guid SimpleLedUserId { get; set; }
             public string ErrorName { get; set; }
             public string ErrorLocation { get; set; }
             public List<SimpleLogger.LogEntry> Logs { get; set; } = new List<SimpleLogger.LogEntry>();
         }
-*/
     }
 }
