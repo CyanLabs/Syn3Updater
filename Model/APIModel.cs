@@ -23,6 +23,15 @@ namespace Syn3Updater.Model
         public const string MapReleaseSingle = Base + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         public const string IVSUSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
 
+        public const string UpdaterReleaseURL = "https://api.github.com/repos/cyanlabs/Syn3Updater/releases/latest";
+        public const string UpdaterChangelogURL = "https://cyanlabs.net/api/changelog-github.php?product=Syn3Updater";
+
+        public const string CrashLogURL = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=";
+        public const string CrashLogPost = "https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php";
+        
+        public const string LogURL = "https://cyanlabs.net/api/Syn3Updater/logs/?uuid=";
+        public const string LogPost = "https://cyanlabs.net/api/Syn3Updater/logs/post.php";
+
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 using Newtonsoft.Json;
 using QRCoder;
+using Syn3Updater.Model;
 using Syn3Updater.UI;
 
 namespace Syn3Updater
@@ -34,7 +35,7 @@ namespace Syn3Updater
             string guid = crashWindow.SendReport(ex);
             var definition = new { uuid = "", status = "" };
             var output = JsonConvert.DeserializeAnonymousType(guid, definition);
-            string url = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=" + output.uuid;
+            string url = Api.CrashLogURL + output.uuid;
             crashWindow.ErrorReportUrl = url;
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();

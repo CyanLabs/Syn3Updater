@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using AutoUpdaterDotNET;
 using Newtonsoft.Json;
+using Syn3Updater.Model;
 
 namespace Syn3Updater.Helper
 {
@@ -14,7 +15,7 @@ namespace Syn3Updater.Helper
             AutoUpdater.Mandatory = true;
             AutoUpdater.Synchronous = true;
             AutoUpdater.UpdateMode = Mode.ForcedDownload;
-            AutoUpdater.Start("https://api.github.com/repos/cyanlabs/Syn3Updater/releases/latest");
+            AutoUpdater.Start(Api.UpdaterReleaseURL);
         }
 
         private static void AutoUpdaterOnParseUpdateInfoEvent(ParseUpdateInfoEventArgs args)
@@ -24,7 +25,7 @@ namespace Syn3Updater.Helper
                 if (json != null)
                     args.UpdateInfo = new UpdateInfoEventArgs
                     {
-                        ChangelogURL = null,
+                        ChangelogURL = Api.UpdaterChangelogURL,
                         CheckSum = null,
                         CurrentVersion = json.tag_name.ToString()
                             .Replace("v",

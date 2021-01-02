@@ -147,12 +147,12 @@ namespace Syn3Updater.Helper
 
             var content = new FormUrlEncodedContent(values);
             HttpClient client = new HttpClient();
-            var response = client.PostAsync("https://cyanlabs.net/api/Syn3Updater/logs/post.php", content).Result;
+            var response = client.PostAsync(Api.LogPost, content).Result;
 
             var responseString = response.Content.ReadAsStringAsync().Result;
             var definition = new { uuid = "", status = "" };
             var output = JsonConvert.DeserializeAnonymousType(responseString, definition);
-            Process.Start($"https://cyanlabs.net/api/Syn3Updater/logs/?uuid={output.uuid}");
+            Process.Start(Api.LogURL + output.uuid);
         }
         
         #endregion
