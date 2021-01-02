@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows;
 using FontAwesome5;
 using ModernWpf;
+using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
@@ -61,6 +62,8 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.ShowSettingsTab += delegate { CurrentTab = "settings"; };
             ApplicationManager.Instance.ShowHomeTab += delegate { CurrentTab = "home"; };
             ApplicationManager.Instance.ShowUtilityTab += delegate { CurrentTab = "utility"; };
+
+            AutoUpdaterHelper unused = new AutoUpdaterHelper();
         }
 
         #endregion

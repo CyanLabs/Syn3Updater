@@ -99,12 +99,8 @@ namespace Syn3Updater
                 Settings.Default.UpgradeRequired = false;
                 Settings.Default.Save();
             }
-
-            if (!Debugger.IsAttached)
-            {
-                AutoUpdaterHelper unused = new AutoUpdaterHelper();
-            }
             
+
             Logger.Debug("Syn3 Updater is Starting");
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable

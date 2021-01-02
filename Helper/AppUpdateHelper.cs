@@ -21,8 +21,21 @@ namespace Syn3Updater.Helper
         private static void AutoUpdaterOnParseUpdateInfoEvent(ParseUpdateInfoEventArgs args)
         {
             {
+                string asseturl = "";
                 dynamic json = JsonConvert.DeserializeObject(args.RemoteData);
+                foreach (var asset in json.assets)
+                {
+                    
+                    string browser_download_url = asset.browser_download_url.ToString();
+                    if (browser_download_url.Contains(".zip"))
+                    {
+                        asseturl = asset.browser_download_url;
+                        break;
+                    }
+                    
+                }
                 if (json != null)
+                {
                     args.UpdateInfo = new UpdateInfoEventArgs
                     {
                         ChangelogURL = Api.UpdaterChangelogURL,
@@ -30,14 +43,15 @@ namespace Syn3Updater.Helper
                         CurrentVersion = json.tag_name.ToString()
                             .Replace("v",
                                 ""),
-                        DownloadURL = json.assets[0]
-                            .browser_download_url,
+                        DownloadURL = asseturl,
                         Error = null,
                         InstalledVersion = null,
                         InstallerArgs = null,
                         IsUpdateAvailable = false,
                         Mandatory = null
                     };
+                }
+                    
             }
         }
 
