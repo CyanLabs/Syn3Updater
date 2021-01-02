@@ -1,13 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Net;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using AutoUpdaterDotNET;
-using ModernWpf;
 
 namespace Syn3Updater.UI
 {
@@ -26,7 +22,7 @@ namespace Syn3Updater.UI
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             }
-            catch (System.NullReferenceException e)
+            catch (NullReferenceException e)
             {
 
             }

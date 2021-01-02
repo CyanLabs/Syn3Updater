@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
-using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Formatting = Newtonsoft.Json.Formatting;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Syn3Updater.UI.Tabs
 {
@@ -180,7 +178,7 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info($@"[App] Starting process (Logging Utility");
+            ApplicationManager.Logger.Info(@"[App] Starting process (Logging Utility");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -192,7 +190,7 @@ namespace Syn3Updater.UI.Tabs
             public string PartNumber;
             public string VIN;
         }
-        SyncAPIMDetails syncAPIMDetails = new SyncAPIMDetails();
+        SyncAPIMDetails syncAPIMDetails;
         private void LogParseXmlAction()
         {
             VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
@@ -202,7 +200,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     XmlDocument doc = new XmlDocument();
                     doc.Load(dialog.FileName);
-                    string json = JsonConvert.SerializeXmlNode(doc, Newtonsoft.Json.Formatting.Indented);
+                    string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
                     InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<InterrogatorModel>(json, Model.Converter.Settings);
                     syncAPIMDetails.VIN = interrogatorLog.POtaModuleSnapShot.PVin;
                     LogXmlDetails = $"VIN: {interrogatorLog.POtaModuleSnapShot.PVin}{Environment.NewLine}";
@@ -241,7 +239,7 @@ namespace Syn3Updater.UI.Tabs
                         syncAPIMDetails.Size = 64;
                     }
 
-                    if (syncAPIMDetails.Nav == true)
+                    if (syncAPIMDetails.Nav)
                     {
                         LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMType")} Navigation {Environment.NewLine}";
                     } else {
@@ -278,7 +276,7 @@ namespace Syn3Updater.UI.Tabs
                     string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                     if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
                     {
-                        if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
+                        if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
                             MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                         {
                             Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
@@ -303,7 +301,7 @@ namespace Syn3Updater.UI.Tabs
                 }
                 catch (NullReferenceException)
                 {
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -312,7 +310,7 @@ namespace Syn3Updater.UI.Tabs
         {
             if (node != null)
             {
-                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
+                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
                     MessageBoxResult.OK)
                 {
                     var formContent = new FormUrlEncodedContent(new[]
@@ -349,7 +347,7 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info($@"[App] Starting process (Gracenotes Removal");
+            ApplicationManager.Logger.Info(@"[App] Starting process (Gracenotes Removal");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -369,7 +367,7 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info($@"[App] Starting process (Voice Package Shrinker");
+            ApplicationManager.Logger.Info(@"[App] Starting process (Voice Package Shrinker");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -389,7 +387,7 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info($@"[App] Starting process (Enforced Downgrade");
+            ApplicationManager.Logger.Info(@"[App] Starting process (Enforced Downgrade");
             ApplicationManager.Instance.FireDownloadsTabEvent();
           
         }

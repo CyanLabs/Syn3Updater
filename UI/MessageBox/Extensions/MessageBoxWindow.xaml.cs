@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using Syn3Updater;
 using Syn3Updater.Model;
 
 namespace ModernWpf
@@ -8,7 +7,7 @@ namespace ModernWpf
     public partial class MessageBoxWindow : Window
     {
 
-        public MessageBoxResult? Result = null;
+        public MessageBoxResult? Result;
 
         public MessageBoxWindow(string messageBoxText, string caption, MessageBoxButton button, string? symbolGlyph)
         {

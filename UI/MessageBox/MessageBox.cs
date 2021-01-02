@@ -1,7 +1,7 @@
-﻿using ModernWpf.Extensions;
-using ModernWpf.Controls;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
+using ModernWpf.Controls;
+using ModernWpf.Extensions;
 
 namespace ModernWpf {
     public static class MessageBox {

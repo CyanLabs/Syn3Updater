@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using FontAwesome5;
 using ModernWpf;
-using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
@@ -25,17 +23,17 @@ namespace Syn3Updater.UI
             switch (Settings.Default.Theme)
             {
                 case "Dark":
-                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Dark;
+                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                     ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
                 case "Light":
-                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Light;
+                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
                 default:
-                    SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Dark;
+                    ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                     ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
@@ -88,17 +86,17 @@ namespace Syn3Updater.UI
             {
                 if (value != "about" && !Settings.Default.DisclaimerAccepted)
                 {
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
                 else if (value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
                 {
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
                 }
                 else if (value != "downloads" && ApplicationManager.Instance.IsDownloading)
                 {
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "downloads";
                 }
                 else if (value == "crashme")
@@ -127,7 +125,7 @@ namespace Syn3Updater.UI
             private string _key;
             private string _name;
 
-            public TabItem(FontAwesome5.EFontAwesomeIcon icon, string name, string key, bool current = false)
+            public TabItem(EFontAwesomeIcon icon, string name, string key, bool current = false)
             {
                 Icon = icon.ToString();
                 Name = name;
@@ -176,8 +174,8 @@ namespace Syn3Updater.UI
             set => SetProperty(ref _CurrentTheme, value);
         }
 
-        private FontAwesome5.EFontAwesomeIcon _themeIcon;
-        public FontAwesome5.EFontAwesomeIcon ThemeIcon
+        private EFontAwesomeIcon _themeIcon;
+        public EFontAwesomeIcon ThemeIcon
         {
             get => _themeIcon;
             set => SetProperty(ref _themeIcon, value);
@@ -189,20 +187,20 @@ namespace Syn3Updater.UI
 
         private void ChangeThemeAction()
         {
-            string theme = Properties.Settings.Default.Theme;
+            string theme = Settings.Default.Theme;
             if (theme == "Light")
             {
                 ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                Properties.Settings.Default.Theme = "Dark";
+                Settings.Default.Theme = "Dark";
                 ThemeIcon = EFontAwesomeIcon.Solid_Moon;
             }
             else
             {
                 
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-                SourceChord.FluentWPF.ResourceDictionaryEx.GlobalTheme = SourceChord.FluentWPF.ElementTheme.Light;
-                Properties.Settings.Default.Theme = "Light";
+                ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
+                Settings.Default.Theme = "Light";
                 ThemeIcon = EFontAwesomeIcon.Solid_Sun;
             }
 

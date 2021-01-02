@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Newtonsoft.Json;
@@ -14,7 +13,6 @@ using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
 using Syn3Updater.UI;
-using Application = System.Windows.Application;
 
 namespace Syn3Updater
 {

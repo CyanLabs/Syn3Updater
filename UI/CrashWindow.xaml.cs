@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
-using Syn3Updater.Helper;
 
 namespace Syn3Updater.UI
 {
@@ -39,7 +38,7 @@ namespace Syn3Updater.UI
             var response = client.PostAsync("https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php", content).Result;
 
             var responseString = await response.Content.ReadAsStringAsync();
-            this.Close();
+            Close();
             return responseString;
         }
 

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading;
 using System.Windows;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;

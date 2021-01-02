@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media.Imaging;
 using Newtonsoft.Json;
 using QRCoder;
@@ -30,11 +27,7 @@ namespace Syn3Updater
 
         public void CrashWindow(Exception ex, [CallerMemberName] string callerMemberName = "")
         {
-            CrashWindow crashWindow = new CrashWindow();
-            crashWindow.errorName.Text = ex.GetType().ToString();
-            crashWindow.message.Text = ex.Message;
-
-            crashWindow.stackTrace.Text = ex.StackTrace;
+            CrashWindow crashWindow = new CrashWindow {errorName = {Text = ex.GetType().ToString()}, message = {Text = ex.Message}, stackTrace = {Text = ex.StackTrace}};
             crashWindow.Show();
 
             Log.Add(new LogEntry(ex.GetType().ToString(), "Crash", ex));
@@ -54,18 +47,16 @@ namespace Syn3Updater
 
         BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
-            using (MemoryStream memory = new MemoryStream())
-            {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
-                memory.Position = 0;
-                BitmapImage bitmapimage = new BitmapImage();
-                bitmapimage.BeginInit();
-                bitmapimage.StreamSource = memory;
-                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapimage.EndInit();
+            using MemoryStream memory = new MemoryStream();
+            bitmap.Save(memory, ImageFormat.Bmp);
+            memory.Position = 0;
+            BitmapImage bitmapimage = new BitmapImage();
+            bitmapimage.BeginInit();
+            bitmapimage.StreamSource = memory;
+            bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapimage.EndInit();
 
-                return bitmapimage;
-            }
+            return bitmapimage;
         }
 
         public class LogEntry
