@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Management;
+using System.Net.Http;
 using System.Reflection;
+using System.Windows;
+using Newtonsoft.Json;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
 
@@ -83,7 +88,7 @@ namespace Syn3Updater.Helper
             return driveInfo;
         }
 
-        public static void GenerateLog(string log)
+        public static void GenerateLog(string log,bool upload)
         {
             string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}";
             data += $@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}";
@@ -129,8 +134,27 @@ namespace Syn3Updater.Helper
             data += $@"LOG{Environment.NewLine}";
             data += log;
             File.WriteAllText($@"{driveletter}\log.txt", data);
+
+            if (upload) UploadLog(data);
         }
 
+        public static void UploadLog(string log)
+        {
+            var values = new Dictionary<string, string>
+            {
+                {"contents", log}
+            };
+
+            var content = new FormUrlEncodedContent(values);
+            HttpClient client = new HttpClient();
+            var response = client.PostAsync("https://cyanlabs.net/api/Syn3Updater/logs/post.php", content).Result;
+
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var definition = new { uuid = "", status = "" };
+            var output = JsonConvert.DeserializeAnonymousType(responseString, definition);
+            Process.Start($"https://cyanlabs.net/api/Syn3Updater/logs/?uuid={output.uuid}");
+        }
+        
         #endregion
     }
 }

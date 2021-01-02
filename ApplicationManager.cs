@@ -105,7 +105,7 @@ namespace Syn3Updater
                 AutoUpdaterHelper unused = new AutoUpdaterHelper();
             }
             
-            Logger.Debug("[App] Syn3 Updater is Starting");
+            Logger.Debug("Syn3 Updater is Starting");
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
 
@@ -113,7 +113,7 @@ namespace Syn3Updater
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (string.IsNullOrWhiteSpace(Settings.Default.Lang))
             {
-                Logger.Debug($"[Settings]  Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
+                Logger.Debug($"Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
                 Settings.Default.Lang = ci.TwoLetterISOLanguageName;
             }
 
@@ -125,7 +125,7 @@ namespace Syn3Updater
             if (string.IsNullOrWhiteSpace(Settings.Default.DownloadPath))
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
-                Logger.Debug($"[Settings] Download location is not set, defaulting to {downloads}\\Syn3Updater\\");
+                Logger.Debug($"Download location is not set, defaulting to {downloads}\\Syn3Updater\\");
                 Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
             }
 
@@ -133,7 +133,7 @@ namespace Syn3Updater
 
             if (!Directory.Exists(DownloadPath) && DownloadPath != "")
             {
-                Logger.Debug("[App] Download location does not exist");
+                Logger.Debug("Download location does not exist");
                 Directory.CreateDirectory(DownloadPath);
             }
 
@@ -141,12 +141,12 @@ namespace Syn3Updater
                 switch (arg)
                 {
                     case "/updated":
-                        Logger.Debug("[App] /updated detected, upgrading settings");
+                        Logger.Debug("/updated detected, upgrading settings");
                         Settings.Default.Upgrade();
                         Settings.Default.Save();
                         break;
                     case "/debug":
-                        Logger.Debug("[App] /debug flag detected, skipping all verification steps");
+                        Logger.Debug("/debug flag detected, skipping all verification steps");
                         SkipCheck = true;
                         break;
                 }
@@ -173,9 +173,9 @@ namespace Syn3Updater
 
         public void Exit()
         {
-            Logger.Debug("[Settings] Saving settings before shutdown");
+            Logger.Debug("Saving settings before shutdown");
             Settings.Default.Save();
-            Logger.Debug("[App] Syn3 Updater is shutting down");
+            Logger.Debug("Syn3 Updater is shutting down");
             File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
             Application.Current.Shutdown();
         }

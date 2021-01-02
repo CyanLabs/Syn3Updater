@@ -18,6 +18,7 @@
             <StackPanel Orientation="Vertical">
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Download.Queue, Converter={StaticResource LocConverter}}" />
                         <ListBox Height="160" ItemsSource="{Binding DownloadQueueList}" Background="{StaticResource SystemBaseLowColorBrush}" />
                         <Grid Margin="0,5,0,5">
@@ -44,6 +45,7 @@
                 </Grid>
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5,0,0,5" Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" />
                         <TextBox  Height="190" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True" myAttachedProperties:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" FontSize="11"/>
                     </StackPanel>

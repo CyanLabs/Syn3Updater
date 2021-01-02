@@ -34,6 +34,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -61,11 +62,12 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
-                    <ComboBox Margin="10,0,0,0" MinWidth="435" VerticalAlignment="Center" SelectedIndex="0" ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDrive}" />
+                    <ComboBox Margin="10,0,0,0" MinWidth="315" VerticalAlignment="Center" SelectedIndex="0" ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDrive}" />
                     <Button VerticalContentAlignment="Center" Cursor="Hand" Grid.Column="1" BorderThickness="0" ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}" Background="#00000000" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RefreshUSB}" Style="{DynamicResource AccentButtonStyle}"  >
                         <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,0" />
                     </Button>
                 </Grid>
+                <Button IsEnabled="{Binding UtiltyButtonStatus}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" HorizontalAlignment="Right" Cursor="Hand" Command="{Binding UploadLog}" Margin="15,10" Padding="5,15" Content="{Binding Language, ConverterParameter=Utility.UploadLog, Converter={StaticResource LocConverter}}"  Style="{DynamicResource AccentButtonStyle}"/>
             </Grid>
 
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">

@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿#nullable enable
+using System.Linq;
 using System.Windows;
 using ModernWpf.Controls;
 using Syn3Updater.UI.MessageBox.Extensions;
+// ReSharper disable UnusedParameter.Local
 
 namespace Syn3Updater.UI.MessageBox {
     public static class MessageBox {
@@ -61,6 +63,7 @@ namespace Syn3Updater.UI.MessageBox {
         public static MessageBoxResult? Show(Window? owner, string messageBoxText, string? caption, MessageBoxButton? button, string? glyph, MessageBoxResult? defaultResult) =>
             ShowInternal(owner, messageBoxText, caption, button, glyph, defaultResult);
 
+        // ReSharper disable once FunctionRecursiveOnAllPaths
         private static MessageBoxResult ShowInternal(Window? owner, string messageBoxText, string? caption, MessageBoxButton? button, string? glyph, MessageBoxResult defaultResult) =>
             ShowInternal(owner, messageBoxText, caption, button, glyph, defaultResult);
         private static MessageBoxResult? ShowInternal(Window? owner, string messageBoxText, string? caption, MessageBoxButton? button, string? glyph, MessageBoxResult? defaultResult) {

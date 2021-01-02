@@ -28,6 +28,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Home.CurrentConfiguration, Converter={StaticResource LocConverter}}" />
                     <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
                         <StackPanel Orientation="Horizontal">
@@ -59,6 +60,7 @@
                         <RowDefinition Height="35" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}" />
                     <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
                         <TextBlock Margin="20,5" FontWeight="Bold" Text="{Binding Language, ConverterParameter=Home.RecommendedUSBFlashDriveTitle, Converter={StaticResource LocConverter}}" />
@@ -98,6 +100,7 @@
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}"/>
                     <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
                         <TextBlock Margin="20,15,20,0" FontWeight="Bold" Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />
@@ -131,6 +134,7 @@
                 </Grid>
 
                 <StackPanel Background="#40000000" Margin="10,5">
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Home.SelectPackages, Converter={StaticResource LocConverter}}" />
                     <controls:ListView Margin="5,0" Height="130" Focusable="False" ItemsSource="{Binding IvsuList}" HorizontalAlignment="Left" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" >
                         

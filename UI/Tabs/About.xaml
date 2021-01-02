@@ -19,6 +19,7 @@
             <StackPanel>
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}"  />
                         <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.About, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
                         <TextBlock Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=About.Endorsed, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
@@ -50,6 +51,7 @@
 
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" />
                         <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -71,6 +73,7 @@
 
                 <Grid VerticalAlignment="Bottom">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
+                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}"/>
                         <TextBlock Margin="10,0,5,10" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">

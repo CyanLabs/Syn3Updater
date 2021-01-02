@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
-using MessageBox = Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Syn3Updater.UI.Tabs
 {
@@ -105,14 +104,13 @@ namespace Syn3Updater.UI.Tabs
             _selectedRelease = ApplicationManager.Instance.SelectedRelease;
             _selectedRegion = ApplicationManager.Instance.SelectedRegion;
             _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
-            string text = $"[App] Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
+            string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
             Log += DateTime.Now + " " + text + Environment.NewLine;
-            ApplicationManager.Logger.Info(text);
-
+            
             InstallMode = ApplicationManager.Instance.InstallMode;
             _action = ApplicationManager.Instance.Action;
 
-            text = $"[App] Install mode set to {InstallMode}";
+            text = $"Install mode set to {InstallMode}";
             Log += DateTime.Now + " " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
 
@@ -154,14 +152,14 @@ namespace Syn3Updater.UI.Tabs
             {
                 if (_ct.IsCancellationRequested)
                 {
-                    Log += DateTime.Now + " " + "[App] Process cancelled by user" + Environment.NewLine;
-                    ApplicationManager.Logger.Info("[App] Process cancelled by user");
+                    Log += DateTime.Now + " " + "Process cancelled by user" + Environment.NewLine;
+                    ApplicationManager.Logger.Info("Process cancelled by user");
                     return;
                 }
 
                 if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                 {
-                    string text = $"[Downloader] {item.FileName} exists and successfully validated, skipping download";
+                    string text = $"{item.FileName} exists and successfully validated, skipping download";
                     Log += DateTime.Now + " " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
@@ -171,7 +169,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     if (_ct.IsCancellationRequested) return;
 
-                    string text = $"[Downloader] {item.FileName} is missing or invalid, downloading";
+                    string text = $"{item.FileName} is missing or invalid, downloading";
                     Log += DateTime.Now + " " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
@@ -184,7 +182,7 @@ namespace Syn3Updater.UI.Tabs
                             if (_ct.IsCancellationRequested) return;
                             if (i > 1)
                             {
-                                text = $"[Downloader] {item.FileName} is missing or invalid, downloading (Attempt #{i})";
+                                text = $"{item.FileName} is missing or invalid, downloading (Attempt #{i})";
                                 Log += DateTime.Now + " " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
                                 DownloadInfo = $"Downloading (Attempt #{i}): {item.Url}";
@@ -198,12 +196,13 @@ namespace Syn3Updater.UI.Tabs
                             {
                                 Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException"), webException.InnerException?.InnerException?.Message), "Syn3 Updater", MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation));
+                                ApplicationManager.Logger.Info("ERROR: " + webException.InnerException?.InnerException?.Message);
                                 CancelAction();
                             }
 
                             if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                             {
-                                text = $"[Downloader] downloaded {item.FileName} and successfully validated";
+                                text = $"downloaded {item.FileName} and successfully validated";
                                 Log += DateTime.Now + " " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
                                 _count++;
@@ -212,7 +211,7 @@ namespace Syn3Updater.UI.Tabs
 
                             if (i == 3)
                             {
-                                text =$"[Downloader] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
+                                text =$"unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
                                 Log += DateTime.Now + " " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
 
@@ -243,7 +242,7 @@ namespace Syn3Updater.UI.Tabs
             {
                 if (ApplicationManager.Instance.DownloadOnly)
                 {
-                    string text = "[App] Process completed successfully (download only)";
+                    string text = "Process completed successfully (download only)";
                     Log += DateTime.Now + " " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
@@ -267,15 +266,15 @@ namespace Syn3Updater.UI.Tabs
             {
                 if (_ct.IsCancellationRequested)
                 {
-                    Log += DateTime.Now + " " + "[App] Process cancelled by user" + Environment.NewLine;
-                    ApplicationManager.Logger.Info("[App] Process cancelled by user");
+                    Log += DateTime.Now + " " + "Process cancelled by user" + Environment.NewLine;
+                    ApplicationManager.Logger.Info("Process cancelled by user");
                     return;
                 }
 
                 if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
                     true))
                 {
-                    string text = $"[Copier] {item.FileName} exists and successfully validated, skipping copy";
+                    string text = $"{item.FileName} exists and successfully validated, skipping copy";
                     Log += DateTime.Now + " " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
@@ -285,7 +284,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     if (_ct.IsCancellationRequested) return;
 
-                    string text = $"[Copier] {item.FileName} is missing or invalid, copying";
+                    string text = $"{item.FileName} is missing or invalid, copying";
                     Log += DateTime.Now + " " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
@@ -297,7 +296,7 @@ namespace Syn3Updater.UI.Tabs
                         if (_ct.IsCancellationRequested) return;
                         if (i > 1)
                         {
-                            text =$"[Copier] {item.FileName} is missing or invalid, copying (Attempt #{i})";
+                            text =$"{item.FileName} is missing or invalid, copying (Attempt #{i})";
                             Log += DateTime.Now + " " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
 
@@ -310,7 +309,7 @@ namespace Syn3Updater.UI.Tabs
                         if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
                         {
-                            text = $"[Copier] copied {item.FileName} and successfully validated";
+                            text = $"copied {item.FileName} and successfully validated";
                             Log += DateTime.Now + " " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
                             _count++;
@@ -319,7 +318,7 @@ namespace Syn3Updater.UI.Tabs
 
                         if (i == 3)
                         {
-                            text = $"[Copier] unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
+                            text = $"unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
                             Log += DateTime.Now + " " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
 
@@ -341,13 +340,13 @@ namespace Syn3Updater.UI.Tabs
         {
             CancelButtonEnabled = false;
 
-            string text  = "[App] All files downloaded and copied to USB successfully!";
+            string text  = "All files downloaded and copied to USB successfully!";
             Log += DateTime.Now + " " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
 
             DownloadInfo = LanguageManager.GetValue("String.Completed");
             ApplicationManager.Instance.IsDownloading = false;
-            USBHelper.GenerateLog(Log);
+            
             Application.Current.Dispatcher.Invoke(() =>
             {
                 if (_action == "main")
@@ -374,9 +373,11 @@ namespace Syn3Updater.UI.Tabs
                     MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     ApplicationManager.Instance.FireUtilityTabEvent();
                 }
+
+               
             });
-
-
+            USBHelper.GenerateLog(Log, MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLog"), "Syn3 Updater", MessageBoxButton.YesNo,
+                MessageBoxImage.Information) == MessageBoxResult.Yes);
             Reset();
         }
 
@@ -418,12 +419,12 @@ namespace Syn3Updater.UI.Tabs
 
         private void PrepareUsb()
         {
-            Log += DateTime.Now + " " + "[App] Preparing USB drive" + Environment.NewLine;
-            ApplicationManager.Logger.Info("[App] Preparing USB drive");
+            Log += DateTime.Now + " " + "Preparing USB drive" + Environment.NewLine;
+            ApplicationManager.Logger.Info("Preparing USB drive");
             if (ApplicationManager.Instance.SkipFormat == false && ApplicationManager.Instance.DownloadOnly == false)
             {
-                Log += DateTime.Now + " " + "[App] Formatting USB drive" + Environment.NewLine;
-                ApplicationManager.Logger.Info("[App] Formatting USB drive");
+                Log += DateTime.Now + " " + "Formatting USB drive" + Environment.NewLine;
+                ApplicationManager.Logger.Info("Formatting USB drive");
                 using (Process p = new Process())
                 {
                     p.StartInfo.UseShellExecute = false;
@@ -431,8 +432,8 @@ namespace Syn3Updater.UI.Tabs
                     p.StartInfo.FileName = @"diskpart.exe";
                     p.StartInfo.CreateNoWindow = true;
 
-                    Log += DateTime.Now + " " + "[App] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
-                    ApplicationManager.Logger.Info("[App] Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
+                    Log += DateTime.Now + " " + "Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
+                    ApplicationManager.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
 
                     p.Start();
                     p.StandardInput.WriteLine($"SELECT DISK={ApplicationManager.Instance.DriveNumber}");
@@ -492,8 +493,8 @@ namespace Syn3Updater.UI.Tabs
 
         private void CreateAutoInstall()
         {
-            Log += DateTime.Now + " " + "[App] Generating Autoinstall.lst" + Environment.NewLine;
-            ApplicationManager.Logger.Info("[App] Generating Autoinstall.lst");
+            Log += DateTime.Now + " " + "Generating Autoinstall.lst" + Environment.NewLine;
+            ApplicationManager.Logger.Info("Generating Autoinstall.lst");
 
             string autoinstalllst =
                 $@"; CyanLabs Syn3Updater 2.x - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}";
@@ -528,8 +529,8 @@ namespace Syn3Updater.UI.Tabs
 
         private void CreateReformat()
         {
-            Log += DateTime.Now + " " + "[App] Generating reformat.lst" + Environment.NewLine;
-            ApplicationManager.Logger.Info("[App] Generating reformat.lst");
+            Log += DateTime.Now + " " + "Generating reformat.lst" + Environment.NewLine;
+            ApplicationManager.Logger.Info("Generating reformat.lst");
 
             string reformatlst = "";
             int i = 0;
@@ -544,8 +545,8 @@ namespace Syn3Updater.UI.Tabs
 
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\reformat.lst", reformatlst);
 
-            Log += DateTime.Now + " " + "[App] Generating autoinstall.lst" + Environment.NewLine;
-            ApplicationManager.Logger.Info("[App] Generating autoinstall.lst");
+            Log += DateTime.Now + " " + "Generating autoinstall.lst" + Environment.NewLine;
+            ApplicationManager.Logger.Info("Generating autoinstall.lst");
 
             string autoinstalllst =
                 $@"; CyanLabs Syn3Updater 2.x - {InstallMode} Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}";
@@ -580,9 +581,12 @@ namespace Syn3Updater.UI.Tabs
             DownloadInfo = $"Validating: {localfile}";
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");
             FileHelper.ValidateResult validateResult = _fileHelper.validate_file(srcfile, localfile, md5, copy, _ct);
-            
-            Log += DateTime.Now + " " + validateResult.Message + Environment.NewLine;
-            ApplicationManager.Logger.Info(validateResult.Message);
+
+            if (validateResult.Message != "")
+            {
+                Log += DateTime.Now + " " + validateResult.Message + Environment.NewLine;
+                ApplicationManager.Logger.Info(validateResult.Message);
+            }
             return validateResult.Result;
         }
 

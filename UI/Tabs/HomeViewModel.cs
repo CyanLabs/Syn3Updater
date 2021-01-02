@@ -9,7 +9,6 @@ using System.Windows;
 using Newtonsoft.Json;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
-using MessageBox = Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Syn3Updater.UI.Tabs
 {
@@ -22,9 +21,9 @@ namespace Syn3Updater.UI.Tabs
         private ActionCommand _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
-        public ActionCommand RefreshUSB => _refreshUSB ?? (_refreshUSB = new ActionCommand(RefreshUsb));
-        public ActionCommand RegionInfo => _regionInfo ?? (_regionInfo = new ActionCommand(RegionInfoAction));
-        public ActionCommand StartButton => _startButton ?? (_startButton = new ActionCommand(StartAction));
+        public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
+        public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
+        public ActionCommand StartButton => _startButton ??= new ActionCommand(StartAction);
 
         #endregion
 
@@ -269,6 +268,7 @@ namespace Syn3Updater.UI.Tabs
             RefreshUsb();
             SyncMapVersion = new ObservableCollection<string>();
             DriveDetailsVisible = (SelectedDrive == null || SelectedDrive.Path == "") ? Visibility.Hidden : Visibility.Visible;
+            ApplicationManager.Logger.Info($"Current Sync Details - Region: {CurrentSyncRegion} - Version: {CurrentSyncVersion} - Navigation: {CurrentSyncNav}");
         }
 
         public void Init()
@@ -313,13 +313,10 @@ namespace Syn3Updater.UI.Tabs
             DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
             DriveName = driveInfo.Name;
             DriveDetailsVisible = driveInfo.Name == null ? Visibility.Hidden : Visibility.Visible;
-            ApplicationManager.Logger.Info(
-                $"[App] USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
         }
 
         private void UpdateSelectedRegion()
         {
-            ApplicationManager.Logger.Info($"[Settings] Current Sync Details - Region: {CurrentSyncRegion} - Version: {CurrentSyncVersion} - Navigation: {CurrentSyncNav}");
             if (SelectedRegion.Code != "")
             {
                 IvsuList.Clear();
@@ -497,6 +494,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void StartAction()
         {
+            ApplicationManager.Logger.Info($"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {ApplicationManager.Instance.DriveLetter}");
             ApplicationManager.Instance.Ivsus.Clear();
 
             if (InstallMode == "downgrade")
@@ -513,7 +511,7 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DownloadOnly = false;
             if (Debugger.IsAttached)
-                ApplicationManager.Logger.Debug("[App] Debugger is attached redirecting URL's to 127.0.0.1");
+                ApplicationManager.Logger.Debug("Debugger is attached redirecting URL's to 127.0.0.1");
             foreach (SyncModel.SyncIvsu item in IvsuList)
                 if (item.Selected)
                 {
@@ -567,7 +565,7 @@ namespace Syn3Updater.UI.Tabs
                 ApplicationManager.Instance.SelectedRelease = SelectedRelease;
                 ApplicationManager.Instance.SelectedMapVersion = SelectedMapVersion;
                 ApplicationManager.Instance.IsDownloading = true;
-                ApplicationManager.Logger.Info($@"[App] Starting process ({SelectedRelease} - {SelectedRegion} - {SelectedMapVersion})");
+                ApplicationManager.Logger.Info($@"Starting process ({SelectedRelease} - {SelectedRegion.Code} - {SelectedMapVersion})");
                 StartEnabled = false;
                 ApplicationManager.Instance.FireDownloadsTabEvent();
             }

@@ -7,8 +7,7 @@
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     xmlns:converter="clr-namespace:Syn3Updater.Converter" xmlns:tabs="clr-namespace:Syn3Updater.UI.Tabs"
     xmlns:ui="http://schemas.modernwpf.com/2019"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/" 
-    xmlns:helper="clr-namespace:Syn3Updater.Helper"
+    xmlns:fa5="http://schemas.fontawesome.com/icons/"
     x:Class="Syn3Updater.UI.MainWindow"
     mc:Ignorable="d"
     Title="Syn3 Updater"
@@ -49,6 +48,7 @@
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <fa5:FontAwesome Icon="{Binding Icon}" FontSize="24" ToolTip="{Binding Name}" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="White" />
                     <TextBlock
                         Grid.Column="1"

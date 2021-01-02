@@ -45,6 +45,9 @@ namespace Syn3Updater.UI.Tabs
         private ActionCommand _troubleshootingDetails;
         public ActionCommand TroubleshootingDetails => _troubleshootingDetails ??= new ActionCommand(TroubleshootingDetailsAction);
 
+        private ActionCommand _uploadLog;
+        public ActionCommand UploadLog => _uploadLog ??= new ActionCommand(UploadLogAction);
+
         private static readonly HttpClient Client = new HttpClient();
 
         #endregion
@@ -156,8 +159,11 @@ namespace Syn3Updater.UI.Tabs
             DriveName = driveInfo.Name;
 
             ReloadTab();
-            ApplicationManager.Logger.Info(
-                $"[Utility] USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
+            if (SelectedDrive?.Path != "")
+            {
+                ApplicationManager.Logger.Info(
+                    $"USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
+            }
         }
 
         private void LogPrepareUSBAction()
@@ -176,20 +182,24 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"[App] Starting process (Logging Utility");
+            ApplicationManager.Logger.Info(@"Starting process (Logging Utility");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
         private XDocument _node;
+
         public struct SyncApimDetails
         {
             public int Size;
             public bool Nav;
             public string PartNumber;
+
             // ReSharper disable once InconsistentNaming
             public string VIN;
         }
+
         SyncApimDetails _syncApimDetails;
+
         private void LogParseXmlAction()
         {
             VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
@@ -209,9 +219,10 @@ namespace Syn3Updater.UI.Tabs
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.SyncVersion")} {syncappname}{Environment.NewLine}";
 
                     string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
-                    LogXmlDetails +=  $"{LanguageManager.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
+                    LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
 
-                    string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/").Select(x => x.Total)
+                    string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
+                        .Select(x => x.Total)
                         .Single();
                     double apimsizeint = Convert.ToDouble(apimsize?.Remove(apimsize.Length - 1));
                     _syncApimDetails.PartNumber = apimmodel;
@@ -241,9 +252,12 @@ namespace Syn3Updater.UI.Tabs
                     if (_syncApimDetails.Nav)
                     {
                         LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMType")} Navigation {Environment.NewLine}";
-                    } else {
+                    }
+                    else
+                    {
                         LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMType")} Non-Navigation {Environment.NewLine}";
                     }
+
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMSize")} {_syncApimDetails.Size}GB {Environment.NewLine}";
 
                     string apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
@@ -253,48 +267,52 @@ namespace Syn3Updater.UI.Tabs
                     LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime + Environment.NewLine;
 
                     LogXmlDetails += $"{Environment.NewLine}Partition Type = Free / Total";
-                    foreach (D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
+                    if (interrogatorLog != null)
                     {
-                        LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
-                    }
-
-                    List<DID> asBuiltValues = new List<DID>();
-
-                    LogXmlDetails += $"{Environment.NewLine}{Environment.NewLine}APIM AsBuilt (Ford/UCDS)";
-                    foreach (D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
-                    {
-                        LogXmlDetails += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
-                        asBuiltValues.Add(new DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
-                    }
-
-                    ToggleLogXmlDetails = Visibility.Visible;
-
-                    Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
-                    HttpResponseMessage response = Client.GetAsync(Api.IVSUSingle + syncappname).Result;
-                    Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
-                    string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-                    if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
-                    {
-                        if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
-                            MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                        foreach (D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
                         {
-                            Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
-                            ApplicationManager.Instance.SyncVersion = convertedsyncversion;
+                            LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
                         }
+
+                        List<DID> asBuiltValues = new List<DID>();
+
+                        LogXmlDetails += $"{Environment.NewLine}{Environment.NewLine}APIM AsBuilt (Ford/UCDS)";
+                        foreach (D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
+                        {
+                            LogXmlDetails += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
+                            asBuiltValues.Add(new DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
+                        }
+
+                        ToggleLogXmlDetails = Visibility.Visible;
+
+                        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
+                        HttpResponseMessage response = Client.GetAsync(Api.IVSUSingle + syncappname).Result;
+                        Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
+                        string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                        if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
+                        {
+                            if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
+                                MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                            {
+                                Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
+                                ApplicationManager.Instance.SyncVersion = convertedsyncversion;
+                            }
+                        }
+
+                        DirectConfiguration asbult = new DirectConfiguration
+                        {
+                            VEHICLE = new VEHICLE
+                            {
+                                MODULE = "Syn3Updater",
+                                VIN = "",
+                                VEHICLEID = apimmodel,
+                                VEHICLEYEAR = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime.ToString(),
+                                DID = asBuiltValues
+                            }
+                        };
+                        json = JsonConvert.SerializeObject(asbult, Formatting.Indented);
                     }
 
-                    DirectConfiguration asbult = new DirectConfiguration
-                    {
-                        VEHICLE = new VEHICLE
-                        {
-                            MODULE = "Syn3Updater",
-                            VIN = "",
-                            VEHICLEID = apimmodel,
-                            VEHICLEYEAR = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime.ToString(),
-                            DID = asBuiltValues
-                        }
-                    };
-                    json = JsonConvert.SerializeObject(asbult, Formatting.Indented);
                     _node = JsonConvert.DeserializeXNode(json, "DirectConfiguration");
 
                 }
@@ -321,12 +339,11 @@ namespace Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("vin", _syncApimDetails.VIN)
                     });
                     var response = await Client.PostAsync(Api.AsBuiltPost, formContent);
-                    var definition = new { filename = "", status = "" };
+                    var definition = new {filename = "", status = ""};
                     var contents = await response.Content.ReadAsStringAsync();
                     var output = JsonConvert.DeserializeAnonymousType(contents, definition);
                     Process.Start(Api.AsBuiltOutput + output.filename);
                 }
-                
             }
         }
 
@@ -346,7 +363,7 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"[App] Starting process (Gracenotes Removal");
+            ApplicationManager.Logger.Info(@"Starting process (Gracenotes Removal");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -366,7 +383,7 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"[App] Starting process (Voice Package Shrinker");
+            ApplicationManager.Logger.Info(@"Starting process (Voice Package Shrinker");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -386,14 +403,27 @@ namespace Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"[App] Starting process (Enforced Downgrade");
+            ApplicationManager.Logger.Info(@"Starting process (Enforced Downgrade");
             ApplicationManager.Instance.FireDownloadsTabEvent();
-          
+
         }
 
         private void TroubleshootingDetailsAction()
         {
             Process.Start("https://community.cyanlabs.net/t/tutorial-sync-3-4-non-nav-apim-failure-to-update-to-newer-version-sync-3-4/1984");
+        }
+
+        private void UploadLogAction()
+        {
+            if (DriveLetter != "" && System.IO.File.Exists(DriveLetter + @"\log.txt"))
+            {
+                string logfile = System.IO.File.ReadAllText(DriveLetter + @"\log.txt");
+                USBHelper.UploadLog(logfile);
+            }
+            else
+            {
+                MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLogNoDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
         #endregion
     }

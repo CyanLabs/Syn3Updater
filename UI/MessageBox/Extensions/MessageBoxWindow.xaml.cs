@@ -1,10 +1,11 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Windows;
 using Syn3Updater.Model;
 
 namespace Syn3Updater.UI.MessageBox.Extensions
 {
-    public partial class MessageBoxWindow : Window
+    public partial class MessageBoxWindow
     {
 
         public MessageBoxResult? Result;
@@ -45,7 +46,7 @@ namespace Syn3Updater.UI.MessageBox.Extensions
             yesButton.Click += YesButton_Click;
             noButton.Click += NoButton_Click;
 
-            if (symbolGlyph is string glyph)
+            if (symbolGlyph is { } glyph)
             {
                 symbolIcon.Visibility = Visibility.Visible;
                 symbolIcon.Glyph = glyph;

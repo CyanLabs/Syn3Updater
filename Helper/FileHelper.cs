@@ -149,14 +149,14 @@ namespace Syn3Updater.Helper
 
             if (ApplicationManager.Instance.SkipCheck)
             {
-                validateResult.Message = $"[Validator] SkipCheck activated, spoofing validation check for {filename}";
+                validateResult.Message = $"SkipCheck activated, spoofing validation check for {filename}";
                 validateResult.Result = true;
                 return validateResult;
             }
 
             if (!File.Exists(localfile))
             {
-                validateResult.Message = $"[Validator] {filename} is missing";
+                validateResult.Message = $"";
                 validateResult.Result = false;
                 return validateResult;
             }
@@ -172,7 +172,7 @@ namespace Syn3Updater.Helper
                     if (srcfilesize == filesize)
                         if (localMd5 == md5_helper(srcfile,ct))
                         {
-                            validateResult.Message = $"[Validator] {filename} checksum matches already verified local copy";
+                            validateResult.Message = $"{filename} checksum matches already verified local copy";
                             validateResult.Result = true;
                             return validateResult;
                         }
@@ -190,7 +190,7 @@ namespace Syn3Updater.Helper
 
                         if (newfilesize == filesize)
                         {
-                            validateResult.Message = $"[Validator] no source checksum available for {filename} comparing filesize only";
+                            validateResult.Message = $"no source checksum available for {filename} comparing filesize only";
                             validateResult.Result = true;
                             return validateResult;
                         }
@@ -199,18 +199,18 @@ namespace Syn3Updater.Helper
             }
             else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))
             {
-                validateResult.Message = $"[Validator] {filename} matches known good checksum";
+                validateResult.Message = $"{filename} matches known good checksum";
                 validateResult.Result = true;
                 return validateResult;
             }
             if (ct.IsCancellationRequested)
             {
-                validateResult.Message = "[App] Process cancelled by user";
+                validateResult.Message = "Process cancelled by user";
                 validateResult.Result = false;
                 return validateResult;
             }
 
-            validateResult.Message = $"[Validator] {filename} failed to validate";
+            validateResult.Message = $"{filename} failed to validate";
             validateResult.Result = false;
             return validateResult;
         }

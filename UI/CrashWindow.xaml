@@ -14,7 +14,7 @@
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
         <Button Grid.RowSpan="2" HorizontalAlignment="Right" Width="165" Height="165" VerticalAlignment="Top" Margin="10" Padding="0" Click="ClickQRCode" BorderThickness="0">
-            <Image Width="165" Height="165" Margin="0" x:Name="qrcode"></Image>
+            <Image Width="165" Height="165" Margin="0" x:Name="Qrcode"></Image>
         </Button>
         <StackPanel Margin="20,20,20,0" Grid.Row="0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -26,13 +26,13 @@
                 </StackPanel>
 
             </StackPanel>
-            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="24" Foreground="White" x:Name="errorName">error name</TextBlock>
-            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="18" Foreground="White" x:Name="message">message</TextBlock>
+            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="24" Foreground="White" x:Name="ErrorName">error name</TextBlock>
+            <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="18" Foreground="White" x:Name="Message">message</TextBlock>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="20"  >
 
-                <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="12" Foreground="White" x:Name="stackTrace" TextWrapping="WrapWithOverflow">stacktrace</TextBlock>
+                <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="12" Foreground="White" x:Name="StackTrace" TextWrapping="WrapWithOverflow">stacktrace</TextBlock>
             </StackPanel>
         </ScrollViewer>
         <Grid Row="2" Background="#80000000">

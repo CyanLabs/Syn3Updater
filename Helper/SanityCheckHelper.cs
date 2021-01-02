@@ -25,7 +25,7 @@ namespace Syn3Updater.Helper
                     {
                         if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                         {
-                            ApplicationManager.Logger.Info("[App] No usb has been selected, download only mode activated");
+                            ApplicationManager.Logger.Info("No usb has been selected, download only mode activated");
                             ApplicationManager.Instance.DownloadOnly = true;
                         }
                         else
@@ -52,14 +52,18 @@ namespace Syn3Updater.Helper
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                     ApplicationManager.Instance.SkipFormat = false;
                 else
-                    ApplicationManager.Logger.Info("[App] USB Drive not formatted, using existing filesystem and files");
+                    ApplicationManager.Logger.Info("USB Drive not formatted, using existing filesystem and files");
             }
 
             //Format USB Drive
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && ApplicationManager.Instance.DownloadOnly == false && ApplicationManager.Instance.SkipFormat == false)
                 if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                {
+                    ApplicationManager.Logger.Info("USB Drive will be formatted, using fresh filesystem");
                     return true;
+                }
+                    
             
 
             return false;
