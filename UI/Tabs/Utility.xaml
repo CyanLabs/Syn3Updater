@@ -21,6 +21,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0">
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.TroubleshootTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="Wrap" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.TroubleshootDesc, Converter={StaticResource LocConverter}}" />
                 </StackPanel>
@@ -38,6 +39,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
+                <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                 <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}" />
 
                 <StackPanel Margin="5,10,5,10" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
@@ -76,6 +78,7 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="70" />
                 </Grid.RowDefinitions>
+                <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                 <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Margin="5,5,0,0" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.CreateLogTitle, Converter={StaticResource LocConverter}}" />
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="10,5" TextWrapping="Wrap" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.CreateLogDesc, Converter={StaticResource LocConverter}}" />
                 <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0">
@@ -108,6 +111,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0">
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.GracenotesRemovalTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.GracenotesRemovalDesc, Converter={StaticResource LocConverter}}" />
                 </StackPanel>
@@ -120,7 +124,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel VerticalAlignment="Center" Margin="0">
-                    <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.VoiceShrinkerTitle, Converter={StaticResource LocConverter}}" />
+                <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+                <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.VoiceShrinkerTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.VoiceShrinkerDesc, Converter={StaticResource LocConverter}}" />
             </StackPanel>
                 <Button Grid.Column="1"  Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding SmallVoiceUSB}" Margin="15,10" Padding="5,15" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>
@@ -132,7 +137,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel VerticalAlignment="Center" Margin="0">
-                    <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.DowngradeTitle, Converter={StaticResource LocConverter}}" />
+                <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+                <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Utility.DowngradeTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left" Text="{Binding Language, ConverterParameter=Utility.DowngradeDesc, Converter={StaticResource LocConverter}}" />
             </StackPanel>
                 <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right" IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding DowngradeUSB}" Margin="15,10"  Padding="5,15" Foreground="White" Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}"/>

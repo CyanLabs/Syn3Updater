@@ -1,4 +1,4 @@
-﻿namespace ModernWpf {
+﻿namespace Syn3Updater.UI.MessageBox {
     public enum SymbolGlyph {
         GlobalNavigationButton = 0xE700,
         Wifi = 0xE701,

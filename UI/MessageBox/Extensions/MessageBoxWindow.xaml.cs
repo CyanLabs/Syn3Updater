@@ -2,7 +2,7 @@
 using System.Windows;
 using Syn3Updater.Model;
 
-namespace ModernWpf
+namespace Syn3Updater.UI.MessageBox.Extensions
 {
     public partial class MessageBoxWindow : Window
     {

@@ -21,21 +21,22 @@ namespace Syn3Updater.Helper
         {
             {
                 dynamic json = JsonConvert.DeserializeObject(args.RemoteData);
-                args.UpdateInfo = new UpdateInfoEventArgs
-                {
-                    ChangelogURL = null,
-                    CheckSum = null,
-                    CurrentVersion = json.tag_name.ToString()
-                        .Replace("v",
-                            ""),
-                    DownloadURL = json.assets[0]
-                        .browser_download_url,
-                    Error = null,
-                    InstalledVersion = null,
-                    InstallerArgs = null,
-                    IsUpdateAvailable = false,
-                    Mandatory = null
-                };
+                if (json != null)
+                    args.UpdateInfo = new UpdateInfoEventArgs
+                    {
+                        ChangelogURL = null,
+                        CheckSum = null,
+                        CurrentVersion = json.tag_name.ToString()
+                            .Replace("v",
+                                ""),
+                        DownloadURL = json.assets[0]
+                            .browser_download_url,
+                        Error = null,
+                        InstalledVersion = null,
+                        InstallerArgs = null,
+                        IsUpdateAvailable = false,
+                        Mandatory = null
+                    };
             }
         }
 

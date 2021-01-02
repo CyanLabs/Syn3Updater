@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Net;
 using System.Reflection;
 using System.Windows.Controls;
@@ -15,17 +14,10 @@ namespace Syn3Updater.UI
         #region Methods
         public MainWindow()
         {
-            try
-            {
-                InitializeComponent();
-                Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            }
-            catch (NullReferenceException e)
-            {
-
-            }
+            InitializeComponent();
+            Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
         private MainWindowViewModel Vm => (MainWindowViewModel) DataContext;

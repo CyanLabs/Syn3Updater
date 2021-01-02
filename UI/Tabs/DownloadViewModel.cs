@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
-using MessageBox = ModernWpf.MessageBox;
+using MessageBox = Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Syn3Updater.UI.Tabs
 {
@@ -196,7 +196,7 @@ namespace Syn3Updater.UI.Tabs
                             }
                             catch (HttpRequestException webException)
                             {
-                                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException"), webException.InnerException?.InnerException?.Message), "Syn3 Updater", MessageBoxButton.OK,
+                                Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException"), webException.InnerException?.InnerException?.Message), "Syn3 Updater", MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation));
                                 CancelAction();
                             }
@@ -216,7 +216,7 @@ namespace Syn3Updater.UI.Tabs
                                 Log += DateTime.Now + " " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
 
-                                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error));
+                                Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error));
                                 CancelAction();
                                 break;
                             }
@@ -248,7 +248,7 @@ namespace Syn3Updater.UI.Tabs
                     ApplicationManager.Logger.Info(text);
 
                     DownloadInfo = LanguageManager.GetValue("Strings.Completed");
-                    Application.Current.Dispatcher.Invoke(() => MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information));
+                    Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information));
                     ApplicationManager.Instance.IsDownloading = false;
                     CancelAction();
                 }
@@ -323,7 +323,7 @@ namespace Syn3Updater.UI.Tabs
                             Log += DateTime.Now + " " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
 
-                            Application.Current.Dispatcher.Invoke(() => MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
+                            Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
                                 MessageBoxImage.Error));
                             CancelAction();
                             break;
@@ -352,26 +352,26 @@ namespace Syn3Updater.UI.Tabs
             {
                 if (_action == "main")
                 {
-                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo,
+                    if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo,
                         MessageBoxImage.Information) == MessageBoxResult.Yes)
                     {
                         Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
                         ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
                     }
 
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
                     ApplicationManager.Instance.FireHomeTabEvent();
                 }
                 else if (_action == "logutility")
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     ApplicationManager.Instance.UtilityCreateLogStep1Complete = true;
                     ApplicationManager.Instance.FireUtilityTabEvent();
                 }
                 else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     ApplicationManager.Instance.FireUtilityTabEvent();
                 }
             });

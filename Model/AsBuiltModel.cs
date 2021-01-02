@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using Syn3Updater.UI.Tabs;
+// ReSharper disable InconsistentNaming
 
 namespace Syn3Updater.Model
 {

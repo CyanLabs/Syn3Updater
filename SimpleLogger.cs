@@ -27,7 +27,7 @@ namespace Syn3Updater
 
         public void CrashWindow(Exception ex, [CallerMemberName] string callerMemberName = "")
         {
-            CrashWindow crashWindow = new CrashWindow {errorName = {Text = ex.GetType().ToString()}, message = {Text = ex.Message}, stackTrace = {Text = ex.StackTrace}};
+            CrashWindow crashWindow = new CrashWindow {ErrorName = {Text = ex.GetType().ToString()}, Message = {Text = ex.Message}, StackTrace = {Text = ex.StackTrace}};
             crashWindow.Show();
 
             Log.Add(new LogEntry(ex.GetType().ToString(), "Crash", ex));
@@ -42,7 +42,7 @@ namespace Syn3Updater
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
 
-            crashWindow.qrcode.Source = BitmapToImageSource(qrCodeImage);
+            crashWindow.Qrcode.Source = BitmapToImageSource(qrCodeImage);
         }
 
         BitmapImage BitmapToImageSource(Bitmap bitmap)

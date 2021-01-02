@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using Syn3Updater.Model;
-using MessageBox = ModernWpf.MessageBox;
+using MessageBox = Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Syn3Updater.Helper
 {
@@ -48,7 +48,7 @@ namespace Syn3Updater.Helper
             //Optional Format
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
             {
-                if (selectedDrive != null && MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
+                if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                     ApplicationManager.Instance.SkipFormat = false;
                 else

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace ModernWpf.Extensions {
+namespace Syn3Updater.UI.MessageBox.Extensions {
     internal static class MessageBoxImageExtensions {
         public static SymbolGlyph ToSymbol(this MessageBoxImage image) {
             switch (image) {

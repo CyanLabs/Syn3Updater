@@ -10,7 +10,6 @@ using Ookii.Dialogs.Wpf;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
-using MessageBox = ModernWpf.MessageBox;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Syn3Updater.UI.Tabs
@@ -21,8 +20,8 @@ namespace Syn3Updater.UI.Tabs
 
         private ActionCommand _downloadPathSelector;
         private ActionCommand _applySettings;
-        public ActionCommand DownloadPathSelector => _downloadPathSelector ?? (_downloadPathSelector = new ActionCommand(DownloadPathAction));
-        public ActionCommand ApplySettings => _applySettings ?? (_applySettings = new ActionCommand(ApplySettingsAction));
+        public ActionCommand DownloadPathSelector => _downloadPathSelector ??= new ActionCommand(DownloadPathAction);
+        public ActionCommand ApplySettings => _applySettings ??= new ActionCommand(ApplySettingsAction);
 
         #endregion
 
@@ -262,7 +261,7 @@ namespace Syn3Updater.UI.Tabs
             if (trimmedversion.Length >= 5 && CurrentSyncRegion != "")
                 ApplicationManager.Instance.FireHomeTabEvent();
             else
-                MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void DownloadPathAction()
@@ -276,7 +275,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
                     {
-                        if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
+                        if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
                                 Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                         {
                             try

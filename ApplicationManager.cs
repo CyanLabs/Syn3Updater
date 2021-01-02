@@ -100,7 +100,10 @@ namespace Syn3Updater
                 Settings.Default.Save();
             }
 
-            if (!Debugger.IsAttached) { AutoUpdaterHelper autoupdaterhelper = new AutoUpdaterHelper(); }
+            if (!Debugger.IsAttached)
+            {
+                AutoUpdaterHelper unused = new AutoUpdaterHelper();
+            }
             
             Logger.Debug("[App] Syn3 Updater is Starting");
             // ReSharper disable once IdentifierTypo
@@ -159,12 +162,14 @@ namespace Syn3Updater
             if (_mainWindow.WindowState == WindowState.Minimized) _mainWindow.WindowState = WindowState.Normal;
         }
 
+/*
         public void RestartApp()
         {
             Logger.Debug("[App] Syn3 Updater is restarting.");
             Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
         }
+*/
 
         public void Exit()
         {

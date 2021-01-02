@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Windows;
 using ModernWpf.Controls;
-using ModernWpf.Extensions;
+using Syn3Updater.UI.MessageBox.Extensions;
 
-namespace ModernWpf {
+namespace Syn3Updater.UI.MessageBox {
     public static class MessageBox {
 
         public static MessageBoxResult? Show(string messageBoxText) =>

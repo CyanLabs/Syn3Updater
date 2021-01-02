@@ -14,7 +14,6 @@ using Ookii.Dialogs.Wpf;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Formatting = Newtonsoft.Json.Formatting;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Syn3Updater.UI.Tabs
 {
@@ -22,30 +21,29 @@ namespace Syn3Updater.UI.Tabs
     {
         #region Constructors
 
-        private ActionCommand viewAsBuilt;
-        public ActionCommand ViewAsBuilt => viewAsBuilt ?? (viewAsBuilt = new ActionCommand(UploadFile));
+        private ActionCommand _viewAsBuilt;
+        public ActionCommand ViewAsBuilt => _viewAsBuilt ??= new ActionCommand(UploadFile);
 
         private ActionCommand _refreshUSB;
-        public ActionCommand RefreshUSB => _refreshUSB ?? (_refreshUSB = new ActionCommand(RefreshUsbAction));
+        public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsbAction);
 
         private ActionCommand _logPrepareUSB;
-        public ActionCommand LogPrepareUSB => _logPrepareUSB ?? (_logPrepareUSB = new ActionCommand(LogPrepareUSBAction));
+        public ActionCommand LogPrepareUSB => _logPrepareUSB ??= new ActionCommand(LogPrepareUSBAction);
 
         private ActionCommand _logParseXml;
-        public ActionCommand LogParseXml => _logParseXml ?? (_logParseXml = new ActionCommand(LogParseXmlAction));
+        public ActionCommand LogParseXml => _logParseXml ??= new ActionCommand(LogParseXmlAction);
 
         private ActionCommand _gracenotesRemovalUSB;
-        public ActionCommand GracenotesRemovalUSB => _gracenotesRemovalUSB ?? (_gracenotesRemovalUSB = new ActionCommand(GracenotesRemovalAction));
+        public ActionCommand GracenotesRemovalUSB => _gracenotesRemovalUSB ??= new ActionCommand(GracenotesRemovalAction);
 
         private ActionCommand _smallVoiceUSB;
-        public ActionCommand SmallVoiceUSB => _smallVoiceUSB ?? (_smallVoiceUSB = new ActionCommand(SmallVoiceAction));
+        public ActionCommand SmallVoiceUSB => _smallVoiceUSB ??= new ActionCommand(SmallVoiceAction);
 
         private ActionCommand _downgradeUSB;
-        public ActionCommand DowngradeUSB => _downgradeUSB ?? (_downgradeUSB = new ActionCommand(DowngradeAction));
-
+        public ActionCommand DowngradeUSB => _downgradeUSB ??= new ActionCommand(DowngradeAction);
 
         private ActionCommand _troubleshootingDetails;
-        public ActionCommand TroubleshootingDetails => _troubleshootingDetails ?? (_troubleshootingDetails = new ActionCommand(TroubleshootingDetailsAction));
+        public ActionCommand TroubleshootingDetails => _troubleshootingDetails ??= new ActionCommand(TroubleshootingDetailsAction);
 
         private static readonly HttpClient Client = new HttpClient();
 
@@ -182,15 +180,16 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
-        private XDocument node;
-        public struct SyncAPIMDetails
+        private XDocument _node;
+        public struct SyncApimDetails
         {
             public int Size;
             public bool Nav;
             public string PartNumber;
+            // ReSharper disable once InconsistentNaming
             public string VIN;
         }
-        SyncAPIMDetails syncAPIMDetails;
+        SyncApimDetails _syncApimDetails;
         private void LogParseXmlAction()
         {
             VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
@@ -202,59 +201,59 @@ namespace Syn3Updater.UI.Tabs
                     doc.Load(dialog.FileName);
                     string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
                     InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<InterrogatorModel>(json, Model.Converter.Settings);
-                    syncAPIMDetails.VIN = interrogatorLog.POtaModuleSnapShot.PVin;
-                    LogXmlDetails = $"VIN: {interrogatorLog.POtaModuleSnapShot.PVin}{Environment.NewLine}";
+                    _syncApimDetails.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
+                    LogXmlDetails = $"VIN: {interrogatorLog?.POtaModuleSnapShot.PVin}{Environment.NewLine}";
 
-                    D2P1Did[] d2P1Did = interrogatorLog.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
-                    string syncappname = d2P1Did.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
+                    D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
+                    string syncappname = d2P1Did!.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.SyncVersion")} {syncappname}{Environment.NewLine}";
 
                     string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                     LogXmlDetails +=  $"{LanguageManager.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
 
-                    string apimsize = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/").Select(x => x.Total)
+                    string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/").Select(x => x.Total)
                         .Single();
-                    double apimsizeint = Convert.ToDouble(apimsize.Remove(apimsize.Length - 1));
-                    syncAPIMDetails.PartNumber = apimmodel;
+                    double apimsizeint = Convert.ToDouble(apimsize?.Remove(apimsize.Length - 1));
+                    _syncApimDetails.PartNumber = apimmodel;
                     if (apimsizeint >= 0 && apimsizeint <= 8)
                     {
-                        syncAPIMDetails.Nav = false;
-                        syncAPIMDetails.Size = 8;
+                        _syncApimDetails.Nav = false;
+                        _syncApimDetails.Size = 8;
 
                     }
                     else if (apimsizeint >= 9 && apimsizeint <= 16)
                     {
-                        syncAPIMDetails.Nav = false;
-                        syncAPIMDetails.Size = 16;
+                        _syncApimDetails.Nav = false;
+                        _syncApimDetails.Size = 16;
                     }
                     else if (apimsizeint >= 17 && apimsizeint <= 32)
                     {
-                        syncAPIMDetails.Nav = true;
-                        syncAPIMDetails.Size = 32;
+                        _syncApimDetails.Nav = true;
+                        _syncApimDetails.Size = 32;
 
                     }
                     else if (apimsizeint >= 33 && apimsizeint <= 64)
                     {
-                        syncAPIMDetails.Nav = true;
-                        syncAPIMDetails.Size = 64;
+                        _syncApimDetails.Nav = true;
+                        _syncApimDetails.Size = 64;
                     }
 
-                    if (syncAPIMDetails.Nav)
+                    if (_syncApimDetails.Nav)
                     {
                         LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMType")} Navigation {Environment.NewLine}";
                     } else {
                         LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMType")} Non-Navigation {Environment.NewLine}";
                     }
-                    LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMSize")} {syncAPIMDetails.Size}GB {Environment.NewLine}";
+                    LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMSize")} {_syncApimDetails.Size}GB {Environment.NewLine}";
 
-                    string apimfree = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
+                    string apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                         .Select(x => x.Available).Single();
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMFree")} {apimfree} {Environment.NewLine}";
 
-                    LogXmlDetails += interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime + Environment.NewLine;
+                    LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime + Environment.NewLine;
 
                     LogXmlDetails += $"{Environment.NewLine}Partition Type = Free / Total";
-                    foreach (D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
+                    foreach (D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
                     {
                         LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
                     }
@@ -276,7 +275,7 @@ namespace Syn3Updater.UI.Tabs
                     string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                     if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
                     {
-                        if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
+                        if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
                             MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                         {
                             Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
@@ -291,35 +290,35 @@ namespace Syn3Updater.UI.Tabs
                             MODULE = "Syn3Updater",
                             VIN = "",
                             VEHICLEID = apimmodel,
-                            VEHICLEYEAR = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime.ToString(),
+                            VEHICLEYEAR = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime.ToString(),
                             DID = asBuiltValues
                         }
                     };
                     json = JsonConvert.SerializeObject(asbult, Formatting.Indented);
-                    node = JsonConvert.DeserializeXNode(json, "DirectConfiguration");
+                    _node = JsonConvert.DeserializeXNode(json, "DirectConfiguration");
 
                 }
                 catch (NullReferenceException)
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
         private async void UploadFile()
         {
-            if (node != null)
+            if (_node != null)
             {
-                if (MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
+                if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
                     MessageBoxResult.OK)
                 {
                     var formContent = new FormUrlEncodedContent(new[]
                     {
-                        new KeyValuePair<string, string>("xml", node.ToString()),
-                        new KeyValuePair<string, string>("apim", syncAPIMDetails.PartNumber),
-                        new KeyValuePair<string, string>("nav", syncAPIMDetails.Nav.ToString()),
-                        new KeyValuePair<string, string>("size", syncAPIMDetails.Size.ToString()),
-                        new KeyValuePair<string, string>("vin", syncAPIMDetails.VIN)
+                        new KeyValuePair<string, string>("xml", _node.ToString()),
+                        new KeyValuePair<string, string>("apim", _syncApimDetails.PartNumber),
+                        new KeyValuePair<string, string>("nav", _syncApimDetails.Nav.ToString()),
+                        new KeyValuePair<string, string>("size", _syncApimDetails.Size.ToString()),
+                        new KeyValuePair<string, string>("vin", _syncApimDetails.VIN)
                     });
                     var response = await Client.PostAsync(Api.AsBuiltPost, formContent);
                     var definition = new { filename = "", status = "" };
