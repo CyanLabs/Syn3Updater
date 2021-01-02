@@ -305,7 +305,7 @@ namespace Syn3Updater.UI.Tabs
             // Update app level vars
             ApplicationManager.Instance.DriveFileSystem = driveInfo.FileSystem;
             ApplicationManager.Instance.DrivePartitionType = driveInfo.PartitionType;
-            ApplicationManager.Instance.DriveName = driveInfo.Name;
+            ApplicationManager.Instance.DriveName =  SelectedDrive?.Name;
             ApplicationManager.Instance.SkipFormat = driveInfo.SkipFormat;
 
             // Update local level vars

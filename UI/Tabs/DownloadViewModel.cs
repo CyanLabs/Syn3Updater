@@ -346,9 +346,11 @@ namespace Syn3Updater.UI.Tabs
 
             DownloadInfo = LanguageManager.GetValue("String.Completed");
             ApplicationManager.Instance.IsDownloading = false;
-            
             Application.Current.Dispatcher.Invoke(() =>
             {
+                USBHelper.GenerateLog(Log, MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLog"), "Syn3 Updater", MessageBoxButton.YesNo,
+                    MessageBoxImage.Information) == MessageBoxResult.Yes);
+
                 if (_action == "main")
                 {
                     if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo,
@@ -376,8 +378,6 @@ namespace Syn3Updater.UI.Tabs
 
                
             });
-            USBHelper.GenerateLog(Log, MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLog"), "Syn3 Updater", MessageBoxButton.YesNo,
-                MessageBoxImage.Information) == MessageBoxResult.Yes);
             Reset();
         }
 
