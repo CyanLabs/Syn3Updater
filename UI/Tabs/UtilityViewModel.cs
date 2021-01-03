@@ -146,8 +146,8 @@ namespace Syn3Updater.UI.Tabs
             }
             catch (System.Windows.Markup.XamlParseException e)
             {
-                MessageBox.MessageBox.Show(e.Message, "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                ApplicationManager.Logger.Info("ERROR: " + e.Message);
+                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
 

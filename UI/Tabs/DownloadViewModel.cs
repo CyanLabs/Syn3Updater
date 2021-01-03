@@ -203,7 +203,7 @@ namespace Syn3Updater.UI.Tabs
                             catch (IOException ioException)
                             {
                                 Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
-                                    ioException.Message, "Syn3 Updater",
+                                    ioException.GetFullMessage(), "Syn3 Updater",
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation));
                                 ApplicationManager.Logger.Info("ERROR: " + ioException.GetFullMessage());
@@ -321,7 +321,7 @@ namespace Syn3Updater.UI.Tabs
                         catch (HttpRequestException webException)
                         {
                             Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
-                                webException.Message, "Syn3 Updater",
+                                webException.GetFullMessage(), "Syn3 Updater",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Exclamation));
                             ApplicationManager.Logger.Info("ERROR: " + webException.GetFullMessage());
@@ -330,7 +330,7 @@ namespace Syn3Updater.UI.Tabs
                         catch (IOException ioException)
                         {
                             Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
-                                ioException.Message, "Syn3 Updater",
+                                ioException.GetFullMessage(), "Syn3 Updater",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Exclamation));
                             ApplicationManager.Logger.Info("ERROR: " + ioException.GetFullMessage());

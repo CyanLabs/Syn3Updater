@@ -45,7 +45,8 @@ namespace Syn3Updater.UI
                 { "detail", text },
                 { "version", version },
                 { "computername",computername},
-                { "error",crashContainer.ErrorName}
+                { "error",crashContainer.ErrorName},
+                { "message",exception.Message}
             };
 
             var content = new FormUrlEncodedContent(values);

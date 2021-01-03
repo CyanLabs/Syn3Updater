@@ -174,7 +174,7 @@ namespace Syn3Updater
             }
             catch (IndexOutOfRangeException e)
             {
-                Logger.Debug(e?.Message);
+                Logger.Debug(e.GetFullMessage());
             }
             
             Logger.Debug("Launching main window");
@@ -203,7 +203,7 @@ namespace Syn3Updater
             }
             catch (UnauthorizedAccessException e)
             {
-                Logger.Debug(e?.Message);
+                Logger.Debug(e.GetFullMessage());
             }
             Logger.Debug("Syn3 Updater is shutting down");
             Application.Current.Shutdown();
