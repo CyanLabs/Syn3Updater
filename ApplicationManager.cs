@@ -170,7 +170,14 @@ namespace Syn3Updater
             Logger.Debug($"Current Sync Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
             {
-                if(version.Length == 7) SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
+                if (version.Length == 7)
+                {
+                    SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
+                }
+                else
+                {
+                    SyncVersion = $"0{decimalSeparator}0{decimalSeparator}00000";
+                }
             }
             catch (IndexOutOfRangeException e)
             {

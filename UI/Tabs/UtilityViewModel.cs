@@ -148,6 +148,11 @@ namespace Syn3Updater.UI.Tabs
             {
                 MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
+            } 
+            catch (UnauthorizedAccessException e)
+            {
+                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
 

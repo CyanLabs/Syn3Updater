@@ -38,7 +38,7 @@ namespace Syn3Updater.UI
 
             string text = JsonConvert.SerializeObject(crashContainer);
             string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-            string computername = System.Environment.MachineName;
+            string computername = Environment.MachineName;
             HttpClient client = new HttpClient();
             var values = new Dictionary<string, string>
             {
