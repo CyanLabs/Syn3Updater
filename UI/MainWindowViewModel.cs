@@ -90,7 +90,7 @@ namespace Syn3Updater.UI
                     MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
-                else if (value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0))
+                else if (value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0 || Settings.Default.CurrentSyncVersion.ToString().Length != 7))
                 {
                     MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
