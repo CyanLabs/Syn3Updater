@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Newtonsoft.Json;
@@ -101,10 +101,11 @@ namespace Syn3Updater
             }
             
 
-            Logger.Debug("Syn3 Updater is Starting");
+            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
 
+            Logger.Debug($"Determining language to use for the application");
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (string.IsNullOrWhiteSpace(Settings.Default.Lang))
@@ -114,7 +115,7 @@ namespace Syn3Updater
             }
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Lang);
-
+            Logger.Debug($"Language is set to {Settings.Default.Lang}");
             //client = new DiscordRpcClient("");
             //client.Initialize();
 
@@ -125,34 +126,58 @@ namespace Syn3Updater
                 Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
             }
 
+            Logger.Debug($"Determining download path to use for the application");
             DownloadPath = Settings.Default.DownloadPath;
 
-            if (!Directory.Exists(DownloadPath) && DownloadPath != "")
+            try
             {
-                Logger.Debug("Download location does not exist");
-                Directory.CreateDirectory(DownloadPath);
+                if (!Directory.Exists(DownloadPath))
+                {
+                    Logger.Debug("Download location does not exist");
+                    Directory.CreateDirectory(DownloadPath);
+                }
+            
+                if (!Directory.Exists(DownloadPath))
+                {
+                    Logger.Debug("Download location does not exist");
+                    Directory.CreateDirectory(DownloadPath);
+                }
+
+                Logger.Debug($"Download path is set to {DownloadPath}");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
+                Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
+                Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
+                DownloadPath = Settings.Default.DownloadPath;
             }
 
             foreach (string arg in Environment.GetCommandLineArgs())
                 switch (arg)
                 {
-                    case "/updated":
-                        Logger.Debug("/updated detected, upgrading settings");
-                        Settings.Default.Upgrade();
-                        Settings.Default.Save();
-                        break;
                     case "/debug":
                         Logger.Debug("/debug flag detected, skipping all verification steps");
                         SkipCheck = true;
                         break;
+                    case "/updated":
+                        Logger.Debug("/updated - flag no longer used but noted for debug purposes");
+                        break;
                 }
-
-
 
             string version = Settings.Default.CurrentSyncVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
-
+            Logger.Debug($"Current Sync Version set to {version}, Decimal seperator set to {decimalSeparator}");
+            try
+            {
+                if(version.Length == 7) SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Logger.Debug(e?.Message);
+            }
+            
+            Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
             if (!_mainWindow.IsVisible) _mainWindow.Show();
             if (_mainWindow.WindowState == WindowState.Minimized) _mainWindow.WindowState = WindowState.Normal;
@@ -171,8 +196,16 @@ namespace Syn3Updater
         {
             Logger.Debug("Saving settings before shutdown");
             Settings.Default.Save();
+            Logger.Debug("Writing log to disk before shutdown");
+            try
+            {
+                File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Logger.Debug(e?.Message);
+            }
             Logger.Debug("Syn3 Updater is shutting down");
-            File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
             Application.Current.Shutdown();
         }
 
