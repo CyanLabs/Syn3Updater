@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Net;
 using System.Reflection;
 using System.Windows.Controls;
@@ -19,6 +18,7 @@ namespace Syn3Updater.UI
             Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ApplicationManager.Logger.Debug("MainWindow Initialized");
         }
 
         private MainWindowViewModel Vm => (MainWindowViewModel) DataContext;
