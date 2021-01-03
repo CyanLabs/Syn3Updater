@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
@@ -24,25 +25,6 @@ namespace Syn3Updater.UI
             ApplicationManager.Instance.Exit();
         }
 
-        public async Task<string> Send_Report(object sender, RoutedEventArgs e)
-        {
-            string text = JsonConvert.SerializeObject(ApplicationManager.Logger.Log);
-
-            HttpClient client = new HttpClient();
-            var values = new Dictionary<string, string>
-            {
-                { "detail", text }
-            };
-
-            var content = new FormUrlEncodedContent(values);
-
-            var response = client.PostAsync(Api.CrashLogPost, content).Result;
-
-            var responseString = await response.Content.ReadAsStringAsync();
-            Close();
-            return responseString;
-        }
-
         public string SendReport(Exception exception)
         {
             CrashContainer crashContainer = new CrashContainer();
@@ -55,11 +37,15 @@ namespace Syn3Updater.UI
             crashContainer.Logs = ApplicationManager.Logger.Log;
 
             string text = JsonConvert.SerializeObject(crashContainer);
-
+            string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
+            string computername = System.Environment.MachineName;
             HttpClient client = new HttpClient();
             var values = new Dictionary<string, string>
             {
-                { "detail", text }
+                { "detail", text },
+                { "version", version },
+                { "computername",computername},
+                { "error",crashContainer.ErrorName}
             };
 
             var content = new FormUrlEncodedContent(values);
