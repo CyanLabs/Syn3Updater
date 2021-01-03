@@ -13,7 +13,7 @@ namespace Syn3Updater.Helper
             message += ex.Message;
 
             if (ex.InnerException != null)
-                message += $"\r\nInnerException: {GetFullMessage(ex.InnerException)}";
+                message += $"\r\n{GetFullMessage(ex.InnerException)}";
 
             return message;
         }
