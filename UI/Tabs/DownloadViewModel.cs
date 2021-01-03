@@ -133,7 +133,6 @@ namespace Syn3Updater.UI.Tabs
                 {
                     if (t.Exception != null)
                     {
-                        Debug.WriteLine("Exception Count - Download - " + t.Exception.InnerExceptions.Count);
                         Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
                     }
 
@@ -194,9 +193,20 @@ namespace Syn3Updater.UI.Tabs
                             }
                             catch (HttpRequestException webException)
                             {
-                                Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.WebException"), webException.InnerException?.InnerException?.Message), "Syn3 Updater", MessageBoxButton.OK,
+                                Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
+                                    webException.GetFullMessage(), "Syn3 Updater",
+                                    MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation));
-                                ApplicationManager.Logger.Info("ERROR: " + webException.InnerException?.InnerException?.Message);
+                                ApplicationManager.Logger.Info("ERROR: " + webException.GetFullMessage());
+                                CancelAction();
+                            }
+                            catch (IOException ioException)
+                            {
+                                Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
+                                    ioException.Message, "Syn3 Updater",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation));
+                                ApplicationManager.Logger.Info("ERROR: " + ioException.GetFullMessage());
                                 CancelAction();
                             }
 
@@ -303,8 +313,29 @@ namespace Syn3Updater.UI.Tabs
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                         }
 
-                        _fileHelper.CopyFile(ApplicationManager.Instance.DownloadPath + item.FileName,
-                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
+                        try
+                        {
+                            _fileHelper.CopyFile(ApplicationManager.Instance.DownloadPath + item.FileName,
+                                $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
+                        }
+                        catch (HttpRequestException webException)
+                        {
+                            Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
+                                webException.Message, "Syn3 Updater",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation));
+                            ApplicationManager.Logger.Info("ERROR: " + webException.GetFullMessage());
+                            CancelAction();
+                        }
+                        catch (IOException ioException)
+                        {
+                            Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
+                                ioException.Message, "Syn3 Updater",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation));
+                            ApplicationManager.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                            CancelAction();
+                        }
 
                         if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
@@ -481,7 +512,6 @@ namespace Syn3Updater.UI.Tabs
                 {
                     if (t.Exception != null)
                     {
-                        Debug.WriteLine("Exception Count - Copy - " + t.Exception.InnerExceptions.Count);
                         Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
                     }
 

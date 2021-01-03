@@ -140,7 +140,15 @@ namespace Syn3Updater.UI.Tabs
 
         private void RefreshUsbAction()
         {
-            DriveList = USBHelper.refresh_devices(false);
+            try
+            {
+                DriveList = USBHelper.refresh_devices(false);
+            }
+            catch (System.Windows.Markup.XamlParseException e)
+            {
+                MessageBox.MessageBox.Show(e.Message, "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ApplicationManager.Logger.Info("ERROR: " + e.Message);
+            }
         }
 
         private void UpdateDriveInfo()
