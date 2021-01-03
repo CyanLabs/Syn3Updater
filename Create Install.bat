@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\NSIS\makensis.exe" /DProductName="Syn3Updater" cyanlabs_setup.nsi

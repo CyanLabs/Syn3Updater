@@ -19,6 +19,10 @@
 !define MUI_ICON ".\cyanlabs.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
+Function .onInit
+	 ExecWait '"$INSTDIR\uninst.exe" /S'
+FunctionEnd
+
 Function createicons
   CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe" ""
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
@@ -75,16 +79,6 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   SectionEnd
-
-Function un.onUninstSuccess
-  HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "Application was successfully removed from your computer."
-FunctionEnd
-
-Function un.onInit
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove ${PRODUCT_NAME}?" IDYES +2
-  Abort
-FunctionEnd
 
 ; Removal of application files and reg keys.
 Section Uninstall
