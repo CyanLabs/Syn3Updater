@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Syn3Updater.Model;
 
 namespace Syn3Updater.Helper
@@ -218,29 +219,39 @@ namespace Syn3Updater.Helper
         public string md5_helper(string filename, CancellationToken ct)
         {
             long totalBytesRead = 0;
-            using (Stream file = File.OpenRead(filename))
+            try
             {
-                long size = file.Length;
-                HashAlgorithm hasher = MD5.Create();
-                int bytesRead;
-                byte[] buffer;
-                do
+                using (Stream file = File.OpenRead(filename))
                 {
-                    if (ct.IsCancellationRequested)
+                    long size = file.Length;
+                    HashAlgorithm hasher = MD5.Create();
+                    int bytesRead;
+                    byte[] buffer;
+                    do
                     {
-                        return null;
-                    }
-                    buffer = new byte[4096];
-                    bytesRead = file.Read(buffer, 0, buffer.Length);
-                    totalBytesRead += bytesRead;
-                    hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
-                    long read = totalBytesRead;
-                    if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int) ((double) read / size * 100));
-                } while (bytesRead != 0);
+                        if (ct.IsCancellationRequested)
+                        {
+                            return null;
+                        }
+                        buffer = new byte[4096];
+                        bytesRead = file.Read(buffer, 0, buffer.Length);
+                        totalBytesRead += bytesRead;
+                        hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
+                        long read = totalBytesRead;
+                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100));
+                    } while (bytesRead != 0);
 
-                hasher.TransformFinalBlock(buffer, 0, 0);
-                return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
+                    hasher.TransformFinalBlock(buffer, 0, 0);
+                    return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
+                }
             }
+            catch (IOException e)
+            {
+                Application.Current.Dispatcher.Invoke(() => UI.MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
+                ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
+                return "error";
+            }
+            
         }
 
         /// <summary>
