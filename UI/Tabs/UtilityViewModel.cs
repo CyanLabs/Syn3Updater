@@ -142,7 +142,11 @@ namespace Syn3Updater.UI.Tabs
         {
             try
             {
-                DriveList = USBHelper.refresh_devices(false);
+                ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.refresh_devices(false);
+                if (tmpDriveList.Count > 0)
+                {
+                    DriveList = tmpDriveList;
+                }
             }
             catch (System.Windows.Markup.XamlParseException e)
             {
