@@ -43,7 +43,11 @@ namespace Syn3Updater.Helper
                 //Ensure drive letter is not used as download path
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
+                {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return true;
+                }
+                    
 
             //Optional Format
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
