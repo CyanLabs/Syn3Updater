@@ -28,36 +28,43 @@ namespace Syn3Updater.UI
 
         public string SendReport(Exception exception)
         {
-            CrashContainer crashContainer = new CrashContainer();
-
-            StackTrace st = new StackTrace(exception, true);
-            StackFrame frame = st.GetFrame(st.FrameCount - 1);
-
-            crashContainer.ErrorName = exception.GetType().ToString();
-            if(frame != null) crashContainer.ErrorLocation = frame.GetFileName() + " / " + frame.GetMethod().Name + " / " + frame.GetFileLineNumber();
-            crashContainer.Logs = ApplicationManager.Logger.Log;
-
-            string text = JsonConvert.SerializeObject(crashContainer);
-            string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-            string computername = Environment.MachineName;
-            HttpClient client = new HttpClient();
-            var values = new Dictionary<string, string>
+            try
             {
-                { "detail", text },
-                { "version", version },
-                { "computername",computername},
-                { "error",crashContainer.ErrorName},
-                { "message",exception.Message},
-                { "operatingsystem",SystemHelper.GetOsFriendlyName()}
-            };
+                CrashContainer crashContainer = new CrashContainer();
 
-            var content = new FormUrlEncodedContent(values);
+                StackTrace st = new StackTrace(exception, true);
+                StackFrame frame = st.GetFrame(st.FrameCount - 1);
 
-            var response = client.PostAsync(Api.CrashLogPost, content).Result;
+                crashContainer.ErrorName = exception.GetType().ToString();
+                if (frame != null) crashContainer.ErrorLocation = frame.GetFileName() + " / " + frame.GetMethod().Name + " / " + frame.GetFileLineNumber();
+                crashContainer.Logs = ApplicationManager.Logger.Log;
 
-            var responseString = response.Content.ReadAsStringAsync().Result;
+                string text = JsonConvert.SerializeObject(crashContainer);
+                string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
+                string computername = Environment.MachineName;
+                HttpClient client = new HttpClient();
+                var values = new Dictionary<string, string>
+                {
+                    { "detail", text },
+                    { "version", version },
+                    { "computername",computername},
+                    { "error",crashContainer.ErrorName},
+                    { "message",exception.Message},
+                    { "operatingsystem",SystemHelper.GetOsFriendlyName()}
+                };
 
-            return responseString;
+                var content = new FormUrlEncodedContent(values);
+
+                var response = client.PostAsync(Api.CrashLogPost, content).Result;
+
+                var responseString = response.Content.ReadAsStringAsync().Result;
+
+                return responseString;
+            }
+            catch (System.Net.Http.HttpRequestException)
+            {
+                return null;
+            }
         }
 
         public string ErrorReportUrl;
