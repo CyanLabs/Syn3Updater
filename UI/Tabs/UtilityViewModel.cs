@@ -130,7 +130,7 @@ namespace Syn3Updater.UI.Tabs
         public void ReloadTab()
         {
             ToggleLogXmlDetails = Visibility.Hidden;
-            UtiltyButtonStatus = !string.IsNullOrWhiteSpace(SelectedDrive?.Name);
+            UtiltyButtonStatus = !string.IsNullOrWhiteSpace(SelectedDrive?.Path);
         }
 
         public void Init()

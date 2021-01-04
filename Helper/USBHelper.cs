@@ -6,7 +6,6 @@ using System.IO;
 using System.Management;
 using System.Net.Http;
 using System.Reflection;
-using System.Windows;
 using Newtonsoft.Json;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
@@ -38,8 +37,15 @@ namespace Syn3Updater.Helper
 
         public static ObservableCollection<Drive> refresh_devices(bool fakeusb)
         {
-
-            ObservableCollection<Drive> driveList = new ObservableCollection<Drive> {new Drive {Path = "", Name = fakeusb ? LanguageManager.GetValue("Home.NoUSB") : ""}};
+            ObservableCollection<Drive> driveList = new ObservableCollection<Drive>();
+            if (fakeusb)
+            {
+                driveList.Add(new Drive { Path = "", Name = LanguageManager.GetValue("Home.NoUSB")});
+            }
+            else
+            {
+                driveList.Add(new Drive { Path = "", Name = "" });
+            }
             ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
