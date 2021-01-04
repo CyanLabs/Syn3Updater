@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -190,14 +191,14 @@ namespace Syn3Updater
             if (_mainWindow.WindowState == WindowState.Minimized) _mainWindow.WindowState = WindowState.Normal;
         }
 
-/*
+
         public void RestartApp()
         {
-            Logger.Debug("[App] Syn3 Updater is restarting.");
+            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Restarting");
             Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
         }
-*/
+
 
         public void Exit()
         {
