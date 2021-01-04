@@ -60,13 +60,11 @@ namespace Syn3Updater.Helper
         public static DriveInfo UpdateDriveInfo(Drive selectedDrive)
         {
             DriveInfo driveInfo = new DriveInfo();
-            if (selectedDrive == null || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")) return driveInfo;
+            if (selectedDrive == null || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB") || selectedDrive.Path == "") return driveInfo;
 
             string partitionQueryText = $@"associators of {{{selectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
             ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
-            try
-            {
-                foreach (ManagementBaseObject o in partitionQuery.Get())
+            foreach (ManagementBaseObject o in partitionQuery.Get())
                 {
                     ManagementObject p = (ManagementObject) o;
                     string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
@@ -82,12 +80,6 @@ namespace Syn3Updater.Helper
                         if (driveInfo.FileSystem == "exFAT" && driveInfo.PartitionType == "MBR" && driveInfo.Name == "CYANLABS") driveInfo.SkipFormat = true;
                     }
                 }
-            }
-            catch (ManagementException)
-            {
-                //TODO Implement Catch
-            }
-
             return driveInfo;
         }
 
