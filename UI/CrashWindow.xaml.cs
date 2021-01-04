@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
+using Syn3Updater.Helper;
 using Syn3Updater.Model;
 
 namespace Syn3Updater.UI
@@ -46,7 +47,8 @@ namespace Syn3Updater.UI
                 { "version", version },
                 { "computername",computername},
                 { "error",crashContainer.ErrorName},
-                { "message",exception.Message}
+                { "message",exception.Message},
+                { "operatingsystem",SystemHelper.GetOsFriendlyName()}
             };
 
             var content = new FormUrlEncodedContent(values);
@@ -74,6 +76,13 @@ namespace Syn3Updater.UI
             public string ErrorName { get; set; }
             public string ErrorLocation { get; set; }
             public List<SimpleLogger.LogEntry> Logs { get; set; } = new List<SimpleLogger.LogEntry>();
+        }
+
+        private void ResetSettings_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            Properties.Settings.Default.Save();
+            ApplicationManager.Instance.RestartApp();
         }
     }
 }

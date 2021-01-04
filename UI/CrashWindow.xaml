@@ -22,6 +22,7 @@
                 <StackPanel>
                     <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="36" Foreground="White"  VerticalAlignment="Center">Syn3 Updater has crashed.</TextBlock>
                     <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="20" Foreground="White"  VerticalAlignment="Center">An error occurred and couldn't be handled.</TextBlock>
+                    <TextBlock FontFamily="Segoe UI Light" FontWeight="Light" FontSize="14" Margin="5"  Foreground="White"  VerticalAlignment="Center">If you keep experiencing this issue try using the "Reset Settings" button below</TextBlock>
 
                 </StackPanel>
 
@@ -37,8 +38,9 @@
         </ScrollViewer>
         <Grid Row="2" Background="#80000000">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0">
-                <Button Width="80" Height="30" BorderThickness="0" Style="{StaticResource ButtonRevealStyle}" Margin="10" Click="Close_OnClick">Close</Button>
+                <Button Width="90" Height="30" BorderThickness="0" Style="{StaticResource ButtonRevealStyle}" Margin="10" Click="ResetSettings_Click">Reset Settings</Button>
                 <Button Width="80" Height="30" BorderThickness="0" Style="{StaticResource ButtonRevealStyle}" Margin="10" Click="ViewReport">View Report</Button>
+                <Button Width="80" Height="30" BorderThickness="0" Style="{StaticResource ButtonRevealStyle}" Margin="10" Click="Close_OnClick" Content="Close"/>
             </StackPanel>
         </Grid>
     </Grid>
