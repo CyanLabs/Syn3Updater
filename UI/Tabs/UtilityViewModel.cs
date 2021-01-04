@@ -341,6 +341,10 @@ namespace Syn3Updater.UI.Tabs
                 {
                     MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                catch (XmlException)
+                {
+                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
