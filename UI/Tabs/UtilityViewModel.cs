@@ -299,18 +299,26 @@ namespace Syn3Updater.UI.Tabs
                         ToggleLogXmlDetails = Visibility.Visible;
 
                         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
-                        HttpResponseMessage response = Client.GetAsync(Api.IVSUSingle + syncappname).Result;
-                        Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
-                        string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-                        if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
+                        try
                         {
-                            if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
-                                MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                            HttpResponseMessage response = Client.GetAsync(Api.IVSUSingle + syncappname).Result;
+                            Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
+                            string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                            if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
                             {
-                                Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
-                                ApplicationManager.Instance.SyncVersion = convertedsyncversion;
+                                if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
+                                    MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                                {
+                                    Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
+                                    ApplicationManager.Instance.SyncVersion = convertedsyncversion;
+                                }
                             }
                         }
+                        catch (Exception)
+                        {
+                            //likely no internet connection ignore
+                        }
+                        
 
                         DirectConfiguration asbult = new DirectConfiguration
                         {
