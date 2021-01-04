@@ -153,6 +153,13 @@ namespace Syn3Updater
                 Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
                 DownloadPath = Settings.Default.DownloadPath;
             }
+            catch (IOException)
+            {
+                string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
+                Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
+                Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
+                DownloadPath = Settings.Default.DownloadPath;
+            }
 
             foreach (string arg in Environment.GetCommandLineArgs())
                 switch (arg)
