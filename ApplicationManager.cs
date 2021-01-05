@@ -210,13 +210,24 @@ namespace Syn3Updater
         public void Exit()
         {
             Logger.Debug("Saving settings before shutdown");
-            Settings.Default.Save();
+            try
+            {
+                Settings.Default.Save();
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e.GetFullMessage());
+            }
             Logger.Debug("Writing log to disk before shutdown");
             try
             {
                 File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
             }
             catch (UnauthorizedAccessException e)
+            {
+                Logger.Debug(e.GetFullMessage());
+            }
+            catch (IOException e)
             {
                 Logger.Debug(e.GetFullMessage());
             }

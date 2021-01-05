@@ -49,7 +49,7 @@ namespace Syn3Updater.Helper
             ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
-                if (o.Properties["InterfaceType"].Value.ToString() == "USB" || o.Properties["MediaType"].Value.ToString() == "External hard disk media") {
+                if (o.Properties["InterfaceType"].Value?.ToString() == "USB" || o.Properties["MediaType"].Value?.ToString() == "External hard disk media") {
                     ManagementObject d = (ManagementObject)o;
                     string diskName = Convert.ToString(d.Properties["Caption"].Value);
                     string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
