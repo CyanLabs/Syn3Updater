@@ -48,6 +48,8 @@ namespace Launcher
                         break;
 
                 }
+
+
                 string version = new String(latest.TagName.Where(Char.IsDigit).ToArray());
                 int intversion = Int32.Parse(version);
                 Console.WriteLine("The latest release is tagged at {0} and is named {1}", latest.TagName, latest.Name);
@@ -101,9 +103,9 @@ namespace Launcher
                         }
                     }
 
-                    vm.Message = "Installing " + releaseType + " release " + maxReleaseNumber;
+                    vm.Message = "Installing " + releaseType + " release " + latest.TagName;
 
-                    string zipPath = destFolder+"\\"+releaseType + "_" + maxReleaseNumber + ".zip";
+                    string zipPath = destFolder+"\\"+releaseType + "_" + latest.TagName + ".zip";
 
                     WebClient wc = new WebClient();
                     wc.DownloadProgressChanged += client_DownloadProgressChanged;

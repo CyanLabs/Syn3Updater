@@ -141,13 +141,13 @@ namespace Syn3Updater.Model
             {
                 string lang = string.Empty; // "EN-US";
 
-                if (Settings.Default.Lang != null) lang = Settings.Default.Lang;
+                if (ApplicationManager.Instance.Settings.Lang != null) lang = ApplicationManager.Instance.Settings.Lang;
 
                 if (string.IsNullOrWhiteSpace(lang))
                 {
                     lang = CultureInfo.CurrentCulture.Name;
 
-                    Settings.Default.Lang = lang;
+                    ApplicationManager.Instance.Settings.Lang = lang;
                 }
 
                 LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());

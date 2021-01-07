@@ -195,7 +195,7 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentSyncRegion, value);
-                    Properties.Settings.Default.CurrentSyncRegion = value;
+                    ApplicationManager.Instance.Settings.CurrentSyncRegion = value;
                 }
             }
         }
@@ -256,8 +256,8 @@ namespace Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
-            CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav ? "Yes" : "No";
-            CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
+            CurrentSyncNav = ApplicationManager.Instance.Settings.CurrentSyncNav ? "Yes" : "No";
+            CurrentSyncRegion = ApplicationManager.Instance.Settings.CurrentSyncRegion;
             CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
             SelectedMapVersionIndex = -1;
@@ -340,18 +340,18 @@ namespace Syn3Updater.UI.Tabs
                 SelectedMapVersion = null;
                 SelectedRelease = null;
                 SyncMapVersion.Clear();
-                if (Properties.Settings.Default.ShowAllReleases)
+                if (ApplicationManager.Instance.Settings.ShowAllReleases)
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
-                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                     //https://api.cyanlabs.net/fordsyncdownloader/items/map_releases?sort=-name&limit=-1&filter[regions]=ANZ&filter[compatibility][contains]=3.4&filter[status][in]=published,private&filter[key][in]=admin@cyanlabs.net,public
                 }
                 else
                 {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
-                        $"filter[status][in]=published,private&filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
+                        $"filter[status][in]=published,private&filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
-                        $"filter[status][in]=published,private&filter[key][in]=public,{Properties.Settings.Default.LicenseKey}");
+                        $"filter[status][in]=published,private&filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
 
                 try
@@ -366,13 +366,13 @@ namespace Syn3Updater.UI.Tabs
                     //TODO Exception handling
                 }
 
-                if (!Properties.Settings.Default.CurrentSyncNav)
+                if (!ApplicationManager.Instance.Settings.CurrentSyncNav)
                 {
                     SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                 }
                 else
                 {
-                    if (Properties.Settings.Default.CurrentSyncVersion >= Api.ReformatVersion)
+                    if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion)
                         SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                 }
 
@@ -408,13 +408,13 @@ namespace Syn3Updater.UI.Tabs
                 HttpResponseMessage response = Client.GetAsync(_apiMapReleases).Result;
                 _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
 
-                if (Properties.Settings.Default.CurrentSyncNav)
+                if (ApplicationManager.Instance.Settings.CurrentSyncNav)
                 {
                     SyncMapVersion.Clear();
                     SyncMapVersion.Add(LanguageManager.GetValue("String.NoMaps"));
-                    if (Properties.Settings.Default.CurrentSyncNav)
+                    if (ApplicationManager.Instance.Settings.CurrentSyncNav)
                     {
-                        if (Properties.Settings.Default.CurrentSyncVersion >= Api.ReformatVersion)
+                        if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion)
                             SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                     }
                     else
@@ -438,31 +438,31 @@ namespace Syn3Updater.UI.Tabs
                 IvsuList.Clear();
 
                 //LESS THAN 3.2
-                if (Properties.Settings.Default.CurrentSyncVersion < Api.ReformatVersion)
+                if (ApplicationManager.Instance.Settings.CurrentSyncVersion < Api.ReformatVersion)
                 {
                     InstallMode = "reformat";
                 }
 
                 //Above 3.2 and  Below 3.4.19274
-                else if (Properties.Settings.Default.CurrentSyncVersion >= Api.ReformatVersion && Properties.Settings.Default.CurrentSyncVersion < Api.BlacklistedVersion)
+                else if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion && ApplicationManager.Instance.Settings.CurrentSyncVersion < Api.BlacklistedVersion)
                 {
                     //Update Nav?
                     if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
                         SelectedMapVersion == LanguageManager.GetValue("String.KeepExistingMaps"))
-                        InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? "autoinstall" : Properties.Settings.Default.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
                     else
-                        InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? "reformat" : Properties.Settings.Default.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "reformat" : ApplicationManager.Instance.Settings.CurrentInstallMode;
                 }
 
                 //3.4.19274 or above
-                else if (Properties.Settings.Default.CurrentSyncVersion >= Api.BlacklistedVersion)
+                else if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.BlacklistedVersion)
                 {
                     //Update Nav?
                     if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
                         SelectedMapVersion == LanguageManager.GetValue("String.KeepExistingMaps"))
-                        InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? "autoinstall" : Properties.Settings.Default.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
                     else
-                        InstallMode = Properties.Settings.Default.CurrentInstallMode == "autodetect" ? "downgrade" : Properties.Settings.Default.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "downgrade" : ApplicationManager.Instance.Settings.CurrentInstallMode;
                 }
 
                 ApplicationManager.Instance.Action = "main";
@@ -559,7 +559,7 @@ namespace Syn3Updater.UI.Tabs
             }
 
             //Warn is users region is different to new selection
-            if (SelectedRegion.Code != Properties.Settings.Default.CurrentSyncRegion)
+            if (SelectedRegion.Code != ApplicationManager.Instance.Settings.CurrentSyncRegion)
                 if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                     canceldownload = true;
 

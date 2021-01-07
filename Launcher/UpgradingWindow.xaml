@@ -13,8 +13,8 @@
         <local:UpgradingViewModel/>
     </Window.DataContext>
     <Grid>
-        <TextBlock Cursor="Wait" x:Name="LoadingText" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,-150" Text="{Binding Message}"></TextBlock>
-        <ProgressBar x:Name="ProgressBar" Width="350" Height="10" Foreground="Black" Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" BorderBrush="{x:Null}" Margin="0,0,0,-200" Value="{Binding Percentage}" RenderTransformOrigin="0.5,0.5">
+        <TextBlock Cursor="Wait" x:Name="LoadingText" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,-90" Text="{Binding Message}"></TextBlock>
+        <ProgressBar x:Name="ProgressBar" Width="350" Height="10" Foreground="Black" Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" BorderBrush="{x:Null}" Margin="0,0,0,-150" Value="{Binding Percentage}" RenderTransformOrigin="0.5,0.5">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -24,15 +24,9 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <DockPanel Dock="Top" Margin="0,-60,0,0">
+        <DockPanel Dock="Top" Margin="0,-80,0,0">
             <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="400">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="iconlogo.png" Margin="25,10" Height="100"></Image>
-                        <Image Margin="30" Source="cyanlabs.png"></Image>
-                    </StackPanel>
-                    <TextBlock Foreground="White" FontFamily="Stencil" FontSize="100">Syn3 Updater</TextBlock>
-                </StackPanel>
+                <Image Source="Syn3Updater Logo Cropped.png" OpacityMask="Black" />
             </Viewbox>
         </DockPanel>
     </Grid>

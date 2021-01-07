@@ -45,7 +45,13 @@ namespace Syn3Updater.UI.Tabs
             set => SetProperty(ref _installModes, value);
         }
 
-        public ObservableCollection<LauncherPrefs.ReleaseType> ReleaseTypes { get; set; }
+        private ObservableCollection<LauncherPrefs.ReleaseType> _releaseTypes;
+
+        public ObservableCollection<LauncherPrefs.ReleaseType> ReleaseTypes
+        {
+            get => _releaseTypes;
+            set => SetProperty(ref _releaseTypes, value);
+        }
 
         private ObservableCollection<string> _themes;
 
@@ -68,7 +74,7 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentSyncRegion, value);
-                    Properties.Settings.Default.CurrentSyncRegion = value;
+                    ApplicationManager.Instance.Settings.CurrentSyncRegion = value;
                 }
             }
         }
@@ -85,7 +91,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _currentSyncVersion, value);
                     ApplicationManager.Instance.SyncVersion = value;
-                    Properties.Settings.Default.CurrentSyncVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
+                    ApplicationManager.Instance.Settings.CurrentSyncVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
                 }
             }
         }
@@ -98,7 +104,7 @@ namespace Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _currentSyncNav, value);
-                Properties.Settings.Default.CurrentSyncNav = value;
+                ApplicationManager.Instance.Settings.CurrentSyncNav = value;
             }
         }
 
@@ -113,7 +119,7 @@ namespace Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _downloadLocation, value);
                     ApplicationManager.Instance.DownloadPath = value;
-                    Properties.Settings.Default.DownloadPath = value;
+                    ApplicationManager.Instance.Settings.DownloadPath = value;
                 }
             }
         }
@@ -128,7 +134,7 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentInstallMode, value);
-                    Properties.Settings.Default.CurrentInstallMode = value;
+                    ApplicationManager.Instance.Settings.CurrentInstallMode = value;
                 }
             }
         }
@@ -143,7 +149,7 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentTheme, value);
-                    Properties.Settings.Default.Theme = value;
+                    ApplicationManager.Instance.Settings.Theme = value;
                     if (value == "Dark")
                     {
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
@@ -168,7 +174,7 @@ namespace Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _showAllReleases, value);
-                Properties.Settings.Default.ShowAllReleases = value;
+                ApplicationManager.Instance.Settings.ShowAllReleases = value;
             }
         }
 
@@ -182,7 +188,7 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _licenseKey, value);
-                    Properties.Settings.Default.LicenseKey = value;
+                    ApplicationManager.Instance.Settings.LicenseKey = value;
                 }
             }
         }
@@ -198,7 +204,7 @@ namespace Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentLanguage, value);
-                    Properties.Settings.Default.Lang = value;
+                    ApplicationManager.Instance.Settings.Lang = value;
                     ApplicationManager.Instance.FireLanguageChangedEvent();
                 }
             }
@@ -233,7 +239,7 @@ namespace Syn3Updater.UI.Tabs
         {
             ApplicationManager.Instance.FireHomeTabEvent();
             //TODO Fix need for temp string
-            string currentSyncRegionTemp = Properties.Settings.Default.CurrentSyncRegion;
+            string currentSyncRegionTemp = ApplicationManager.Instance.Settings.CurrentSyncRegion;
             SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
             {
                 new SyncModel.SyncRegion {Code = "EU", Name = "Europe"},
@@ -245,7 +251,7 @@ namespace Syn3Updater.UI.Tabs
             CurrentSyncRegion = currentSyncRegionTemp;
 
             //TODO Fix need for temp string
-            string currentInstallModeTemp = Properties.Settings.Default.CurrentInstallMode != "" ? Properties.Settings.Default.CurrentInstallMode : "autodetect";
+            string currentInstallModeTemp = ApplicationManager.Instance.Settings.CurrentInstallMode != "" ? ApplicationManager.Instance.Settings.CurrentInstallMode : "autodetect";
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect", "autoinstall", "reformat", "downgrade"
@@ -257,23 +263,23 @@ namespace Syn3Updater.UI.Tabs
                 "Dark", "Light"
 
             };
-            CurrentTheme = Properties.Settings.Default.Theme;
+            CurrentTheme = ApplicationManager.Instance.Settings.Theme;
 
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType> {LauncherPrefs.ReleaseType.Release, LauncherPrefs.ReleaseType.Beta, LauncherPrefs.ReleaseType.CI};
             ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
 
-            CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
+            CurrentSyncNav = ApplicationManager.Instance.Settings.CurrentSyncNav;
 
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
-            ShowAllReleases = Properties.Settings.Default.ShowAllReleases;
-            LicenseKey = Properties.Settings.Default.LicenseKey;
-            CurrentLanguage = Properties.Settings.Default.Lang;
+            ShowAllReleases = ApplicationManager.Instance.Settings.ShowAllReleases;
+            LicenseKey = ApplicationManager.Instance.Settings.LicenseKey;
+            CurrentLanguage = ApplicationManager.Instance.Settings.Lang;
         }
 
         public void ReloadSettings()
         {
             CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
-            CurrentTheme = Properties.Settings.Default.Theme;
+            CurrentTheme = ApplicationManager.Instance.Settings.Theme;
         }
 
         private void ApplySettingsAction()
@@ -287,7 +293,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void DownloadPathAction()
         {
-            string oldPath = Properties.Settings.Default.DownloadPath;
+            string oldPath = ApplicationManager.Instance.Settings.DownloadPath;
             oldPath = oldPath.TrimEnd('\\');
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())

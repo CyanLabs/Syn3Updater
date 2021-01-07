@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Net;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -19,6 +21,11 @@ namespace Syn3Updater.UI
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ApplicationManager.Logger.Debug("MainWindow Initialized");
+            if (CryptoConfig.AllowOnlyFipsAlgorithms)
+            {
+                MessageBox.MessageBox.Show("Syn3 Updater has detected that 'Use FIPS Compliant algorithms for encryption, hashing, and signing.' is enforced via Group Policy, Syn3 Updater will be unable to validate any files using MD5 with this policy enforced\n\nThe application will now close!", "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                ApplicationManager.Instance.Exit();
+            }
         }
 
         private MainWindowViewModel Vm => (MainWindowViewModel) DataContext;

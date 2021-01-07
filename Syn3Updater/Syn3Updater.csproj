@@ -2,7 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}</ProjectGuid>
@@ -92,6 +92,7 @@
     <Compile Include="Model\InterrogatorModel.cs" />
     <Compile Include="Model\LanguageModel.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
+    <Compile Include="Model\JsonSettings.cs" />
     <Compile Include="Model\SyncModel.cs" />
     <Compile Include="UI\AttachedProperties.cs" />
     <Compile Include="UI\CrashWindow.xaml.cs">

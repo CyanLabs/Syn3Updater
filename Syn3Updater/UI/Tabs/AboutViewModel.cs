@@ -28,7 +28,7 @@ namespace Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _disclaimerAccepted, value);
-                Properties.Settings.Default.DisclaimerAccepted = value;
+                ApplicationManager.Instance.Settings.DisclaimerAccepted = value;
                 if (value) ApplicationManager.Instance.FireSettingsTabEvent();
             }
         }
@@ -50,12 +50,12 @@ namespace Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            DisclaimerAccepted = Properties.Settings.Default.DisclaimerAccepted;
+            DisclaimerAccepted = ApplicationManager.Instance.Settings.DisclaimerAccepted;
         }
 
         public void Reload()
         {
-            EnglishEndorsement = Properties.Settings.Default.Lang.Contains("en-") ? Visibility.Hidden : Visibility.Visible;
+            EnglishEndorsement = ApplicationManager.Instance.Settings.Lang.Contains("en-") ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void WebsiteAction()

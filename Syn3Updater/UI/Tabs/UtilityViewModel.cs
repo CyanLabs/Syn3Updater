@@ -313,7 +313,7 @@ namespace Syn3Updater.UI.Tabs
                                 if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                                 {
-                                    Properties.Settings.Default.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
+                                    ApplicationManager.Instance.Settings.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
                                     ApplicationManager.Instance.SyncVersion = convertedsyncversion;
                                 }
                             }

@@ -87,8 +87,7 @@ namespace Syn3Updater.UI
 
         private void ResetSettings_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.Reset();
-            Properties.Settings.Default.Save();
+            ApplicationManager.Instance.ResetSettings();
             ApplicationManager.Instance.RestartApp();
         }
     }

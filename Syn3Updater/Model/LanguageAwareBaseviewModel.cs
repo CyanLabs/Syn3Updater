@@ -13,7 +13,7 @@ namespace Syn3Updater.Model
                 if (ApplicationManager.Instance != null)
                     ApplicationManager.Instance.LanguageChangedEvent += (sender, args) =>
                     {
-                        if (Settings.Default.Lang != null) Language = Settings.Default.Lang;
+                        if (ApplicationManager.Instance.Settings.Lang != null) Language = ApplicationManager.Instance.Settings.Lang;
                     };
             }
             catch

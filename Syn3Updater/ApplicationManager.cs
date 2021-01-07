@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using SharedCode;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
-using Syn3Updater.Properties;
 using Syn3Updater.UI;
 
 namespace Syn3Updater
@@ -25,12 +24,14 @@ namespace Syn3Updater
         private ApplicationManager()
         {
             LauncherPrefs = new LauncherPrefs();
+            Settings = new JsonSettings();
         }
 
         public static readonly SimpleLogger Logger = new SimpleLogger();
         public ObservableCollection<SyncModel.SyncIvsu> Ivsus = new ObservableCollection<SyncModel.SyncIvsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
         public LauncherPrefs LauncherPrefs { get; set; }
+        public JsonSettings Settings { get; set; }
         #endregion
 
         #region Events
@@ -87,30 +88,72 @@ namespace Syn3Updater
             SelectedRegion,
             InstallMode,
             SyncVersion,
-            Action;
+            Action,
+            ConfigFile;
 
         public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
 
         #endregion
 
         #region Methods
+
+        public void SaveSettings()
+        {
+            string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
+            File.WriteAllText(ConfigFile, json);
+        }
+
+        public void ResetSettings()
+        {
+           if(File.Exists(ConfigFile)) File.Delete(ConfigFile);
+        }
         public void Initialize()
         {
-            if (Settings.Default.UpgradeRequired)
+            string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+            ConfigFile = configFolderPath + "\\settings.json";
+            if (!Directory.Exists(configFolderPath))
             {
-                Settings.Default.Upgrade();
-                Settings.Default.UpgradeRequired = false;
-                Settings.Default.Save();
+                Directory.CreateDirectory(configFolderPath);
             }
 
-            if (File.Exists("launcherPrefs.json"))
+            if (!File.Exists(ConfigFile))
             {
-                LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText("launcherPrefs.json"));
+                Logger.Debug("Settings upgrade required, initializing transformation to JSON");
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+
+                Settings = new JsonSettings();
+                Settings.Lang = ApplicationManager.Instance.Settings.Lang;
+                Settings.CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion;
+                Settings.CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
+                Settings.CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
+                Settings.DownloadPath = Properties.Settings.Default.DownloadPath;
+                Settings.CurrentInstallMode = Properties.Settings.Default.CurrentInstallMode;
+                Settings.ShowAllReleases = Properties.Settings.Default.ShowAllReleases;
+                Settings.LicenseKey = Properties.Settings.Default.LicenseKey;
+                Settings.DisclaimerAccepted = Properties.Settings.Default.DisclaimerAccepted;
+                Settings.Theme = Properties.Settings.Default.Theme;
+                SaveSettings();
+
+                Logger.Debug("Cleaning up old settings from Local Appdata");
+                DirectoryInfo di = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs");
+                Properties.Settings.Default.Reset();
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    if (dir.FullName.Contains("Syn3Updater.exe_Url_"))
+                    {
+                        Logger.Debug($"Deleting {dir.FullName}");
+                        dir.Delete(true);
+                    }
+                }
             }
             else
             {
-                LauncherPrefs = new LauncherPrefs();
+                Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
             }
+
+            LauncherPrefs = File.Exists("launcherPrefs.json") ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText("launcherPrefs.json")) : new LauncherPrefs();
 
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             // ReSharper disable once IdentifierTypo
@@ -119,26 +162,26 @@ namespace Syn3Updater
             Logger.Debug($"Determining language to use for the application");
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            if (string.IsNullOrWhiteSpace(Settings.Default.Lang))
+            if (string.IsNullOrWhiteSpace(Settings.Lang))
             {
                 Logger.Debug($"Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
-                Settings.Default.Lang = ci.TwoLetterISOLanguageName;
+                Settings.Lang = ci.TwoLetterISOLanguageName;
             }
 
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Default.Lang);
-            Logger.Debug($"Language is set to {Settings.Default.Lang}");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Lang);
+            Logger.Debug($"Language is set to {Settings.Lang}");
             //client = new DiscordRpcClient("");
             //client.Initialize();
 
-            if (string.IsNullOrWhiteSpace(Settings.Default.DownloadPath))
+            if (string.IsNullOrWhiteSpace(Settings.DownloadPath))
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location is not set, defaulting to {downloads}\\Syn3Updater\\");
-                Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
+                Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
             }
 
             Logger.Debug($"Determining download path to use for the application");
-            DownloadPath = Settings.Default.DownloadPath;
+            DownloadPath = ApplicationManager.Instance.Settings.DownloadPath;
 
             try
             {
@@ -160,15 +203,15 @@ namespace Syn3Updater
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
-                Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = Settings.Default.DownloadPath;
+                Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                DownloadPath = ApplicationManager.Instance.Settings.DownloadPath;
             }
             catch (IOException)
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
-                Settings.Default.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = Settings.Default.DownloadPath;
+                Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                DownloadPath = ApplicationManager.Instance.Settings.DownloadPath;
             }
 
             foreach (string arg in Environment.GetCommandLineArgs())
@@ -183,7 +226,7 @@ namespace Syn3Updater
                         break;
                 }
 
-            string version = Settings.Default.CurrentSyncVersion.ToString();
+            string version = ApplicationManager.Instance.Settings.CurrentSyncVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             Logger.Debug($"Current Sync Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
@@ -222,7 +265,7 @@ namespace Syn3Updater
             Logger.Debug("Saving settings before shutdown");
             try
             {
-                Settings.Default.Save();
+                ApplicationManager.Instance.SaveSettings();
             }
             catch (Exception e)
             {

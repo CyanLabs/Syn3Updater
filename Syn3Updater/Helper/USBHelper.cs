@@ -96,10 +96,10 @@ namespace Syn3Updater.Helper
             data += Environment.NewLine;
             data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
             data += $@"Version: {ApplicationManager.Instance.SyncVersion}{Environment.NewLine}";
-            data += $@"Region: {Settings.Default.CurrentSyncRegion}{Environment.NewLine}";
-            data += $@"Navigation: {Settings.Default.CurrentSyncNav}{Environment.NewLine}";
+            data += $@"Region: {ApplicationManager.Instance.Settings.CurrentSyncRegion}{Environment.NewLine}";
+            data += $@"Navigation: {ApplicationManager.Instance.Settings.CurrentSyncNav}{Environment.NewLine}";
             data +=
-                $@"Mode: {(Settings.Default.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{Settings.Default.CurrentInstallMode} FORCED")}{Environment.NewLine}";
+                $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}";
             data += Environment.NewLine;
             data += $@"USB DETAILS{Environment.NewLine}";
             data += $@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}";

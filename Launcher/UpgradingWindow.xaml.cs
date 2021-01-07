@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Newtonsoft.Json;
 using SharedCode;
 
@@ -54,19 +46,19 @@ namespace Launcher
 
             Process[] processlist = Process.GetProcesses();
 
-            //if (processlist.Any(x => x.ProcessName == "Syn3Updater"))
-            //{
-            //    try
-            //    {
-            //        var proc = processlist.First(x => x.ProcessName == "Syn3Updater");
-            //        proc.Kill();
-            //        proc.Dispose();
-            //        proc = null;
-            //    }
-            //    catch
-            //    {
-            //    }
-            //}
+            if (processlist.Any(x => x.ProcessName == "Syn3Updater"))
+            {
+                try
+                {
+                    var proc = processlist.First(x => x.ProcessName == "Syn3Updater");
+                    proc.Kill();
+                    proc.Dispose();
+                    proc = null;
+                }
+                catch
+                {
+                }
+            }
 
             if (File.Exists(BaseFolder + "\\launcherPrefs.json"))
             {

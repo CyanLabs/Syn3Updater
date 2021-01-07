@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Windows;
 using FontAwesome5;
 using ModernWpf;
@@ -20,7 +21,7 @@ namespace Syn3Updater.UI
         public MainWindowViewModel()
         {
             AppTitle = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
-            switch (Settings.Default.Theme)
+            switch (ApplicationManager.Instance.Settings.Theme)
             {
                 case "Dark":
                     ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
@@ -83,12 +84,12 @@ namespace Syn3Updater.UI
             get => _currentTab;
             set
             {
-                if (value != "about" && !Settings.Default.DisclaimerAccepted)
+                if (value != "about" && !ApplicationManager.Instance.Settings.DisclaimerAccepted)
                 {
                     MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
-                else if (value == "home" && (Settings.Default.CurrentSyncRegion == "" || Settings.Default.CurrentSyncVersion == 0 || Settings.Default.CurrentSyncVersion.ToString().Length != 7))
+                else if (value == "home" && (ApplicationManager.Instance.Settings.CurrentSyncRegion == "" || ApplicationManager.Instance.Settings.CurrentSyncVersion == 0 || ApplicationManager.Instance.Settings.CurrentSyncVersion.ToString().Length != 7))
                 {
                     MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
