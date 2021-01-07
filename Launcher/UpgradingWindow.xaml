@@ -1,0 +1,39 @@
+﻿<fluentWpf:AcrylicWindow x:Class="Launcher.UpgradingWindow"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+   xmlns:local="clr-namespace:Launcher"
+   xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+   mc:Ignorable="d"
+   Title="" Height="300" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
+   KeyDown="UpgradingWindow_OnKeyDown" Focusable="True"
+   Background="#40000000" Loaded="AcrylicWindow_Loaded" fluentWpf:AcrylicWindow.Enabled="True" AcrylicWindowStyle="NoIcon">
+    <Window.DataContext>
+        <local:UpgradingViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <TextBlock Cursor="Wait" x:Name="LoadingText" HorizontalAlignment="Center" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,-150" Text="{Binding Message}"></TextBlock>
+        <ProgressBar x:Name="ProgressBar" Width="350" Height="10" Foreground="Black" Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" BorderBrush="{x:Null}" Margin="0,0,0,-200" Value="{Binding Percentage}" RenderTransformOrigin="0.5,0.5">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <DockPanel Dock="Top" Margin="0,-60,0,0">
+            <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="400">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="iconlogo.png" Margin="25,10" Height="100"></Image>
+                        <Image Margin="30" Source="cyanlabs.png"></Image>
+                    </StackPanel>
+                    <TextBlock Foreground="White" FontFamily="Stencil" FontSize="100">Syn3 Updater</TextBlock>
+                </StackPanel>
+            </Viewbox>
+        </DockPanel>
+    </Grid>
+</fluentWpf:AcrylicWindow>

@@ -356,3 +356,5 @@ MigrationBackup/
 Model/APISecretModel.cs
 accent.json
 
+Launcher/Token.cs
+Syn3Updater/Model/APISecretModel.cs

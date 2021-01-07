@@ -128,6 +128,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Grid.Row="0" Margin="5,0,0,5" Grid.ColumnSpan="2"  Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Settings.AdvancedOptions, Converter={StaticResource LocConverter}}" />
@@ -137,6 +138,9 @@
 
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.ShowAllReleases, Converter={StaticResource LocConverter}}" />
                         <controls:ToggleSwitch BorderThickness="0" Cursor="Hand" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" IsOn="{Binding ShowAllReleases}" OnContent="" OffContent="" />
+
+                        <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right" Grid.Column="0" Text="{Binding Language, ConverterParameter=Settings.ReleaseType, Converter={StaticResource LocConverter}}" />
+                        <ComboBox Grid.Row="3" MinWidth="170" VerticalAlignment="Center" SelectedIndex="0" Grid.Column="1" Text="Navigation" ItemsSource="{Binding ReleaseTypes}" SelectedValue="{Binding ReleaseType}" VerticalContentAlignment="Center" />
                     </Grid>
 
 

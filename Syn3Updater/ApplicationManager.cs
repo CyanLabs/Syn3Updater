@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Newtonsoft.Json;
+using SharedCode;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using Syn3Updater.Properties;
@@ -23,12 +24,13 @@ namespace Syn3Updater
 
         private ApplicationManager()
         {
+            LauncherPrefs = new LauncherPrefs();
         }
 
         public static readonly SimpleLogger Logger = new SimpleLogger();
         public ObservableCollection<SyncModel.SyncIvsu> Ivsus = new ObservableCollection<SyncModel.SyncIvsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
-
+        public LauncherPrefs LauncherPrefs { get; set; }
         #endregion
 
         #region Events
@@ -100,7 +102,15 @@ namespace Syn3Updater
                 Settings.Default.UpgradeRequired = false;
                 Settings.Default.Save();
             }
-            
+
+            if (File.Exists("launcherPrefs.json"))
+            {
+                LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText("launcherPrefs.json"));
+            }
+            else
+            {
+                LauncherPrefs = new LauncherPrefs();
+            }
 
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             // ReSharper disable once IdentifierTypo

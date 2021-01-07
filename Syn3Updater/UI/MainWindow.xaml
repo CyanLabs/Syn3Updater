@@ -16,7 +16,7 @@
     MinHeight="640"
     MinWidth="800" 
     fw:AcrylicWindow.Enabled="True" fw:AcrylicWindow.TintOpacity="0.75"  Icon="/Syn3Updater;component/cyanlabs.ico"
-    Closing="Window_Closing" ui:ThemeManager.IsThemeAware="True">
+    Closing="Window_Closing" ui:ThemeManager.IsThemeAware="True" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />

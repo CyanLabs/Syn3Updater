@@ -6,7 +6,9 @@ using System.Linq;
 using System.Windows;
 using Microsoft.VisualBasic.FileIO;
 using ModernWpf;
+using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
+using SharedCode;
 using Syn3Updater.Helper;
 using Syn3Updater.Model;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
@@ -42,6 +44,8 @@ namespace Syn3Updater.UI.Tabs
             get => _installModes;
             set => SetProperty(ref _installModes, value);
         }
+
+        public ObservableCollection<LauncherPrefs.ReleaseType> ReleaseTypes { get; set; }
 
         private ObservableCollection<string> _themes;
 
@@ -200,6 +204,20 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
+        private LauncherPrefs.ReleaseType _releaseType;
+        public LauncherPrefs.ReleaseType ReleaseType
+        {
+            get => _releaseType;
+            set
+
+            {
+                SetProperty(ref _releaseType, value);
+                ApplicationManager.Instance.LauncherPrefs.ReleaseBranch = value;
+                string json = JsonConvert.SerializeObject(ApplicationManager.Instance.LauncherPrefs);
+                File.WriteAllText("launcherPrefs.json", json);
+            }
+        }
+
         public class LanguageOption
         {
             public string Emoji { get; set; }
@@ -240,6 +258,9 @@ namespace Syn3Updater.UI.Tabs
 
             };
             CurrentTheme = Properties.Settings.Default.Theme;
+
+            ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType> {LauncherPrefs.ReleaseType.Release, LauncherPrefs.ReleaseType.Beta, LauncherPrefs.ReleaseType.CI};
+            ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
 
             CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
 

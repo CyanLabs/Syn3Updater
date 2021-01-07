@@ -5,7 +5,15 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syn3Updater", "Syn3Updater.csproj", "{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launcher", "..\Launcher\Launcher.csproj", "{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedCode", "..\SharedCode\SharedCode.shproj", "{285A3E6C-652A-4CA2-9B27-3A4DC4E1177B}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\SharedCode\SharedCode.projitems*{285a3e6c-652a-4ca2-9b27-3a4dc4e1177b}*SharedItemsImports = 13
+		..\SharedCode\SharedCode.projitems*{400fec06-c6e7-4a09-80a6-b9a4e750d41a}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -15,6 +23,10 @@ Global
 		{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

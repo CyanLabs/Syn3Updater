@@ -159,7 +159,7 @@ namespace Syn3Updater.Model
                 if (l == null)
                 {
                     //Have to hardcode path for design time :(
-                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Languages\\{lang}.properties";
+                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.properties";
 
                     if (File.Exists(fn))
                     {
