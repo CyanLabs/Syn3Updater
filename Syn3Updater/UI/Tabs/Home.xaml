@@ -37,7 +37,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
-                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentSyncRegion}" />                        
+                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentSyncRegion}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=Home.SyncNav, Converter={StaticResource LocConverter}}" />
@@ -92,8 +92,8 @@
 
                 <Grid Background="#40000000" Margin="10,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -102,9 +102,9 @@
                     </Grid.RowDefinitions>
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}"/>
-                    <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
                         <TextBlock Margin="20,15,20,0" FontWeight="Bold" Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Text="{Binding Notes}" Margin="20,15" TextWrapping="WrapWithOverflow" />
+                        <TextBox Style="{StaticResource TextBoxRevealStyle}" Foreground="{DynamicResource SystemBaseHighColorBrush}" Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1" BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Notes}" Height="110" Visibility="{Binding NotesVisibility}" Margin="20,10,10,0" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow" TextAlignment="Left"/>
                     </StackPanel>
 
                     <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,0,0">
@@ -119,17 +119,17 @@
                             <RowDefinition Height="40" />
                         </Grid.RowDefinitions>
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="230px" ItemsSource="{Binding SyncRegions}" DisplayMemberPath="Name" SelectedValuePath="Code" SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" />
+                        <ComboBox VerticalAlignment="Center" MinWidth="240px" ItemsSource="{Binding SyncRegions}" DisplayMemberPath="Name" SelectedValuePath="Code" SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" />
                         <Button Cursor="Hand" Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="#00000000" Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RegionInfo}" Style="{DynamicResource AccentButtonStyle}"  >
                             <fa5:FontAwesome Icon="Solid_Question" FontSize="18" Foreground="White" VerticalAlignment="Center" Margin="0,0,0,0" />
                         </Button>
 
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="230px" SelectedIndex="{Binding SelectedReleaseIndex}" IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}" SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1"
+                        <ComboBox VerticalAlignment="Center" MinWidth="240px" SelectedIndex="{Binding SelectedReleaseIndex}" IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}" SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1"
                                   Grid.ColumnSpan="2" />
 
                         <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="0" Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="230px" SelectedIndex="{Binding SelectedMapVersionIndex}" IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}" />
+                        <ComboBox VerticalAlignment="Center" MinWidth="240px" SelectedIndex="{Binding SelectedMapVersionIndex}" IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" SelectedItem="{Binding SelectedMapVersion}" />
                     </Grid>
                 </Grid>
 
@@ -137,7 +137,7 @@
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Home.SelectPackages, Converter={StaticResource LocConverter}}" />
                     <controls:ListView Margin="5,0" Height="130" Focusable="False" ItemsSource="{Binding IvsuList}" HorizontalAlignment="Left" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" >
-                        
+
                         <controls:ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>

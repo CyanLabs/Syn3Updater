@@ -265,7 +265,12 @@ namespace Syn3Updater.UI.Tabs
             };
             CurrentTheme = ApplicationManager.Instance.Settings.Theme;
 
-            ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType> {LauncherPrefs.ReleaseType.Release, LauncherPrefs.ReleaseType.Beta, LauncherPrefs.ReleaseType.CI};
+            ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
+            {
+                LauncherPrefs.ReleaseType.Release,
+                LauncherPrefs.ReleaseType.Beta,
+                //LauncherPrefs.ReleaseType.CI
+            };
             ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
 
             CurrentSyncNav = ApplicationManager.Instance.Settings.CurrentSyncNav;

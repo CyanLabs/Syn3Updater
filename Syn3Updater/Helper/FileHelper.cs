@@ -148,13 +148,6 @@ namespace Syn3Updater.Helper
             ValidateResult validateResult = new ValidateResult();
             string filename = Path.GetFileName(localfile);
 
-            if (ApplicationManager.Instance.SkipCheck)
-            {
-                validateResult.Message = $"SkipCheck activated, spoofing validation check for {filename}";
-                validateResult.Result = true;
-                return validateResult;
-            }
-
             if (!File.Exists(localfile))
             {
                 validateResult.Message = $"";

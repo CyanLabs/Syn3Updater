@@ -6,8 +6,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using SharedCode;
@@ -91,7 +93,7 @@ namespace Syn3Updater
             Action,
             ConfigFile;
 
-        public bool SkipCheck, DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
+        public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
 
         #endregion
 
@@ -109,6 +111,21 @@ namespace Syn3Updater
         }
         public void Initialize()
         {
+            if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
+            {
+                Process.Start("Launcher.exe");
+                Exit();
+            }
+            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
+            foreach (string arg in Environment.GetCommandLineArgs())
+                switch (arg)
+                {
+                    case "/updated":
+                        Logger.Debug("/updated - flag no longer used but noted for debug purposes");
+                        break;
+                }
+            
+
             string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             ConfigFile = configFolderPath + "\\settings.json";
             if (!Directory.Exists(configFolderPath))
@@ -155,7 +172,6 @@ namespace Syn3Updater
 
             LauncherPrefs = File.Exists("launcherPrefs.json") ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText("launcherPrefs.json")) : new LauncherPrefs();
 
-            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
 
@@ -213,18 +229,6 @@ namespace Syn3Updater
                 Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
                 DownloadPath = ApplicationManager.Instance.Settings.DownloadPath;
             }
-
-            foreach (string arg in Environment.GetCommandLineArgs())
-                switch (arg)
-                {
-                    case "/debug":
-                        Logger.Debug("/debug flag detected, skipping all verification steps");
-                        SkipCheck = true;
-                        break;
-                    case "/updated":
-                        Logger.Debug("/updated - flag no longer used but noted for debug purposes");
-                        break;
-                }
 
             string version = ApplicationManager.Instance.Settings.CurrentSyncVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;

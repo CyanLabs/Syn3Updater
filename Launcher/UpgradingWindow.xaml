@@ -6,8 +6,7 @@
    xmlns:local="clr-namespace:Launcher"
    xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
    mc:Ignorable="d"
-   Title="" Height="300" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"
-   KeyDown="UpgradingWindow_OnKeyDown" Focusable="True"
+   Title="" Height="300" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Focusable="True"
    Background="#40000000" Loaded="AcrylicWindow_Loaded" fluentWpf:AcrylicWindow.Enabled="True" AcrylicWindowStyle="NoIcon">
     <Window.DataContext>
         <local:UpgradingViewModel/>

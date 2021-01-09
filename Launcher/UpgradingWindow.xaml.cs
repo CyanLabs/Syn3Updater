@@ -3,12 +3,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using IWshRuntimeLibrary;
 using Newtonsoft.Json;
 using SharedCode;
+using File = System.IO.File;
 
 namespace Launcher
 {
@@ -33,9 +37,18 @@ namespace Launcher
         }
 
         public static string BaseFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)+"\\CyanLabs\\Syn3Updater";
-
+        readonly int oldversion = Core.LauncherPrefs.ReleaseInstalled;
         private async Task StartCheck()
         {
+            //if (Debugger.IsAttached)
+            //{
+            //    BaseFolder = @"E:\Scott\Documents\GitHub\Syn3Updater\bin\Debug";
+            //}
+
+            //if (File.Exists(BaseFolder + "\\uninst.exe"))
+            //{
+            //    Process.Start(BaseFolder + "\\uninst.exe", "/S").WaitForExit();
+            //}
 
             if (!Directory.Exists(BaseFolder))
             {
@@ -72,40 +85,71 @@ namespace Launcher
                 await Task.Delay(100);
             }
 
+            if (oldversion == 0)
+            {
+                string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Syn3Updater.lnk";
+                if (File.Exists(shortcutPath)) File.Delete(shortcutPath);
+                WshShell wsh = new WshShell();
+                IWshRuntimeLibrary.IWshShortcut shortcut = wsh.CreateShortcut(shortcutPath) as IWshShortcut;
+                shortcut.Arguments = "";
+                shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
+                shortcut.Description = "Syn3 Updater Launcher";
+                shortcut.WorkingDirectory = BaseFolder;
+                shortcut.IconLocation = BaseFolder + "\\Syn3Updater.exe,0";
+                shortcut.Save();
+
+
+                StringBuilder path = new StringBuilder(260);
+                SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_COMMON_STARTMENU, false);
+                string s = path.ToString();
+                if(!Directory.Exists(s + "\\Syn3Updater")) Directory.CreateDirectory(s + "\\Syn3Updater");
+                shortcutPath = s + "\\Syn3Updater\\Syn3Updater.lnk";
+                if (File.Exists(shortcutPath)) File.Delete(shortcutPath);
+                wsh = new WshShell();
+                shortcut = wsh.CreateShortcut(shortcutPath) as IWshShortcut;
+                shortcut.Arguments = "";
+                shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
+                shortcut.Description = "Syn3 Updater Launcher";
+                shortcut.WorkingDirectory = BaseFolder;
+                shortcut.IconLocation = BaseFolder + "\\Syn3Updater.exe,0";
+                shortcut.Save();
+            }
+
             Process p = new Process();
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.StartInfo.FileName = BaseFolder + "\\Syn3Updater.exe";
             p.StartInfo.WorkingDirectory = BaseFolder;
+            p.StartInfo.Arguments = "/launcher";
             p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
 
             p.Start();
 
-
-
             await Task.Delay(2000);
 
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
         }
 
-        private void UpgradingWindow_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.Key == Key.LeftShift) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                try
-                {
-                    LoadingText.Text = "Resetting app...";
-                    Directory.Delete(BaseFolder, true);
-                    Thread.Sleep(200);
-                    Process.Start(Assembly.GetExecutingAssembly().Location);
-                    Environment.Exit(-1);
-                }
-                catch
-                {
+        [DllImport("shell32.dll")]
+        static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
+        const int CSIDL_COMMON_STARTMENU = 0x17;  // \Windows\Start Menu\Programs
 
-                }
-            }
-        }
+        //private void UpgradingWindow_OnKeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if ((e.Key == Key.LeftShift) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+        //    {
+        //        try
+        //        {
+        //            LoadingText.Text = "Resetting app...";
+        //            Directory.Delete(BaseFolder, true);
+        //            Thread.Sleep(200);
+        //            Process.Start(Assembly.GetExecutingAssembly().Location);
+        //            Environment.Exit(-1);
+        //        }
+        //        catch
+        //        {
+
+        //        }
+        //    }
+        //}
     }
 }

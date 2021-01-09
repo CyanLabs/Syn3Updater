@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Octokit;
 using SharedCode;
+using File = System.IO.File;
 
 namespace Launcher
 {
@@ -39,16 +40,15 @@ namespace Launcher
                         throw new NotImplementedException();
 
                     case LauncherPrefs.ReleaseType.Beta:
-                        var githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater");
+                        var githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3UpdaterUpdateTest");
                         latest = githubreleases[0];
                         break;
 
                     case LauncherPrefs.ReleaseType.Release:
-                        latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
+                        latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3UpdaterUpdateTest");
                         break;
 
                 }
-
 
                 string version = new String(latest.TagName.Where(Char.IsDigit).ToArray());
                 int intversion = Int32.Parse(version);

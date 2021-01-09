@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Launcher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("CyanLabs")]
 [assembly: AssemblyProduct("Launcher")]
 [assembly: AssemblyCopyright("Copyright © CyanLabs 2021")]
 [assembly: AssemblyTrademark("")]

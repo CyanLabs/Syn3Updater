@@ -177,6 +177,14 @@ namespace Syn3Updater.UI.Tabs
             set => SetProperty(ref _notes, value);
         }
 
+        private Visibility _notesVisibility;
+
+        public Visibility NotesVisibility
+        {
+            get => _notesVisibility;
+            set => SetProperty(ref _notesVisibility, value);
+        }
+
         private ObservableCollection<SyncModel.SyncIvsu> _ivsuList;
 
         public ObservableCollection<SyncModel.SyncIvsu> IvsuList
@@ -256,6 +264,7 @@ namespace Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
+            NotesVisibility = Visibility.Hidden;
             CurrentSyncNav = ApplicationManager.Instance.Settings.CurrentSyncNav ? "Yes" : "No";
             CurrentSyncRegion = ApplicationManager.Instance.Settings.CurrentSyncRegion;
             CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
@@ -334,6 +343,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void UpdateSelectedRegion()
         {
+            NotesVisibility = Visibility.Hidden;
             if (SelectedRegion.Code != "")
             {
                 IvsuList.Clear();
@@ -399,8 +409,13 @@ namespace Syn3Updater.UI.Tabs
                     if (item.name == SelectedRelease)
                     {
                         _stringCompatibility = item.version.Substring(0, 3);
-                        if (item.notes == null) continue;
-                        Notes = item.notes.Replace("\n", Environment.NewLine);
+                        if (item.notes == null)
+                        {
+                            NotesVisibility = Visibility.Hidden;
+                            continue;
+                        }
+                        NotesVisibility = Visibility.Visible;
+                        Notes = item.notes.Replace("\n",Environment.NewLine + Environment.NewLine);
                     }
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][contains]={_stringCompatibility}");

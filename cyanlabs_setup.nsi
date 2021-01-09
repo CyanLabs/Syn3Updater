@@ -16,18 +16,14 @@
 
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
-!define MUI_ICON ".\cyanlabs.ico"
+!define MUI_ICON ".\${PRODUCT_NAME}\cyanlabs.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
-Function .onInit
-	 ExecWait '"$INSTDIR\uninst.exe" /S'
-FunctionEnd
-
 Function createicons
-  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe" ""
+#  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\Launcher.exe" ""
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall Syn3Updater.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
-  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe" "" "$INSTDIR\${PRODUCT_NAME}.exe" 0
+#  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe" "" "$INSTDIR\${PRODUCT_NAME}.exe" 0
 FunctionEnd
 
 !define MUI_WELCOMEPAGE_TITLE "${PRODUCT_NAME} Setup Wizard"
@@ -38,8 +34,8 @@ FunctionEnd
 !define MUI_FINISHPAGE_SHOWREADME ""
 !define MUI_FINISHPAGE_SHOWREADME_TEXT "Create StartMenu and Desktop Shortcuts"
 !define MUI_FINISHPAGE_SHOWREADME_FUNCTION createicons
-!define MUI_FINISHPAGE_RUN "$INSTDIR\${PRODUCT_NAME}.exe"
-!define MUI_FINISHPAGE_RUN_PARAMETERS "/updated"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\Launcher.exe"
+#!define MUI_FINISHPAGE_RUN_PARAMETERS "/updated"
 !define MUI_FINISHPAGE_RUN_TEXT "Launch ${PRODUCT_NAME}"
 !define MUI_FINISHPAGE_LINK "View online documentation"
 !define MUI_FINISHPAGE_LINK_LOCATION "https://cyanlabs.net/applications/${PRODUCT_NAME}/"
@@ -68,7 +64,7 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\*.*"
-  File /r "bin\Release\*"
+  File "bin\Release\Launcher.exe"
 SectionEnd
 
 Section -Post
