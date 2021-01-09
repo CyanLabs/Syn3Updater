@@ -2,13 +2,11 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using IWshRuntimeLibrary;
 using Newtonsoft.Json;
 using SharedCode;
@@ -66,10 +64,10 @@ namespace Launcher
                     var proc = processlist.First(x => x.ProcessName == "Syn3Updater");
                     proc.Kill();
                     proc.Dispose();
-                    proc = null;
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 
@@ -90,7 +88,8 @@ namespace Launcher
                 string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Syn3Updater.lnk";
                 if (File.Exists(shortcutPath)) File.Delete(shortcutPath);
                 WshShell wsh = new WshShell();
-                IWshRuntimeLibrary.IWshShortcut shortcut = wsh.CreateShortcut(shortcutPath) as IWshShortcut;
+                IWshShortcut shortcut = wsh.CreateShortcut(shortcutPath) as IWshShortcut;
+                // ReSharper disable once PossibleNullReferenceException
                 shortcut.Arguments = "";
                 shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
                 shortcut.Description = "Syn3 Updater Launcher";
@@ -107,6 +106,7 @@ namespace Launcher
                 if (File.Exists(shortcutPath)) File.Delete(shortcutPath);
                 wsh = new WshShell();
                 shortcut = wsh.CreateShortcut(shortcutPath) as IWshShortcut;
+                // ReSharper disable once PossibleNullReferenceException
                 shortcut.Arguments = "";
                 shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
                 shortcut.Description = "Syn3 Updater Launcher";
@@ -131,7 +131,9 @@ namespace Launcher
 
         [DllImport("shell32.dll")]
         static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
-        const int CSIDL_COMMON_STARTMENU = 0x17;  // \Windows\Start Menu\Programs
+
+        // ReSharper disable once InconsistentNaming
+        private const int CSIDL_COMMON_STARTMENU = 0x17;  // \Windows\Start Menu\Programs
 
         //private void UpgradingWindow_OnKeyDown(object sender, KeyEventArgs e)
         //{

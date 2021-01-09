@@ -64,7 +64,6 @@
     </ApplicationDefinition>
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Core.cs" />
-    <Compile Include="Token.cs" />
     <Compile Include="UpdateCheck.cs" />
     <Compile Include="UpgradingViewModel.cs" />
     <Compile Include="UpgradingWindow.xaml.cs">

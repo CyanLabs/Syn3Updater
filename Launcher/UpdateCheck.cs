@@ -15,7 +15,7 @@ namespace Launcher
 {
     public class UpdateCheck
     {
-        public bool Complete = false;
+        public bool Complete;
         public UpgradingWindow UpgradingWindow;
         public async Task Execute(LauncherPrefs.ReleaseType releaseType, UpgradingWindow upgrading, string destFolder)
         {
@@ -28,7 +28,7 @@ namespace Launcher
             await Task.Delay(1000);
             Release latest = new Release();
             var githubclient = new GitHubClient(new ProductHeaderValue("CyanLabs-Launcher"));
-            var tokenAuth = new Credentials("fma965",Token.Accesstoken);
+            var tokenAuth = new Credentials("fma965", "hjuBpZko7BUAFeA2NnJsuhO6");
             githubclient.Credentials = tokenAuth;
 
             //  try
@@ -53,7 +53,6 @@ namespace Launcher
                 string version = new String(latest.TagName.Where(Char.IsDigit).ToArray());
                 int intversion = Int32.Parse(version);
                 Console.WriteLine("The latest release is tagged at {0} and is named {1}", latest.TagName, latest.Name);
-                string html = "";
                 int maxReleaseNumber = intversion;
 
                 if (Core.LauncherPrefs.ReleaseInstalled < maxReleaseNumber || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType )
@@ -87,8 +86,9 @@ namespace Launcher
                             {
                                 File.Delete(f);
                             }
-                            catch
+                            catch (Exception)
                             {
+                                // ignored
                             }
                         }
                     }
@@ -103,7 +103,7 @@ namespace Launcher
                         }
                     }
 
-                    vm.Message = "Installing " + releaseType + " release " + latest.TagName;
+                    Vm.Message = "Installing " + releaseType + " release " + latest.TagName;
 
                     string zipPath = destFolder+"\\"+releaseType + "_" + latest.TagName + ".zip";
 
@@ -118,7 +118,7 @@ namespace Launcher
 
                         Directory.CreateDirectory(destFolder+"\\temp");
 
-                        vm.Message = "Extracting...";
+                        Vm.Message = "Extracting...";
                         ZipFile.ExtractToDirectory(zipPath, destFolder+"\\temp");
 
                         DirectoryCopy(destFolder+"\\temp", destFolder, true);
@@ -128,8 +128,9 @@ namespace Launcher
                         {
                             Directory.Delete(destFolder+"\\temp", true);
                         }
-                        catch
+                        catch (Exception)
                         {
+                            // ignored
                         }
 
                         UpgradingWindow.Dispatcher.BeginInvoke(new Action(() =>
@@ -195,6 +196,7 @@ namespace Launcher
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 string temppath = Path.Combine(destDirName, file.Name);
                 Debug.WriteLine("Copying to "+temppath);
                 try
@@ -203,6 +205,7 @@ namespace Launcher
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 
@@ -211,8 +214,9 @@ namespace Launcher
             {
                 foreach (DirectoryInfo subdir in dirs)
                 {
+                    // ReSharper disable once AssignNullToNotNullAttribute
                     string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    DirectoryCopy(subdir.FullName, temppath, true);
                 }
             }
         }
@@ -223,11 +227,11 @@ namespace Launcher
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
 
-            vm.Message = "Downloaded " + (e.BytesReceived / 1000000).ToString() + " MB of " + (e.TotalBytesToReceive / 1000000).ToString() + " MB.";
+            Vm.Message = "Downloaded " + (e.BytesReceived / 1000000).ToString() + " MB of " + (e.TotalBytesToReceive / 1000000).ToString() + " MB.";
 
-            vm.Percentage = 100-(int)percentage;
+            Vm.Percentage = 100-(int)percentage;
         }
 
-        private UpgradingViewModel vm => UpgradingWindow.vm;
+        private UpgradingViewModel Vm => UpgradingWindow.vm;
     }
 }
