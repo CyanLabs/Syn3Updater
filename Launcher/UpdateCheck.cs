@@ -28,8 +28,6 @@ namespace Launcher
             await Task.Delay(1000);
             Release latest = new Release();
             var githubclient = new GitHubClient(new ProductHeaderValue("CyanLabs-Launcher"));
-            var tokenAuth = new Credentials("fma965", "hjuBpZko7BUAFeA2NnJsuhO6");
-            githubclient.Credentials = tokenAuth;
 
             //  try
             {
