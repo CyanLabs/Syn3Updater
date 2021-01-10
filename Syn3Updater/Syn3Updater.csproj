@@ -184,7 +184,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="App.config" />
     <None Include="app.manifest" />
     <Content Include="Languages\en-US.properties">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -237,11 +236,6 @@
       <Version>1.4.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Launcher\Launcher.csproj">
-      <Project>{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}</Project>
-      <Name>Launcher</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
