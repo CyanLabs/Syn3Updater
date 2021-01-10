@@ -113,8 +113,17 @@ namespace Syn3Updater
         {
             if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
             {
-                Process.Start("Launcher.exe");
-                Exit();
+                try
+                {
+                    Process.Start("Launcher.exe");
+                    Exit();
+                }
+                catch (Exception e)
+                {
+                    Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
+                    Logger.Debug(e.GetFullMessage());
+                }
+                
             }
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             foreach (string arg in Environment.GetCommandLineArgs())
