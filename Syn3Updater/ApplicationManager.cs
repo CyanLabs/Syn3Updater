@@ -135,35 +135,8 @@ namespace Syn3Updater
 
             if (!File.Exists(ConfigFile))
             {
-                Logger.Debug("Settings upgrade required, initializing transformation to JSON");
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.UpgradeRequired = false;
-                Properties.Settings.Default.Save();
-
+                Logger.Debug("No settings file found, initializing JSON settings");
                 Settings = new JsonSettings();
-                Settings.Lang = ApplicationManager.Instance.Settings.Lang;
-                Settings.CurrentSyncVersion = Properties.Settings.Default.CurrentSyncVersion;
-                Settings.CurrentSyncNav = Properties.Settings.Default.CurrentSyncNav;
-                Settings.CurrentSyncRegion = Properties.Settings.Default.CurrentSyncRegion;
-                Settings.DownloadPath = Properties.Settings.Default.DownloadPath;
-                Settings.CurrentInstallMode = Properties.Settings.Default.CurrentInstallMode;
-                Settings.ShowAllReleases = Properties.Settings.Default.ShowAllReleases;
-                Settings.LicenseKey = Properties.Settings.Default.LicenseKey;
-                Settings.DisclaimerAccepted = Properties.Settings.Default.DisclaimerAccepted;
-                Settings.Theme = Properties.Settings.Default.Theme;
-                SaveSettings();
-
-                Logger.Debug("Cleaning up old settings from Local Appdata");
-                DirectoryInfo di = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs");
-                Properties.Settings.Default.Reset();
-                foreach (DirectoryInfo dir in di.GetDirectories())
-                {
-                    if (dir.FullName.Contains("Syn3Updater.exe_Url_"))
-                    {
-                        Logger.Debug($"Deleting {dir.FullName}");
-                        dir.Delete(true);
-                    }
-                }
             }
             else
             {
@@ -174,7 +147,6 @@ namespace Syn3Updater
 
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
-
             Logger.Debug($"Determining language to use for the application");
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;

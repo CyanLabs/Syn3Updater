@@ -203,9 +203,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="cyanlabs.ico" />
   </ItemGroup>
   <ItemGroup>
