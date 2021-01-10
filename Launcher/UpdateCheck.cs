@@ -38,12 +38,12 @@ namespace Launcher
                         throw new NotImplementedException();
 
                     case LauncherPrefs.ReleaseType.Beta:
-                        var githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3UpdaterUpdateTest");
+                        var githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater");
                         latest = githubreleases[0];
                         break;
 
                     case LauncherPrefs.ReleaseType.Release:
-                        latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3UpdaterUpdateTest");
+                        latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
                         break;
 
                 }

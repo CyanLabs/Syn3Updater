@@ -97,7 +97,6 @@ namespace Launcher
                 shortcut.IconLocation = BaseFolder + "\\Syn3Updater.exe,0";
                 shortcut.Save();
 
-
                 StringBuilder path = new StringBuilder(260);
                 SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_COMMON_STARTMENU, false);
                 string s = path.ToString();
@@ -113,6 +112,11 @@ namespace Launcher
                 shortcut.WorkingDirectory = BaseFolder;
                 shortcut.IconLocation = BaseFolder + "\\Syn3Updater.exe,0";
                 shortcut.Save();
+
+                path = new StringBuilder(260);
+                SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_PROGRAMS, false);
+                s = path.ToString();
+                if (Directory.Exists(s + "\\Syn3Updater")) Directory.Delete(s + "\\Syn3Updater",true);
             }
 
             Process p = new Process();
@@ -134,7 +138,7 @@ namespace Launcher
 
         // ReSharper disable once InconsistentNaming
         private const int CSIDL_COMMON_STARTMENU = 0x17;  // \Windows\Start Menu\Programs
-
+        private const int CSIDL_PROGRAMS = 0x02; // 
         //private void UpgradingWindow_OnKeyDown(object sender, KeyEventArgs e)
         //{
         //    if ((e.Key == Key.LeftShift) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
