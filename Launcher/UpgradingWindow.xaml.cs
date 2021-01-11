@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -38,6 +39,7 @@ namespace Launcher
         readonly int oldversion = Core.LauncherPrefs.ReleaseInstalled;
         private async Task StartCheck()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             if (Debugger.IsAttached)
             {
                 BaseFolder = @"E:\Scott\Documents\GitHub\Syn3Updater\bin\Debug";
