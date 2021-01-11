@@ -65,6 +65,8 @@ Section "MainSection" SEC01
   SetOverwrite ifnewer
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\*.*"
   File "bin\Release\Launcher.exe"
+  File "bin\Release\Newtonsoft.Json.dll"
+  File "bin\Release\FluentWPF.dll"
 SectionEnd
 
 Section -Post
