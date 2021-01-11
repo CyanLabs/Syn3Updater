@@ -220,7 +220,8 @@ namespace Syn3Updater.UI.Tabs
                 SetProperty(ref _releaseType, value);
                 ApplicationManager.Instance.LauncherPrefs.ReleaseBranch = value;
                 string json = JsonConvert.SerializeObject(ApplicationManager.Instance.LauncherPrefs);
-                File.WriteAllText("launcherPrefs.json", json);
+                string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+                File.WriteAllText(configFolderPath + "\\launcherPrefs.json", json);
             }
         }
 
