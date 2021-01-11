@@ -91,7 +91,8 @@ namespace Syn3Updater
             InstallMode,
             SyncVersion,
             Action,
-            ConfigFile;
+            ConfigFile, 
+            configFolderPath;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
 
@@ -134,7 +135,7 @@ namespace Syn3Updater
                 }
             
 
-            string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+            configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             ConfigFile = configFolderPath + "\\settings.json";
             if (!Directory.Exists(configFolderPath))
             {
@@ -258,7 +259,7 @@ namespace Syn3Updater
             Logger.Debug("Writing log to disk before shutdown");
             try
             {
-                File.WriteAllText("log.txt", JsonConvert.SerializeObject(Logger.Log));
+                File.WriteAllText(configFolderPath + "\\log.txt", JsonConvert.SerializeObject(Logger.Log));
             }
             catch (UnauthorizedAccessException e)
             {
