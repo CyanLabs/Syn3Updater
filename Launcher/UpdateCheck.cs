@@ -142,8 +142,13 @@ namespace Launcher
                         Core.LauncherPrefs.ReleaseInstalled = maxReleaseNumber;
                         Core.LauncherPrefs.ReleaseTypeInstalled = releaseType;
 
+                        string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
                         string json = JsonConvert.SerializeObject(Core.LauncherPrefs);
-                        File.WriteAllText(destFolder+"\\LauncherPrefs.json", json);
+                        if (!Directory.Exists(configFolderPath))
+                        {
+                            Directory.CreateDirectory(configFolderPath);
+                        }
+                        File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", json);
 
 
                         if (Directory.Exists(destFolder+"\\.old"))

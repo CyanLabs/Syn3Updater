@@ -116,14 +116,13 @@ namespace Syn3Updater
                 try
                 {
                     Process.Start("Launcher.exe");
-                    Exit();
+                    Application.Current.Shutdown();
                 }
-                catch (Exception e)
+                catch (System.ComponentModel.Win32Exception e)
                 {
                     Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
                     Logger.Debug(e.GetFullMessage());
                 }
-                
             }
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             foreach (string arg in Environment.GetCommandLineArgs())
@@ -152,7 +151,7 @@ namespace Syn3Updater
                 Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
             }
 
-            LauncherPrefs = File.Exists("launcherPrefs.json") ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText("launcherPrefs.json")) : new LauncherPrefs();
+            LauncherPrefs = File.Exists(configFolderPath + "\\launcherPrefs.json") ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json")) : new LauncherPrefs();
 
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable

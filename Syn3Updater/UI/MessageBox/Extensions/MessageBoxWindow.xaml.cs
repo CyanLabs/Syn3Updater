@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Windows;
+using FontAwesome5;
 using Syn3Updater.Model;
 
 namespace Syn3Updater.UI.MessageBox.Extensions
@@ -10,7 +11,7 @@ namespace Syn3Updater.UI.MessageBox.Extensions
 
         public MessageBoxResult? Result;
 
-        public MessageBoxWindow(string messageBoxText, string caption, MessageBoxButton button, string? symbolGlyph)
+        public MessageBoxWindow(string messageBoxText, string caption, MessageBoxButton button, EFontAwesomeIcon? symbolGlyph)
         {
             InitializeComponent();
 
@@ -49,7 +50,7 @@ namespace Syn3Updater.UI.MessageBox.Extensions
             if (symbolGlyph is { } glyph)
             {
                 symbolIcon.Visibility = Visibility.Visible;
-                symbolIcon.Glyph = glyph;
+                symbolIcon.Icon = glyph;
             }
         }
 

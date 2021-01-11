@@ -15,6 +15,21 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>false</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -104,10 +119,7 @@
     <Compile Include="UI\MessageBox\Extensions\MessageBoxWindow.xaml.cs">
       <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\MessageBox\Extensions\SymbolExtensions.cs" />
-    <Compile Include="UI\MessageBox\Extensions\SymbolGlyphExtensions.cs" />
     <Compile Include="UI\MessageBox\MessageBox.cs" />
-    <Compile Include="UI\MessageBox\SymbolGlyph.cs" />
     <Compile Include="SimpleLogger.cs" />
     <Compile Include="UI\Tabs\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
@@ -235,6 +247,18 @@
     <PackageReference Include="QRCoder">
       <Version>1.4.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

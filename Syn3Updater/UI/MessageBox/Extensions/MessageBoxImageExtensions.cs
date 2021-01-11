@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Windows;
+using FontAwesome5;
 
 namespace Syn3Updater.UI.MessageBox.Extensions {
     internal static class MessageBoxImageExtensions {
-        public static SymbolGlyph ToSymbol(this MessageBoxImage image) {
+        public static EFontAwesomeIcon ToSymbol(this MessageBoxImage image) {
             switch (image) {
                 case MessageBoxImage.Error:
-                    return SymbolGlyph.Error;
+                    return EFontAwesomeIcon.Solid_TimesCircle;
                 case MessageBoxImage.Information:
-                    return SymbolGlyph.Info;
+                    return EFontAwesomeIcon.Solid_InfoCircle;
                 case MessageBoxImage.Warning:
-                    return SymbolGlyph.Warning;
+                    return EFontAwesomeIcon.Solid_ExclamationCircle;
                 case MessageBoxImage.Question:
-                    return SymbolGlyph.StatusCircleQuestionMark;
+                    return EFontAwesomeIcon.Solid_QuestionCircle;
                 case MessageBoxImage.None:
-                    return (SymbolGlyph)0x2007;
+                    return EFontAwesomeIcon.Solid_InfoCircle;
                 default:
                     throw new NotSupportedException();
             }
