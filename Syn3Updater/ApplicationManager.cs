@@ -110,6 +110,21 @@ namespace Syn3Updater
         {
            if(File.Exists(ConfigFile)) File.Delete(ConfigFile);
         }
+
+        public void UpdateLaucherSettings()
+        {
+            string json = JsonConvert.SerializeObject(LauncherPrefs);
+            if (!Directory.Exists(configFolderPath)) Directory.CreateDirectory(configFolderPath);
+            try
+            {
+                File.WriteAllText(configFolderPath + "\\launcherPrefs.json", json);
+            }
+            catch (IOException e)
+            {
+                Logger.Debug(e.GetFullMessage());
+                UI.MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         public void Initialize()
         {
             if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
