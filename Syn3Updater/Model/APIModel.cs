@@ -23,9 +23,6 @@ namespace Syn3Updater.Model
         public const string MapReleaseSingle = Base + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         public const string IVSUSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
 
-        public const string UpdaterReleaseURL = "https://api.github.com/repos/cyanlabs/Syn3Updater/releases/latest";
-        public const string UpdaterChangelogURL = "https://cyanlabs.net/api/changelog-github.php?product=Syn3Updater";
-
         public const string CrashLogURL = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=";
         public const string CrashLogPost = "https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php";
         
@@ -74,13 +71,13 @@ namespace Syn3Updater.Model
         public static readonly SyncModel.SyncIvsu InterrogatorTool = new SyncModel.SyncIvsu
         {
             Type = "TOOL",
-            Name = "GB5T-14G386-AC",
+            Name = "GB5T-14G386-AD",
             Version = "",
             Notes = LanguageManager.GetValue("String.Required"),
-            Url = "http://ivsu.binaries.ford.com/swparts/GB5T-14G386-AC_1587495565000.TAR.GZ",
-            Md5 = "1D8A92F839324C96C7A9AD95A2AFC39E",
+            Url = "http://ivsu.binaries.ford.com/swparts/GB5T-14G386-AD_1606255780000.TAR.GZ",
+            Md5 = "598534053D4F88CC28B7F36ACA0BFA59",
             Selected = true,
-            FileName = "GB5T-14G386-AC_1587495565000.TAR.GZ"
+            FileName = "GB5T-14G386-AD_1606255780000.TAR.GZ"
         };
 
         public static readonly SyncModel.SyncIvsu GracenotesRemoval = new SyncModel.SyncIvsu
