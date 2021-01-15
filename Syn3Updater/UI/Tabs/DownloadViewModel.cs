@@ -268,6 +268,7 @@ namespace Syn3Updater.UI.Tabs
             }
         }
 
+
 #pragma warning disable 1998
         private async Task DoCopy()
 #pragma warning restore 1998
@@ -422,6 +423,8 @@ namespace Syn3Updater.UI.Tabs
             DownloadInfo = "";
             DownloadPercentage = "";
             Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
+            ApplicationManager.Instance.AppsSelected = false;
+            ApplicationManager.Instance.SkipFormat = false;
             _tokenSource.Dispose();
             _tokenSource = new CancellationTokenSource();
             ApplicationManager.Instance.FireHomeTabEvent();
@@ -437,6 +440,8 @@ namespace Syn3Updater.UI.Tabs
             DownloadInfo = "";
             DownloadPercentage = "";
             Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
+            ApplicationManager.Instance.AppsSelected = false;
+            ApplicationManager.Instance.SkipFormat = false;
             _tokenSource.Dispose();
             _tokenSource = new CancellationTokenSource();
         }
