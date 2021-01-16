@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +35,8 @@ namespace Syn3Updater
         public static ApplicationManager Instance { get; } = new ApplicationManager();
         public LauncherPrefs LauncherPrefs { get; set; }
         public JsonSettings Settings { get; set; }
+
+        public readonly HttpClient Client = new HttpClient();
         #endregion
 
         #region Events

@@ -15,9 +15,6 @@ namespace Syn3Updater.UI.Tabs
     internal class HomeViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
-
-        private static readonly HttpClient Client = new HttpClient();
-
         private ActionCommand _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
@@ -282,7 +279,7 @@ namespace Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
+            ApplicationManager.Instance.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
             {
                 new SyncModel.SyncRegion {Code = "EU", Name = "Europe"},
@@ -366,7 +363,7 @@ namespace Syn3Updater.UI.Tabs
 
                 try
                 {
-                    HttpResponseMessage response = Client.GetAsync(_apiAppReleases).Result;
+                    HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(_apiAppReleases).Result;
                     _stringReleasesJson = response.Content.ReadAsStringAsync().Result;
                 }
                 // ReSharper disable once RedundantCatchClause
@@ -420,7 +417,7 @@ namespace Syn3Updater.UI.Tabs
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][contains]={_stringCompatibility}");
 
-                HttpResponseMessage response = Client.GetAsync(_apiMapReleases).Result;
+                HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(_apiMapReleases).Result;
                 _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
 
                 if (ApplicationManager.Instance.Settings.CurrentSyncNav)
@@ -455,7 +452,7 @@ namespace Syn3Updater.UI.Tabs
                 //LESS THAN 3.2
                 if (ApplicationManager.Instance.Settings.CurrentSyncVersion < Api.ReformatVersion)
                 {
-                    InstallMode = "reformat";
+                    InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "reformat" : ApplicationManager.Instance.Settings.CurrentInstallMode;
                 }
 
                 //Above 3.2 and  Below 3.4.19274
@@ -483,10 +480,10 @@ namespace Syn3Updater.UI.Tabs
                 ApplicationManager.Instance.Action = "main";
                 ApplicationManager.Instance.InstallMode = InstallMode;
 
-                HttpResponseMessage response = Client.GetAsync(Api.AppReleaseSingle + SelectedRelease).Result;
+                HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(Api.AppReleaseSingle + SelectedRelease).Result;
                 _stringDownloadJson = response.Content.ReadAsStringAsync().Result;
 
-                response = Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion).Result;
+                response = ApplicationManager.Instance.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion).Result;
                 _stringMapDownloadJson = response.Content.ReadAsStringAsync().Result;
 
                 Api.JsonReleases jsonIvsUs = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringDownloadJson);
@@ -531,13 +528,13 @@ namespace Syn3Updater.UI.Tabs
 
             if (InstallMode == "downgrade")
             {
-                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
-                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeTool);
+                ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp));
+                ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool));
             }
 
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                ApplicationManager.Instance.Ivsus.Add(Api.ReformatTool);
+                ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetReformat));
             }
 
 

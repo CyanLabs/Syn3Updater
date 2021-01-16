@@ -32,81 +32,20 @@ namespace Syn3Updater.Model
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 
-        public static readonly SyncModel.SyncIvsu ReformatTool = new SyncModel.SyncIvsu
-        {
-            Type = "TOOL",
-            Name = "1u5t-14g386-cb",
-            Version = "",
-            Notes = LanguageManager.GetValue("String.Required") + " Factory Reformat Tool - Production Cert",
-            Url = "https://cyanlabs.net/api/Syn3Updater/reformat.php",
-            Md5 = "75E08C3EED8D2039BAF65B6156F79106",
-            Selected = true,
-            FileName = "1u5t-14g386-cb.tar.gz"
-        };
-
-        public static readonly SyncModel.SyncIvsu DowngradeApp = new SyncModel.SyncIvsu
-        {
-            Type = "APPS",
-            Name = "4U5T-14G381-AN",
-            Version = "3.3.19052",
-            Notes = LanguageManager.GetValue("String.Required"),
-            Url = "https://ivsubinaries.azureedge.net/swparts/4U5T-14G381-AN_1552583626000.TAR.GZ",
-            Md5 = "0553D1A474FBF9F0DB68A9C96FBDA7CB",
-            Selected = true,
-            FileName = "4U5T-14G381-AN_1552583626000.TAR.GZ"
-        };
-
-        public static readonly SyncModel.SyncIvsu DowngradeTool = new SyncModel.SyncIvsu
-        {
-            Type = "TOOL",
-            Name = "GB5T-14G386-SC",
-            Version = "",
-            Notes = LanguageManager.GetValue("String.Required"),
-            Url = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz",
-            Md5 = "E16F5E01D816E738E2B68592BDC22F3F",
-            Selected = true,
-            FileName = "GB5T-14G386-SC_85041.tar.gz"
-        };
-
-        public static readonly SyncModel.SyncIvsu InterrogatorTool = new SyncModel.SyncIvsu
-        {
-            Type = "TOOL",
-            Name = "GB5T-14G386-AD",
-            Version = "",
-            Notes = LanguageManager.GetValue("String.Required"),
-            Url = "http://ivsu.binaries.ford.com/swparts/GB5T-14G386-AD_1606255780000.TAR.GZ",
-            Md5 = "598534053D4F88CC28B7F36ACA0BFA59",
-            Selected = true,
-            FileName = "GB5T-14G386-AD_1606255780000.TAR.GZ"
-        };
-
-        public static readonly SyncModel.SyncIvsu GracenotesRemoval = new SyncModel.SyncIvsu
-        {
-            Type = "TOOL",
-            Name = "GB5T-14G386-SC",
-            Version = "",
-            Notes = "Remove Gracenotes Deletes",
-            Url = "https://ivsubinaries.azureedge.net/swparts/GB5T-14G386-SC_85041.tar.gz",
-            Md5 = "E16F5E01D816E738E2B68592BDC22F3F",
-            Selected = true,
-            FileName = "GB5T-14G386-SC_85041.tar.gz"
-        };
-
-        public static readonly SyncModel.SyncIvsu SmallVoicePackage = new SyncModel.SyncIvsu
-        {
-            Type = "VOICE",
-            Name = "5U5T-14G391-CM",
-            Version = "3.2.20142",
-            Notes = "",
-            Url = "https://ivsubinaries.azureedge.net/swparts/5U5T-14G391-CM_1598635923000.TAR.GZ",
-            Md5 = "07BA3A81B976701ED18E2718D866418B",
-            Selected = true,
-            FileName = "5U5T-14G391-CM_1598635923000.TAR.GZ"
-        };
+        public static SyncModel.SyncIvsu ReformatTool, DowngradeApp, DowngradeTool, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
 
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
         public const string AsBuiltPost =  "https://cyanlabs.net/api/Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
+
+        public const string SpecialPackageBase = "https://cyanlabs.net/api/syn3updater/get/";
+        public const string GetDowngradeApp = SpecialPackageBase + "downgradeapp";
+        public const string GetDowngradeTool = SpecialPackageBase + "downgradetool";
+        public const string GetLogTool = SpecialPackageBase + "logtool";
+        public const string GetGracenotesRemoval = SpecialPackageBase + "gracenotesremoval";
+        public const string GetSmallVoice = SpecialPackageBase + "smallvoice";
+        public const string GetReformat = SpecialPackageBase + "reformat";
+
         public class Data
         {
             public int id { get; set; }
