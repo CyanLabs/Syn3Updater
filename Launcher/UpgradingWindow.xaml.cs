@@ -73,11 +73,6 @@ namespace Launcher
                 }
             }
             string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
-            if (!File.Exists(configFolderPath + "\\launcherPrefs.json") && File.Exists(BaseFolder + "\\launcherPrefs.json"))
-            {
-                File.Copy(BaseFolder + "\\launcherPrefs.json", configFolderPath + "\\launcherPrefs.json");
-                File.Delete(BaseFolder + "\\launcherPrefs.json");
-            }
             if (File.Exists(configFolderPath + "\\launcherPrefs.json"))
             {
                 Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
