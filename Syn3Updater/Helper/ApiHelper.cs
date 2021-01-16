@@ -24,7 +24,7 @@ namespace Syn3Updater.Helper
                 Url = ivsu.url,
                 Md5 = ivsu.md5,
                 Selected = true,
-                FileName = fileName
+                FileName = fileName.Replace("?dl=1","")
             };
             return output;
         }

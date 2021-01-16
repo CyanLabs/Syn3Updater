@@ -191,7 +191,8 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "logutility";
             ApplicationManager.Instance.SelectedRelease = "Interrogator Log Utility";
-            ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetLogTool));
+            Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool);
+            ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
             if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
@@ -385,7 +386,8 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "gracenotesremoval";
             ApplicationManager.Instance.SelectedRelease = "Gracenotes Removal";
-            ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval));
+            Api.GracenotesRemoval = ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
+            ApplicationManager.Instance.Ivsus.Add(Api.GracenotesRemoval);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
             if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
 
@@ -405,7 +407,10 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "voiceshrinker";
             ApplicationManager.Instance.SelectedRelease = "Voice Package Shrinker";
-            ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetSmallVoice));
+
+            Api.SmallVoicePackage = ApiHelper.GetSpecialIvsu(Api.GetSmallVoice);
+            ApplicationManager.Instance.Ivsus.Add(Api.SmallVoicePackage);
+
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
             if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
 
@@ -425,7 +430,9 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "downgrade";
             ApplicationManager.Instance.SelectedRelease = "Enforced Downgrade";
-            ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp));
+            Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
+            ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
+
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
             if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
 

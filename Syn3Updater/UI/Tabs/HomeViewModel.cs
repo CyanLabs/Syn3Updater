@@ -528,15 +528,18 @@ namespace Syn3Updater.UI.Tabs
 
             if (InstallMode == "downgrade")
             {
-                ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp));
-                ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool));
+                Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
+                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
+
+                Api.DowngradeTool = ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
+                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeTool);
             }
 
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                ApplicationManager.Instance.Ivsus.Add(ApiHelper.GetSpecialIvsu(Api.GetReformat));
+                Api.ReformatTool = ApiHelper.GetSpecialIvsu(Api.GetReformat);
+                ApplicationManager.Instance.Ivsus.Add(Api.ReformatTool);
             }
-
 
             ApplicationManager.Instance.DownloadOnly = false;
             if (Debugger.IsAttached)
