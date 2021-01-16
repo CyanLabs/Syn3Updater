@@ -67,6 +67,7 @@ Section "MainSection" SEC01
   File "bin\Release\Launcher.exe"
   File "bin\Release\Newtonsoft.Json.dll"
   File "bin\Release\FluentWPF.dll"
+  File "bin\Release\Octokit.dll"
 SectionEnd
 
 Section -Post
