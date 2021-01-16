@@ -68,6 +68,7 @@ Section "MainSection" SEC01
   File "bin\Release\Newtonsoft.Json.dll"
   File "bin\Release\FluentWPF.dll"
   File "bin\Release\Octokit.dll"
+  
 SectionEnd
 
 Section -Post
@@ -81,10 +82,11 @@ Section -Post
 
 ; Removal of application files and reg keys.
 Section Uninstall
+  SetShellVarContext all
   RMDir /r "$INSTDIR"
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
-  Delete "$SMPROGRAMS\${PRODUCT_NAME}\*.*"
-  Delete "$SMPROGRAMS\${PRODUCT_NAME}"
+  RMDir /r "$SMPROGRAMS\${PRODUCT_NAME}"
+  RMDir /r "$APPDATA\CyanLabs\${PRODUCT_NAME}"
   SetAutoClose true
 SectionEnd
