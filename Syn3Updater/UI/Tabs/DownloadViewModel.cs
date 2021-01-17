@@ -256,7 +256,7 @@ namespace Syn3Updater.UI.Tabs
                     Log += DateTime.Now + " " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
-                    DownloadInfo = LanguageManager.GetValue("Strings.Completed");
+                    DownloadInfo = LanguageManager.GetValue("String.Completed");
                     Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information));
                     ApplicationManager.Instance.IsDownloading = false;
                     CancelAction();
