@@ -45,16 +45,11 @@ namespace Launcher
             string InstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
             if (InstallPath == null)
             {
-                BaseFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "\\CyanLabs\\Syn3Updater";
+                BaseFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             }
             else
             {
                 BaseFolder = Path.GetDirectoryName(InstallPath);
-            }
-
-            if (Debugger.IsAttached)
-            {
-                BaseFolder = @"E:\Scott\Documents\GitHub\Syn3Updater\bin\Debug";
             }
 
             if (!Directory.Exists(BaseFolder))

@@ -132,41 +132,51 @@ namespace Syn3Updater
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            //Ensure Launcher is updated!
-            if (File.Exists("Launcher.exe"))
-            {
-                var versionInfo = FileVersionInfo.GetVersionInfo("Launcher.exe");
-                Version CurrentLauncherVersion = new Version(versionInfo.FileVersion);
-                if (CurrentLauncherVersion < new Version("1.2.0.0"))
-                {
-                    File.Delete("Launcher.exe");
-                    var response = Client.GetAsync(Api.LauncherDL).Result;
-                    using (FileStream fs = new FileStream("Installer.exe", FileMode.Create))
-                    {
-                        response.Content.CopyToAsync(fs);
-                    }
-                    string applicationpath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                    Process.Start("Installer.exe", " /S /D=" + applicationpath);
-                    Application.Current.Shutdown();
-                }
-            }
 
+            //Ensure Launcher is updated!
             if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
             if (File.Exists("Installer.exe")) File.Delete("Installer.exe");
 
-            if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
+            Version CurrentLauncherVersion;
+            if (File.Exists("Launcher.exe"))
             {
-                try
-                {
-                    Process.Start("Launcher.exe");
-                    Application.Current.Shutdown();
-                }
-                catch (System.ComponentModel.Win32Exception e)
-                {
-                    Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
-                    Logger.Debug(e.GetFullMessage());
-                }
+                var versionInfo = FileVersionInfo.GetVersionInfo("Launcher.exe");
+                CurrentLauncherVersion = new Version(versionInfo.FileVersion);
             }
+            else
+            {
+                CurrentLauncherVersion = new Version("0.0.0.0");
+            }
+
+            if (CurrentLauncherVersion < new Version("1.2.0.0"))
+            {
+                string applicationpath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers["User-Agent"] = "Cyanlabs-Syn3Updater";
+                    wc.DownloadFile(new System.Uri(Api.LauncherDL), applicationpath + "\\Installer.exe");
+                }
+                string blah = applicationpath + "\\Installer.exe" + " - " + "/S /D=" + applicationpath;
+                Debug.WriteLine(blah);
+                Application.Current.Shutdown();
+                Process.Start(applicationpath + "\\Installer.exe", "/S /D=" + applicationpath);
+                return;
+            }
+
+            //if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
+            //{
+            //    try
+            //    {
+            //        Process.Start("Launcher.exe");
+            //        Application.Current.Shutdown();
+            //    }
+            //    catch (System.ComponentModel.Win32Exception e)
+            //    {
+            //        Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
+            //        Logger.Debug(e.GetFullMessage());
+            //    }
+            //}
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             foreach (string arg in Environment.GetCommandLineArgs())
                 switch (arg)
