@@ -157,26 +157,24 @@ namespace Syn3Updater
                     wc.Headers["User-Agent"] = "Cyanlabs-Syn3Updater";
                     wc.DownloadFile(new System.Uri(Api.LauncherDL), applicationpath + "\\Installer.exe");
                 }
-                string blah = applicationpath + "\\Installer.exe" + " - " + "/S /D=" + applicationpath;
-                Debug.WriteLine(blah);
                 Application.Current.Shutdown();
                 Process.Start(applicationpath + "\\Installer.exe", "/S /D=" + applicationpath);
                 return;
             }
 
-            //if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
-            //{
-            //    try
-            //    {
-            //        Process.Start("Launcher.exe");
-            //        Application.Current.Shutdown();
-            //    }
-            //    catch (System.ComponentModel.Win32Exception e)
-            //    {
-            //        Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
-            //        Logger.Debug(e.GetFullMessage());
-            //    }
-            //}
+            if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
+            {
+                try
+                {
+                    Process.Start("Launcher.exe");
+                    Application.Current.Shutdown();
+                }
+                catch (System.ComponentModel.Win32Exception e)
+                {
+                    Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
+                    Logger.Debug(e.GetFullMessage());
+                }
+            }
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             foreach (string arg in Environment.GetCommandLineArgs())
                 switch (arg)
