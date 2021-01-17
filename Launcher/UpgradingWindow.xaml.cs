@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using IWshRuntimeLibrary;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using SharedCode;
 using File = System.IO.File;
@@ -35,26 +36,30 @@ namespace Launcher
             await StartCheck();
         }
 
-        public static string BaseFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)+"\\CyanLabs\\Syn3Updater";
+        public static string BaseFolder = "";
         readonly int oldversion = Core.LauncherPrefs.ReleaseInstalled;
         private async Task StartCheck()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            string InstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
+            if (InstallPath == null)
+            {
+                BaseFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) + "\\CyanLabs\\Syn3Updater";
+            }
+            else
+            {
+                BaseFolder = Path.GetDirectoryName(InstallPath);
+            }
+
             if (Debugger.IsAttached)
             {
                 BaseFolder = @"E:\Scott\Documents\GitHub\Syn3Updater\bin\Debug";
             }
 
-            //if (File.Exists(BaseFolder + "\\uninst.exe"))
-            //{
-            //    Process.Start(BaseFolder + "\\uninst.exe", "/S").WaitForExit();
-            //}
-
             if (!Directory.Exists(BaseFolder))
             {
                 Directory.CreateDirectory(BaseFolder);
-
-              //  Installer.AddShortcut();
             }
 
             Process[] processlist = Process.GetProcesses();
@@ -101,7 +106,7 @@ namespace Launcher
                 shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
                 shortcut.Description = "Syn3 Updater Launcher";
                 shortcut.WorkingDirectory = BaseFolder;
-                shortcut.IconLocation = BaseFolder + "\\Syn3Updater.exe,0";
+                shortcut.IconLocation = BaseFolder + "\\Launcher.exe,0";
                 shortcut.Save();
 
                 StringBuilder path = new StringBuilder(260);
@@ -117,7 +122,7 @@ namespace Launcher
                 shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
                 shortcut.Description = "Syn3 Updater Launcher";
                 shortcut.WorkingDirectory = BaseFolder;
-                shortcut.IconLocation = BaseFolder + "\\Syn3Updater.exe,0";
+                shortcut.IconLocation = BaseFolder + "\\Launcher.exe,0";
                 shortcut.Save();
 
                 path = new StringBuilder(260);
@@ -142,27 +147,8 @@ namespace Launcher
 
         [DllImport("shell32.dll")]
         static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
-
         // ReSharper disable once InconsistentNaming
         private const int CSIDL_COMMON_STARTMENU = 0x17;  // \Windows\Start Menu\Programs
         private const int CSIDL_PROGRAMS = 0x02; // 
-        //private void UpgradingWindow_OnKeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if ((e.Key == Key.LeftShift) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-        //    {
-        //        try
-        //        {
-        //            LoadingText.Text = "Resetting app...";
-        //            Directory.Delete(BaseFolder, true);
-        //            Thread.Sleep(200);
-        //            Process.Start(Assembly.GetExecutingAssembly().Location);
-        //            Environment.Exit(-1);
-        //        }
-        //        catch
-        //        {
-
-        //        }
-        //    }
-        //}
     }
 }
