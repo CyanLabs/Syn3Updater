@@ -7,9 +7,11 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Newtonsoft.Json;
 using Octokit;
 using SharedCode;
+using Application = System.Windows.Application;
 using File = System.IO.File;
 
 namespace Launcher
@@ -39,12 +41,30 @@ namespace Launcher
                         throw new NotImplementedException();
 
                     case LauncherPrefs.ReleaseType.Beta:
-                        var githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater");
-                        latest = githubreleases[0];
+                        try
+                        {
+                            var githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater");
+                            latest = githubreleases[0];
+                        }
+                        catch (Octokit.RateLimitExceededException e)
+                        {
+                            MessageBox.Show(e.Message);
+                            Application.Current.Shutdown();
+                            return;
+                        }
                         break;
 
                     case LauncherPrefs.ReleaseType.Release:
-                        latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
+                        try
+                        {
+                            latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
+                        }
+                        catch (Octokit.RateLimitExceededException e)
+                        {
+                            MessageBox.Show(e.Message);
+                            Application.Current.Shutdown();
+                            return;
+                        }
                         break;
 
                 }
