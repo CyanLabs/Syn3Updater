@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -53,12 +54,11 @@ namespace Launcher
                 Console.WriteLine("The latest release is tagged at {0} and is named {1}", latest.TagName, latest.Name);
                 int maxReleaseNumber = intversion;
 
-                if (Core.LauncherPrefs.ReleaseInstalled < maxReleaseNumber || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType )
+                if (Core.LauncherPrefs.ReleaseInstalled < maxReleaseNumber || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType  || !File.Exists(destFolder + "\\Syn3Updater.exe") )
                 {
-                    
                     try
                     {
-                        if (File.Exists(destFolder+"\\Syn3Updater.exe"))
+                        if (File.Exists(destFolder+ "\\Syn3Updater.exe"))
                         {
                             if (!Directory.Exists(destFolder+"\\.old"))
                             {
@@ -66,7 +66,6 @@ namespace Launcher
                                 
                                 dir.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                             }
-
                             File.Move("Syn3Updater.exe", destFolder+"\\.old\\oldsyn3updater_" +Guid.NewGuid()+".exe");
                         }
                     }
@@ -115,6 +114,17 @@ namespace Launcher
                         }
 
                         Directory.CreateDirectory(destFolder+"\\temp");
+
+                        Assembly currentAssembly = Assembly.GetEntryAssembly();
+                        if (currentAssembly == null)
+                            currentAssembly = Assembly.GetCallingAssembly();
+
+                        string appFolder = Path.GetDirectoryName(currentAssembly.Location);
+                        string archivePath = Path.Combine(appFolder, "Launcher_OldVersion.exe");
+                        
+                        if (File.Exists(archivePath)) File.Delete(archivePath);
+                        File.Move(destFolder + "\\Launcher.exe", archivePath);
+
 
                         Vm.Message = "Extracting...";
                         ZipFile.ExtractToDirectory(zipPath, destFolder+"\\temp");
