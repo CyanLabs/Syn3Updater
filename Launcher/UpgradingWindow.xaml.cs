@@ -90,42 +90,6 @@ namespace Launcher
                 await Task.Delay(100);
             }
 
-            if (oldversion == 0)
-            {
-                string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Syn3Updater.lnk";
-                if (File.Exists(shortcutPath)) File.Delete(shortcutPath);
-                WshShell wsh = new WshShell();
-                IWshShortcut shortcut = wsh.CreateShortcut(shortcutPath) as IWshShortcut;
-                // ReSharper disable once PossibleNullReferenceException
-                shortcut.Arguments = "";
-                shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
-                shortcut.Description = "Syn3 Updater Launcher";
-                shortcut.WorkingDirectory = BaseFolder;
-                shortcut.IconLocation = BaseFolder + "\\Launcher.exe,0";
-                shortcut.Save();
-
-                StringBuilder path = new StringBuilder(260);
-                SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_COMMON_STARTMENU, false);
-                string s = path.ToString();
-                if(!Directory.Exists(s + "\\Syn3Updater")) Directory.CreateDirectory(s + "\\Syn3Updater");
-                shortcutPath = s + "\\Syn3Updater\\Syn3Updater.lnk";
-                if (File.Exists(shortcutPath)) File.Delete(shortcutPath);
-                wsh = new WshShell();
-                shortcut = wsh.CreateShortcut(shortcutPath) as IWshShortcut;
-                // ReSharper disable once PossibleNullReferenceException
-                shortcut.Arguments = "";
-                shortcut.TargetPath = BaseFolder + "\\Launcher.exe";
-                shortcut.Description = "Syn3 Updater Launcher";
-                shortcut.WorkingDirectory = BaseFolder;
-                shortcut.IconLocation = BaseFolder + "\\Launcher.exe,0";
-                shortcut.Save();
-
-                path = new StringBuilder(260);
-                SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_PROGRAMS, false);
-                s = path.ToString();
-                if (Directory.Exists(s + "\\Syn3Updater")) Directory.Delete(s + "\\Syn3Updater",true);
-            }
-
             Process p = new Process();
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.StartInfo.FileName = BaseFolder + "\\Syn3Updater.exe";
