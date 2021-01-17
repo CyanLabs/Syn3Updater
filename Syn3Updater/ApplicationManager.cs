@@ -7,10 +7,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using SharedCode;
@@ -130,6 +130,30 @@ namespace Syn3Updater
         }
         public void Initialize()
         {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            //Ensure Launcher is updated!
+            if (File.Exists("Launcher.exe"))
+            {
+                var versionInfo = FileVersionInfo.GetVersionInfo("Launcher.exe");
+                Version CurrentLauncherVersion = new Version(versionInfo.FileVersion);
+                if (CurrentLauncherVersion < new Version("1.2.0.0"))
+                {
+                    File.Delete("Launcher.exe");
+                    var response = Client.GetAsync(Api.LauncherDL).Result;
+                    using (FileStream fs = new FileStream("Installer.exe", FileMode.Create))
+                    {
+                        response.Content.CopyToAsync(fs);
+                    }
+                    string applicationpath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    Process.Start("Installer.exe", " /S /D=" + applicationpath);
+                    Application.Current.Shutdown();
+                }
+            }
+
+            if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
+            if (File.Exists("Installer.exe")) File.Delete("Installer.exe");
+
             if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
             {
                 try

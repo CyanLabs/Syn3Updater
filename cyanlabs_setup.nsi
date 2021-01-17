@@ -90,3 +90,8 @@ Section Uninstall
   RMDir /r "$APPDATA\CyanLabs\${PRODUCT_NAME}"
   SetAutoClose true
 SectionEnd
+
+Function .onInstSuccess
+IfSilent 0 +2
+Exec '"$INSTDIR\Launcher.exe"'
+FunctionEnd
