@@ -18,8 +18,6 @@ namespace Syn3Updater.UI
         {
             InitializeComponent();
             Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ApplicationManager.Logger.Debug("MainWindow Initialized");
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
