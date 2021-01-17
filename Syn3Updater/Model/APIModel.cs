@@ -38,6 +38,8 @@ namespace Syn3Updater.Model
         public const string AsBuiltPost =  "https://cyanlabs.net/api/Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
 
+        public const string LauncherDL = "https://cyanlabs.net/api/app/Syn3Updater%20Installer/latest/download";
+
         public const string SpecialPackageBase = "https://cyanlabs.net/api/syn3updater/get/";
         public const string GetDowngradeApp = SpecialPackageBase + "downgradeapp";
         public const string GetDowngradeTool = SpecialPackageBase + "downgradetool";
