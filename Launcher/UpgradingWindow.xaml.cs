@@ -111,7 +111,6 @@ namespace Launcher
         [DllImport("shell32.dll")]
         static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
         // ReSharper disable once InconsistentNaming
-        private const int CSIDL_COMMON_STARTMENU = 0x17;  // \Windows\Start Menu\Programs
         private const int CSIDL_PROGRAMS = 0x02; // 
     }
 }
