@@ -90,13 +90,17 @@ namespace Launcher
                 await Task.Delay(100);
             }
 
+            StringBuilder path = new StringBuilder(260);
+            SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_PROGRAMS, false);
+            string s = path.ToString();
+            if (Directory.Exists(s + "\\Syn3Updater")) Directory.Delete(s + "\\Syn3Updater",true);
+
             Process p = new Process();
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             p.StartInfo.FileName = BaseFolder + "\\Syn3Updater.exe";
             p.StartInfo.WorkingDirectory = BaseFolder;
             p.StartInfo.Arguments = "/launcher";
             p.StartInfo.UseShellExecute = false;
-
             p.Start();
 
             await Task.Delay(2000);
