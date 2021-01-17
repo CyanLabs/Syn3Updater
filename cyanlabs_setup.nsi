@@ -20,10 +20,11 @@
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 Function createicons
-#  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\Launcher.exe" ""
+  SetShellVarContext all
+  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\Launcher.exe" ""
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall Syn3Updater.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
-#  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PRODUCT_NAME}.exe" "" "$INSTDIR\${PRODUCT_NAME}.exe" 0
+  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\Launcher.exe" "" "$INSTDIR\Launcher.exe" 0
 FunctionEnd
 
 !define MUI_WELCOMEPAGE_TITLE "${PRODUCT_NAME} Setup Wizard"
