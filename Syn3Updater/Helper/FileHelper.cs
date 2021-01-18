@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -148,12 +149,12 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             if (!File.Exists(localfile))
             {
-                validateResult.Message = $"";
+                validateResult.Message = "";
                 validateResult.Result = false;
                 return validateResult;
             }
 
-            string localMd5 = md5_helper(localfile,ct);
+            string localMd5 = md5_helper(localfile, ct);
             if (md5 == null)
             {
                 long filesize = new FileInfo(localfile).Length;
@@ -162,7 +163,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     long srcfilesize = new FileInfo(srcfile).Length;
 
                     if (srcfilesize == filesize)
-                        if (localMd5 == md5_helper(srcfile,ct))
+                        if (localMd5 == md5_helper(srcfile, ct))
                         {
                             validateResult.Message = $"{filename} checksum matches already verified local copy";
                             validateResult.Result = true;
@@ -195,6 +196,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 validateResult.Result = true;
                 return validateResult;
             }
+
             if (ct.IsCancellationRequested)
             {
                 validateResult.Message = "Process cancelled by user";
@@ -220,16 +222,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                     byte[] buffer;
                     do
                     {
-                        if (ct.IsCancellationRequested)
-                        {
-                            return null;
-                        }
+                        if (ct.IsCancellationRequested) return null;
                         buffer = new byte[4096];
                         bytesRead = file.Read(buffer, 0, buffer.Length);
                         totalBytesRead += bytesRead;
                         hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                         long read = totalBytesRead;
-                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100));
+                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int) ((double) read / size * 100));
                     } while (bytesRead != 0);
 
                     hasher.TransformFinalBlock(buffer, 0, 0);
@@ -238,11 +237,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                Application.Current.Dispatcher.Invoke(() => UI.MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
+                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }
-            
         }
 
         #endregion

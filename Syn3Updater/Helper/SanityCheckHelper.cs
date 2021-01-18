@@ -7,7 +7,6 @@ namespace Cyanlabs.Syn3Updater.Helper
     public class SanityCheckHelper
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="selectedDrive"></param>
         /// <param name="allowDownloadonly"></param>
@@ -19,35 +18,36 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             //No USB drive selected, download only?
 
-                if ((string.IsNullOrWhiteSpace(selectedDrive.Path) || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB")))
+            if (string.IsNullOrWhiteSpace(selectedDrive.Path) || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB"))
+            {
+                if (allowDownloadonly)
                 {
-                    if (allowDownloadonly)
+                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                        MessageBoxResult.Yes)
                     {
-                        if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                        {
-                            ApplicationManager.Logger.Info("No usb has been selected, download only mode activated");
-                            ApplicationManager.Instance.DownloadOnly = true;
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        ApplicationManager.Logger.Info("No usb has been selected, download only mode activated");
+                        ApplicationManager.Instance.DownloadOnly = true;
                     }
                     else
                     {
-                        MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSBForced"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return true;
                     }
                 }
+                else
+                {
+                    MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSBForced"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return true;
+                }
+            }
 
-                //Ensure drive letter is not used as download path
+            //Ensure drive letter is not used as download path
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
                 {
                     MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return true;
                 }
-                    
+
 
             //Optional Format
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
@@ -67,8 +67,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     ApplicationManager.Logger.Info("USB Drive will be formatted, using fresh filesystem");
                     return true;
                 }
-                    
-            
+
 
             return false;
         }

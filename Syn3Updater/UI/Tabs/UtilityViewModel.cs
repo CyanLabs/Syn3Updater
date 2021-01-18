@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows;
+using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Linq;
 using Cyanlabs.Syn3Updater.Helper;
@@ -122,7 +124,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _utiltyButtonStatus, value);
         }
 
-
         #endregion
 
         #region Methods
@@ -143,16 +144,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.refresh_devices(false);
-                if (tmpDriveList.Count > 0)
-                {
-                    DriveList = tmpDriveList;
-                }
+                if (tmpDriveList.Count > 0) DriveList = tmpDriveList;
             }
-            catch (System.Windows.Markup.XamlParseException e)
+            catch (XamlParseException e)
             {
                 MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
-            } 
+            }
             catch (UnauthorizedAccessException e)
             {
                 MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -177,10 +175,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             ReloadTab();
             if (SelectedDrive?.Path != "")
-            {
                 ApplicationManager.Logger.Info(
                     $"USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
-            }
         }
 
         private void LogPrepareUSBAction()
@@ -193,7 +189,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.SelectedRelease = "Interrogator Log Utility";
             Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool);
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
-            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                ? "autoinstall"
+                : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
@@ -215,13 +213,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             public string VIN;
         }
 
-        SyncApimDetails _syncApimDetails;
+        private SyncApimDetails _syncApimDetails;
 
         private void LogParseXmlAction()
         {
             VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
             if (dialog.ShowDialog().GetValueOrDefault())
-            {
                 try
                 {
                     XmlDocument doc = new XmlDocument();
@@ -247,7 +244,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         _syncApimDetails.Nav = false;
                         _syncApimDetails.Size = 8;
-
                     }
                     else if (apimsizeint >= 9 && apimsizeint <= 16)
                     {
@@ -258,7 +254,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         _syncApimDetails.Nav = true;
                         _syncApimDetails.Size = 32;
-
                     }
                     else if (apimsizeint >= 33 && apimsizeint <= 64)
                     {
@@ -267,13 +262,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     }
 
                     if (_syncApimDetails.Nav)
-                    {
                         LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMType")} Navigation {Environment.NewLine}";
-                    }
                     else
-                    {
                         LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMType")} Non-Navigation {Environment.NewLine}";
-                    }
 
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMSize")} {_syncApimDetails.Size}GB {Environment.NewLine}";
 
@@ -287,9 +278,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     if (interrogatorLog != null)
                     {
                         foreach (D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
-                        {
                             LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
-                        }
 
                         List<DID> asBuiltValues = new List<DID>();
 
@@ -309,20 +298,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
                             string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                             if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
-                            {
-                                if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion), "Syn3 Updater",
+                                if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion),
+                                    "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                                 {
                                     ApplicationManager.Instance.Settings.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
                                     ApplicationManager.Instance.SyncVersion = convertedsyncversion;
                                 }
-                            }
                         }
                         catch (Exception)
                         {
                             //likely no internet connection ignore
                         }
-                        
+
 
                         DirectConfiguration asbult = new DirectConfiguration
                         {
@@ -339,7 +327,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     }
 
                     _node = JsonConvert.DeserializeXNode(json, "DirectConfiguration");
-
                 }
                 catch (NullReferenceException)
                 {
@@ -349,17 +336,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            }
         }
 
         private async void UploadFile()
         {
             if (_node != null)
-            {
                 if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
                     MessageBoxResult.OK)
                 {
-                    var formContent = new FormUrlEncodedContent(new[]
+                    FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
                     {
                         new KeyValuePair<string, string>("xml", _node.ToString()),
                         new KeyValuePair<string, string>("apim", _syncApimDetails.PartNumber),
@@ -367,13 +352,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("size", _syncApimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _syncApimDetails.VIN)
                     });
-                    var response = await Client.PostAsync(Api.AsBuiltPost, formContent);
+                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent);
                     var definition = new {filename = "", status = ""};
-                    var contents = await response.Content.ReadAsStringAsync();
+                    string contents = await response.Content.ReadAsStringAsync();
                     var output = JsonConvert.DeserializeAnonymousType(contents, definition);
                     Process.Start(Api.AsBuiltOutput + output.filename);
                 }
-            }
         }
 
         private void GracenotesRemovalAction()
@@ -386,7 +370,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.SelectedRelease = "Gracenotes Removal";
             Api.GracenotesRemoval = ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
             ApplicationManager.Instance.Ivsus.Add(Api.GracenotesRemoval);
-            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                ? "autoinstall"
+                : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
@@ -408,7 +394,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Api.SmallVoicePackage = ApiHelper.GetSpecialIvsu(Api.GetSmallVoice);
             ApplicationManager.Instance.Ivsus.Add(Api.SmallVoicePackage);
 
-            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                ? "autoinstall"
+                : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
@@ -429,7 +417,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
             ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
 
-            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+            ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                ? "autoinstall"
+                : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
@@ -437,7 +427,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.IsDownloading = true;
             ApplicationManager.Logger.Info(@"Starting process (Enforced Downgrade");
             ApplicationManager.Instance.FireDownloadsTabEvent();
-
         }
 
         private void TroubleshootingDetailsAction()
@@ -447,9 +436,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void UploadLogAction()
         {
-            if (DriveLetter != "" && System.IO.File.Exists(DriveLetter + @"\log.txt"))
+            if (DriveLetter != "" && File.Exists(DriveLetter + @"\log.txt"))
             {
-                string logfile = System.IO.File.ReadAllText(DriveLetter + @"\log.txt");
+                string logfile = File.ReadAllText(DriveLetter + @"\log.txt");
                 USBHelper.UploadLog(logfile);
             }
             else
@@ -457,6 +446,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLogNoDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
         #endregion
     }
 }

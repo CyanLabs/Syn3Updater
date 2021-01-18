@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Cyanlabs.Launcher
@@ -8,18 +7,16 @@ namespace Cyanlabs.Launcher
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal bool Set<T>(ref T variable, T value, [CallerMemberName] String propertyName = "")
+        internal bool Set<T>(ref T variable, T value, [CallerMemberName] string propertyName = "")
         {
-            if (variable == null && value != null || variable != null && value == null || (variable != null && value != null && !variable.Equals(value)))
+            if (variable == null && value != null || variable != null && value == null || variable != null && value != null && !variable.Equals(value))
             {
                 variable = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
     }
 }

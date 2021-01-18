@@ -18,7 +18,7 @@ namespace Cyanlabs.Syn3Updater.Model
             string contents = File.ReadAllText(path);
             List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).Select(x => x.Trim()).ToList();
 
-            Code = Path.GetFileName(path).Replace(".properties","");
+            Code = Path.GetFileName(path).Replace(".properties", "");
             EnglishName = new CultureInfo(Code, false).DisplayName;
             NativeName = new CultureInfo(Code, false).NativeName;
 
@@ -26,7 +26,7 @@ namespace Cyanlabs.Syn3Updater.Model
             foreach (string s in lines)
             {
                 if (s.StartsWith("#") || s.StartsWith(";")) continue;
-                string[] parts = s.Replace("=", "\t").Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = s.Replace("=", "\t").Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
 
                 if (parts.Length == 1 && parts[0].Contains(" "))
                 {

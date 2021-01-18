@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Windows;
+using System.Windows.Markup;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     internal class HomeViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
+
         private ActionCommand _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
@@ -249,6 +251,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         }
 
         private Visibility _driveDetailsVisible;
+
         public Visibility DriveDetailsVisible
         {
             get => _driveDetailsVisible;
@@ -273,7 +276,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             InstallMode = "";
             RefreshUsb();
             SyncMapVersion = new ObservableCollection<string>();
-            DriveDetailsVisible = (SelectedDrive == null || SelectedDrive.Path == "") ? Visibility.Hidden : Visibility.Visible;
+            DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path == "" ? Visibility.Hidden : Visibility.Visible;
             ApplicationManager.Logger.Info($"Current Sync Details - Region: {CurrentSyncRegion} - Version: {CurrentSyncVersion} - Navigation: {CurrentSyncNav}");
         }
 
@@ -303,14 +306,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.refresh_devices(true);
-                if (tmpDriveList.Count > 0)
-                {
-                    DriveList = tmpDriveList;
-                }
+                if (tmpDriveList.Count > 0) DriveList = tmpDriveList;
             }
-            catch (System.Windows.Markup.XamlParseException e)
+            catch (XamlParseException e)
             {
-                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater",MessageBoxButton.OK,MessageBoxImage.Exclamation);
+                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
@@ -328,7 +328,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             // Update app level vars
             ApplicationManager.Instance.DriveFileSystem = driveInfo.FileSystem;
             ApplicationManager.Instance.DrivePartitionType = driveInfo.PartitionType;
-            ApplicationManager.Instance.DriveName =  SelectedDrive?.Name;
+            ApplicationManager.Instance.DriveName = SelectedDrive?.Name;
             ApplicationManager.Instance.SkipFormat = driveInfo.SkipFormat;
 
             // Update local level vars
@@ -411,8 +411,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             NotesVisibility = Visibility.Hidden;
                             continue;
                         }
+
                         NotesVisibility = Visibility.Visible;
-                        Notes = item.notes.Replace("\n",Environment.NewLine + Environment.NewLine);
+                        Notes = item.notes.Replace("\n", Environment.NewLine + Environment.NewLine);
                     }
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][contains]={_stringCompatibility}");
@@ -456,14 +457,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 //Above 3.2 and  Below 3.4.19274
-                else if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion && ApplicationManager.Instance.Settings.CurrentSyncVersion < Api.BlacklistedVersion)
+                else if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion &&
+                         ApplicationManager.Instance.Settings.CurrentSyncVersion < Api.BlacklistedVersion)
                 {
                     //Update Nav?
                     if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
                         SelectedMapVersion == LanguageManager.GetValue("String.KeepExistingMaps"))
-                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                            ? "autoinstall"
+                            : ApplicationManager.Instance.Settings.CurrentInstallMode;
                     else
-                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "reformat" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                            ? "reformat"
+                            : ApplicationManager.Instance.Settings.CurrentInstallMode;
                 }
 
                 //3.4.19274 or above
@@ -472,9 +478,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     //Update Nav?
                     if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
                         SelectedMapVersion == LanguageManager.GetValue("String.KeepExistingMaps"))
-                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                            ? "autoinstall"
+                            : ApplicationManager.Instance.Settings.CurrentInstallMode;
                     else
-                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "downgrade" : ApplicationManager.Instance.Settings.CurrentInstallMode;
+                        InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
+                            ? "downgrade"
+                            : ApplicationManager.Instance.Settings.CurrentInstallMode;
                 }
 
                 ApplicationManager.Instance.Action = "main";
@@ -523,8 +533,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void StartAction()
         {
-
-            ApplicationManager.Logger.Info($"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
+            ApplicationManager.Logger.Info(
+                $"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
             ApplicationManager.Instance.Ivsus.Clear();
 
             if (InstallMode == "downgrade")
@@ -556,9 +566,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             //Install Mode is reformat or downgrade My20 warning
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                    if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                        MessageBoxResult.Yes)
                         canceldownload = true;
                 }
                 else
@@ -569,7 +581,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             //Warn is users region is different to new selection
             if (SelectedRegion.Code != ApplicationManager.Instance.Settings.CurrentSyncRegion)
-                if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                    MessageBoxResult.Yes)
                     canceldownload = true;
 
             //Cancel no apps package selected

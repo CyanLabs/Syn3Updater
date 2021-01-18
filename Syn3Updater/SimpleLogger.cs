@@ -33,7 +33,7 @@ namespace Cyanlabs.Syn3Updater
 
             Log.Add(new LogEntry(ex.GetType().ToString(), "Crash", ex));
             string guid = crashWindow.SendReport(ex);
-            var definition = new { uuid = "", status = "" };
+            var definition = new {uuid = "", status = ""};
             var output = JsonConvert.DeserializeAnonymousType(guid, definition);
             string url = Api.CrashLogURL + output.uuid;
             crashWindow.ErrorReportUrl = url;
@@ -46,7 +46,7 @@ namespace Cyanlabs.Syn3Updater
             crashWindow.Qrcode.Source = BitmapToImageSource(qrCodeImage);
         }
 
-        BitmapImage BitmapToImageSource(Bitmap bitmap)
+        private BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
             using MemoryStream memory = new MemoryStream();
             bitmap.Save(memory, ImageFormat.Bmp);
@@ -62,11 +62,6 @@ namespace Cyanlabs.Syn3Updater
 
         public class LogEntry
         {
-            public string Log { get; set; }
-            public DateTime Time { get; set; }
-            public string Caller { get; set; }
-            public string LogType { get; set; }
-            public Exception Exception { get; set; }
             public LogEntry(string log, string logType = "Info", Exception exception = null, [CallerMemberName] string callerMemberName = "")
             {
                 Log = log;
@@ -74,11 +69,14 @@ namespace Cyanlabs.Syn3Updater
                 Caller = callerMemberName;
                 LogType = logType;
 
-                if (exception != null)
-                {
-                    Exception = exception;
-                }
+                if (exception != null) Exception = exception;
             }
+
+            public string Log { get; set; }
+            public DateTime Time { get; set; }
+            public string Caller { get; set; }
+            public string LogType { get; set; }
+            public Exception Exception { get; set; }
         }
     }
 }

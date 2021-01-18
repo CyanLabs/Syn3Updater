@@ -11,10 +11,12 @@ using Newtonsoft.Json;
 namespace Cyanlabs.Syn3Updater.UI
 {
     /// <summary>
-    /// Interaction logic for CrashWindow.xaml
+    ///     Interaction logic for CrashWindow.xaml
     /// </summary>
     public partial class CrashWindow : Window
     {
+        public string ErrorReportUrl;
+
         public CrashWindow()
         {
             InitializeComponent();
@@ -41,30 +43,29 @@ namespace Cyanlabs.Syn3Updater.UI
                 string text = JsonConvert.SerializeObject(crashContainer);
                 string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
                 HttpClient client = new HttpClient();
-                var values = new Dictionary<string, string>
+                Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    { "detail", text },
-                    { "version", version },
-                    { "error",crashContainer.ErrorName},
-                    { "message",exception.Message},
-                    { "operatingsystem",SystemHelper.GetOsFriendlyName()}
+                    {"detail", text},
+                    {"version", version},
+                    {"error", crashContainer.ErrorName},
+                    {"message", exception.Message},
+                    {"operatingsystem", SystemHelper.GetOsFriendlyName()}
                 };
 
-                var content = new FormUrlEncodedContent(values);
+                FormUrlEncodedContent content = new FormUrlEncodedContent(values);
 
-                var response = client.PostAsync(Api.CrashLogPost, content).Result;
+                HttpResponseMessage response = client.PostAsync(Api.CrashLogPost, content).Result;
 
-                var responseString = response.Content.ReadAsStringAsync().Result;
+                string responseString = response.Content.ReadAsStringAsync().Result;
 
                 return responseString;
             }
-            catch (System.Net.Http.HttpRequestException)
+            catch (HttpRequestException)
             {
                 return null;
             }
         }
 
-        public string ErrorReportUrl;
         private void ClickQRCode(object sender, RoutedEventArgs e)
         {
             Process.Start(ErrorReportUrl);
@@ -75,17 +76,17 @@ namespace Cyanlabs.Syn3Updater.UI
             Process.Start(ErrorReportUrl);
         }
 
+        private void ResetSettings_Click(object sender, RoutedEventArgs e)
+        {
+            ApplicationManager.Instance.ResetSettings();
+            ApplicationManager.Instance.RestartApp();
+        }
+
         public class CrashContainer
         {
             public string ErrorName { get; set; }
             public string ErrorLocation { get; set; }
             public List<SimpleLogger.LogEntry> Logs { get; set; } = new List<SimpleLogger.LogEntry>();
-        }
-
-        private void ResetSettings_Click(object sender, RoutedEventArgs e)
-        {
-            ApplicationManager.Instance.ResetSettings();
-            ApplicationManager.Instance.RestartApp();
         }
     }
 }

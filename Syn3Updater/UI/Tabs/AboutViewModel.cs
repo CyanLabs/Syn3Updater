@@ -38,10 +38,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public Visibility EnglishEndorsement
         {
             get => _englishEndorsement;
-            set
-            {
-                SetProperty(ref _englishEndorsement, value);
-            }
+            set => SetProperty(ref _englishEndorsement, value);
         }
 
         #endregion

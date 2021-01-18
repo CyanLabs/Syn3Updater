@@ -38,17 +38,14 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             ObservableCollection<Drive> driveList = new ObservableCollection<Drive>();
             if (fakeusb)
-            {
-                driveList.Add(new Drive { Path = "", Name = LanguageManager.GetValue("Home.NoUSB")});
-            }
+                driveList.Add(new Drive {Path = "", Name = LanguageManager.GetValue("Home.NoUSB")});
             else
-            {
-                driveList.Add(new Drive { Path = "", Name = "" });
-            }
-            ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
+                driveList.Add(new Drive {Path = "", Name = ""});
+            ManagementObjectSearcher driveQuery =
+                new ManagementObjectSearcher("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
-                ManagementObject d = (ManagementObject)o;
+                ManagementObject d = (ManagementObject) o;
                 string diskName = Convert.ToString(d.Properties["Caption"].Value);
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
                 if (friendlySize != "0B")
@@ -68,25 +65,26 @@ namespace Cyanlabs.Syn3Updater.Helper
             string partitionQueryText = $@"associators of {{{selectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
             ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
             foreach (ManagementBaseObject o in partitionQuery.Get())
+            {
+                ManagementObject p = (ManagementObject) o;
+                string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
+                ManagementObjectSearcher logicalDriveQuery = new ManagementObjectSearcher(logicalDriveQueryText);
+                foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                 {
-                    ManagementObject p = (ManagementObject) o;
-                    string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
-                    ManagementObjectSearcher logicalDriveQuery = new ManagementObjectSearcher(logicalDriveQueryText);
-                    foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
-                    {
-                        ManagementObject ld = (ManagementObject) managementBaseObject;
-                        driveInfo.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
-                        driveInfo.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
-                        driveInfo.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
-                        driveInfo.Name = ld.Properties["VolumeName"].Value.ToString();
+                    ManagementObject ld = (ManagementObject) managementBaseObject;
+                    driveInfo.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
+                    driveInfo.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
+                    driveInfo.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
+                    driveInfo.Name = ld.Properties["VolumeName"].Value.ToString();
 
-                        if (driveInfo.FileSystem == "exFAT" && driveInfo.PartitionType == "MBR" && driveInfo.Name == "CYANLABS") driveInfo.SkipFormat = true;
-                    }
+                    if (driveInfo.FileSystem == "exFAT" && driveInfo.PartitionType == "MBR" && driveInfo.Name == "CYANLABS") driveInfo.SkipFormat = true;
                 }
+            }
+
             return driveInfo;
         }
 
-        public static void GenerateLog(string log,bool upload)
+        public static void GenerateLog(string log, bool upload)
         {
             string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}";
             data += $@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}";
@@ -138,21 +136,21 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         public static void UploadLog(string log)
         {
-            var values = new Dictionary<string, string>
+            Dictionary<string, string> values = new Dictionary<string, string>
             {
                 {"contents", log}
             };
 
-            var content = new FormUrlEncodedContent(values);
+            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             HttpClient client = new HttpClient();
-            var response = client.PostAsync(Api.LogPost, content).Result;
+            HttpResponseMessage response = client.PostAsync(Api.LogPost, content).Result;
 
-            var responseString = response.Content.ReadAsStringAsync().Result;
-            var definition = new { uuid = "", status = "" };
+            string responseString = response.Content.ReadAsStringAsync().Result;
+            var definition = new {uuid = "", status = ""};
             var output = JsonConvert.DeserializeAnonymousType(responseString, definition);
             Process.Start(Api.LogURL + output.uuid);
         }
-        
+
         #endregion
     }
 }

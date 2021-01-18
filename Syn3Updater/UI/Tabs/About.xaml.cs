@@ -16,7 +16,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void About_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue && (bool)e.OldValue == false) (DataContext as AboutViewmodel)?.Reload();
+            if ((bool) e.NewValue && (bool) e.OldValue == false) (DataContext as AboutViewmodel)?.Reload();
         }
     }
 }
