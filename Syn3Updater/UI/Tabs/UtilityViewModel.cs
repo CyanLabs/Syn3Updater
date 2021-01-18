@@ -195,11 +195,9 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
-            if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
-
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
-            ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+            //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
             ApplicationManager.Logger.Info(@"Starting process (Logging Utility");
             ApplicationManager.Instance.FireDownloadsTabEvent();
@@ -389,11 +387,10 @@ namespace Syn3Updater.UI.Tabs
             Api.GracenotesRemoval = ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
             ApplicationManager.Instance.Ivsus.Add(Api.GracenotesRemoval);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
-            if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
-            ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+            //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
             ApplicationManager.Logger.Info(@"Starting process (Gracenotes Removal");
             ApplicationManager.Instance.FireDownloadsTabEvent();
@@ -412,11 +409,10 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.Ivsus.Add(Api.SmallVoicePackage);
 
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
-            if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
-            ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+            //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
             ApplicationManager.Logger.Info(@"Starting process (Voice Package Shrinker");
             ApplicationManager.Instance.FireDownloadsTabEvent();
@@ -434,11 +430,10 @@ namespace Syn3Updater.UI.Tabs
             ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
 
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "autoinstall" : ApplicationManager.Instance.Settings.CurrentInstallMode;
-            if (Debugger.IsAttached) ApplicationManager.Instance.Ivsus = FileHelper.DebugMode(ApplicationManager.Instance.Ivsus);
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
 
-            ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+            //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
             ApplicationManager.Logger.Info(@"Starting process (Enforced Downgrade");
             ApplicationManager.Instance.FireDownloadsTabEvent();

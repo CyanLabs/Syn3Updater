@@ -248,20 +248,6 @@ namespace Syn3Updater.Helper
             
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ivsus"></param>
-        /// <returns></returns>
-        public static ObservableCollection<SyncModel.SyncIvsu> DebugMode(ObservableCollection<SyncModel.SyncIvsu> ivsus)
-        {
-            foreach (SyncModel.SyncIvsu ivsu in ivsus)
-            {
-                Uri myUri = new Uri(ivsu.Url);
-                ivsu.Url = ivsu.Url.Replace(myUri.Host, "127.0.0.1").Replace(myUri.Scheme, "http");
-            }
-            return ivsus;
-        }
         #endregion
     }
 }

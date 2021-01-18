@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -48,6 +49,10 @@ namespace Launcher
                         }
                         catch (Octokit.RateLimitExceededException e)
                         {
+                            if (File.Exists("Syn3Updater.exe"))
+                            {
+                                Process.Start("Syn3Updater.exe", "/launcher");
+                            }
                             MessageBox.Show(e.Message);
                             Application.Current.Shutdown();
                             return;
@@ -61,6 +66,10 @@ namespace Launcher
                         }
                         catch (Octokit.RateLimitExceededException e)
                         {
+                            if (File.Exists("Syn3Updater.exe"))
+                            {
+                                Process.Start("Syn3Updater.exe", "/launcher");
+                            }
                             MessageBox.Show(e.Message);
                             Application.Current.Shutdown();
                             return;
@@ -76,50 +85,6 @@ namespace Launcher
 
                 if (Core.LauncherPrefs.ReleaseInstalled < maxReleaseNumber || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType  || !File.Exists(destFolder + "\\Syn3Updater.exe") )
                 {
-                    try
-                    {
-                        if (File.Exists(destFolder+ "\\Syn3Updater.exe"))
-                        {
-                            if (!Directory.Exists(destFolder+"\\.old"))
-                            {
-                                DirectoryInfo dir = Directory.CreateDirectory(destFolder+"\\old");
-                                
-                                dir.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
-                            }
-                            File.Move("Syn3Updater.exe", destFolder+"\\.old\\oldsyn3updater_" +Guid.NewGuid()+".exe");
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        Debug.WriteLine(e.Message);
-                    }
-
-                    if (Directory.Exists(".old"))
-                    {
-                        Thread.Sleep(1000);
-                        foreach (var f in Directory.GetFiles(destFolder+"\\.old\\"))
-                        {
-                            try
-                            {
-                                File.Delete(f);
-                            }
-                            catch (Exception)
-                            {
-                                // ignored
-                            }
-                        }
-                    }
-
-                    if (Directory.Exists(destFolder+"\\.old"))
-                    {
-                        Thread.Sleep(1000);
-
-                        if (Directory.GetFiles(destFolder+"\\.old\\").Length == 0)
-                        {
-                            Directory.Delete(destFolder+"\\.old", true);
-                        }
-                    }
-
                     Vm.Message = "Installing " + releaseType + " release " + latest.TagName;
 
                     string zipPath = destFolder+"\\"+releaseType + "_" + latest.TagName + ".zip";
@@ -135,23 +100,16 @@ namespace Launcher
 
                         Directory.CreateDirectory(destFolder+"\\temp");
 
-                        Assembly currentAssembly = Assembly.GetEntryAssembly();
-                        if (currentAssembly == null)
-                            currentAssembly = Assembly.GetCallingAssembly();
-
-                        string appFolder = Path.GetDirectoryName(currentAssembly.Location);
-                        string archivePath = Path.Combine(appFolder, "Launcher_OldVersion.exe");
+                        string archivePath = destFolder + "\\Launcher_OldVersion.exe";
                         
                         if (File.Exists(archivePath)) File.Delete(archivePath);
                         File.Move(destFolder + "\\Launcher.exe", archivePath);
 
-
                         Vm.Message = "Extracting...";
                         ZipFile.ExtractToDirectory(zipPath, destFolder+"\\temp");
-
                         DirectoryCopy(destFolder+"\\temp", destFolder, true);
-
                         File.Delete(zipPath);
+
                         try
                         {
                             Directory.Delete(destFolder+"\\temp", true);
@@ -179,19 +137,6 @@ namespace Launcher
                             Directory.CreateDirectory(configFolderPath);
                         }
                         File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", json);
-
-
-                        if (Directory.Exists(destFolder+"\\.old"))
-                        {
-                            Thread.Sleep(1000);
-
-                            if (Directory.GetFiles(destFolder+"\\.old\\").Length == 0)
-                            {
-                                Directory.Delete(destFolder+"\\.old", true);
-                            }
-                        }
-
-                            
                     };
 
                     wc.DownloadFileAsync(new Uri(latest.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
@@ -201,10 +146,6 @@ namespace Launcher
                     Complete = true;
                 }
             }
-            //catch (Exception e)
-            //{
-            //    Complete = true;
-            //}
 
         }
 

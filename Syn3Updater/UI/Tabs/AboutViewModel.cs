@@ -70,7 +70,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void DonateAction()
         {
-            Process.Start("https://paypal.me/cyanlabs");
+            Process.Start("https://www.paypal.com/paypalme/cyanlabs");
         }
 
         private void DocAction()

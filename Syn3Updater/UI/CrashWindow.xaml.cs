@@ -41,13 +41,11 @@ namespace Syn3Updater.UI
 
                 string text = JsonConvert.SerializeObject(crashContainer);
                 string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-                string computername = Environment.MachineName;
                 HttpClient client = new HttpClient();
                 var values = new Dictionary<string, string>
                 {
                     { "detail", text },
                     { "version", version },
-                    { "computername",computername},
                     { "error",crashContainer.ErrorName},
                     { "message",exception.Message},
                     { "operatingsystem",SystemHelper.GetOsFriendlyName()}

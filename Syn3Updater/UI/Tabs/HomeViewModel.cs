@@ -523,6 +523,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void StartAction()
         {
+
             ApplicationManager.Logger.Info($"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
             ApplicationManager.Instance.Ivsus.Clear();
 
@@ -542,18 +543,11 @@ namespace Syn3Updater.UI.Tabs
             }
 
             ApplicationManager.Instance.DownloadOnly = false;
-            if (Debugger.IsAttached)
-                ApplicationManager.Logger.Debug("Debugger is attached redirecting URL's to 127.0.0.1");
+
             foreach (SyncModel.SyncIvsu item in IvsuList)
                 if (item.Selected)
                 {
                     if (item.Type == "APPS") ApplicationManager.Instance.AppsSelected = true;
-
-                    if (Debugger.IsAttached)
-                    {
-                        Uri myUri = new Uri(item.Url);
-                        item.Url = item.Url.Replace(myUri.Host, "127.0.0.1").Replace(myUri.Scheme, "http"); // host is "www.contoso.com"
-                    }
 
                     ApplicationManager.Instance.Ivsus.Add(item);
                 }

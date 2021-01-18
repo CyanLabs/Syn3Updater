@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using IWshRuntimeLibrary;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using SharedCode;
@@ -24,7 +23,7 @@ namespace Launcher
         public UpgradingWindow()
         {
             InitializeComponent();
-            vm = this.DataContext as UpgradingViewModel;
+            vm = DataContext as UpgradingViewModel;
             Core.UpgradingWindow = this;
         }
 
@@ -37,25 +36,21 @@ namespace Launcher
         }
 
         public static string BaseFolder = "";
-        readonly int oldversion = Core.LauncherPrefs.ReleaseInstalled;
+        readonly int _oldversion = Core.LauncherPrefs.ReleaseInstalled;
         private async Task StartCheck()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
             string InstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
             if (InstallPath == null)
             {
-                BaseFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                BaseFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             }
             else
             {
                 BaseFolder = Path.GetDirectoryName(InstallPath);
             }
 
-            if (!Directory.Exists(BaseFolder))
-            {
-                Directory.CreateDirectory(BaseFolder);
-            }
+            if (!Directory.Exists(BaseFolder)) Directory.CreateDirectory(BaseFolder);
 
             Process[] processlist = Process.GetProcesses();
 
@@ -73,11 +68,6 @@ namespace Launcher
                 }
             }
             string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
-            if (!File.Exists(configFolderPath + "\\launcherPrefs.json") && File.Exists(BaseFolder + "\\launcherPrefs.json"))
-            {
-                File.Copy(BaseFolder + "\\launcherPrefs.json", configFolderPath + "\\launcherPrefs.json");
-                File.Delete(BaseFolder + "\\launcherPrefs.json");
-            }
             if (File.Exists(configFolderPath + "\\launcherPrefs.json"))
             {
                 Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));

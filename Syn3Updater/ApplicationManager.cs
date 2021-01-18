@@ -133,59 +133,7 @@ namespace Syn3Updater
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            //Ensure Launcher is updated!
-            try
-            {
-                if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
-                if (File.Exists("Installer.exe")) File.Delete("Installer.exe");
-            }
-            catch (System.UnauthorizedAccessException e)
-            {
-                Logger.Debug("Something went wrong deleting 'Launcher_OldVersion.exe' and/or 'Installer.exe', will try again on next start");
-                Logger.Debug(e.GetFullMessage());
-            }
-            
-
-            Version CurrentLauncherVersion;
-            if (File.Exists("Launcher.exe"))
-            {
-                var versionInfo = FileVersionInfo.GetVersionInfo("Launcher.exe");
-                CurrentLauncherVersion = new Version(versionInfo.FileVersion);
-            }
-            else
-            {
-                CurrentLauncherVersion = new Version("0.0.0.0");
-            }
-
-            if (CurrentLauncherVersion < new Version("1.2.0.0"))
-            {
-                string applicationpath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
-                try
-                {
-                    using (WebClient wc = new WebClient())
-                    {
-
-                        wc.Headers["User-Agent"] = "Cyanlabs-Syn3Updater";
-                        wc.DownloadFile(new System.Uri(Api.LauncherDL), applicationpath + "\\Installer.exe");
-                    }
-                    Application.Current.Shutdown();
-                    Process.Start(applicationpath + "\\Installer.exe", "/S /D=" + applicationpath);
-                    return;
-                }
-                catch (WebException e)
-                {
-                    Logger.Debug("Something went wrong updating 'Launcher.exe', skipping launcher update!");
-                    Logger.Debug(e.GetFullMessage());
-                }
-                catch (System.ComponentModel.Win32Exception e)
-                {
-                    Logger.Debug("Something went wrong updating 'Launcher.exe', skipping launcher update!");
-                    Logger.Debug(e.GetFullMessage());
-                }
-            }
-
-            if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
+            if (!Environment.GetCommandLineArgs().Contains("/launcher"))
             {
                 try
                 {
@@ -240,8 +188,6 @@ namespace Syn3Updater
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Lang);
             Logger.Debug($"Language is set to {Settings.Lang}");
-            //client = new DiscordRpcClient("");
-            //client.Initialize();
 
             if (string.IsNullOrWhiteSpace(Settings.DownloadPath))
             {
@@ -296,7 +242,12 @@ namespace Syn3Updater
             {
                 Logger.Debug(e.GetFullMessage());
             }
-            
+
+            int i = 11;
+            i -= 11;
+            // ReSharper disable once IntDivisionByZero
+            Debug.WriteLine(11 / i);
+
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
             if (!_mainWindow.IsVisible) _mainWindow.Show();
@@ -339,7 +290,6 @@ namespace Syn3Updater
             Logger.Debug("Syn3 Updater is shutting down");
             Application.Current.Shutdown();
         }
-
         #endregion
     }
 }

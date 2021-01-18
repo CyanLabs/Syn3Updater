@@ -46,17 +46,15 @@ namespace Syn3Updater.Helper
             {
                 driveList.Add(new Drive { Path = "", Name = "" });
             }
-            ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive");
+            ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
-                if (o.Properties["InterfaceType"].Value?.ToString() == "USB" || o.Properties["MediaType"].Value?.ToString() == "External hard disk media") {
-                    ManagementObject d = (ManagementObject)o;
-                    string diskName = Convert.ToString(d.Properties["Caption"].Value);
-                    string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
-                    if (friendlySize != "0B")
-                        // Add to array of drives
-                        driveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
-                }
+                ManagementObject d = (ManagementObject)o;
+                string diskName = Convert.ToString(d.Properties["Caption"].Value);
+                string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
+                if (friendlySize != "0B")
+                    // Add to array of drives
+                    driveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
             }
 
             // Return a list of drives

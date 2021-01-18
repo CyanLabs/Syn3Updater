@@ -13,7 +13,6 @@ namespace Syn3Updater
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            //if (!Debugger.IsAttached)
             {
                 DispatcherUnhandledException += App_DispatcherUnhandledException;
             }
