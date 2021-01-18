@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Http;
+using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
-using Syn3Updater.Model;
 
-namespace Syn3Updater.Helper
+namespace Cyanlabs.Syn3Updater.Helper
 {
     class ApiHelper
     {

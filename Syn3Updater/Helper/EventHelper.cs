@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Syn3Updater.Helper
+namespace Cyanlabs.Syn3Updater.Helper
 {
     public class EventArgs<T> : EventArgs
     {

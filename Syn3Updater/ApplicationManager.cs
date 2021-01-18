@@ -12,13 +12,13 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Syn3Updater.UI;
 using Newtonsoft.Json;
 using SharedCode;
-using Syn3Updater.Helper;
-using Syn3Updater.Model;
-using Syn3Updater.UI;
 
-namespace Syn3Updater
+namespace Cyanlabs.Syn3Updater
 {
     public class ApplicationManager
     {

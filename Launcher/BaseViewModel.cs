@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Launcher
+namespace Cyanlabs.Launcher
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

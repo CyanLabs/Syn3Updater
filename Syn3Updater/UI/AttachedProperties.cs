@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Syn3Updater.UI
+namespace Cyanlabs.Syn3Updater.UI
 {
     public class TextBoxAttachedProperties
     {

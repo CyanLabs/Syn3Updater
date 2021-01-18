@@ -6,7 +6,7 @@
         {
             Release,
             Beta,
-            CI
+            Ci
         }
         public ReleaseType ReleaseBranch { get; set; } = ReleaseType.Release;
         public int ReleaseInstalled { get; set; } = 0;

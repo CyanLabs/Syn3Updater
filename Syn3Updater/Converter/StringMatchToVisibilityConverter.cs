@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Syn3Updater.Converter
+namespace Cyanlabs.Syn3Updater.Converter
 {
     [ValueConversion(typeof(string), typeof(Visibility))]
     public class StringMatchToVisibilityConverter : IValueConverter

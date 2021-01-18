@@ -1,6 +1,4 @@
-﻿using Syn3Updater.Properties;
-
-namespace Syn3Updater.Model
+﻿namespace Cyanlabs.Syn3Updater.Model
 {
     public class LanguageAwareBaseViewModel : BaseViewModel
     {

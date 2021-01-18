@@ -1,12 +1,9 @@
 ﻿<Application
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="clr-namespace:Syn3Updater.Converter"
-    xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-    xmlns:system="clr-namespace:System;assembly=mscorlib"
-    xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:converter="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     xmlns:ui="http://schemas.modernwpf.com/2019"
-    x:Class="Syn3Updater.App"
+    x:Class="Cyanlabs.Syn3Updater.App"
     Exit="App_OnExit">
     <Application.Resources>
         <ResourceDictionary>

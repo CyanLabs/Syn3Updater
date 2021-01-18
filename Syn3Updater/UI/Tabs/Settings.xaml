@@ -3,18 +3,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
-    xmlns:ui="clr-namespace:Syn3Updater.UI" 
     xmlns:controls="http://schemas.modernwpf.com/2019" 
-    xmlns:fa5="http://schemas.fontawesome.com/icons/"
-    x:Class="Syn3Updater.UI.Tabs.Settings"
+    xmlns:fa5="http://schemas.fontawesome.com/icons/" 
+    xmlns:ui="clr-namespace:Cyanlabs.Syn3Updater.UI" 
+    xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
+    x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Settings"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Settings_OnIsVisibleChanged" FontSize="12" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
         <Style TargetType="{x:Type ui:MaskedTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
     </UserControl.Resources>
     <UserControl.DataContext>
-        <local:SettingsViewModel />
+        <tabs:SettingsViewModel />
     </UserControl.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>

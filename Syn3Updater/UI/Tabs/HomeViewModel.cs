@@ -6,11 +6,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
-using Syn3Updater.Helper;
-using Syn3Updater.Model;
 
-namespace Syn3Updater.UI.Tabs
+namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     internal class HomeViewModel : LanguageAwareBaseViewModel
     {

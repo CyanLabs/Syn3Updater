@@ -1,19 +1,19 @@
-﻿namespace Launcher
+﻿namespace Cyanlabs.Launcher
 {
     public class UpgradingViewModel : BaseViewModel
     {
-        private string message;
+        private string _message;
         public string Message
         {
-            get => message;
-            set => Set(ref message,value);
+            get => _message;
+            set => Set(ref _message,value);
         }
 
-        private int percentage = 100;
+        private int _percentage = 100;
         public int Percentage
         {
-            get => percentage;
-            set => Set(ref percentage, value);
+            get => _percentage;
+            set => Set(ref _percentage, value);
         }
     }
 }

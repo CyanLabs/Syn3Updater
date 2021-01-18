@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Syn3Updater.UI
+namespace Cyanlabs.Syn3Updater.UI
 {
     public class MaskedTextBox : TextBox
     {

@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using Octokit;
 using SharedCode;
 using Application = System.Windows.Application;
-using File = System.IO.File;
 
-namespace Launcher
+namespace Cyanlabs.Launcher
 {
     public class UpdateCheck
     {
@@ -28,7 +24,7 @@ namespace Launcher
             UpgradingWindow.UpdateLayout();
             UpgradingWindow.UpdateDefaultStyle();
             
-            UpgradingWindow.vm.Message = "Checking For Update...";
+            UpgradingWindow.Vm.Message = "Checking For Update...";
             await Task.Delay(1000);
             Release latest = new Release();
             var githubclient = new GitHubClient(new ProductHeaderValue("CyanLabs-Launcher"));
@@ -37,7 +33,7 @@ namespace Launcher
             {
                 switch (releaseType)
                 {
-                    case LauncherPrefs.ReleaseType.CI:
+                    case LauncherPrefs.ReleaseType.Ci:
                         //Soon
                         throw new NotImplementedException();
 
@@ -47,7 +43,7 @@ namespace Launcher
                             var githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater");
                             latest = githubreleases[0];
                         }
-                        catch (Octokit.RateLimitExceededException e)
+                        catch (RateLimitExceededException e)
                         {
                             if (File.Exists("Syn3Updater.exe"))
                             {
@@ -64,7 +60,7 @@ namespace Launcher
                         {
                             latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
                         }
-                        catch (Octokit.RateLimitExceededException e)
+                        catch (RateLimitExceededException e)
                         {
                             if (File.Exists("Syn3Updater.exe"))
                             {
@@ -201,11 +197,11 @@ namespace Launcher
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
 
-            Vm.Message = "Downloaded " + (e.BytesReceived / 1000000).ToString() + " MB of " + (e.TotalBytesToReceive / 1000000).ToString() + " MB.";
+            Vm.Message = "Downloaded " + (e.BytesReceived / 1000000) + " MB of " + (e.TotalBytesToReceive / 1000000) + " MB.";
 
             Vm.Percentage = 100-(int)percentage;
         }
 
-        private UpgradingViewModel Vm => UpgradingWindow.vm;
+        private UpgradingViewModel Vm => UpgradingWindow.Vm;
     }
 }

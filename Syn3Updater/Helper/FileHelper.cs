@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Syn3Updater.Model;
 
-namespace Syn3Updater.Helper
+namespace Cyanlabs.Syn3Updater.Helper
 {
     public class FileHelper
     {

@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using SharedCode;
 using File = System.IO.File;
 
-namespace Launcher
+namespace Cyanlabs.Launcher
 {
     /// <summary>
     /// Interaction logic for UpgradingWindow.xaml
@@ -23,11 +23,11 @@ namespace Launcher
         public UpgradingWindow()
         {
             InitializeComponent();
-            vm = DataContext as UpgradingViewModel;
+            Vm = DataContext as UpgradingViewModel;
             Core.UpgradingWindow = this;
         }
 
-        public UpgradingViewModel vm;
+        public UpgradingViewModel Vm;
 
         private async void AcrylicWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -35,22 +35,17 @@ namespace Launcher
             await StartCheck();
         }
 
-        public static string BaseFolder = "";
-        readonly int _oldversion = Core.LauncherPrefs.ReleaseInstalled;
+        public static string BaseFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         private async Task StartCheck()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            string InstallPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
-            if (InstallPath == null)
+            string installPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
+            if (installPath != null)
             {
-                BaseFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            }
-            else
-            {
-                BaseFolder = Path.GetDirectoryName(InstallPath);
+                BaseFolder = Path.GetDirectoryName(installPath);
             }
 
-            if (!Directory.Exists(BaseFolder)) Directory.CreateDirectory(BaseFolder);
+            if (!Directory.Exists(BaseFolder)) Directory.CreateDirectory(BaseFolder ?? string.Empty);
 
             Process[] processlist = Process.GetProcesses();
 
@@ -85,12 +80,17 @@ namespace Launcher
             string s = path.ToString();
             if (Directory.Exists(s + "\\Syn3Updater")) Directory.Delete(s + "\\Syn3Updater",true);
 
-            Process p = new Process();
-            p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            p.StartInfo.FileName = BaseFolder + "\\Syn3Updater.exe";
-            p.StartInfo.WorkingDirectory = BaseFolder;
-            p.StartInfo.Arguments = "/launcher";
-            p.StartInfo.UseShellExecute = false;
+            Process p = new Process
+            {
+                StartInfo =
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = BaseFolder + "\\Syn3Updater.exe",
+                    WorkingDirectory = BaseFolder ?? string.Empty,
+                    Arguments = "/launcher",
+                    UseShellExecute = false
+                }
+            };
             p.Start();
 
             await Task.Delay(2000);

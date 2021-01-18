@@ -9,13 +9,13 @@ using System.Net.Http.Headers;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
+using Cyanlabs.Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
-using Syn3Updater.Helper;
-using Syn3Updater.Model;
 using Formatting = Newtonsoft.Json.Formatting;
 
-namespace Syn3Updater.UI.Tabs
+namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     internal class UtilityViewModel : LanguageAwareBaseViewModel
     {

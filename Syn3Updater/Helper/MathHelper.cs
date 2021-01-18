@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Syn3Updater.Helper
+namespace Cyanlabs.Syn3Updater.Helper
 {
     public static class MathHelper
     {

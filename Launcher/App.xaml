@@ -1,4 +1,4 @@
-﻿<Application x:Class="Launcher.App"
+﻿<Application x:Class="Cyanlabs.Launcher.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="UpgradingWindow.xaml"

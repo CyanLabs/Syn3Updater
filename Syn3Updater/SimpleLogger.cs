@@ -5,12 +5,12 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
+using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Syn3Updater.UI;
 using Newtonsoft.Json;
 using QRCoder;
-using Syn3Updater.Model;
-using Syn3Updater.UI;
 
-namespace Syn3Updater
+namespace Cyanlabs.Syn3Updater
 {
     public class SimpleLogger
     {

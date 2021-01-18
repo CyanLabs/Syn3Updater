@@ -3,7 +3,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Syn3Updater.Model
+namespace Cyanlabs.Syn3Updater.Model
 {
     public class InterrogatorModel
     {

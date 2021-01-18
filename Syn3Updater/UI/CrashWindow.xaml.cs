@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
-using Syn3Updater.Helper;
-using Syn3Updater.Model;
 
-namespace Syn3Updater.UI
+namespace Cyanlabs.Syn3Updater.UI
 {
     /// <summary>
     /// Interaction logic for CrashWindow.xaml

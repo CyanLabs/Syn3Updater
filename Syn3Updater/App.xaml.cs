@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 
-namespace Syn3Updater
+namespace Cyanlabs.Syn3Updater
 {
     /// <summary>
     ///     Interaction logic for App.xaml

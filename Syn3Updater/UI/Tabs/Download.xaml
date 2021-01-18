@@ -3,15 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
-    xmlns:myAttachedProperties="clr-namespace:Syn3Updater.UI"
-    x:Class="Syn3Updater.UI.Tabs.Download"
+    xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs" 
+    xmlns:ui="clr-namespace:Cyanlabs.Syn3Updater.UI"
+    x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Download"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Download_OnIsVisibleChanged" FontSize="12" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>
-        <local:DownloadViewModel />
+        <tabs:DownloadViewModel />
     </UserControl.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
@@ -47,7 +47,7 @@
                     <StackPanel Margin="5">
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5,0,0,5" Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" />
-                        <TextBox  Height="190" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True" myAttachedProperties:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" FontSize="11"/>
+                        <TextBox  Height="190" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True" ui:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" FontSize="11"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

@@ -6,11 +6,10 @@ using System.IO;
 using System.Management;
 using System.Net.Http;
 using System.Reflection;
+using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
-using Syn3Updater.Model;
-using Syn3Updater.Properties;
 
-namespace Syn3Updater.Helper
+namespace Cyanlabs.Syn3Updater.Helper
 {
     public static class USBHelper
     {

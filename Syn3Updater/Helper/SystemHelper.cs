@@ -3,7 +3,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-namespace Syn3Updater.Helper
+namespace Cyanlabs.Syn3Updater.Helper
 {
     /// <summary>
     ///     Class containing methods to retrieve specific file system paths.

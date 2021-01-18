@@ -2,17 +2,14 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Model;
 using FontAwesome5;
 using ModernWpf;
-using Syn3Updater.Helper;
-using Syn3Updater.Model;
-using Syn3Updater.Properties;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
-namespace Syn3Updater.UI
+namespace Cyanlabs.Syn3Updater.UI
 {
     public class MainWindowViewModel : LanguageAwareBaseViewModel
     {

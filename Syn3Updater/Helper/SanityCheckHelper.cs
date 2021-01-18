@@ -1,8 +1,8 @@
 ﻿using System.Windows;
-using Syn3Updater.Model;
-using MessageBox = Syn3Updater.UI.MessageBox.MessageBox;
+using Cyanlabs.Syn3Updater.Model;
+using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 
-namespace Syn3Updater.Helper
+namespace Cyanlabs.Syn3Updater.Helper
 {
     public class SanityCheckHelper
     {

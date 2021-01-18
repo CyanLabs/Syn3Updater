@@ -1,12 +1,13 @@
 ﻿#nullable enable
 using System.Linq;
 using System.Windows;
+using Cyanlabs.Syn3Updater.UI.MessageBox.Extensions;
 using FontAwesome5;
 using ModernWpf.Controls;
-using Syn3Updater.UI.MessageBox.Extensions;
+
 // ReSharper disable UnusedParameter.Local
 
-namespace Syn3Updater.UI.MessageBox {
+namespace Cyanlabs.Syn3Updater.UI.MessageBox {
     public static class MessageBox {
 
         public static MessageBoxResult? Show(string messageBoxText) =>

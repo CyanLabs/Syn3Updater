@@ -4,17 +4,16 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Model;
 using Microsoft.VisualBasic.FileIO;
 using ModernWpf;
-using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using SharedCode;
-using Syn3Updater.Helper;
-using Syn3Updater.Model;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
-namespace Syn3Updater.UI.Tabs
+namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     internal class SettingsViewModel : LanguageAwareBaseViewModel
     {

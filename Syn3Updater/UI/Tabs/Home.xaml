@@ -3,16 +3,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Syn3Updater.UI.Tabs"
     xmlns:fa5="http://schemas.fontawesome.com/icons/" 
-    xmlns:controls="http://schemas.modernwpf.com/2019"
-    x:Class="Syn3Updater.UI.Tabs.Home"
+    xmlns:controls="http://schemas.modernwpf.com/2019" 
+    xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
+    x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Home"
     mc:Ignorable="d"
     d:DesignHeight="640" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged" FontSize="12" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>
-        <local:HomeViewModel />
+        <tabs:HomeViewModel />
     </UserControl.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>

@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Syn3Updater</RootNamespace>
+    <RootNamespace>Cyanlabs.Syn3Updater</RootNamespace>
     <AssemblyName>Syn3Updater</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <Deterministic>False</Deterministic>
-    <StartupObject>Syn3Updater.App</StartupObject>
+    <StartupObject>Cyanlabs.Syn3Updater.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -67,13 +67,8 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

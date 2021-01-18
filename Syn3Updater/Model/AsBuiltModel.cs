@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+
 // ReSharper disable InconsistentNaming
 
-namespace Syn3Updater.Model
+namespace Cyanlabs.Syn3Updater.Model
 {
     public class DID
     {

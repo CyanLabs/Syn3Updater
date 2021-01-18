@@ -2,7 +2,7 @@
 using System.Windows;
 using FontAwesome5;
 
-namespace Syn3Updater.UI.MessageBox.Extensions {
+namespace Cyanlabs.Syn3Updater.UI.MessageBox.Extensions {
     internal static class MessageBoxImageExtensions {
         public static EFontAwesomeIcon ToSymbol(this MessageBoxImage image) {
             switch (image) {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Syn3Updater.Model;
+using Cyanlabs.Syn3Updater.Model;
 
-namespace Syn3Updater.Converter
+namespace Cyanlabs.Syn3Updater.Converter
 {
     [ValueConversion(typeof(string), typeof(string))]
     public class LocConverter : IValueConverter

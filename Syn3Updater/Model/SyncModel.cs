@@ -1,4 +1,4 @@
-﻿namespace Syn3Updater.Model
+﻿namespace Cyanlabs.Syn3Updater.Model
 {
     public static class SyncModel
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
-using Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Helper;
 
-namespace Syn3Updater.Converter
+namespace Cyanlabs.Syn3Updater.Converter
 {
     public class PercentageConverter : MarkupExtension, IValueConverter
     {

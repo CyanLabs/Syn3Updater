@@ -1,6 +1,6 @@
 ﻿using SharedCode;
 
-namespace Launcher
+namespace Cyanlabs.Launcher
 {
     public static class Core
     {

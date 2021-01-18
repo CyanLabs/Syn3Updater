@@ -1,10 +1,10 @@
 ﻿#nullable enable
 using System;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Model;
 using FontAwesome5;
-using Syn3Updater.Model;
 
-namespace Syn3Updater.UI.MessageBox.Extensions
+namespace Cyanlabs.Syn3Updater.UI.MessageBox.Extensions
 {
     public partial class MessageBoxWindow
     {

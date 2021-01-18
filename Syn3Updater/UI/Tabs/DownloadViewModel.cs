@@ -7,10 +7,10 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Syn3Updater.Helper;
-using Syn3Updater.Model;
+using Cyanlabs.Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Model;
 
-namespace Syn3Updater.UI.Tabs
+namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     internal class DownloadViewModel : LanguageAwareBaseViewModel
     {
