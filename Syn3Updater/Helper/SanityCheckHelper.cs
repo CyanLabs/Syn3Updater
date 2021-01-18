@@ -56,7 +56,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                     ApplicationManager.Instance.SkipFormat = false;
                 else
+                {
                     ApplicationManager.Logger.Info("USB Drive not formatted, using existing filesystem and files");
+                    ApplicationManager.Instance.SkipFormat = true;
+                }
             }
 
             //Format USB Drive
