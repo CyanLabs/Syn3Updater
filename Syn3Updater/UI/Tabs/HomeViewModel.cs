@@ -523,7 +523,7 @@ namespace Syn3Updater.UI.Tabs
 
         private void StartAction()
         {
-            ApplicationManager.Logger.Info($"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {ApplicationManager.Instance.DriveLetter}");
+            ApplicationManager.Logger.Info($"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
             ApplicationManager.Instance.Ivsus.Clear();
 
             if (InstallMode == "downgrade")
