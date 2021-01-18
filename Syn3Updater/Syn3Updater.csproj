@@ -66,6 +66,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="ModernWpf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\ModernWpf.dll</HintPath>
+    </Reference>
+    <Reference Include="ModernWpf.Controls, Version=0.9.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\ModernWpf.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
@@ -225,9 +233,6 @@
     </PackageReference>
     <PackageReference Include="FontAwesome5">
       <Version>2.0.8</Version>
-    </PackageReference>
-    <PackageReference Include="ModernWpfUI">
-      <Version>0.9.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>
