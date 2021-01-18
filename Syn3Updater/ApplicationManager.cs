@@ -134,8 +134,17 @@ namespace Syn3Updater
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             //Ensure Launcher is updated!
-            if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
-            if (File.Exists("Installer.exe")) File.Delete("Installer.exe");
+            try
+            {
+                if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
+                if (File.Exists("Installer.exe")) File.Delete("Installer.exe");
+            }
+            catch (System.UnauthorizedAccessException e)
+            {
+                Logger.Debug("Something went wrong deleting 'Launcher_OldVersion.exe' and/or 'Installer.exe', will try again on next start");
+                Logger.Debug(e.GetFullMessage());
+            }
+            
 
             Version CurrentLauncherVersion;
             if (File.Exists("Launcher.exe"))
@@ -151,15 +160,29 @@ namespace Syn3Updater
             if (CurrentLauncherVersion < new Version("1.2.0.0"))
             {
                 string applicationpath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                
-                using (WebClient wc = new WebClient())
+
+                try
                 {
-                    wc.Headers["User-Agent"] = "Cyanlabs-Syn3Updater";
-                    wc.DownloadFile(new System.Uri(Api.LauncherDL), applicationpath + "\\Installer.exe");
+                    using (WebClient wc = new WebClient())
+                    {
+
+                        wc.Headers["User-Agent"] = "Cyanlabs-Syn3Updater";
+                        wc.DownloadFile(new System.Uri(Api.LauncherDL), applicationpath + "\\Installer.exe");
+                    }
+                    Application.Current.Shutdown();
+                    Process.Start(applicationpath + "\\Installer.exe", "/S /D=" + applicationpath);
+                    return;
                 }
-                Application.Current.Shutdown();
-                Process.Start(applicationpath + "\\Installer.exe", "/S /D=" + applicationpath);
-                return;
+                catch (WebException e)
+                {
+                    Logger.Debug("Something went wrong updating 'Launcher.exe', skipping launcher update!");
+                    Logger.Debug(e.GetFullMessage());
+                }
+                catch (System.ComponentModel.Win32Exception e)
+                {
+                    Logger.Debug("Something went wrong updating 'Launcher.exe', skipping launcher update!");
+                    Logger.Debug(e.GetFullMessage());
+                }
             }
 
             if (!Environment.GetCommandLineArgs().Contains("/launcher") && !Debugger.IsAttached)
@@ -175,6 +198,7 @@ namespace Syn3Updater
                     Logger.Debug(e.GetFullMessage());
                 }
             }
+
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
             foreach (string arg in Environment.GetCommandLineArgs())
                 switch (arg)
@@ -183,7 +207,6 @@ namespace Syn3Updater
                         Logger.Debug("/updated - flag no longer used but noted for debug purposes");
                         break;
                 }
-            
 
             configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             ConfigFile = configFolderPath + "\\settings.json";
@@ -232,12 +255,6 @@ namespace Syn3Updater
 
             try
             {
-                if (!Directory.Exists(DownloadPath))
-                {
-                    Logger.Debug("Download location does not exist");
-                    Directory.CreateDirectory(DownloadPath);
-                }
-            
                 if (!Directory.Exists(DownloadPath))
                 {
                     Logger.Debug("Download location does not exist");
