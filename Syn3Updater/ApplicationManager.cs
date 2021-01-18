@@ -243,10 +243,6 @@ namespace Syn3Updater
                 Logger.Debug(e.GetFullMessage());
             }
 
-            int i = 11;
-            i -= 11;
-            // ReSharper disable once IntDivisionByZero
-            Debug.WriteLine(11 / i);
 
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
