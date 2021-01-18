@@ -3,11 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs" 
+    xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     xmlns:ui="clr-namespace:Cyanlabs.Syn3Updater.UI"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Download"
     mc:Ignorable="d"
-    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Download_OnIsVisibleChanged" FontSize="12" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Download_OnIsVisibleChanged" FontSize="12"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -19,16 +20,21 @@
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=Download.Queue, Converter={StaticResource LocConverter}}" />
-                        <ListBox Height="160" ItemsSource="{Binding DownloadQueueList}" Background="{StaticResource SystemBaseLowColorBrush}" />
+                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                                   Text="{Binding Language, ConverterParameter=Download.Queue, Converter={StaticResource LocConverter}}" />
+                        <ListBox Height="160" ItemsSource="{Binding DownloadQueueList}"
+                                 Background="{StaticResource SystemBaseLowColorBrush}" />
                         <Grid Margin="0,5,0,5">
                             <TextBlock FontSize="12" Margin="5" Text="{Binding DownloadInfo}" />
-                            <TextBlock FontSize="12" HorizontalAlignment="Right" TextAlignment="Right" Margin="5" Text="{Binding DownloadPercentage}" />
+                            <TextBlock FontSize="12" HorizontalAlignment="Right" TextAlignment="Right" Margin="5"
+                                       Text="{Binding DownloadPercentage}" />
                         </Grid>
 
-                        <ProgressBar Value="{Binding CurrentProgress}" Margin="10,0"/>
-                        <TextBlock HorizontalAlignment="Center" Margin="0,10" Text="{Binding Language, ConverterParameter=Download.TotalDownload, Converter={StaticResource LocConverter}}" />
-                        <ProgressBar Value="{Binding TotalPercentage}" Maximum="{Binding TotalPercentageMax}" Margin="10,0"/>
+                        <ProgressBar Value="{Binding CurrentProgress}" Margin="10,0" />
+                        <TextBlock HorizontalAlignment="Center" Margin="0,10"
+                                   Text="{Binding Language, ConverterParameter=Download.TotalDownload, Converter={StaticResource LocConverter}}" />
+                        <ProgressBar Value="{Binding TotalPercentage}" Maximum="{Binding TotalPercentageMax}"
+                                     Margin="10,0" />
 
                         <Grid Margin="0,5,0,0">
                             <Grid.ColumnDefinitions>
@@ -36,18 +42,27 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
-                                <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallMode}" />
+                                <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center"
+                                           Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
+                                <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center"
+                                           Text="{Binding InstallMode}" />
                             </StackPanel>
-                            <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}" IsEnabled="{Binding CancelButtonEnabled}" Style="{DynamicResource AccentButtonStyle}" Margin="5" HorizontalAlignment="Right" Padding="5" Width="100" Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}" />
+                            <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
+                                    IsEnabled="{Binding CancelButtonEnabled}"
+                                    Style="{DynamicResource AccentButtonStyle}" Margin="5" HorizontalAlignment="Right"
+                                    Padding="5" Width="100"
+                                    Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}" />
                         </Grid>
                     </StackPanel>
                 </Grid>
                 <Grid Background="#40000000" Margin="10,5,10,5">
                     <StackPanel Margin="5">
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5,0,0,5" Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" />
-                        <TextBox  Height="190" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True" ui:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" FontSize="11"/>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5,0,0,5"
+                                   Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" />
+                        <TextBox Height="190" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True"
+                                 ui:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto"
+                                 FontSize="11" />
                     </StackPanel>
                 </Grid>
             </StackPanel>

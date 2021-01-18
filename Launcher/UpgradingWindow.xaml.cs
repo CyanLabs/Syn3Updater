@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -11,15 +12,21 @@ using System.Windows;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using SharedCode;
-using File = System.IO.File;
 
 namespace Cyanlabs.Launcher
 {
     /// <summary>
-    /// Interaction logic for UpgradingWindow.xaml
+    ///     Interaction logic for UpgradingWindow.xaml
     /// </summary>
     public partial class UpgradingWindow
     {
+        // ReSharper disable once InconsistentNaming
+        private const int CSIDL_PROGRAMS = 0x02; // 
+
+        public static string BaseFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        public UpgradingViewModel Vm;
+
         public UpgradingWindow()
         {
             InitializeComponent();
@@ -27,33 +34,26 @@ namespace Cyanlabs.Launcher
             Core.UpgradingWindow = this;
         }
 
-        public UpgradingViewModel Vm;
-
         private async void AcrylicWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Thread.Sleep(100);
             await StartCheck();
         }
 
-        public static string BaseFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         private async Task StartCheck()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            string installPath = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
-            if (installPath != null)
-            {
-                BaseFolder = Path.GetDirectoryName(installPath);
-            }
+            string installPath = (string) Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
+            if (installPath != null) BaseFolder = Path.GetDirectoryName(installPath);
 
             if (!Directory.Exists(BaseFolder)) Directory.CreateDirectory(BaseFolder ?? string.Empty);
 
             Process[] processlist = Process.GetProcesses();
 
             if (processlist.Any(x => x.ProcessName == "Syn3Updater"))
-            {
                 try
                 {
-                    var proc = processlist.First(x => x.ProcessName == "Syn3Updater");
+                    Process proc = processlist.First(x => x.ProcessName == "Syn3Updater");
                     proc.Kill();
                     proc.Dispose();
                 }
@@ -61,24 +61,19 @@ namespace Cyanlabs.Launcher
                 {
                     // ignored
                 }
-            }
+
             string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             if (File.Exists(configFolderPath + "\\launcherPrefs.json"))
-            {
                 Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
-            }
 
             UpdateCheck check = new UpdateCheck();
             await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);
-            while (!check.Complete)
-            {
-                await Task.Delay(100);
-            }
+            while (!check.Complete) await Task.Delay(100);
 
             StringBuilder path = new StringBuilder(260);
             SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_PROGRAMS, false);
             string s = path.ToString();
-            if (Directory.Exists(s + "\\Syn3Updater")) Directory.Delete(s + "\\Syn3Updater",true);
+            if (Directory.Exists(s + "\\Syn3Updater")) Directory.Delete(s + "\\Syn3Updater", true);
 
             Process p = new Process
             {
@@ -99,8 +94,6 @@ namespace Cyanlabs.Launcher
         }
 
         [DllImport("shell32.dll")]
-        static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
-        // ReSharper disable once InconsistentNaming
-        private const int CSIDL_PROGRAMS = 0x02; // 
+        private static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
     }
 }

@@ -25,7 +25,7 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public const string CrashLogURL = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=";
         public const string CrashLogPost = "https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php";
-        
+
         public const string LogURL = "https://cyanlabs.net/api/Syn3Updater/logs/?uuid=";
         public const string LogPost = "https://cyanlabs.net/api/Syn3Updater/logs/post.php";
 
@@ -35,7 +35,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public static SyncModel.SyncIvsu ReformatTool, DowngradeApp, DowngradeTool, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
 
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
-        public const string AsBuiltPost =  "https://cyanlabs.net/api/Syn3Updater/apim-asbuilt-decode/";
+        public const string AsBuiltPost = "https://cyanlabs.net/api/Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
 
         public const string SpecialPackageBase = "https://cyanlabs.net/api/syn3updater/get/";
@@ -55,7 +55,6 @@ namespace Cyanlabs.Syn3Updater.Model
             public string status { get; set; }
             public string version { get; set; }
             public IList<Ivsus> ivsus { get; set; }
-
         }
 
         public class Ivsu
@@ -106,8 +105,7 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public class Root
         {
-            [JsonProperty("data")]
-            public Data Data { get; set; }
+            [JsonProperty("data")] public Data Data { get; set; }
         }
 
         #endregion

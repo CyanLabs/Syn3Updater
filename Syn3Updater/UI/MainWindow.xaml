@@ -7,7 +7,7 @@
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
     xmlns:converter="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     xmlns:ui="http://schemas.modernwpf.com/2019"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/" 
+    xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     x:Class="Cyanlabs.Syn3Updater.UI.MainWindow"
     mc:Ignorable="d"
@@ -15,8 +15,8 @@
     Height="640"
     Width="800"
     MinHeight="640"
-    MinWidth="800" 
-    fw:AcrylicWindow.Enabled="True" fw:AcrylicWindow.TintOpacity="0.75"  Icon="/Syn3Updater;component/cyanlabs.ico"
+    MinWidth="800"
+    fw:AcrylicWindow.Enabled="True" fw:AcrylicWindow.TintOpacity="0.75" Icon="/Syn3Updater;component/cyanlabs.ico"
     Closing="Window_Closing" ui:ThemeManager.IsThemeAware="True" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
@@ -50,7 +50,8 @@
                         </Style>
                     </Grid.Style>
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                    <fa5:FontAwesome Icon="{Binding Icon}" FontSize="24" ToolTip="{Binding Name}" VerticalAlignment="Center" Margin="0,0,0,0" Foreground="White" />
+                    <fa5:FontAwesome Icon="{Binding Icon}" FontSize="24" ToolTip="{Binding Name}"
+                                     VerticalAlignment="Center" Margin="0,0,0,0" Foreground="White" />
                     <TextBlock
                         Grid.Column="1"
                         Margin="10,0"
@@ -89,7 +90,7 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Width="auto" Background="{x:Null}" fw:PointerTracker.Enabled="True">
             <Grid Background="{Binding Path=(fw:AccentColors.ImmersiveSystemAccentBrush)}" Opacity="0.5" />
-            <ListView 
+            <ListView
                 ItemsSource="{Binding TabItems, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}"
                 ItemTemplate="{DynamicResource TabItemTemplate}" Background="{x:Null}" BorderBrush="{x:Null}"
                 HorizontalAlignment="Left" Padding="0" Margin="0,0" ScrollViewer.VerticalScrollBarVisibility="Auto" />

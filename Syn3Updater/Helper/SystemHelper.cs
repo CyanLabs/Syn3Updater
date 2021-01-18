@@ -24,13 +24,11 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         private static readonly string[] KnownFolderGuids =
         {
-            "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}", // Desktop
             "{374DE290-123F-4565-9164-39C4925E467B}" // Downloads
         };
 
         public enum KnownFolder
         {
-            Desktop,
             Downloads
         }
 

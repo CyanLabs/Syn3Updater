@@ -153,14 +153,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                         ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
-
                     }
                     else if (value == "Light")
                     {
                         ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     }
-
                 }
             }
         }
@@ -210,6 +208,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         }
 
         private LauncherPrefs.ReleaseType _releaseType;
+
         public LauncherPrefs.ReleaseType ReleaseType
         {
             get => _releaseType;
@@ -218,8 +217,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _releaseType, value);
                 ApplicationManager.Instance.LauncherPrefs.ReleaseBranch = value;
-                ApplicationManager.Instance.UpdateLaucherSettings();
-
+                ApplicationManager.Instance.UpdateLauncherSettings();
             }
         }
 
@@ -260,15 +258,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Themes = new ObservableCollection<string>
             {
                 "Dark", "Light"
-
             };
             CurrentTheme = ApplicationManager.Instance.Settings.Theme;
 
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
             {
                 LauncherPrefs.ReleaseType.Release,
-                LauncherPrefs.ReleaseType.Beta,
-                //LauncherPrefs.ReleaseType.CI
+                LauncherPrefs.ReleaseType.Beta
+                //LauncherPrefs.ReleaseType.Ci
             };
             ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
 
@@ -301,14 +298,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             oldPath = oldPath.TrimEnd('\\');
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
-            {
                 if (Directory.Exists(oldPath))
-                {
                     if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
-                    {
-                        if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"), Environment.NewLine + oldPath + Environment.NewLine,
-                                Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                        {
+                        if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
+                                Environment.NewLine + oldPath + Environment.NewLine,
+                                Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
+                            MessageBoxResult.Yes)
                             try
                             {
                                 FileSystem.MoveDirectory(oldPath, dialog.SelectedPath, UIOption.AllDialogs);
@@ -317,11 +312,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             {
                                 //TODO Catch better
                             }
-                        }
-                    }
-                }
-            }
-                
+
             DownloadLocation = dialog.SelectedPath + "\\";
         }
 

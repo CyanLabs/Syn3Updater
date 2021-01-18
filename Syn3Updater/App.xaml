@@ -27,7 +27,8 @@
                                 <ResourceDictionary Source="/FluentWPF;component/Styles/Brushes.xaml" />
                                 <ResourceDictionary Source="/ModernWpf;component/ThemeResources/Dark.xaml" />
                             </ResourceDictionary.MergedDictionaries>
-                            <SolidColorBrush x:Key="NavigationViewSelectionIndicatorForeground" Color="{StaticResource SystemBaseHighColor}" />
+                            <SolidColorBrush x:Key="NavigationViewSelectionIndicatorForeground"
+                                             Color="{StaticResource SystemBaseHighColor}" />
                         </ResourceDictionary>
                     </ui:ThemeResources.ThemeDictionaries>
                 </ui:ThemeResources>
@@ -39,7 +40,7 @@
             <converter:LocConverter x:Key="LocConverter" />
 
             <!-- Tab Menu -->
-            <Style TargetType="ListView" >
+            <Style TargetType="ListView">
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Padding" Value="0,0,0,20" />
                 <Setter Property="Background" Value="Transparent" />

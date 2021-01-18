@@ -3,13 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/" 
-    xmlns:controls="http://schemas.modernwpf.com/2019" 
+    xmlns:fa5="http://schemas.fontawesome.com/icons/"
+    xmlns:controls="http://schemas.modernwpf.com/2019"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.About"
     mc:Ignorable="d"
-    d:DesignHeight="825" d:DesignWidth="800" FontSize="12" IsVisibleChanged="About_OnIsVisibleChanged"  Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
-    <UserControl.Resources/>
+    d:DesignHeight="825" d:DesignWidth="800" FontSize="12" IsVisibleChanged="About_OnIsVisibleChanged"
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+    <UserControl.Resources />
     <UserControl.DataContext>
         <tabs:AboutViewmodel />
     </UserControl.DataContext>
@@ -20,29 +21,48 @@
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}"  />
-                        <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.About, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
-                        <TextBlock Margin="10,0,5,0" Text="{Binding Language, ConverterParameter=About.Endorsed, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
-                        <TextBlock Margin="10,0,5,0" Text="EN: This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo" Visibility="{Binding EnglishEndorsement}" TextWrapping="WrapWithOverflow" />
-                        <TextBlock TextAlignment="Right" Margin="10,0,10,10" Text="Copyright © 2021 CyanLabs." TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                                   Text="{Binding Language, ConverterParameter=About.AboutTitle, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="10,0,5,10"
+                                   Text="{Binding Language, ConverterParameter=About.About, Converter={StaticResource LocConverter}}"
+                                   TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="10,0,5,0"
+                                   Text="{Binding Language, ConverterParameter=About.Endorsed, Converter={StaticResource LocConverter}}"
+                                   TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="10,0,5,0"
+                                   Text="EN: This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo"
+                                   Visibility="{Binding EnglishEndorsement}" TextWrapping="WrapWithOverflow" />
+                        <TextBlock TextAlignment="Right" Margin="10,0,10,10" Text="Copyright © 2021 CyanLabs."
+                                   TextWrapping="WrapWithOverflow" />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Cursor="Hand" Margin="5" Padding="5" Width="150" Command="{Binding WebsiteButton}" Style="{DynamicResource AccentButtonStyle}">
+                            <Button Cursor="Hand" Margin="5" Padding="5" Width="150" Command="{Binding WebsiteButton}"
+                                    Style="{DynamicResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:FontAwesome Icon="Solid_GlobeAmericas" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" />
-                                    <TextBlock Text="CYANLABS" VerticalAlignment="Center"/>
+                                    <fa5:FontAwesome Icon="Solid_GlobeAmericas" FontSize="24"
+                                                     VerticalAlignment="Center" Margin="0,0,10,0" />
+                                    <TextBlock Text="CYANLABS" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="5" Padding="5" Width="180" Command="{Binding ForumButton}" Style="{DynamicResource AccentButtonStyle}">
+                            <Button Cursor="Hand" Margin="5" Padding="5" Width="180" Command="{Binding ForumButton}"
+                                    Style="{DynamicResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:FontAwesome Icon="Brands_Discourse" FontSize="24" Margin="0,0,10,0" Foreground="White" />
-                                    <TextBlock Text="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center"/>
+                                    <fa5:FontAwesome Icon="Brands_Discourse" FontSize="24" Margin="0,0,10,0"
+                                                     Foreground="White" />
+                                    <TextBlock
+                                        Text="{Binding Language, ConverterParameter=About.ForumButton, Converter={StaticResource LocConverter}}"
+                                        VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White" Width="140" Command="{Binding DonateButton}" Style="{DynamicResource AccentButtonStyle}">
+                            <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White"
+                                    Width="140" Command="{Binding DonateButton}"
+                                    Style="{DynamicResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:FontAwesome Icon="Brands_Paypal" FontSize="24" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White" />
-                                    <TextBlock Text="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center" ></TextBlock>
+                                    <fa5:FontAwesome Icon="Brands_Paypal" FontSize="24" VerticalAlignment="Center"
+                                                     Margin="0,0,10,0" Foreground="White" />
+                                    <TextBlock
+                                        Text="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}"
+                                        VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -52,19 +72,27 @@
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Margin="10,0,5,10" Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}" TextWrapping="WrapWithOverflow" />
+                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                                   Text="{Binding Language, ConverterParameter=About.DocumentationTitle, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="10,0,5,10"
+                                   Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}"
+                                   TextWrapping="WrapWithOverflow" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Cursor="Hand" Margin="5" Padding="5" Width="160" Style="{DynamicResource AccentButtonStyle}" Command="{Binding FordHubButton}">
+                            <Button Cursor="Hand" Margin="5" Padding="5" Width="160"
+                                    Style="{DynamicResource AccentButtonStyle}" Command="{Binding FordHubButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa5:FontAwesome Icon="Solid_Car" FontSize="24" Margin="0,0,10,0" />
-                                    <TextBlock Text="{Binding Language, ConverterParameter=About.FordHubButton, Converter={StaticResource LocConverter}}"  VerticalAlignment="Center"/>
+                                    <TextBlock
+                                        Text="{Binding Language, ConverterParameter=About.FordHubButton, Converter={StaticResource LocConverter}}"
+                                        VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
-                            <Button Cursor="Hand" Margin="0,5,5,5" Padding="5" Width="250" Command="{Binding DocButton}" Style="{DynamicResource AccentButtonStyle}">
+                            <Button Cursor="Hand" Margin="0,5,5,5" Padding="5" Width="250"
+                                    Command="{Binding DocButton}" Style="{DynamicResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa5:FontAwesome Icon="Solid_Book" FontSize="24" Margin="0,0,10,0"/>
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}"/>
+                                    <fa5:FontAwesome Icon="Solid_Book" FontSize="24" Margin="0,0,10,0" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding Language, ConverterParameter=About.DocumentationButton, Converter={StaticResource LocConverter}}" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -74,11 +102,16 @@
                 <Grid VerticalAlignment="Bottom">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}"/>
-                        <TextBlock Margin="10,0,5,10" TextWrapping="WrapWithOverflow" Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                                   Text="{Binding Language, ConverterParameter=About.DisclaimerTitle, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="10,0,5,10" TextWrapping="WrapWithOverflow"
+                                   Text="{Binding Language, ConverterParameter=About.Disclaimer, Converter={StaticResource LocConverter}}" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                            <controls:ToggleSwitch Cursor="Hand" VerticalAlignment="Center" Margin="10" IsOn="{Binding DisclaimerAccepted}" OnContent="" OffContent="" Width="40" />
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=About.DisclaimerAgreement, Converter={StaticResource LocConverter}}" />
+                            <controls:ToggleSwitch Cursor="Hand" VerticalAlignment="Center" Margin="10"
+                                                   IsOn="{Binding DisclaimerAccepted}" OnContent="" OffContent=""
+                                                   Width="40" />
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Language, ConverterParameter=About.DisclaimerAgreement, Converter={StaticResource LocConverter}}" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>

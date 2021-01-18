@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -17,6 +18,7 @@ using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.UI;
 using Newtonsoft.Json;
 using SharedCode;
+using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Cyanlabs.Syn3Updater
 {
@@ -37,6 +39,7 @@ namespace Cyanlabs.Syn3Updater
         public JsonSettings Settings { get; set; }
 
         public readonly HttpClient Client = new HttpClient();
+
         #endregion
 
         #region Events
@@ -76,6 +79,7 @@ namespace Cyanlabs.Syn3Updater
         public event EventHandler ShowUtilityTab;
 
         public event EventHandler ShowSettingsTab;
+
         #endregion
 
         #region Properties & Fields
@@ -94,8 +98,8 @@ namespace Cyanlabs.Syn3Updater
             InstallMode,
             SyncVersion,
             Action,
-            ConfigFile, 
-            configFolderPath;
+            ConfigFile,
+            ConfigFolderPath;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
 
@@ -111,27 +115,30 @@ namespace Cyanlabs.Syn3Updater
 
         public void ResetSettings()
         {
-           if(File.Exists(ConfigFile)) File.Delete(ConfigFile);
+            if (File.Exists(ConfigFile)) File.Delete(ConfigFile);
         }
 
-        public void UpdateLaucherSettings()
+        public void UpdateLauncherSettings()
         {
             string json = JsonConvert.SerializeObject(LauncherPrefs);
-            if (!Directory.Exists(configFolderPath)) Directory.CreateDirectory(configFolderPath);
+            if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
             try
             {
-                File.WriteAllText(configFolderPath + "\\launcherPrefs.json", json);
+                File.WriteAllText(ConfigFolderPath + "\\launcherPrefs.json", json);
             }
             catch (IOException e)
             {
                 Logger.Debug(e.GetFullMessage());
-                UI.MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         public void Initialize()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
 
             if (!Environment.GetCommandLineArgs().Contains("/launcher"))
             {
@@ -140,28 +147,16 @@ namespace Cyanlabs.Syn3Updater
                     Process.Start("Launcher.exe");
                     Application.Current.Shutdown();
                 }
-                catch (System.ComponentModel.Win32Exception e)
+                catch (Win32Exception e)
                 {
                     Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
                     Logger.Debug(e.GetFullMessage());
                 }
             }
 
-            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
-            foreach (string arg in Environment.GetCommandLineArgs())
-                switch (arg)
-                {
-                    case "/updated":
-                        Logger.Debug("/updated - flag no longer used but noted for debug purposes");
-                        break;
-                }
-
-            configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
-            ConfigFile = configFolderPath + "\\settings.json";
-            if (!Directory.Exists(configFolderPath))
-            {
-                Directory.CreateDirectory(configFolderPath);
-            }
+            ConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+            ConfigFile = ConfigFolderPath + "\\settings.json";
+            if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
 
             if (!File.Exists(ConfigFile))
             {
@@ -173,11 +168,13 @@ namespace Cyanlabs.Syn3Updater
                 Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
             }
 
-            LauncherPrefs = File.Exists(configFolderPath + "\\launcherPrefs.json") ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json")) : new LauncherPrefs();
+            LauncherPrefs = File.Exists(ConfigFolderPath + "\\launcherPrefs.json")
+                ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(ConfigFolderPath + "\\launcherPrefs.json"))
+                : new LauncherPrefs();
 
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
-            Logger.Debug($"Determining language to use for the application");
+            Logger.Debug("Determining language to use for the application");
             List<LanguageModel> langs = LanguageManager.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (string.IsNullOrWhiteSpace(Settings.Lang))
@@ -196,8 +193,8 @@ namespace Cyanlabs.Syn3Updater
                 Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
             }
 
-            Logger.Debug($"Determining download path to use for the application");
-            DownloadPath = ApplicationManager.Instance.Settings.DownloadPath;
+            Logger.Debug("Determining download path to use for the application");
+            DownloadPath = Instance.Settings.DownloadPath;
 
             try
             {
@@ -214,29 +211,25 @@ namespace Cyanlabs.Syn3Updater
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
                 Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = ApplicationManager.Instance.Settings.DownloadPath;
+                DownloadPath = Instance.Settings.DownloadPath;
             }
             catch (IOException)
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
                 Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = ApplicationManager.Instance.Settings.DownloadPath;
+                DownloadPath = Instance.Settings.DownloadPath;
             }
 
-            string version = ApplicationManager.Instance.Settings.CurrentSyncVersion.ToString();
+            string version = Instance.Settings.CurrentSyncVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             Logger.Debug($"Current Sync Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
             {
                 if (version.Length == 7)
-                {
                     SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
-                }
                 else
-                {
                     SyncVersion = $"0{decimalSeparator}0{decimalSeparator}00000";
-                }
             }
             catch (IndexOutOfRangeException e)
             {
@@ -264,16 +257,17 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug("Saving settings before shutdown");
             try
             {
-                ApplicationManager.Instance.SaveSettings();
+                Instance.SaveSettings();
             }
             catch (Exception e)
             {
                 Logger.Debug(e.GetFullMessage());
             }
+
             Logger.Debug("Writing log to disk before shutdown");
             try
             {
-                File.WriteAllText(configFolderPath + "\\log.txt", JsonConvert.SerializeObject(Logger.Log));
+                File.WriteAllText(ConfigFolderPath + "\\log.txt", JsonConvert.SerializeObject(Logger.Log));
             }
             catch (UnauthorizedAccessException e)
             {
@@ -283,9 +277,11 @@ namespace Cyanlabs.Syn3Updater
             {
                 Logger.Debug(e.GetFullMessage());
             }
+
             Logger.Debug("Syn3 Updater is shutting down");
             Application.Current.Shutdown();
         }
+
         #endregion
     }
 }
