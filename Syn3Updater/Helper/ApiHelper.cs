@@ -7,6 +7,8 @@ namespace Cyanlabs.Syn3Updater.Helper
 {
     internal class ApiHelper
     {
+        #region Methods
+
         public static SyncModel.SyncIvsu GetSpecialIvsu(string url)
         {
             HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(url).Result;
@@ -31,5 +33,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             };
             return output;
         }
+
+        #endregion
     }
 }
