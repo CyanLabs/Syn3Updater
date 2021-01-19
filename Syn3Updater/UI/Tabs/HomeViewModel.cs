@@ -553,7 +553,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
 
             ApplicationManager.Instance.DownloadOnly = false;
-
+            ApplicationManager.Instance.DriveLetter = DriveLetter;
             foreach (SyncModel.SyncIvsu item in IvsuList)
                 if (item.Selected)
                 {
