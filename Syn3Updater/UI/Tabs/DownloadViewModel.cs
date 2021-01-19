@@ -187,7 +187,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                             try
                             {
-                                await _fileHelper.Download_file(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
+                                await _fileHelper.DownloadFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
                             }
                             catch (HttpRequestException webException)
                             {
@@ -615,7 +615,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             DownloadInfo = $"Validating: {localfile}";
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");
-            FileHelper.ValidateResult validateResult = _fileHelper.validate_file(srcfile, localfile, md5, copy, _ct);
+            FileHelper.ValidateResult validateResult = _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
 
             if (validateResult.Message != "")
             {

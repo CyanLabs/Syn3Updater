@@ -35,7 +35,7 @@ namespace Cyanlabs.Syn3Updater
             string guid = crashWindow.SendReport(ex);
             var definition = new {uuid = "", status = ""};
             var output = JsonConvert.DeserializeAnonymousType(guid, definition);
-            string url = Api.CrashLogURL + output.uuid;
+            string url = Api.CrashLogUrl + output.uuid;
             crashWindow.ErrorReportUrl = url;
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();

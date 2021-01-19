@@ -1,17 +1,22 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable CollectionNeverUpdated.Global
-
 namespace Cyanlabs.Syn3Updater.Model
 {
-    //public static class APISecretExample
-    //{
-    //    public const string Token = "TOKEN";
-    //}
+/*
+    /// <summary>
+    ///     Class to store the API Token, this is a duplicate with palceholder token
+    ///     of the file APISecretModel.cs which is not included in the GitHub Repo
+    /// </summary>
+    public static class ApiSecret
+    {
+        public const string Token = "TOKEN";
+    }
+*/
 
+    /// <summary>
+    ///     Class for Api related properties and models
+    /// </summary>
     public class Api
     {
         #region Properties & Fields
@@ -21,12 +26,12 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string MapReleasesConst = Base + "items/map_releases?sort=-name&limit=-1&[regionplaceholder]&[published]";
         public const string AppReleaseSingle = Base + "items/releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         public const string MapReleaseSingle = Base + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
-        public const string IVSUSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
+        public const string IvsuSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
 
-        public const string CrashLogURL = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=";
+        public const string CrashLogUrl = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=";
         public const string CrashLogPost = "https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php";
 
-        public const string LogURL = "https://cyanlabs.net/api/Syn3Updater/logs/?uuid=";
+        public const string LogUrl = "https://cyanlabs.net/api/Syn3Updater/logs/?uuid=";
         public const string LogPost = "https://cyanlabs.net/api/Syn3Updater/logs/post.php";
 
         public const int BlacklistedVersion = 3419274;
@@ -48,64 +53,59 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public class Data
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string notes { get; set; }
-            public IList<string> regions { get; set; }
-            public string status { get; set; }
-            public string version { get; set; }
-            public IList<Ivsus> ivsus { get; set; }
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("name")] public string Name { get; set; }
+            [JsonProperty("notes")] public string Notes { get; set; }
+            [JsonProperty("regions")] public IList<string> Regions { get; set; }
+            [JsonProperty("status")] public string Status { get; set; }
+            [JsonProperty("version")] public string Version { get; set; }
+            [JsonProperty("ivsus")] public IList<Ivsus> IvsusList { get; set; }
         }
 
         public class Ivsu
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string type { get; set; }
-            public IList<string> regions { get; set; }
-            public string md5 { get; set; }
-            public string url { get; set; }
-            public string notes { get; set; }
-            public string version { get; set; }
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("name")] public string Name { get; set; }
+            [JsonProperty("type")] public string Type { get; set; }
+            [JsonProperty("regions")] public IList<string> Regions { get; set; }
+            [JsonProperty("md5")] public string Md5 { get; set; }
+            [JsonProperty("url")] public string Url { get; set; }
+            [JsonProperty("notes")] public string Notes { get; set; }
+            [JsonProperty("version")] public string Version { get; set; }
         }
 
         public class Ivsus
         {
-            public int id { get; set; }
-            public Ivsu ivsu { get; set; }
-            public Map_Ivsu map_ivsu { get; set; }
-            public Release release { get; set; }
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("ivsu")] public Ivsu Ivsu { get; set; }
+            [JsonProperty("map_ivsu")] public MapIvsu MapIvsu { get; set; }
+            [JsonProperty("release")] public Release Release { get; set; }
         }
 
         public class JsonReleases
         {
-            public IList<Data> data { get; set; }
+            [JsonProperty("data")] public IList<Data> Releases { get; set; }
         }
 
-        public class Map_Ivsu
+        public class MapIvsu
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string type { get; set; }
-            public IList<string> regions { get; set; }
-            public string md5 { get; set; }
-            public string notes { get; set; }
-            public string url { get; set; }
-            public string version { get; set; }
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("name")] public string Name { get; set; }
+            [JsonProperty("type")] public string Type { get; set; }
+            [JsonProperty("regions")] public IList<string> Regions { get; set; }
+            [JsonProperty("md5")] public string Md5 { get; set; }
+            [JsonProperty("notes")] public string Notes { get; set; }
+            [JsonProperty("url")] public string Url { get; set; }
+            [JsonProperty("version")] public string Version { get; set; }
         }
 
         public class Release
         {
-            public int id { get; set; }
-            public string name { get; set; }
-            public string map_version { get; set; }
-            public string notes { get; set; }
-            public IList<string> regions { get; set; }
-        }
-
-        public class Root
-        {
-            [JsonProperty("data")] public Data Data { get; set; }
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("name")] public string Name { get; set; }
+            [JsonProperty("map_version")] public string MapVersion { get; set; }
+            [JsonProperty("notes")] public string Notes { get; set; }
+            [JsonProperty("regions")] public IList<string> Regions { get; set; }
         }
 
         #endregion

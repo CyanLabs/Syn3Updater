@@ -143,7 +143,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             try
             {
-                ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.refresh_devices(false);
+                ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(false);
                 if (tmpDriveList.Count > 0) DriveList = tmpDriveList;
             }
             catch (XamlParseException e)
@@ -294,15 +294,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
                         try
                         {
-                            HttpResponseMessage response = Client.GetAsync(Api.IVSUSingle + syncappname).Result;
+                            HttpResponseMessage response = Client.GetAsync(Api.IvsuSingle + syncappname).Result;
                             Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
-                            string convertedsyncversion = syncversion.data[0].version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                            string convertedsyncversion = syncversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                             if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
                                 if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion),
                                     "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                                 {
-                                    ApplicationManager.Instance.Settings.CurrentSyncVersion = Convert.ToInt32(syncversion.data[0].version.Replace(".", ""));
+                                    ApplicationManager.Instance.Settings.CurrentSyncVersion = Convert.ToInt32(syncversion.Releases[0].Version.Replace(".", ""));
                                     ApplicationManager.Instance.SyncVersion = convertedsyncversion;
                                 }
                         }

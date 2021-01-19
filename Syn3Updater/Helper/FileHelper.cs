@@ -162,7 +162,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="md5">MD5 checksum to compare against</param>
         /// <param name="localonly">Set to true if comparing to local sources else set to false</param>
         /// <param name="ct">CancellationToken</param>
-        /// <returns>Returns validateResult with Message and Result properties</returns>
+        /// <returns>validateResult with Message and Result properties</returns>
         public ValidateResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
         {
             ValidateResult validateResult = new ValidateResult();
@@ -235,7 +235,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// </summary>
         /// <param name="filename">Source File</param>
         /// <param name="ct">CancellationToken</param>
-        /// <returns>Returns MD5 hash as String</returns>
+        /// <returns>MD5 hash as String</returns>
         public string GenerateMd5(string filename, CancellationToken ct)
         {
             long totalBytesRead = 0;
@@ -274,7 +274,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         ///     Extracts the last part of a URL to for use as a filename
         /// </summary>
         /// <param name="url">URL</param>
-        /// <returns>Returns filename as String</returns>
+        /// <returns>filename as String</returns>
         public static string url_to_filename(string url) => url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1, url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
         #endregion
     }

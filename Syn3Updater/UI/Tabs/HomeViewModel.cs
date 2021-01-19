@@ -305,7 +305,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             try
             {
-                ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.refresh_devices(true);
+                ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(true);
                 if (tmpDriveList.Count > 0) DriveList = tmpDriveList;
             }
             catch (XamlParseException e)
@@ -387,9 +387,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 _jsonReleases = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringReleasesJson);
                 SyncVersion = new ObservableCollection<string>();
 
-                foreach (Api.Data item in _jsonReleases.data)
-                    if (item.regions.Contains(SelectedRegion.Code))
-                        SyncVersion.Add(item.name);
+                foreach (Api.Data item in _jsonReleases.Releases)
+                    if (item.Regions.Contains(SelectedRegion.Code))
+                        SyncVersion.Add(item.Name);
 
                 SyncVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
@@ -402,18 +402,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SelectedMapVersion = null;
                 IvsuList.Clear();
-                foreach (Api.Data item in _jsonReleases.data)
-                    if (item.name == SelectedRelease)
+                foreach (Api.Data item in _jsonReleases.Releases)
+                    if (item.Name == SelectedRelease)
                     {
-                        _stringCompatibility = item.version.Substring(0, 3);
-                        if (item.notes == null)
+                        _stringCompatibility = item.Version.Substring(0, 3);
+                        if (item.Notes == null)
                         {
                             NotesVisibility = Visibility.Hidden;
                             continue;
                         }
 
                         NotesVisibility = Visibility.Visible;
-                        Notes = item.notes.Replace("\n", Environment.NewLine + Environment.NewLine);
+                        Notes = item.Notes.Replace("\n", Environment.NewLine + Environment.NewLine);
                     }
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][contains]={_stringCompatibility}");
@@ -436,7 +436,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     }
 
                     _jsonMapReleases = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringMapReleasesJson);
-                    foreach (Api.Data item in _jsonMapReleases.data) SyncMapVersion.Add(item.name);
+                    foreach (Api.Data item in _jsonMapReleases.Releases) SyncMapVersion.Add(item.Name);
                 }
 
                 SyncMapVersionsEnabled = true;
@@ -499,29 +499,29 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 Api.JsonReleases jsonIvsUs = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringDownloadJson);
                 Api.JsonReleases jsonMapIvsUs = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringMapDownloadJson);
 
-                foreach (Api.Ivsus item in jsonIvsUs.data[0].ivsus)
-                    if (item.ivsu.regions.Contains("ALL") || item.ivsu.regions.Contains(SelectedRegion.Code))
+                foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList)
+                    if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(SelectedRegion.Code))
                     {
 
-                        string fileName = FileHelper.url_to_filename(item.ivsu.url);
+                        string fileName = FileHelper.url_to_filename(item.Ivsu.Url);
                         IvsuList.Add(new SyncModel.SyncIvsu
                         {
-                            Type = item.ivsu.type, Name = item.ivsu.name, Version = item.ivsu.version,
-                            Notes = item.ivsu.notes, Url = item.ivsu.url, Md5 = item.ivsu.md5, Selected = true,
+                            Type = item.Ivsu.Type, Name = item.Ivsu.Name, Version = item.Ivsu.Version,
+                            Notes = item.Ivsu.Notes, Url = item.Ivsu.Url, Md5 = item.Ivsu.Md5, Selected = true,
                             FileName = fileName
                         });
                     }
 
                 if (SelectedMapVersion != LanguageManager.GetValue("String.NoMaps") && SelectedMapVersion != LanguageManager.GetValue("String.NonNavAPIM") &&
                     SelectedMapVersion != LanguageManager.GetValue("String.KeepExistingMaps"))
-                    foreach (Api.Ivsus item in jsonMapIvsUs.data[0].ivsus)
-                        if (item.map_ivsu.regions.Contains("ALL") || item.map_ivsu.regions.Contains(SelectedRegion.Code))
+                    foreach (Api.Ivsus item in jsonMapIvsUs.Releases[0].IvsusList)
+                        if (item.MapIvsu.Regions.Contains("ALL") || item.MapIvsu.Regions.Contains(SelectedRegion.Code))
                         {
-                            string fileName = FileHelper.url_to_filename(item.map_ivsu.url);
+                            string fileName = FileHelper.url_to_filename(item.MapIvsu.Url);
                             IvsuList.Add(new SyncModel.SyncIvsu
                             {
-                                Type = item.map_ivsu.type, Name = item.map_ivsu.name, Version = item.map_ivsu.version,
-                                Notes = item.map_ivsu.notes, Url = item.map_ivsu.url, Md5 = item.map_ivsu.md5,
+                                Type = item.MapIvsu.Type, Name = item.MapIvsu.Name, Version = item.MapIvsu.Version,
+                                Notes = item.MapIvsu.Notes, Url = item.MapIvsu.Url, Md5 = item.MapIvsu.Md5,
                                 Selected = true, FileName = fileName
                             });
                         }

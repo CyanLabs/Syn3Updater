@@ -26,18 +26,18 @@ namespace Cyanlabs.Syn3Updater.Helper
         ///     Converts a API retrieved Api.Ivsu to SyncModel.SyncIvsu
         /// </summary>
         /// <param name="ivsu">SpecialPackage IVSU object from GetSpecialIvsu</param>
-        /// <returns>Returns ivsu as type SyncModel.SyncIvsu</returns>
+        /// <returns>ivsu as type SyncModel.SyncIvsu</returns>
         public static SyncModel.SyncIvsu ConvertIvsu(Api.Ivsu ivsu)
         {
-            string fileName = FileHelper.url_to_filename(ivsu.url);
+            string fileName = FileHelper.url_to_filename(ivsu.Url);
             SyncModel.SyncIvsu output = new SyncModel.SyncIvsu
             {
-                Type = ivsu.type,
-                Name = ivsu.name,
-                Version = ivsu.version,
-                Notes = ivsu.notes,
-                Url = ivsu.url,
-                Md5 = ivsu.md5,
+                Type = ivsu.Type,
+                Name = ivsu.Name,
+                Version = ivsu.Version,
+                Notes = ivsu.Notes,
+                Url = ivsu.Url,
+                Md5 = ivsu.Md5,
                 Selected = true,
                 FileName = fileName.Replace("?dl=1", "")
             };

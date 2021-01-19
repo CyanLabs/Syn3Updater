@@ -165,9 +165,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             string responseString = response.Content.ReadAsStringAsync().Result;
             var definition = new {uuid = "", status = ""};
             var output = JsonConvert.DeserializeAnonymousType(responseString, definition);
-            Process.Start(Api.LogURL + output.uuid);
+            Process.Start(Api.LogUrl + output.uuid);
         }
-
         #endregion
     }
 }
