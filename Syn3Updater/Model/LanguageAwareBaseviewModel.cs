@@ -1,5 +1,8 @@
 ﻿namespace Cyanlabs.Syn3Updater.Model
 {
+    /// <summary>
+    ///     Extension to BaseviewModel to allow it to be LanguageAware
+    /// </summary>
     public class LanguageAwareBaseViewModel : BaseViewModel
     {
         #region Constructors

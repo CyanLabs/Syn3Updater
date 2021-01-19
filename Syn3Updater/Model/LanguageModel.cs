@@ -114,7 +114,6 @@ namespace Cyanlabs.Syn3Updater.Model
 
                 if (l == null) return $"[{lang}:{key}]";
 
-                Debug.WriteLine($"Looking for {key} in {l.Code}");
                 string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
                     .Replace("\\r", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
@@ -171,7 +170,6 @@ namespace Cyanlabs.Syn3Updater.Model
                 if (l == null) return $"[{lang}:{key}]";
 
                 // ReSharper disable once ConstantConditionalAccessQualifier
-                Debug.WriteLine($"Looking for {key} in {l?.Code}");
                 string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
                     .Replace("\\r\\n", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))

@@ -224,11 +224,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     XmlDocument doc = new XmlDocument();
                     doc.Load(dialog.FileName);
                     string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
-                    InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<InterrogatorModel>(json, Model.Converter.Settings);
+                    Interrogator.InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<Interrogator.InterrogatorModel>(json);
                     _syncApimDetails.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
                     LogXmlDetails = $"VIN: {interrogatorLog?.POtaModuleSnapShot.PVin}{Environment.NewLine}";
 
-                    D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
+                    Interrogator.D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
                     string syncappname = d2P1Did!.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.SyncVersion")} {syncappname}{Environment.NewLine}";
 
@@ -277,16 +277,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     LogXmlDetails += $"{Environment.NewLine}Partition Type = Free / Total";
                     if (interrogatorLog != null)
                     {
-                        foreach (D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
+                        foreach (Interrogator.D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
                             LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
 
-                        List<DID> asBuiltValues = new List<DID>();
+                        List<AsBuilt.DID> asBuiltValues = new List<AsBuilt.DID>();
 
                         LogXmlDetails += $"{Environment.NewLine}{Environment.NewLine}APIM AsBuilt (Ford/UCDS)";
-                        foreach (D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
+                        foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
                         {
                             LogXmlDetails += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
-                            asBuiltValues.Add(new DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
+                            asBuiltValues.Add(new AsBuilt.DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
                         }
 
                         ToggleLogXmlDetails = Visibility.Visible;
@@ -312,9 +312,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         }
 
 
-                        DirectConfiguration asbult = new DirectConfiguration
+                        AsBuilt.DirectConfiguration asbult = new AsBuilt.DirectConfiguration
                         {
-                            VEHICLE = new VEHICLE
+                            VEHICLE = new AsBuilt.VEHICLE
                             {
                                 MODULE = "Syn3Updater",
                                 VIN = "",

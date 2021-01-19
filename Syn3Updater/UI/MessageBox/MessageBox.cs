@@ -64,7 +64,7 @@ namespace Cyanlabs.Syn3Updater.UI.MessageBox {
         }
 
         private static Window GetActiveWindow() {
-            return Application.Current.Windows.Cast<Window>().FirstOrDefault(window => window.IsActive);
+            return Application.Current.Windows.Cast<Window>().FirstOrDefault(window => window.IsActive)!;
         }
 
     }

@@ -16,6 +16,7 @@ namespace Cyanlabs.Syn3Updater.Model
 
     /// <summary>
     ///     Class for Api related properties and models
+    ///     Json Classes for parsing JSON correctly
     /// </summary>
     public class Api
     {

@@ -10,11 +10,11 @@ namespace Cyanlabs.Syn3Updater.Helper
         #region Methods
 
         /// <summary>
-        ///     Recursively get ex.Message
+        ///     Recursively get main Exception message and all InnerException messages
         /// </summary>
         /// <param name="ex">Exception</param>
         /// <param name="message"></param>
-        /// <returns></returns>
+        /// <returns>all innerexception messages as type String</returns>
         public static string GetFullMessage(this Exception ex, string message = "")
         {
             if (ex == null) return string.Empty;
