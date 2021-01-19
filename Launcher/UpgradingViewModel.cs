@@ -2,8 +2,9 @@
 {
     public class UpgradingViewModel : BaseViewModel
     {
-        private string _message;
 
+        #region Properties & Fields
+        private string _message;
         private int _percentage = 100;
 
         public string Message
@@ -17,5 +18,7 @@
             get => _percentage;
             set => Set(ref _percentage, value);
         }
+        #endregion
+
     }
 }

@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,20 +18,23 @@ namespace Cyanlabs.Launcher
     /// </summary>
     public partial class UpgradingWindow
     {
-        // ReSharper disable once InconsistentNaming
-        private const int CSIDL_PROGRAMS = 0x02; // 
 
-        public static string BaseFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-        public UpgradingViewModel Vm;
-
+        #region Constructors
         public UpgradingWindow()
         {
             InitializeComponent();
             Vm = DataContext as UpgradingViewModel;
             Core.UpgradingWindow = this;
         }
+        #endregion
 
+        #region Properties & Fields
+        private const int CsidlPrograms = 0x02; // 
+        public static string BaseFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public UpgradingViewModel Vm;
+        #endregion
+
+        #region Methods
         private async void AcrylicWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Thread.Sleep(100);
@@ -42,7 +43,10 @@ namespace Cyanlabs.Launcher
 
         private async Task StartCheck()
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            // Set 'SecurityProtocolType' to Tls12 to allow Windows 7 and old .NET Framework versions to access TLS1.2 secure sites
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; 
+
+            // Check if Syn3Updater Installer path exists in registry, if so use it's path as the destination path
             string installPath = (string) Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
             if (installPath != null) BaseFolder = Path.GetDirectoryName(installPath);
 
@@ -50,6 +54,7 @@ namespace Cyanlabs.Launcher
 
             Process[] processlist = Process.GetProcesses();
 
+            // Forcefully close all Syn3Updater processes, ignore all exceptions
             if (processlist.Any(x => x.ProcessName == "Syn3Updater"))
                 try
                 {
@@ -62,19 +67,18 @@ namespace Cyanlabs.Launcher
                     // ignored
                 }
 
+            // Attempt to load existing settings if found, if not use defaults
             string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             if (File.Exists(configFolderPath + "\\launcherPrefs.json"))
                 Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
 
+
+            // Start and wait for the UpdateCheck to complete
             UpdateCheck check = new UpdateCheck();
             await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);
             while (!check.Complete) await Task.Delay(100);
 
-            StringBuilder path = new StringBuilder(260);
-            SHGetSpecialFolderPath(IntPtr.Zero, path, CSIDL_PROGRAMS, false);
-            string s = path.ToString();
-            if (Directory.Exists(s + "\\Syn3Updater")) Directory.Delete(s + "\\Syn3Updater", true);
-
+            // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe
             Process p = new Process
             {
                 StartInfo =
@@ -90,10 +94,10 @@ namespace Cyanlabs.Launcher
 
             await Task.Delay(2000);
 
+            // Exit Launcher
             Application.Current.Shutdown();
         }
+        #endregion
 
-        [DllImport("shell32.dll")]
-        private static extern bool SHGetSpecialFolderPath(IntPtr hwndOwner, [Out] StringBuilder lpszPath, int nFolder, bool fCreate);
     }
 }
