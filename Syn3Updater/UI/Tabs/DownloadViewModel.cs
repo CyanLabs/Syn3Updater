@@ -187,7 +187,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                             try
                             {
-                                await _fileHelper.download_file(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
+                                await _fileHelper.Download_file(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
                             }
                             catch (HttpRequestException webException)
                             {

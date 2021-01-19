@@ -158,7 +158,6 @@
     </Compile>
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\LocConverter.cs" />
-    <Compile Include="Converter\PercentageConverter.cs" />
     <Compile Include="Converter\StringMatchToVisibilityConverter.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

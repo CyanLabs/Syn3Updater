@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
+    /// <summary>
+    ///     Helper class for various extra math methods
+    /// </summary>
     public static class MathHelper
     {
         #region Methods

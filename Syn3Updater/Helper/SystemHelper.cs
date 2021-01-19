@@ -6,7 +6,7 @@ using Microsoft.Win32;
 namespace Cyanlabs.Syn3Updater.Helper
 {
     /// <summary>
-    ///     Class containing methods to retrieve specific file system paths.
+    ///     Helper class containing methods to retrieve specific file system paths.
     ///     https://stackoverflow.com/a/21953690
     /// </summary>
     public static class SystemHelper

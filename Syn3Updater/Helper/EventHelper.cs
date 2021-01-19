@@ -2,6 +2,9 @@
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
+    /// <summary>
+    ///     Helper class for EventRaising
+    /// </summary>
     public class EventArgs<T> : EventArgs
     {
         #region Constructors

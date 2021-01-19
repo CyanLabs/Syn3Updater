@@ -4,20 +4,24 @@ using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
+    /// <summary>
+    ///     Helper class to "Sanity Check" before running the main methods to prevent user error etc
+    /// </summary>
     public class SanityCheckHelper
     {
         /// <summary>
+        ///     A multi-section check to ensure nothing prevents the download from beginning
         /// </summary>
-        /// <param name="selectedDrive"></param>
-        /// <param name="allowDownloadonly"></param>
-        /// <returns></returns>
+        /// <param name="selectedDrive">USB Drive</param>
+        /// <param name="allowDownloadonly">True if download only is allowed, false if USB must be used</param>
+        /// <returns>true/false as Boolean depending on if Download is cancelled or not</returns>
         public static bool CancelDownloadCheck(USBHelper.Drive selectedDrive, bool allowDownloadonly = true)
         {
+            // Set local variables to the values of application level variables
             string driveLetter = ApplicationManager.Instance.DriveLetter;
             string downloadPath = ApplicationManager.Instance.DownloadPath;
 
-            //No USB drive selected, download only?
-
+            // No USB drive selected, download only?
             if (string.IsNullOrWhiteSpace(selectedDrive.Path) || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB"))
             {
                 if (allowDownloadonly)
@@ -40,7 +44,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
             }
 
-            //Ensure drive letter is not used as download path
+            // Ensure drive letter is not used as download path
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
                 {
@@ -49,7 +53,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
 
 
-            //Optional Format
+            // Optional Format
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
             {
                 if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
@@ -62,7 +66,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
             }
 
-            //Format USB Drive
+            // Format USB Drive
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && ApplicationManager.Instance.DownloadOnly == false && ApplicationManager.Instance.SkipFormat == false)
                 if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
@@ -71,7 +75,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     return true;
                 }
 
-
+            // If nothing above has returned true then download has not been cancelled and method will return false;
             return false;
         }
     }

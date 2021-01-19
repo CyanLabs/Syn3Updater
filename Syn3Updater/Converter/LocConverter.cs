@@ -33,21 +33,21 @@ namespace Cyanlabs.Syn3Updater.Converter
         #endregion
     }
 
-    [ValueConversion(typeof(string), typeof(string))]
-    public class ValueLocConverter : IValueConverter
-    {
-        #region Methods
+    //[ValueConversion(typeof(string), typeof(string))]
+    //public class ValueLocConverter : IValueConverter
+    //{
+    //    #region Methods
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return LanguageManager.GetValue(value?.ToString().Replace(" ", ""));
-        }
+    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        return LanguageManager.GetValue(value?.ToString().Replace(" ", ""));
+    //    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }

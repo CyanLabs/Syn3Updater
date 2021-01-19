@@ -7,9 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
-
+///
 namespace Cyanlabs.Syn3Updater.Helper
 {
+    /// <summary>
+    ///     Helper class for file related functionality
+    /// </summary>
     public class FileHelper
     {
         #region Events
@@ -30,8 +33,6 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         #region Constructors
 
-        private static readonly HttpClient Client = new HttpClient();
-
         public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged)
         {
             _percentageChanged = externalPercentageChanged;
@@ -41,53 +42,62 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         #region Methods
 
+        /// <summary>
+        ///     Copy file from source to destination with CancellationToken support
+        /// </summary>
+        /// <param name="source">Source file</param>
+        /// <param name="destination">Destination file</param>
+        /// <param name="ct">CancellationToken</param>
         public void CopyFile(string source, string destination, CancellationToken ct)
         {
             int bufferSize = 1024 * 512;
-            using (FileStream inStream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using (FileStream fileStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write))
+            using FileStream inStream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using FileStream fileStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write);
+            int bytesRead;
+            int totalReads = 0;
+            long totalBytes = inStream.Length;
+            byte[] bytes = new byte[bufferSize];
+            int prevPercent = 0;
+
+            while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
             {
-                int bytesRead;
-                int totalReads = 0;
-                long totalBytes = inStream.Length;
-                byte[] bytes = new byte[bufferSize];
-                int prevPercent = 0;
-
-                while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
+                if (ct.IsCancellationRequested)
                 {
-                    if (ct.IsCancellationRequested)
+                    fileStream.Close();
+                    fileStream.Dispose();
+                    try
                     {
-                        fileStream.Close();
-                        fileStream.Dispose();
-                        try
-                        {
-                            File.Delete(destination);
-                        }
-                        catch (IOException)
-                        {
-                        }
-
-                        return;
+                        File.Delete(destination);
+                    }
+                    catch (IOException)
+                    {
                     }
 
-                    fileStream.Write(bytes, 0, bytesRead);
-                    totalReads += bytesRead;
-                    int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
-                    if (percent != prevPercent)
-                    {
-                        _percentageChanged.Raise(this, percent);
-                        prevPercent = percent;
-                    }
+                    return;
+                }
+
+                fileStream.Write(bytes, 0, bytesRead);
+                totalReads += bytesRead;
+                int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
+                if (percent != prevPercent)
+                {
+                    _percentageChanged.Raise(this, percent);
+                    prevPercent = percent;
                 }
             }
         }
-
-        //https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/
-        public async Task download_file(string path, string filename, CancellationToken ct)
+        /// <summary>
+        ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
+        ///     <see href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">See more</see>
+        /// </summary>
+        /// <param name="path">Source URL</param>
+        /// <param name="filename">Destination filename</param>
+        /// <param name="ct">CancellationToken</param>
+        public async Task DownloadFile(string path, string filename, CancellationToken ct)
         {
-            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+            using (HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
-                long total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
+                long total = response.Content.Headers.ContentLength ?? -1L;
 
                 bool canReportProgress = total != -1;
 
@@ -142,7 +152,18 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
         }
 
-        public ValidateResult validate_file(string srcfile, string localfile, string md5, bool copy, CancellationToken ct)
+        /// <summary>
+        ///     Validates downloaded or copied file against passed md5 using the <see cref="GenerateMd5"/> method
+        ///     Supports a local source using FileInfo or a remote source using HTTP HEAD requests
+        ///     Supports CancellationToken
+        /// </summary>
+        /// <param name="source">Source file or URL</param>
+        /// <param name="localfile">Local file to compare against</param>
+        /// <param name="md5">MD5 checksum to compare against</param>
+        /// <param name="localonly">Set to true if comparing to local sources else set to false</param>
+        /// <param name="ct">CancellationToken</param>
+        /// <returns>Returns validateResult with Message and Result properties</returns>
+        public ValidateResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
         {
             ValidateResult validateResult = new ValidateResult();
             string filename = Path.GetFileName(localfile);
@@ -154,18 +175,18 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return validateResult;
             }
 
-            string localMd5 = md5_helper(localfile, ct);
+            string localMd5 = GenerateMd5(localfile, ct);
             if (md5 == null)
             {
                 long filesize = new FileInfo(localfile).Length;
-                if (copy)
+                if (localonly)
                 {
-                    long srcfilesize = new FileInfo(srcfile).Length;
+                    long srcfilesize = new FileInfo(source).Length;
 
                     if (srcfilesize == filesize)
-                        if (localMd5 == md5_helper(srcfile, ct))
+                        if (localMd5 == GenerateMd5(source, ct))
                         {
-                            validateResult.Message = $"{filename} checksum matches already verified local copy";
+                            validateResult.Message = $"{filename} checksum matches already verified local localonly";
                             validateResult.Result = true;
                             return validateResult;
                         }
@@ -175,7 +196,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     using (HttpClient httpClient = new HttpClient())
                     {
                         long newfilesize = -1;
-                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(srcfile));
+                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(source));
 
                         if (long.TryParse(httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content.Headers.ContentLength.ToString(),
                             out long contentLength))
@@ -209,7 +230,13 @@ namespace Cyanlabs.Syn3Updater.Helper
             return validateResult;
         }
 
-        public string md5_helper(string filename, CancellationToken ct)
+        /// <summary>
+        ///     Hashes source file against the Md5 algorithm with support for CancellationToken
+        /// </summary>
+        /// <param name="filename">Source File</param>
+        /// <param name="ct">CancellationToken</param>
+        /// <returns>Returns MD5 hash as String</returns>
+        public string GenerateMd5(string filename, CancellationToken ct)
         {
             long totalBytesRead = 0;
             try
@@ -243,6 +270,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
         }
 
+        /// <summary>
+        ///     Extracts the last part of a URL to for use as a filename
+        /// </summary>
+        /// <param name="url">URL</param>
+        /// <returns>Returns filename as String</returns>
+        public static string url_to_filename(string url) => url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1, url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
         #endregion
     }
 }

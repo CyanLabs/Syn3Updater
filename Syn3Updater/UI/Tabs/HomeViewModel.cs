@@ -502,8 +502,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 foreach (Api.Ivsus item in jsonIvsUs.data[0].ivsus)
                     if (item.ivsu.regions.Contains("ALL") || item.ivsu.regions.Contains(SelectedRegion.Code))
                     {
-                        string fileName = item.ivsu.url.Substring(item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
-                            item.ivsu.url.Length - item.ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+
+                        string fileName = FileHelper.url_to_filename(item.ivsu.url);
                         IvsuList.Add(new SyncModel.SyncIvsu
                         {
                             Type = item.ivsu.type, Name = item.ivsu.name, Version = item.ivsu.version,
@@ -517,8 +517,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     foreach (Api.Ivsus item in jsonMapIvsUs.data[0].ivsus)
                         if (item.map_ivsu.regions.Contains("ALL") || item.map_ivsu.regions.Contains(SelectedRegion.Code))
                         {
-                            string fileName = item.map_ivsu.url.Substring(item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) + 1,
-                                item.map_ivsu.url.Length - item.map_ivsu.url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+                            string fileName = FileHelper.url_to_filename(item.map_ivsu.url);
                             IvsuList.Add(new SyncModel.SyncIvsu
                             {
                                 Type = item.map_ivsu.type, Name = item.map_ivsu.name, Version = item.map_ivsu.version,
