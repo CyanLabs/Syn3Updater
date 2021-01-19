@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Cyanlabs.Syn3Updater.Model
 {

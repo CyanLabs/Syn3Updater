@@ -60,9 +60,12 @@
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5,0,0,5"
                                    Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" />
-                        <TextBox Height="190" Margin="5,0,5,5" Text="{Binding Log}" IsReadOnly="True"
-                                 ui:TextBoxAttachedProperties.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto"
-                                 FontSize="11" />
+                        <TextBox Height="190" Style="{StaticResource TextBoxRevealStyle}" ui:TextBoxAttachedProperties.AutoScrollToEnd="True"
+                                 Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                 Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
+                                 BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Log}"
+                                 FontSize="12" Margin="5,0,5,5" IsReadOnly="True" VerticalScrollBarVisibility="Auto" 
+                                 TextWrapping="WrapWithOverflow" TextAlignment="Left" />
                     </StackPanel>
                 </Grid>
             </StackPanel>

@@ -105,13 +105,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             _selectedRegion = ApplicationManager.Instance.SelectedRegion;
             _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
             string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
-            Log += DateTime.Now + " " + text + Environment.NewLine;
+            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
 
             InstallMode = ApplicationManager.Instance.InstallMode;
             _action = ApplicationManager.Instance.Action;
 
             text = $"Install mode set to {InstallMode}";
-            Log += DateTime.Now + " " + text + Environment.NewLine;
+            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
 
             CancelButtonEnabled = true;
@@ -149,7 +149,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (_ct.IsCancellationRequested)
                 {
-                    Log += DateTime.Now + " " + "Process cancelled by user" + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + "Process cancelled by user" + Environment.NewLine;
                     ApplicationManager.Logger.Info("Process cancelled by user");
                     return;
                 }
@@ -157,7 +157,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                 {
                     string text = $"{item.FileName} exists and successfully validated, skipping download";
-                    Log += DateTime.Now + " " + text + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
                     _count++;
@@ -167,7 +167,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     if (_ct.IsCancellationRequested) return;
 
                     string text = $"{item.FileName} is missing or invalid, downloading";
-                    Log += DateTime.Now + " " + text + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
                     DownloadInfo = $"Downloading: {item.Url}";
@@ -180,7 +180,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             if (i > 1)
                             {
                                 text = $"{item.FileName} is missing or invalid, downloading (Attempt #{i})";
-                                Log += DateTime.Now + " " + text + Environment.NewLine;
+                                Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
                                 DownloadInfo = $"Downloading (Attempt #{i}): {item.Url}";
                             }
@@ -211,7 +211,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                             {
                                 text = $"downloaded {item.FileName} and successfully validated";
-                                Log += DateTime.Now + " " + text + Environment.NewLine;
+                                Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
                                 _count++;
                                 break;
@@ -220,7 +220,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             if (i == 3)
                             {
                                 text = $"unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
-                                Log += DateTime.Now + " " + text + Environment.NewLine;
+                                Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
 
                                 Application.Current.Dispatcher.Invoke(() =>
@@ -252,7 +252,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (ApplicationManager.Instance.DownloadOnly)
                 {
                     string text = "Process completed successfully (download only)";
-                    Log += DateTime.Now + " " + text + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
                     DownloadInfo = LanguageManager.GetValue("String.Completed");
@@ -277,7 +277,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (_ct.IsCancellationRequested)
                 {
-                    Log += DateTime.Now + " " + "Process cancelled by user" + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + "Process cancelled by user" + Environment.NewLine;
                     ApplicationManager.Logger.Info("Process cancelled by user");
                     return;
                 }
@@ -286,7 +286,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     true))
                 {
                     string text = $"{item.FileName} exists and successfully validated, skipping copy";
-                    Log += DateTime.Now + " " + text + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
                     _count++;
@@ -296,7 +296,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     if (_ct.IsCancellationRequested) return;
 
                     string text = $"{item.FileName} is missing or invalid, copying";
-                    Log += DateTime.Now + " " + text + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
                     DownloadInfo = $"Copying: {item.FileName}";
@@ -308,7 +308,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (i > 1)
                         {
                             text = $"{item.FileName} is missing or invalid, copying (Attempt #{i})";
-                            Log += DateTime.Now + " " + text + Environment.NewLine;
+                            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
 
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
@@ -342,7 +342,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
                         {
                             text = $"copied {item.FileName} and successfully validated";
-                            Log += DateTime.Now + " " + text + Environment.NewLine;
+                            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
                             _count++;
                             break;
@@ -351,7 +351,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (i == 3)
                         {
                             text = $"unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
-                            Log += DateTime.Now + " " + text + Environment.NewLine;
+                            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
 
                             Application.Current.Dispatcher.Invoke(() => MessageBox.MessageBox.Show(
@@ -374,7 +374,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CancelButtonEnabled = false;
 
             string text = "All files downloaded and copied to USB successfully!";
-            Log += DateTime.Now + " " + text + Environment.NewLine;
+            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
 
             DownloadInfo = LanguageManager.GetValue("String.Completed");
@@ -455,11 +455,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void PrepareUsb()
         {
-            Log += DateTime.Now + " " + "Preparing USB drive" + Environment.NewLine;
+            Log += "[" + DateTime.Now + "] " + "Preparing USB drive" + Environment.NewLine;
             ApplicationManager.Logger.Info("Preparing USB drive");
             if (ApplicationManager.Instance.SkipFormat == false && ApplicationManager.Instance.DownloadOnly == false)
             {
-                Log += DateTime.Now + " " + "Formatting USB drive" + Environment.NewLine;
+                Log += "[" + DateTime.Now + "] " + "Formatting USB drive" + Environment.NewLine;
                 ApplicationManager.Logger.Info("Formatting USB drive");
                 using (Process p = new Process())
                 {
@@ -468,7 +468,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     p.StartInfo.FileName = @"diskpart.exe";
                     p.StartInfo.CreateNoWindow = true;
 
-                    Log += DateTime.Now + " " + "Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
+                    Log += "[" + DateTime.Now + "] " + "Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
                     ApplicationManager.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
 
                     p.Start();
@@ -521,7 +521,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void CreateAutoInstall()
         {
-            Log += DateTime.Now + " " + "Generating Autoinstall.lst" + Environment.NewLine;
+            Log += "[" + DateTime.Now + "] " + "Generating Autoinstall.lst" + Environment.NewLine;
             ApplicationManager.Logger.Info("Generating Autoinstall.lst");
 
             string autoinstalllst =
@@ -558,7 +558,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void CreateReformat()
         {
-            Log += DateTime.Now + " " + "Generating reformat.lst" + Environment.NewLine;
+            Log += "[" + DateTime.Now + "] " + "Generating reformat.lst" + Environment.NewLine;
             ApplicationManager.Logger.Info("Generating reformat.lst");
 
             string reformatlst = "";
@@ -580,7 +580,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\reformat.lst", reformatlst);
 
-            Log += DateTime.Now + " " + "Generating autoinstall.lst" + Environment.NewLine;
+            Log += "[" + DateTime.Now + "] " + "Generating autoinstall.lst" + Environment.NewLine;
             ApplicationManager.Logger.Info("Generating autoinstall.lst");
 
             string autoinstalllst =
@@ -619,7 +619,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (validateResult.Message != "")
             {
-                Log += DateTime.Now + " " + validateResult.Message + Environment.NewLine;
+                Log += "[" + DateTime.Now + "] " + validateResult.Message + Environment.NewLine;
                 ApplicationManager.Logger.Info(validateResult.Message);
             }
 
