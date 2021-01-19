@@ -477,7 +477,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     p.StandardInput.WriteLine("CONVERT MBR");
                     p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
                     p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
-                    p.StandardInput.WriteLine($"ASSIGN {ApplicationManager.Instance.DriveLetter.Replace(":", "")}");
+                    p.StandardInput.WriteLine($"ASSIGN LETTER={ApplicationManager.Instance.DriveLetter.Replace(":", "")}");
                     p.StandardInput.WriteLine("EXIT");
 
                     p.WaitForExit();
@@ -565,8 +565,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             int i = 0;
             foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
             {
-                if (item.Md5 == Api.ReformatTool.Md5 || item.Md5 == Api.DowngradeApp.Md5 && _selectedRelease != @"Sync 3.3.19052" ||
-                    item.Md5 == Api.DowngradeTool.Md5) continue;
+                if (InstallMode == @"reformat")
+                {
+                    if (item.Md5 == Api.ReformatTool.Md5) continue;
+                }
+                else if(InstallMode == @"downgrade")
+                {
+                    if (item.Md5 == Api.ReformatTool.Md5 || (item.Md5 == Api.DowngradeApp.Md5 && _selectedRelease != @"Sync 3.3.19052") || item.Md5 == Api.DowngradeTool.Md5) continue;
+                }
                 i++;
                 reformatlst += $@"{item.Type}={item.FileName}";
                 if (i != ApplicationManager.Instance.Ivsus.Count) reformatlst += Environment.NewLine;
