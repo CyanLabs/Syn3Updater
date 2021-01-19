@@ -29,7 +29,6 @@ namespace Cyanlabs.Launcher
         #endregion
 
         #region Properties & Fields
-        private const int CsidlPrograms = 0x02; // 
         public static string BaseFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public UpgradingViewModel Vm;
         #endregion

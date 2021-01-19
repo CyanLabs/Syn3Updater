@@ -1,5 +1,8 @@
 ﻿namespace SharedCode
 {
+    /// <summary>
+    ///     Shared class used for Launcher preferences
+    /// </summary>
     public class LauncherPrefs
     {
         public enum ReleaseType
