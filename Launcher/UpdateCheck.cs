@@ -92,9 +92,9 @@ namespace Cyanlabs.Launcher
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
             if (Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
             {
-                Vm.Message = "Installing " + releaseType + " release " + githubrelease.TagName;
+                Vm.Message = "Installing " + releaseType + " release " + version;
 
-                string zipPath = destFolder + "\\" + releaseType + "_" + githubrelease.TagName + ".zip";
+                string zipPath = destFolder + "\\" + releaseType + "_" + version + ".zip";
 
                 WebClient wc = new WebClient();
 
