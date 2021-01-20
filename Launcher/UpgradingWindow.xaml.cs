@@ -66,6 +66,8 @@ namespace Cyanlabs.Launcher
             if (File.Exists(configFolderPath + "\\launcherPrefs.json"))
                 Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
 
+            // Delete Launcher_OldVersion.exe
+            if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
 
             // Start and wait for the UpdateCheck to complete
             UpdateCheck check = new UpdateCheck();
