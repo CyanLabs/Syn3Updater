@@ -7,6 +7,7 @@ using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
+using SharedCode;
 
 namespace Cyanlabs.Syn3Updater.UI
 {
@@ -43,13 +44,16 @@ namespace Cyanlabs.Syn3Updater.UI
                 string text = JsonConvert.SerializeObject(crashContainer);
                 string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
                 HttpClient client = new HttpClient();
+
+
                 Dictionary<string, string> values = new Dictionary<string, string>
                 {
                     {"detail", text},
                     {"version", version},
                     {"error", crashContainer.ErrorName},
                     {"message", exception.Message},
-                    {"operatingsystem", SystemHelper.GetOsFriendlyName()}
+                    {"operatingsystem", SystemHelper.GetOsFriendlyName()},
+                    {"branch", ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled.ToString()},
                 };
 
                 FormUrlEncodedContent content = new FormUrlEncodedContent(values);
