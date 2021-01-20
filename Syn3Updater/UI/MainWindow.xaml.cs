@@ -17,7 +17,7 @@ namespace Cyanlabs.Syn3Updater.UI
         public MainWindow()
         {
             InitializeComponent();
-            Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
+            Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled})";
             ApplicationManager.Logger.Debug("MainWindow Initialized");
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
