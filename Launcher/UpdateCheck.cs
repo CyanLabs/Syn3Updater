@@ -15,7 +15,7 @@ namespace Cyanlabs.Launcher
 {
     /// <summary>
     ///     Checks for any update on the selected branch, if found downloads and extracts it
-    /// </summary>
+    /// </summary
     public class UpdateCheck
     {
 
@@ -37,52 +37,64 @@ namespace Cyanlabs.Launcher
             await Task.Delay(1000);
 
             // Sets up Octokit API with a UserAgent and assigns latest to a new Release();
-            Release latest = new Release();
+            Release githubrelease = new Release();
             GitHubClient githubclient = new GitHubClient(new ProductHeaderValue("CyanLabs-Launcher"));
-
+            CIRelease ciRelease = new CIRelease();
             // Attempt to get latest GitHub release
             try
             {
                 // Get Correct Release
                 switch (releaseType)
                 {
-                    // Continuous Intergration - Not implemented yet
+                    // Continuous Intergration, 
                     case LauncherPrefs.ReleaseType.Ci:
-                        throw new NotImplementedException();
+                        // Gets latest build via API at Cyanlabs.net
+                        WebClient wc = new WebClient();
+                        ciRelease = JsonConvert.DeserializeObject<CIRelease>(wc.DownloadString(new Uri("https://cyanlabs.net/api/ci/Syn3Updater/latest")));
+                        break;
 
                     // Beta
                     case LauncherPrefs.ReleaseType.Beta:
                         // Get all GitHub releases for Syn3Updater and sets the value of 'latest' to the first (newest) retrieved
                         IReadOnlyList<Release> githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater");
-                        latest = githubreleases[0];
+                        githubrelease = githubreleases[0];
                         break;
 
                     // Release
                     case LauncherPrefs.ReleaseType.Release:
                         // Get all GitHub releases for Syn3Updater that aren't marked as 'prerelease' and sets the value of 'latest' to the first (newest) retrieved
-                        latest = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
+                        githubrelease = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
                         break;
                 } // End of Switch 'Get Correct Release'
             }
 
             // Catch RateLimitExceededException exception, bypasses update check and launches Syn3Updater.exe
-            catch (RateLimitExceededException e)
+            catch (RateLimitExceededException)
             {
                 if (File.Exists("Syn3Updater.exe")) Process.Start("Syn3Updater.exe", "/launcher");
                 Application.Current.Shutdown();
                 return;
             }
 
-            // Use GitHub release tagname as version and parse in to an integer
-            string version = new string(latest.TagName.Where(char.IsDigit).ToArray());
-            int maxReleaseNumber = int.Parse(version);
-
-            // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
-            if (Core.LauncherPrefs.ReleaseInstalled < maxReleaseNumber || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
+            string version;
+            if (releaseType == LauncherPrefs.ReleaseType.Ci)
             {
-                Vm.Message = "Installing " + releaseType + " release " + latest.TagName;
+                version = ciRelease.Number;
+                version = version.Split('-')[0].Trim();
+            }
+            else
+            {
+                version = githubrelease.TagName;
+                // Use GitHub release tagname as version and parse in to an integer
+            }
 
-                string zipPath = destFolder + "\\" + releaseType + "_" + latest.TagName + ".zip";
+            if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
+            // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
+            if (Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
+            {
+                Vm.Message = "Installing " + releaseType + " release " + githubrelease.TagName;
+
+                string zipPath = destFolder + "\\" + releaseType + "_" + githubrelease.TagName + ".zip";
 
                 WebClient wc = new WebClient();
 
@@ -124,7 +136,7 @@ namespace Cyanlabs.Launcher
                     Complete = true;
 
                     // Update settings to match new release version and branch
-                    Core.LauncherPrefs.ReleaseInstalled = maxReleaseNumber;
+                    Core.LauncherPrefs.ReleaseInstalled = version;
                     Core.LauncherPrefs.ReleaseTypeInstalled = releaseType;
 
                     // Save settings to json file, create if doesn't already exist.
@@ -134,8 +146,11 @@ namespace Cyanlabs.Launcher
                     File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", json);
                 };
 
-                // Do the actual file download of the first Asset in the chosen GitHub Release with the previously created WebClient
-                wc.DownloadFileAsync(new Uri(latest.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
+                // Do the actual file download of the first Asset in the chosen GitHub Release or the CI download link with the previously created WebClient
+                wc.DownloadFileAsync(
+                    releaseType == LauncherPrefs.ReleaseType.Ci
+                        ? new Uri(ciRelease.Download)
+                        : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
             }
             else
             {
@@ -202,5 +217,14 @@ namespace Cyanlabs.Launcher
         }
         #endregion
 
+    }
+
+    // ReSharper disable once InconsistentNaming
+    public class CIRelease {
+        [JsonProperty("id")] public int Id { get; set; }
+        [JsonProperty("number")] public string Number { get; set; }
+        [JsonProperty("branchName")] public string BranchName { get; set; }
+        [JsonProperty("finishOnAgentDate")] public string FinishOnAgentDate { get; set; }
+        [JsonProperty("download")] public string Download { get; set; }
     }
 }

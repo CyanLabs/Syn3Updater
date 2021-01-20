@@ -264,8 +264,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
             {
                 LauncherPrefs.ReleaseType.Release,
-                LauncherPrefs.ReleaseType.Beta
-                //LauncherPrefs.ReleaseType.Ci
+                LauncherPrefs.ReleaseType.Beta,
+                LauncherPrefs.ReleaseType.Ci
             };
             ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
 
