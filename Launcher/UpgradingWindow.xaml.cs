@@ -46,11 +46,6 @@ namespace Cyanlabs.Launcher
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; 
 
             // Check if Syn3Updater Installer path exists in registry, if so use it's path as the destination path
-            string installPath = (string) Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
-            if (installPath != null) BaseFolder = Path.GetDirectoryName(installPath);
-
-            if (!Directory.Exists(BaseFolder)) Directory.CreateDirectory(BaseFolder ?? string.Empty);
-
             Process[] processlist = Process.GetProcesses();
 
             // Forcefully close all Syn3Updater processes, ignore all exceptions
