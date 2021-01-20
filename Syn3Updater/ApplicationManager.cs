@@ -102,7 +102,6 @@ namespace Cyanlabs.Syn3Updater
             ConfigFolderPath;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
-
         #endregion
 
         #region Methods
@@ -137,8 +136,7 @@ namespace Cyanlabs.Syn3Updater
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
+            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
 
             if (!Environment.GetCommandLineArgs().Contains("/launcher"))
             {
