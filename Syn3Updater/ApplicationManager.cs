@@ -99,7 +99,8 @@ namespace Cyanlabs.Syn3Updater
             SyncVersion,
             Action,
             ConfigFile,
-            ConfigFolderPath;
+            ConfigFolderPath,
+            LauncherConfigFile;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
         #endregion
@@ -114,12 +115,22 @@ namespace Cyanlabs.Syn3Updater
 
         public void ResetSettings()
         {
-            if (File.Exists(ConfigFile)) File.Delete(ConfigFile);
+            try
+            {
+                if (File.Exists(ConfigFile)) File.Delete(ConfigFile);
+                if (File.Exists(LauncherConfigFile)) File.Delete(LauncherConfigFile);
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e.GetFullMessage());
+            }
+            
         }
 
         public void UpdateLauncherSettings()
         {
             string json = JsonConvert.SerializeObject(LauncherPrefs);
+            LauncherConfigFile = ConfigFolderPath + "\\launcherPrefs.json";
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
             try
             {
