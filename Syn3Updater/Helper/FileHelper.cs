@@ -86,6 +86,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
             }
         }
+
+        private static readonly HttpClient Client = new HttpClient();
+
         /// <summary>
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
         ///     <see href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">See more</see>
@@ -95,9 +98,9 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="ct">CancellationToken</param>
         public async Task DownloadFile(string path, string filename, CancellationToken ct)
         {
-            using (HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
-                long total = response.Content.Headers.ContentLength ?? -1L;
+                long total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
 
                 bool canReportProgress = total != -1;
 
@@ -148,6 +151,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                             }
                         }
                     } while (moreToRead);
+                    fileStream.Close();
+                    fileStream.Dispose();
                 }
             }
         }
@@ -186,7 +191,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     if (srcfilesize == filesize)
                         if (localMd5 == GenerateMd5(source, ct))
                         {
-                            validateResult.Message = $"{filename} checksum matches already verified local localonly";
+                            validateResult.Message = $"{filename} checksum matches already verified local copy";
                             validateResult.Result = true;
                             return validateResult;
                         }
