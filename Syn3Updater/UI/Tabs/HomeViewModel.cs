@@ -349,16 +349,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SyncMapVersion.Clear();
                 if (ApplicationManager.Instance.Settings.ShowAllReleases)
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
-                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
-                    //https://api.cyanlabs.net/fordsyncdownloader/items/map_releases?sort=-name&limit=-1&filter[regions]=ANZ&filter[compatibility][contains]=3.4&filter[status][in]=published,private&filter[key][in]=admin@cyanlabs.net,public
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
                 else
                 {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
-                        $"filter[status][in]=published,private&filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                        $"filter[status][_in]=published,private&filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
-                        $"filter[status][in]=published,private&filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                        $"filter[status][_in]=published,private&filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
 
                 try
@@ -416,7 +415,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Notes = item.Notes.Replace("\n", Environment.NewLine + Environment.NewLine);
                     }
 
-                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][contains]={_stringCompatibility}");
+                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][_contains]={_stringCompatibility}");
 
                 HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(_apiMapReleases).Result;
                 _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
