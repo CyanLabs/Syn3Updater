@@ -151,7 +151,8 @@
                                    Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
                         <ComboBox VerticalAlignment="Center" MinWidth="240px" ItemsSource="{Binding SyncRegions}"
                                   DisplayMemberPath="Name" SelectedValuePath="Code"
-                                  SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" />
+                                  SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" 
+                                  SelectedIndex="{Binding SelectedRegionIndex}" />
                         <Button Cursor="Hand" Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="#00000000"
                                 Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" VerticalAlignment="Center"
                                 HorizontalAlignment="Center" Command="{Binding RegionInfo}"

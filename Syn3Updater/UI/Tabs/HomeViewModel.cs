@@ -120,6 +120,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _selectedReleaseIndex, value);
         }
 
+        private int _selectedRegionIndex;
+
+        public int SelectedRegionIndex
+        {
+            get => _selectedRegionIndex;
+            set => SetProperty(ref _selectedRegionIndex, value);
+        }
+
         private ObservableCollection<USBHelper.Drive> _driveList;
 
         public ObservableCollection<USBHelper.Drive> DriveList
@@ -271,17 +279,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
             SelectedMapVersionIndex = -1;
             SelectedReleaseIndex = -1;
+            SelectedRegionIndex = -1;
             StartEnabled = false;
             IvsuList = new ObservableCollection<SyncModel.SyncIvsu>();
             InstallMode = "";
             RefreshUsb();
             SyncMapVersion = new ObservableCollection<string>();
+            SyncVersion?.Clear();
+            SyncMapVersion?.Clear();
             DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path == "" ? Visibility.Hidden : Visibility.Visible;
             ApplicationManager.Logger.Info($"Current Sync Details - Region: {CurrentSyncRegion} - Version: {CurrentSyncVersion} - Navigation: {CurrentSyncNav}");
         }
 
         public void Init()
         {
+            SelectedRegionIndex = -1;
             ApplicationManager.Instance.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
             {
