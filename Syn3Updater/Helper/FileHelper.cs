@@ -208,7 +208,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                         if (newfilesize == filesize)
                         {
-                            validateResult.Message = $"no source checksum available for {filename} comparing filesize only";
+                            validateResult.Message = $"no source checksum available for {filename} comparing file size";
                             validateResult.Result = true;
                             return validateResult;
                         }
@@ -217,7 +217,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))
             {
-                validateResult.Message = $"{filename} matches known good checksum";
+                validateResult.Message = "";
                 validateResult.Result = true;
                 return validateResult;
             }

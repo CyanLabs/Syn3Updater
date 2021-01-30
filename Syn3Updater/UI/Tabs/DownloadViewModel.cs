@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Windows.Devices.AllJoyn;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 
@@ -100,7 +101,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             if (!ApplicationManager.Instance.IsDownloading || _downloadTask != null && _downloadTask.Status.Equals(TaskStatus.Running)) return;
-
+            Log = "";
             _selectedRelease = ApplicationManager.Instance.SelectedRelease;
             _selectedRegion = ApplicationManager.Instance.SelectedRegion;
             _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
@@ -110,12 +111,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             InstallMode = ApplicationManager.Instance.InstallMode;
             _action = ApplicationManager.Instance.Action;
 
-            text = $"Install mode set to {InstallMode}";
+            text = $"Install Mode: {InstallMode}";
             Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
 
             CancelButtonEnabled = true;
-            Log = "";
             CurrentProgress = 0;
 
             PercentageChanged += DownloadPercentageChanged;
@@ -156,33 +156,32 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                 {
-                    string text = $"{item.FileName} exists and successfully validated, skipping download";
+                    string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
-
                     _count++;
                 }
                 else
                 {
                     if (_ct.IsCancellationRequested) return;
-
-                    string text = $"{item.FileName} is missing or invalid, downloading";
-                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
-                    ApplicationManager.Logger.Info(text);
-
                     DownloadInfo = $"Downloading: {item.Url}";
+
+                    Log += "[" + DateTime.Now + "] " + $"Downloading: {item.FileName}" + Environment.NewLine;
+                    ApplicationManager.Logger.Info($"Downloading: {item.FileName}");
+
                     _progressBarSuffix = LanguageManager.GetValue("String.Downloaded");
                     try
                     {
+                        string text = "";
                         for (int i = 1; i < 4; i++)
                         {
                             if (_ct.IsCancellationRequested) return;
                             if (i > 1)
                             {
-                                text = $"{item.FileName} is missing or invalid, downloading (Attempt #{i})";
-                                Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
-                                ApplicationManager.Logger.Info(text);
-                                DownloadInfo = $"Downloading (Attempt #{i}): {item.Url}";
+                                text = $"Downloading (Attempt #{i}): {item.Url}";
+                                DownloadInfo = text;
+                                Log += "[" + DateTime.Now + "] " + $"Downloading: {item.FileName}" + Environment.NewLine;
+                                ApplicationManager.Logger.Info($"Downloading: {item.FileName}");
                             }
 
                             try
@@ -210,7 +209,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                             if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                             {
-                                text = $"downloaded {item.FileName} and successfully validated";
+                                text = $"Downloaded: {item.FileName}";
                                 Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
                                 _count++;
@@ -219,7 +218,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                             if (i == 3)
                             {
-                                text = $"unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
+                                text = $"unable to validate {item.FileName} after 3 tries, ABORTING PROCESS!";
                                 Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
 
@@ -285,7 +284,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
                     true))
                 {
-                    string text = $"{item.FileName} exists and successfully validated, skipping copy";
+                    string text = $"{item.FileName} exists and validated successfully, skipping copy";
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
@@ -295,11 +294,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     if (_ct.IsCancellationRequested) return;
 
-                    string text = $"{item.FileName} is missing or invalid, copying";
+                    string text = $"Copying: {item.FileName}";
+                    DownloadInfo = text;
+
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
 
-                    DownloadInfo = $"Copying: {item.FileName}";
                     _progressBarSuffix = LanguageManager.GetValue("String.Copied");
 
                     for (int i = 1; i < 4; i++)
@@ -307,11 +307,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (_ct.IsCancellationRequested) return;
                         if (i > 1)
                         {
-                            text = $"{item.FileName} is missing or invalid, copying (Attempt #{i})";
+                            text = $"Copying (Attempt #{i}): {item.FileName}";
+                            DownloadInfo = text;
+
                             Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
-
-                            DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                         }
 
                         try
@@ -341,7 +341,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName,
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
                         {
-                            text = $"copied {item.FileName} and successfully validated";
+                            text = $"Copied: {item.FileName}";
                             Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
                             _count++;
@@ -350,7 +350,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                         if (i == 3)
                         {
-                            text = $"unable to successfully validate {item.FileName} after 3 tries, ABORTING PROCESS!";
+                            text = $"unable to validate {item.FileName} after 3 tries, ABORTING PROCESS!";
                             Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                             ApplicationManager.Logger.Info(text);
 
@@ -372,8 +372,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void CopyComplete()
         {
             CancelButtonEnabled = false;
-
-            string text = "All files downloaded and copied to USB successfully!";
+            
+            string text = "ALL FILES DOWNLOADED AND COPIED TO THE USB DRIVE SUCCESSFULLY!";
             Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
 
@@ -613,7 +613,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
         {
-            DownloadInfo = $"Validating: {localfile}";
+            string text = $"Validating: {Path.GetFileName(localfile)}";
+            DownloadInfo = text;
+            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+            ApplicationManager.Logger.Info(text);
+
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");
             FileHelper.ValidateResult validateResult = _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
 
