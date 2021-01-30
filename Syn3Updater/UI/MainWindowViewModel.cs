@@ -44,8 +44,8 @@ namespace Cyanlabs.Syn3Updater.UI
                     new TabItem(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
                     new TabItem(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
                     new TabItem(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
-                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"), 
-                    new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
+                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads")
+                    //new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
                     //TODO Implement Profiles and News in the future
                     //new TabItem("0xF163","Profiles","profiles"),
                     //new TabItem("0xF582","News","news"),
