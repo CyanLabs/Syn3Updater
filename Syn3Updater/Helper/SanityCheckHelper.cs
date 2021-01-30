@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
-using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {

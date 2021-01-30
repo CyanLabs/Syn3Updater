@@ -291,7 +291,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
+                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     _currentReleaseType = ReleaseType;
@@ -303,7 +303,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     catch (Win32Exception e)
                     {
                         ApplicationManager.Logger.Debug(e.GetFullMessage());
-                        MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                        ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -322,7 +322,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (dialog.ShowDialog().GetValueOrDefault())
                 if (Directory.Exists(oldPath))
                     if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
-                        if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
+                        if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
                                 Environment.NewLine + oldPath + Environment.NewLine,
                                 Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
                             MessageBoxResult.Yes)

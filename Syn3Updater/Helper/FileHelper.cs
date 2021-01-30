@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 ///
 namespace Cyanlabs.Syn3Updater.Helper
 {
