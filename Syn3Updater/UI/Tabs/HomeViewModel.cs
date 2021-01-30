@@ -120,6 +120,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _selectedReleaseIndex, value);
         }
 
+        private int _selectedRegionIndex;
+
+        public int SelectedRegionIndex
+        {
+            get => _selectedRegionIndex;
+            set => SetProperty(ref _selectedRegionIndex, value);
+        }
+
         private ObservableCollection<USBHelper.Drive> _driveList;
 
         public ObservableCollection<USBHelper.Drive> DriveList
@@ -271,17 +279,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
             SelectedMapVersionIndex = -1;
             SelectedReleaseIndex = -1;
+            SelectedRegionIndex = -1;
             StartEnabled = false;
             IvsuList = new ObservableCollection<SyncModel.SyncIvsu>();
             InstallMode = "";
             RefreshUsb();
             SyncMapVersion = new ObservableCollection<string>();
+            SyncVersion?.Clear();
+            SyncMapVersion?.Clear();
             DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path == "" ? Visibility.Hidden : Visibility.Visible;
             ApplicationManager.Logger.Info($"Current Sync Details - Region: {CurrentSyncRegion} - Version: {CurrentSyncVersion} - Navigation: {CurrentSyncNav}");
         }
 
         public void Init()
         {
+            SelectedRegionIndex = -1;
             ApplicationManager.Instance.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
             {
@@ -310,12 +322,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (XamlParseException e)
             {
-                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
             {
-                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -349,16 +361,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SyncMapVersion.Clear();
                 if (ApplicationManager.Instance.Settings.ShowAllReleases)
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
-                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
-                    //https://api.cyanlabs.net/fordsyncdownloader/items/map_releases?sort=-name&limit=-1&filter[regions]=ANZ&filter[compatibility][contains]=3.4&filter[status][in]=published,private&filter[key][in]=admin@cyanlabs.net,public
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
                 else
                 {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
-                        $"filter[status][in]=published,private&filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                        $"filter[status][_in]=published,private&filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
-                        $"filter[status][in]=published,private&filter[key][in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                        $"filter[status][_in]=published,private&filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
 
                 try
@@ -416,7 +427,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Notes = item.Notes.Replace("\n", Environment.NewLine + Environment.NewLine);
                     }
 
-                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][contains]={_stringCompatibility}");
+                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][_contains]={_stringCompatibility}");
 
                 HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(_apiMapReleases).Result;
                 _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
@@ -565,10 +576,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             //Install Mode is reformat or downgrade My20 warning
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo,
+                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                    if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                         MessageBoxResult.Yes)
                         canceldownload = true;
                 }
@@ -580,14 +591,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             //Warn is users region is different to new selection
             if (SelectedRegion.Code != ApplicationManager.Instance.Settings.CurrentSyncRegion)
-                if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                     MessageBoxResult.Yes)
                     canceldownload = true;
 
             //Cancel no apps package selected
             if (ApplicationManager.Instance.AppsSelected == false && (InstallMode == "reformat" || InstallMode == "downgrade"))
             {
-                MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 canceldownload = true;
             }
 

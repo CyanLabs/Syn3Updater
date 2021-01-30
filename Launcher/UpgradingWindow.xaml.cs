@@ -46,11 +46,6 @@ namespace Cyanlabs.Launcher
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; 
 
             // Check if Syn3Updater Installer path exists in registry, if so use it's path as the destination path
-            string installPath = (string) Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Syn3Updater", "UninstallString", null);
-            if (installPath != null) BaseFolder = Path.GetDirectoryName(installPath);
-
-            if (!Directory.Exists(BaseFolder)) Directory.CreateDirectory(BaseFolder ?? string.Empty);
-
             Process[] processlist = Process.GetProcesses();
 
             // Forcefully close all Syn3Updater processes, ignore all exceptions
@@ -69,8 +64,22 @@ namespace Cyanlabs.Launcher
             // Attempt to load existing settings if found, if not use defaults
             string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             if (File.Exists(configFolderPath + "\\launcherPrefs.json"))
-                Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
+            {
+                try
+                {
+                    Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
+                }
+                catch (Newtonsoft.Json.JsonReaderException e)
+                {
+                    File.Delete(configFolderPath + "\\launcherPrefs.json");
+                    Application.Current.Shutdown();
+                    Process.Start(BaseFolder + "\\Syn3Updater.exe", "/launcher");
+                }
+                
+            }
 
+            // Delete Launcher_OldVersion.exe
+            if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
 
             // Start and wait for the UpdateCheck to complete
             UpdateCheck check = new UpdateCheck();

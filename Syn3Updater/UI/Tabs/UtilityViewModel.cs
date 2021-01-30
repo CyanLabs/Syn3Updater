@@ -148,12 +148,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (XamlParseException e)
             {
-                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
             {
-                MessageBox.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -298,7 +298,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             Api.JsonReleases syncversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
                             string convertedsyncversion = syncversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                             if (convertedsyncversion != ApplicationManager.Instance.SyncVersion)
-                                if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion),
+                                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsyncversion),
                                     "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                                 {
@@ -330,18 +330,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 catch (NullReferenceException)
                 {
-                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (XmlException)
                 {
-                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
         }
 
         private async void UploadFile()
         {
             if (_node != null)
-                if (MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
+                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
                     MessageBoxResult.OK)
                 {
                     FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
@@ -443,7 +443,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else
             {
-                MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLogNoDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLogNoDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

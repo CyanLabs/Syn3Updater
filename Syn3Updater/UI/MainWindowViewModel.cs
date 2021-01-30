@@ -44,7 +44,8 @@ namespace Cyanlabs.Syn3Updater.UI
                     new TabItem(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
                     new TabItem(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
                     new TabItem(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
-                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"),
+                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads")
+                    //new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
                     //TODO Implement Profiles and News in the future
                     //new TabItem("0xF163","Profiles","profiles"),
                     //new TabItem("0xF582","News","news"),
@@ -82,17 +83,17 @@ namespace Cyanlabs.Syn3Updater.UI
             {
                 if (value != "about" && !ApplicationManager.Instance.Settings.DisclaimerAccepted)
                 {
-                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
                 else if (value == "home" && (ApplicationManager.Instance.Settings.CurrentSyncRegion == "" || ApplicationManager.Instance.Settings.CurrentSyncVersion == 0 || ApplicationManager.Instance.Settings.CurrentSyncVersion.ToString().Length != 7))
                 {
-                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
                 }
                 else if (value != "downloads" && ApplicationManager.Instance.IsDownloading)
                 {
-                    MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "downloads";
                 }
                 else if (value == "crashme")

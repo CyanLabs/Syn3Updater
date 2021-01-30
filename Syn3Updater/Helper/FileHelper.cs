@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 ///
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -86,6 +85,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
             }
         }
+
+        private static readonly HttpClient Client = new HttpClient();
+
         /// <summary>
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
         ///     <see href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">See more</see>
@@ -95,9 +97,9 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="ct">CancellationToken</param>
         public async Task DownloadFile(string path, string filename, CancellationToken ct)
         {
-            using (HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
-                long total = response.Content.Headers.ContentLength ?? -1L;
+                long total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
 
                 bool canReportProgress = total != -1;
 
@@ -148,6 +150,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                             }
                         }
                     } while (moreToRead);
+                    fileStream.Close();
+                    fileStream.Dispose();
                 }
             }
         }
@@ -186,7 +190,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     if (srcfilesize == filesize)
                         if (localMd5 == GenerateMd5(source, ct))
                         {
-                            validateResult.Message = $"{filename} checksum matches already verified local localonly";
+                            validateResult.Message = $"{filename} checksum matches already verified local copy";
                             validateResult.Result = true;
                             return validateResult;
                         }
@@ -204,7 +208,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                         if (newfilesize == filesize)
                         {
-                            validateResult.Message = $"no source checksum available for {filename} comparing filesize only";
+                            validateResult.Message = $"no source checksum available for {filename} comparing file size";
                             validateResult.Result = true;
                             return validateResult;
                         }
@@ -213,7 +217,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))
             {
-                validateResult.Message = $"{filename} matches known good checksum";
+                validateResult.Message = "";
                 validateResult.Result = true;
                 return validateResult;
             }
@@ -225,7 +229,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return validateResult;
             }
 
-            validateResult.Message = $"{filename} failed to validate";
+            validateResult.Message = $"Validate: {filename} (Failed!, Downloading)";
             validateResult.Result = false;
             return validateResult;
         }
@@ -264,7 +268,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
+                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }

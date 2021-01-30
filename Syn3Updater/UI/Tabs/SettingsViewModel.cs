@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -228,6 +230,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             public string Code { get; set; }
         }
 
+        private LauncherPrefs.ReleaseType _currentReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
+
         #endregion
 
         #region Methods
@@ -264,11 +268,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
             {
                 LauncherPrefs.ReleaseType.Release,
-                LauncherPrefs.ReleaseType.Beta
-                //LauncherPrefs.ReleaseType.Ci
+                LauncherPrefs.ReleaseType.Beta,
+                LauncherPrefs.ReleaseType.Ci
             };
+            
             ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
-
             CurrentSyncNav = ApplicationManager.Instance.Settings.CurrentSyncNav;
 
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
@@ -285,11 +289,29 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void ApplySettingsAction()
         {
-            string trimmedversion = CurrentSyncVersion.Replace("_", "").Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, "");
-            if (trimmedversion.Length >= 5 && CurrentSyncRegion != "")
-                ApplicationManager.Instance.FireHomeTabEvent();
-            else
-                MessageBox.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (ReleaseType != _currentReleaseType)
+            {
+                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
+                    MessageBoxImage.Information) == MessageBoxResult.Yes)
+                {
+                    _currentReleaseType = ReleaseType;
+                    try
+                    {
+                        Application.Current.Shutdown();
+                        Process.Start("Launcher.exe");
+                    }
+                    catch (Win32Exception e)
+                    {
+                        ApplicationManager.Logger.Debug(e.GetFullMessage());
+                        ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    ReleaseType = _currentReleaseType;
+                }
+            }
+            ApplicationManager.Instance.FireHomeTabEvent();
         }
 
         private void DownloadPathAction()
@@ -300,7 +322,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (dialog.ShowDialog().GetValueOrDefault())
                 if (Directory.Exists(oldPath))
                     if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
-                        if (MessageBox.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
+                        if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
                                 Environment.NewLine + oldPath + Environment.NewLine,
                                 Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
                             MessageBoxResult.Yes)

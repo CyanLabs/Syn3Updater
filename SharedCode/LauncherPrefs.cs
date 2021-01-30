@@ -13,7 +13,7 @@
         }
 
         public ReleaseType ReleaseBranch { get; set; } = ReleaseType.Release;
-        public int ReleaseInstalled { get; set; } = 0;
+        public string ReleaseInstalled { get; set; } = "0.0.0.0";
         public ReleaseType ReleaseTypeInstalled { get; set; } = ReleaseType.Release;
     }
 }

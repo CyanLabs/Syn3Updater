@@ -18,7 +18,6 @@ using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.UI;
 using Newtonsoft.Json;
 using SharedCode;
-using MessageBox = Cyanlabs.Syn3Updater.UI.MessageBox.MessageBox;
 
 namespace Cyanlabs.Syn3Updater
 {
@@ -99,10 +98,10 @@ namespace Cyanlabs.Syn3Updater
             SyncVersion,
             Action,
             ConfigFile,
-            ConfigFolderPath;
+            ConfigFolderPath,
+            LauncherConfigFile;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
-
         #endregion
 
         #region Methods
@@ -115,12 +114,22 @@ namespace Cyanlabs.Syn3Updater
 
         public void ResetSettings()
         {
-            if (File.Exists(ConfigFile)) File.Delete(ConfigFile);
+            try
+            {
+                if (File.Exists(ConfigFile)) File.Delete(ConfigFile);
+                if (File.Exists(LauncherConfigFile)) File.Delete(LauncherConfigFile);
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e.GetFullMessage());
+            }
+            
         }
 
         public void UpdateLauncherSettings()
         {
             string json = JsonConvert.SerializeObject(LauncherPrefs);
+            LauncherConfigFile = ConfigFolderPath + "\\launcherPrefs.json";
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
             try
             {
@@ -129,7 +138,7 @@ namespace Cyanlabs.Syn3Updater
             catch (IOException e)
             {
                 Logger.Debug(e.GetFullMessage());
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -137,8 +146,7 @@ namespace Cyanlabs.Syn3Updater
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
+            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
 
             if (!Environment.GetCommandLineArgs().Contains("/launcher"))
             {
@@ -158,19 +166,41 @@ namespace Cyanlabs.Syn3Updater
             ConfigFile = ConfigFolderPath + "\\settings.json";
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
 
-            if (!File.Exists(ConfigFile))
+            if (File.Exists(ConfigFile))
+            {
+                try
+                {
+                    Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
+                }
+                catch (JsonReaderException)
+                {
+                    File.Delete(ConfigFile);
+                    Settings = new JsonSettings();
+                }
+            }
+            else
             {
                 Logger.Debug("No settings file found, initializing JSON settings");
                 Settings = new JsonSettings();
             }
+
+            if (File.Exists(ConfigFolderPath + "\\launcherPrefs.json"))
+            {
+                try
+                {
+                    LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(ConfigFolderPath + "\\launcherPrefs.json"));
+                }
+                catch (JsonReaderException)
+                {
+                    File.Delete(ConfigFolderPath + "\\launcherPrefs.json");
+                    LauncherPrefs = new LauncherPrefs();
+                }
+            }
             else
             {
-                Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
+                LauncherPrefs = new LauncherPrefs();
             }
-
-            LauncherPrefs = File.Exists(ConfigFolderPath + "\\launcherPrefs.json")
-                ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(ConfigFolderPath + "\\launcherPrefs.json"))
-                : new LauncherPrefs();
+                
 
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable

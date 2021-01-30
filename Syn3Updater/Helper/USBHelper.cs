@@ -100,6 +100,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static void GenerateLog(string log, bool upload)
         {
             string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}";
+            data += $@"Branch: {ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled}{Environment.NewLine}";
             data += $@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}";
             data += Environment.NewLine;
             data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
