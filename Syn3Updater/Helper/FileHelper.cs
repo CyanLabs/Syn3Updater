@@ -229,7 +229,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return validateResult;
             }
 
-            validateResult.Message = $"{filename} failed to validate";
+            validateResult.Message = $"Validate: {filename} (Failed!, Downloading)";
             validateResult.Result = false;
             return validateResult;
         }
