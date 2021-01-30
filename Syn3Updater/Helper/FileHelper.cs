@@ -268,7 +268,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
+                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
                 ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }

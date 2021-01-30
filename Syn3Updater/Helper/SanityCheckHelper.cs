@@ -25,7 +25,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (allowDownloadonly)
                 {
-                    if (MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                    if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
                         MessageBoxResult.Yes)
                     {
                         ApplicationManager.Logger.Info("No usb has been selected, download only mode activated");
@@ -38,7 +38,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSBForced"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSBForced"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return true;
                 }
             }
@@ -47,7 +47,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
                 {
-                    MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return true;
                 }
 
@@ -55,7 +55,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             // Optional Format
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
             {
-                if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
+                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                     ApplicationManager.Instance.SkipFormat = false;
                 else
@@ -67,7 +67,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             // Format USB Drive
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && ApplicationManager.Instance.DownloadOnly == false && ApplicationManager.Instance.SkipFormat == false)
-                if (MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
+                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 {
                     ApplicationManager.Logger.Info("USB Drive will be formatted, using fresh filesystem");
