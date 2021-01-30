@@ -166,19 +166,41 @@ namespace Cyanlabs.Syn3Updater
             ConfigFile = ConfigFolderPath + "\\settings.json";
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
 
-            if (!File.Exists(ConfigFile))
+            if (File.Exists(ConfigFile))
+            {
+                try
+                {
+                    Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
+                }
+                catch (JsonReaderException)
+                {
+                    File.Delete(ConfigFile);
+                    Settings = new JsonSettings();
+                }
+            }
+            else
             {
                 Logger.Debug("No settings file found, initializing JSON settings");
                 Settings = new JsonSettings();
             }
+
+            if (File.Exists(ConfigFolderPath + "\\launcherPrefs.json"))
+            {
+                try
+                {
+                    LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(ConfigFolderPath + "\\launcherPrefs.json"));
+                }
+                catch (JsonReaderException)
+                {
+                    File.Delete(ConfigFolderPath + "\\launcherPrefs.json");
+                    LauncherPrefs = new LauncherPrefs();
+                }
+            }
             else
             {
-                Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
+                LauncherPrefs = new LauncherPrefs();
             }
-
-            LauncherPrefs = File.Exists(ConfigFolderPath + "\\launcherPrefs.json")
-                ? JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(ConfigFolderPath + "\\launcherPrefs.json"))
-                : new LauncherPrefs();
+                
 
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
