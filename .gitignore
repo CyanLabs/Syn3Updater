@@ -358,3 +358,5 @@ accent.json
 
 Launcher/Token.cs
 Syn3Updater/Model/APISecretModel.cs
+references/ModernWpf.dll
+references/ModernWpf.Controls.dll
