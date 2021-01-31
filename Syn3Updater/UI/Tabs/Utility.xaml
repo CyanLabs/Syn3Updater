@@ -142,8 +142,12 @@
                                        TextWrapping="Wrap" TextAlignment="Center" />
                         </Button>
                     </Grid>
-                    <TextBox MaxHeight="120px" Padding="0px" FontSize="11" VerticalScrollBarVisibility="Auto"
-                             IsReadOnly="True" Text="{Binding LogXmlDetails}" />
+
+                    <TextBox MaxHeight="120px" Padding="0px" FontSize="11" Style="{StaticResource TextBoxRevealStyle}" Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                             Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
+                             BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding LogXmlDetails}"
+                             Margin="5,0,5,5" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
+                             TextWrapping="WrapWithOverflow" TextAlignment="Left" />
                 </StackPanel>
             </Grid>
 
