@@ -29,11 +29,11 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string MapReleaseSingle = Base + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
         public const string IvsuSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
 
-        public const string CrashLogUrl = "https://cyanlabs.net/api/Syn3Updater/crash-logs/?uuid=";
-        public const string CrashLogPost = "https://cyanlabs.net/api/Syn3Updater/crash-logs/post.php";
+        public const string CrashLogUrl = "https://api.cyanlabs.net/Syn3Updater/crash-logs/?uuid=";
+        public const string CrashLogPost = "https://api.cyanlabs.net/Syn3Updater/crash-logs/post.php";
 
-        public const string LogUrl = "https://cyanlabs.net/api/Syn3Updater/logs/?uuid=";
-        public const string LogPost = "https://cyanlabs.net/api/Syn3Updater/logs/post.php";
+        public const string LogUrl = "https://api.cyanlabs.net/Syn3Updater/logs/?uuid=";
+        public const string LogPost = "https://api.cyanlabs.net/Syn3Updater/logs/post.php";
 
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
@@ -41,10 +41,10 @@ namespace Cyanlabs.Syn3Updater.Model
         public static SyncModel.SyncIvsu ReformatTool, DowngradeApp, DowngradeTool, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
 
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
-        public const string AsBuiltPost = "https://cyanlabs.net/api/Syn3Updater/apim-asbuilt-decode/";
+        public const string AsBuiltPost = "https://api.cyanlabs.net/Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
 
-        public const string SpecialPackageBase = "https://cyanlabs.net/api/syn3updater/get/";
+        public const string SpecialPackageBase = "https://api.cyanlabs.net/syn3updater/get/";
         public const string GetDowngradeApp = SpecialPackageBase + "downgradeapp";
         public const string GetDowngradeTool = SpecialPackageBase + "downgradetool";
         public const string GetLogTool = SpecialPackageBase + "logtool";
