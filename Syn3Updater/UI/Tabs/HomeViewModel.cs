@@ -501,7 +501,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 ApplicationManager.Instance.Action = "main";
                 ApplicationManager.Instance.InstallMode = InstallMode;
 
-                HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(Api.AppReleaseSingle + SelectedRelease).Result;
+                string appReleaseSingle = ApplicationManager.Instance.Settings.CurrentSyncNav
+                    ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
+                    : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
+
+                HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(appReleaseSingle).Result;
                 _stringDownloadJson = response.Content.ReadAsStringAsync().Result;
 
                 response = ApplicationManager.Instance.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion).Result;

@@ -25,8 +25,8 @@ namespace Cyanlabs.Syn3Updater.Model
         private const string Base = "https://syn3updater.cyanlabs.net/";
         public const string AppReleasesConst = Base + "items/releases?fields=name,notes,regions,version&sort=-name&limit=-1&[published]";
         public const string MapReleasesConst = Base + "items/map_releases?fields=name,regions&sort=-name&limit=-1&[regionplaceholder]&[published]";
-        public const string AppReleaseSingle = Base + "items/releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
-        public const string MapReleaseSingle = Base + "items/map_releases?sort=-name&limit=-1&fields=*.*.*&filter[name]=";
+        public const string AppReleaseSingle = Base + "items/releases?deep[ivsus][filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
+        public const string MapReleaseSingle = Base + "items/map_releases?fields=*.*.*&filter[name]=";
         public const string IvsuSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
 
         public const string CrashLogUrl = "https://api.cyanlabs.net/Syn3Updater/crash-logs/?uuid=";
