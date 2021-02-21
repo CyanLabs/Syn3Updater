@@ -361,15 +361,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SyncMapVersion.Clear();
                 if (ApplicationManager.Instance.Settings.ShowAllReleases)
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
-                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
                 else
                 {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
-                        $"filter[status][_in]=published,private&filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                        $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
-                        $"filter[status][_in]=published,private&filter[key][_in]=public,{ApplicationManager.Instance.Settings.LicenseKey}");
+                        $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
 
                 try
