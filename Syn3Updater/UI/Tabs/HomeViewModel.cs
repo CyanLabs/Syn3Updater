@@ -424,7 +424,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         }
 
                         NotesVisibility = Visibility.Visible;
-                        Notes = item.Notes.Replace("\n", Environment.NewLine + Environment.NewLine);
+                        Notes = item.Notes.Replace("\n", Environment.NewLine);
                     }
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][_contains]={_stringCompatibility}");

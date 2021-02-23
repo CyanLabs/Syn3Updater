@@ -317,27 +317,28 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void DownloadPathAction()
         {
             string oldPath = ApplicationManager.Instance.Settings.DownloadPath;
-            oldPath = oldPath.TrimEnd('\\');
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
-                if (Directory.Exists(oldPath))
-                    if (oldPath != dialog.SelectedPath && !dialog.SelectedPath.Contains(oldPath))
-                        if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
-                                Environment.NewLine + oldPath + Environment.NewLine,
-                                Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
-                            MessageBoxResult.Yes)
-                            try
-                            {
-                                FileSystem.MoveDirectory(oldPath, dialog.SelectedPath, UIOption.AllDialogs);
-                            }
-                            catch (OperationCanceledException)
-                            {
-                                //TODO Catch better
-                            }
-
-            DownloadLocation = dialog.SelectedPath + "\\";
+            {
+                if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
+                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
+                            Environment.NewLine + oldPath + Environment.NewLine,
+                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
+                        MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            foreach (var file in Directory.GetFiles(oldPath, "*.TAR.GZ"))
+                                FileSystem.MoveFile(file, Path.Combine(dialog.SelectedPath, Path.GetFileName(file)), UIOption.AllDialogs);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            //TODO Catch better
+                        }
+                    }
+                DownloadLocation = dialog.SelectedPath;
+            }
         }
-
         #endregion
     }
 }
