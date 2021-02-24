@@ -26,7 +26,7 @@ namespace Cyanlabs.Syn3Updater.Model
             foreach (string s in lines)
             {
                 if (s.StartsWith("#") || s.StartsWith(";")) continue;
-                string[] parts = s.Replace("=", "\t").Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = s.Replace(" = ", "\t").Replace("\\:", ":").Replace("\\!", "!").Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
 
                 if (parts.Length == 1 && parts[0].Contains(" "))
                 {
