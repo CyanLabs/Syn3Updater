@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Linq;
+using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 
 namespace Cyanlabs.Syn3Updater.Helper
@@ -21,7 +23,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             string downloadPath = ApplicationManager.Instance.DownloadPath;
 
             // No USB drive selected, download only?
-            if (string.IsNullOrWhiteSpace(selectedDrive.Path) || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB"))
+            if (string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB"))
             {
                 if (allowDownloadonly)
                 {
@@ -73,6 +75,23 @@ namespace Cyanlabs.Syn3Updater.Helper
                     ApplicationManager.Logger.Info("USB Drive will be formatted, using fresh filesystem");
                     return true;
                 }
+
+            if (selectedDrive.Name == LanguageManager.GetValue("Home.NoUSBDir"))
+            {
+                ApplicationManager.Logger.Info("Using 'Select a Directory' instead of a USB Drive");
+                ApplicationManager.Instance.DownloadOnly = false;
+                ApplicationManager.Instance.DownloadToFolder = true;
+
+                if (Directory.EnumerateFiles(driveLetter).Any())
+                {
+                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater",
+                        MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                    {
+                        ApplicationManager.Logger.Info("Selected directory contents will be overwritten");
+                        return true;
+                    }
+                }
+            }
 
             // If nothing above has returned true then download has not been cancelled and method will return false;
             return false;

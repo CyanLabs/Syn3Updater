@@ -55,6 +55,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     // Add to array of drives
                     driveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
             }
+            if (fakeusb) driveList.Add(new Drive { Path = "", Name = LanguageManager.GetValue("Home.NoUSBDir") });
 
             // Return a list of drives
             return driveList;
@@ -68,7 +69,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static DriveInfo UpdateDriveInfo(Drive selectedDrive)
         {
             DriveInfo driveInfo = new DriveInfo();
-            if (selectedDrive == null || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB") || selectedDrive.Path == "") return driveInfo;
+            if (selectedDrive == null || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB") || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSBDir") || selectedDrive.Path == "") return driveInfo;
 
             string partitionQueryText = $@"associators of {{{selectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
             ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);

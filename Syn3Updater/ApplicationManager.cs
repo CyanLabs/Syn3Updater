@@ -101,7 +101,7 @@ namespace Cyanlabs.Syn3Updater
             ConfigFolderPath,
             LauncherConfigFile;
 
-        public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected;
+        public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder;
         #endregion
 
         #region Methods

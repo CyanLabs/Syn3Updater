@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
+using Ookii.Dialogs.Wpf;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -335,19 +336,36 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void UpdateDriveInfo()
         {
             StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
-            USBHelper.DriveInfo driveInfo = USBHelper.UpdateDriveInfo(SelectedDrive);
+            if (SelectedDrive?.Name == LanguageManager.GetValue("Home.NoUSBDir"))
+            {
+                VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog {};
+                if (dialog.ShowDialog().GetValueOrDefault())
+                {
+                    DriveLetter = dialog.SelectedPath + "\\";
+                    DriveFileSystem = "";
+                    DriveName = "";
+                    ApplicationManager.Instance.DriveName = SelectedDrive?.Name;
+                    DriveDetailsVisible = Visibility.Visible;
+                }
 
-            // Update app level vars
-            ApplicationManager.Instance.DriveFileSystem = driveInfo.FileSystem;
-            ApplicationManager.Instance.DrivePartitionType = driveInfo.PartitionType;
-            ApplicationManager.Instance.DriveName = SelectedDrive?.Name;
-            ApplicationManager.Instance.SkipFormat = driveInfo.SkipFormat;
+            }
+            else
+            {
+                USBHelper.DriveInfo driveInfo = USBHelper.UpdateDriveInfo(SelectedDrive);
 
-            // Update local level vars
-            DriveLetter = driveInfo.Letter;
-            DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
-            DriveName = driveInfo.Name;
-            DriveDetailsVisible = driveInfo.Name == null ? Visibility.Hidden : Visibility.Visible;
+                // Update app level vars
+                ApplicationManager.Instance.DriveFileSystem = driveInfo.FileSystem;
+                ApplicationManager.Instance.DrivePartitionType = driveInfo.PartitionType;
+                ApplicationManager.Instance.DriveName = SelectedDrive?.Name;
+                ApplicationManager.Instance.SkipFormat = driveInfo.SkipFormat;
+
+                // Update local level vars
+                DriveLetter = driveInfo.Letter;
+                DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
+                DriveName = driveInfo.Name;
+                DriveDetailsVisible = driveInfo.Name == null ? Visibility.Hidden : Visibility.Visible;
+            }
+            
         }
 
         private void UpdateSelectedRegion()

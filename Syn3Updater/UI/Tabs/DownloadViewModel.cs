@@ -371,8 +371,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void CopyComplete()
         {
             CancelButtonEnabled = false;
+            string text;
+            if (ApplicationManager.Instance.DownloadToFolder)
+            {
+                text = "ALL FILES DOWNLOADED AND COPIED TO THE SELECTED FOLDER SUCCESSFULLY!";
+            }
+            else
+            {
+                text = "ALL FILES DOWNLOADED AND COPIED TO THE USB DRIVE SUCCESSFULLY!";
+            }
             
-            string text = "ALL FILES DOWNLOADED AND COPIED TO THE USB DRIVE SUCCESSFULLY!";
             Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
 
@@ -393,8 +401,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
                     }
 
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
+                    if (ApplicationManager.Instance.DownloadToFolder)
+                    {
+                        ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CompletedFolder"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Process.Start(ApplicationManager.Instance.DriveLetter);
+                    }
+                    else
+                    {
+                        ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
+                    }
+                    
                     ApplicationManager.Instance.FireHomeTabEvent();
                 }
                 else if (_action == "logutility")
@@ -454,37 +471,53 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void PrepareUsb()
         {
-            Log += "[" + DateTime.Now + "] " + "Preparing USB drive" + Environment.NewLine;
-            ApplicationManager.Logger.Info("Preparing USB drive");
-            if (ApplicationManager.Instance.SkipFormat == false && ApplicationManager.Instance.DownloadOnly == false)
+            if (ApplicationManager.Instance.DownloadToFolder)
             {
-                Log += "[" + DateTime.Now + "] " + "Formatting USB drive" + Environment.NewLine;
-                ApplicationManager.Logger.Info("Formatting USB drive");
-                using (Process p = new Process())
-                {
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.StartInfo.FileName = @"diskpart.exe";
-                    p.StartInfo.CreateNoWindow = true;
-
-                    Log += "[" + DateTime.Now + "] " + "Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
-                    ApplicationManager.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
-
-                    p.Start();
-                    p.StandardInput.WriteLine($"SELECT DISK={ApplicationManager.Instance.DriveNumber}");
-                    p.StandardInput.WriteLine("CLEAN");
-                    p.StandardInput.WriteLine("CONVERT MBR");
-                    p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
-                    p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
-                    p.StandardInput.WriteLine($"ASSIGN LETTER={ApplicationManager.Instance.DriveLetter.Replace(":", "")}");
-                    p.StandardInput.WriteLine("EXIT");
-
-                    p.WaitForExit();
-                }
-
-                Thread.Sleep(5000);
+                Log += "[" + DateTime.Now + "] " + "Preparing selected directory (No USB Drive Selected)" + Environment.NewLine;
+                ApplicationManager.Logger.Info("Preparing selected directory  (No USB Drive Selected)");
+            }
+            else
+            {
+                Log += "[" + DateTime.Now + "] " + "Preparing USB drive" + Environment.NewLine;
+                ApplicationManager.Logger.Info("Preparing USB drive");
             }
 
+            if (ApplicationManager.Instance.DownloadToFolder)
+            {
+                DirectoryInfo di = new DirectoryInfo(ApplicationManager.Instance.DriveLetter);
+                foreach (FileInfo file in di.GetFiles()) file.Delete();
+                foreach (DirectoryInfo dir in di.GetDirectories()) dir.Delete(true);
+            } else {
+                if (ApplicationManager.Instance.SkipFormat == false && ApplicationManager.Instance.DownloadOnly == false)
+                {
+                    Log += "[" + DateTime.Now + "] " + "Formatting USB drive" + Environment.NewLine;
+                    ApplicationManager.Logger.Info("Formatting USB drive");
+                    using (Process p = new Process())
+                    {
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.RedirectStandardInput = true;
+                        p.StartInfo.FileName = @"diskpart.exe";
+                        p.StartInfo.CreateNoWindow = true;
+
+                        Log += "[" + DateTime.Now + "] " + "Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
+                        ApplicationManager.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
+
+                        p.Start();
+                        p.StandardInput.WriteLine($"SELECT DISK={ApplicationManager.Instance.DriveNumber}");
+                        p.StandardInput.WriteLine("CLEAN");
+                        p.StandardInput.WriteLine("CONVERT MBR");
+                        p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
+                        p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
+                        p.StandardInput.WriteLine($"ASSIGN LETTER={ApplicationManager.Instance.DriveLetter.Replace(":", "")}");
+                        p.StandardInput.WriteLine("EXIT");
+
+                        p.WaitForExit();
+                    }
+
+                    Thread.Sleep(5000);
+                }
+            }
+            
             if (_action == "main")
                 switch (InstallMode)
                 {
