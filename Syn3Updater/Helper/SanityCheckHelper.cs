@@ -72,7 +72,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                 if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 {
-                    ApplicationManager.Logger.Info("USB Drive will be formatted, using fresh filesystem");
                     return true;
                 }
 
@@ -87,7 +86,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                     if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater",
                         MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                     {
-                        ApplicationManager.Logger.Info("Selected directory contents will be overwritten");
                         return true;
                     }
                 }

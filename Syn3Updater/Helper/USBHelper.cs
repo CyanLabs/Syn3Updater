@@ -111,10 +111,20 @@ namespace Cyanlabs.Syn3Updater.Helper
             data +=
                 $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}";
             data += Environment.NewLine;
-            data += $@"USB DETAILS{Environment.NewLine}";
-            data += $@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}";
-            data += $@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}";
-            data += $@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}";
+            data += $@"DESTINATION DETAILS{Environment.NewLine}";
+            if (ApplicationManager.Instance.DownloadToFolder)
+            {
+                data += $@"Mode: Directory{Environment.NewLine}";
+                data += $@"Path: {ApplicationManager.Instance.DriveLetter}{Environment.NewLine}";
+            }
+            else
+            {
+                data += $@"Mode: Drive{Environment.NewLine}";
+                data += $@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}";
+                data += $@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}";
+                data += $@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}";
+            }
+
 
             string driveletter = ApplicationManager.Instance.DriveLetter;
             if (File.Exists($@"{driveletter}\reformat.lst"))
