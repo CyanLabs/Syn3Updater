@@ -298,7 +298,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
             {
                 new SyncModel.SyncRegion {Code = "EU", Name = "Europe"},
-                new SyncModel.SyncRegion {Code = "NA", Name = "North America & Canada"},
+                new SyncModel.SyncRegion {Code = "NA", Name = "United States, Canada & Mexico"},
                 new SyncModel.SyncRegion {Code = "CN", Name = "China"},
                 new SyncModel.SyncRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
                 new SyncModel.SyncRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
