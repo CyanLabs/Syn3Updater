@@ -29,10 +29,10 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string MapReleaseSingle = Base + "items/map_releases?fields=*.*.*&filter[name]=";
         public const string IvsuSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
 
-        public const string CrashLogUrl = "https://api.cyanlabs.net/Syn3Updater/crash-logs/?uuid=";
+        public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
         public const string CrashLogPost = "https://api.cyanlabs.net/Syn3Updater/crash-logs/post.php";
 
-        public const string LogUrl = "https://api.cyanlabs.net/Syn3Updater/logs/?uuid=";
+        public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";
         public const string LogPost = "https://api.cyanlabs.net/Syn3Updater/logs/post.php";
 
         public const int BlacklistedVersion = 3419274;
