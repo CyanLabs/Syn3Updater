@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -16,34 +18,21 @@ namespace Cyanlabs.Syn3Updater.Model
         public LanguageModel(string path)
         {
             string contents = File.ReadAllText(path);
-            List<string> lines = contents.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None).Select(x => x.Trim()).ToList();
-
-            Code = Path.GetFileName(path).Replace(".properties", "");
+            Code = Path.GetFileName(path).Replace(".json", "");
             EnglishName = new CultureInfo(Code, false).DisplayName;
             NativeName = new CultureInfo(Code, false).NativeName;
-
+            var dict = JObject.Parse(contents);
             Items = new List<LanguageItem>();
-            foreach (string s in lines)
+            foreach (var s in dict)
             {
-                if (s.StartsWith("#") || s.StartsWith(";")) continue;
-                string[] parts = s.Replace(" = ", "\t").Replace("\\:", ":").Replace("\\!", "!").Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries);
-
-                if (parts.Length == 1 && parts[0].Contains(" "))
-                {
-                    parts = new string[2];
-
-                    parts[0] = s.Substring(0, s.IndexOf(" ", StringComparison.Ordinal)).Trim();
-                    parts[1] = s.Substring(s.IndexOf(" ", StringComparison.Ordinal)).Trim();
-                }
-
-                if (parts.Length > 1)
+                if (s.Value?.ToString() != "")
                     Items.Add(new LanguageItem
                     {
-                        Key = parts[0],
-                        Value = parts[1]
+                        Key = s.Key,
+                        Value = s.Value?.ToString()
                     });
                 else
-                    Debug.WriteLine(parts);
+                    Debug.WriteLine(s.Key + ":" + s.Value?.ToString());
             }
         }
 
@@ -119,7 +108,7 @@ namespace Cyanlabs.Syn3Updater.Model
                 if (string.IsNullOrWhiteSpace(r))
                 {
                     r = $"[{lang}:{key}]";
-                    Debug.WriteLine($"couldnt find {r}");
+                    Debug.WriteLine($"couldn't find {r}");
                 }
 
                 return r;
@@ -158,7 +147,7 @@ namespace Cyanlabs.Syn3Updater.Model
                 if (l == null)
                 {
                     //Have to hardcode path for design time :(
-                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.properties";
+                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.json";
 
                     if (File.Exists(fn))
                     {
