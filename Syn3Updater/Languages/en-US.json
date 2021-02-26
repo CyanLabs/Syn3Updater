@@ -74,6 +74,7 @@
   "MessageBox.CancelMy20Final": "FINAL WARNING!\n\nBy clicking \"Yes\" you confirm you do not have a car manufactured in 2020!",
   "MessageBox.CancelRegionMismatch": "Current region and new region are not the same, this may not work. Would you like to continue anyway? ",
   "MessageBox.CancelDownloadIsDrive": "Download path and destination USB drive are the same, please change your download path.",
+  "MessageBox.CancelDownloadIsFolder": "Download directory and selected destination directory are the same, please change one of these directories",
   "MessageBox.CancelNoApps": "Mode is reformat or downgrade and no apps package has been selected, this will result in a non booting system\nABORTING! No \"APPS\" package has been selected but Syn3 Updater has determined that a downgrade or reformat is required, this will result in a non booting system. Aborting!",
   "MessageBox.CancelFormatUSB": "WARNING, ALL DATA ON THE SELECTED DRIVE WILL BE LOST {0}\nDrive Letter: {1}\n\nClick YES to format and continue.",
   "MessageBox.CancelDeleteFiles": "WARNING, ALL DATA IN THE SELECTED DIRECTORY WILL BE LOST\nPath: {0}\n\nClick YES to continue.",
