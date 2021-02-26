@@ -341,11 +341,20 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog {};
                 if (dialog.ShowDialog().GetValueOrDefault())
                 {
-                    DriveLetter = dialog.SelectedPath + "\\";
-                    DriveFileSystem = "";
-                    DriveName = "";
-                    ApplicationManager.Instance.DriveName = SelectedDrive?.Name;
-                    DriveDetailsVisible = Visibility.Visible;
+                    string destination = dialog.SelectedPath;
+                    if (ApplicationManager.Instance.DownloadPath.Contains(destination))
+                    {
+                        ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsFolder"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        ReloadSettings();
+                    }
+                    else
+                    {
+                        DriveLetter = destination + "\\";
+                        DriveFileSystem = "";
+                        DriveName = "";
+                        ApplicationManager.Instance.DriveName = SelectedDrive?.Name;
+                        DriveDetailsVisible = Visibility.Visible;
+                    }
                 }
 
             }
@@ -379,13 +388,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SyncMapVersion.Clear();
                 if (ApplicationManager.Instance.Settings.ShowAllReleases)
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[licensekeys][_in]=v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
                 else
                 {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
-                        $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
+                        $"filter[status][_in]=published,private&filter[licensekeys][_in]=v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
                         $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
