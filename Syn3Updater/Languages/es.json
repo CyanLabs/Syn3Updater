@@ -124,5 +124,9 @@
     "MessageBox.UploadLog": "Para asistir en solucionar cualquier problema potencial recomendamos subir su log a nuestra base de dato, éste log contiene detalles de las opciones elegidas. Si elige no subir el log, puede hacerlo más tarde desde la pestaña \"Utilidades\" haciendo clic en \"Subir Log\".\n\nQuiere subir su log ahora?",
     "MessageBox.UploadLogNoDrive": "Debe seleccionar una unidad que haya sido usada anteriormente y contenga un archivo log.txt para subir su log.",
     "Settings.ReleaseType": "Rama de Release de Aplicación:",
-    "MessageBox.ChangeApplicationReleaseBranch": "Cambiar la rama reiniciará Syn3 Updater y descargará automáticamente el build relevante.\n\nCambiando de Ci a Beta/Release puede resultar en excepciones no manejadas y requerir que reinicie sus configuraciones!\n\nConsulte la documentación para más información\n\nEstá seguro que quiere cambiar la \"Rama Release\" de Syn3 Updater?"
+    "MessageBox.ChangeApplicationReleaseBranch": "Cambiar la rama reiniciará Syn3 Updater y descargará automáticamente el build relevante.\n\nCambiando de Ci a Beta/Release puede resultar en excepciones no manejadas y requerir que reinicie sus configuraciones!\n\nConsulte la documentación para más información\n\nEstá seguro que quiere cambiar la \"Rama Release\" de Syn3 Updater?",
+    "Home.NoUSBDir": "Seleccione Directorio",
+    "MessageBox.CancelDeleteFiles": "ADVERTENCIA, TODA LA INFORMACIÓN EN EL DIRECTORIO SELECCIONADO SERÁ BORRADO\nPath: {0}\n\nSeleccione \"Si\" para continuar",
+    "MessageBox.CompletedFolder": "La descarga y copia de los archivos está completa.\nYa que seleccionó un directorio en vez de unidad USB, tendrá que copiar los contenidos del directorio elegido a una unidad USB formateada como ExFAT (MBR).\n\nSi Syn3 Updater le ha sido útil, por favor considere donar desde la pestaña \"Acerca De\".",
+    "MessageBox.CancelDownloadIsFolder": "El Directorio de Descarga y Directorio de Destino son el mismo, por favor cambiar uno de éstos directorios"
 }
