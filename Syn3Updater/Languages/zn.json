@@ -124,5 +124,9 @@
     "MessageBox.UploadLog": "为了协助解决任何潜在的问题，我们建议将您的日志上传到我们的数据库中，这个日志文件包含了所选选项的详细信息，如果你选择不上传这个日志，你可以在之后从 \"实用工具 \"选项卡中点击 \"上传日志\"。\n\n你需要上传你的日志文件吗?",
     "MessageBox.UploadLogNoDrive": "您必须选择一个以前使用过的驱动器，并包含一个log.txt文件才能上传您的日志。",
     "Settings.ReleaseType": "应用程序发布类型:",
-    "MessageBox.ChangeApplicationReleaseBranch": "更改分支将重新启动 Syn3 Updater 并自动下载相应的构建版本。\n\n更改Ci到Beta/正式发版本可能会导致未知的异常，并要求你重新设置！\n\n更多信息请参考文档\n\n你确定你要改变Syn3 Updater的\"发布分支\"吗？"
+    "MessageBox.ChangeApplicationReleaseBranch": "更改分支将重新启动 Syn3 Updater 并自动下载相应的构建版本。\n\n更改Ci到Beta/正式发版本可能会导致未知的异常，并要求你重新设置！\n\n更多信息请参考文档\n\n你确定你要改变Syn3 Updater的\"发布分支\"吗？",
+    "Home.NoUSBDir": "Select A Directory",
+    "MessageBox.CancelDeleteFiles": "WARNING, ALL DATA IN THE SELECTED DIRECTORY WILL BE LOST\nPath: {0}\n\nClick YES to continue.",
+    "MessageBox.CompletedFolder": "The download and copying of the files is now complete\nAs you have selected a directory rather than a USB drive you will need to copy the contents of your chosen directory to a ExFAT (MBR) formatted USB drive\n\nIf Syn3 Updater has been useful to you please consider donating from the \"About\" tab.",
+    "MessageBox.CancelDownloadIsFolder": "Download directory and selected destination directory are the same, please change one of these directories"
 }
