@@ -124,5 +124,9 @@
     "MessageBox.UploadLog": "Aby pomóc w rozwiązywaniu potencjalnych problemów, zalecamy przesłanie dziennika do naszej bazy danych. Ten plik dziennika zawiera szczegółowe informacje na temat wybranych opcji. Jeśli zdecydujesz się nie przesyłać tego dziennika, możesz to zrobić później, korzystając z zakładki „Narzędzia” klikając „Prześlij dziennik”.  n  nCzy chcesz teraz przesłać swój dziennik?",
     "MessageBox.UploadLogNoDrive": "Aby przesłać dziennik, musisz wybrać dysk, który był używany wcześniej i zawiera plik log.txt.",
     "Settings.ReleaseType": "Application Release Type:",
-    "MessageBox.ChangeApplicationReleaseBranch": "Changing branch will restart Syn3 Updater and automatically download the relevant build.\n\nChanging from Ci to Beta/Release may result in unhandled exceptions and require you to reset your settings!\n\nRefer to the documentation for further information\n\nAre you sure you want to change the 'Release Branch' of Syn3 Updater?"
+    "MessageBox.ChangeApplicationReleaseBranch": "Changing branch will restart Syn3 Updater and automatically download the relevant build.\n\nChanging from Ci to Beta/Release may result in unhandled exceptions and require you to reset your settings!\n\nRefer to the documentation for further information\n\nAre you sure you want to change the 'Release Branch' of Syn3 Updater?",
+    "Home.NoUSBDir": "Select A Directory",
+    "MessageBox.CancelDeleteFiles": "WARNING, ALL DATA IN THE SELECTED DIRECTORY WILL BE LOST\nPath: {0}\n\nClick YES to continue.",
+    "MessageBox.CompletedFolder": "The download and copying of the files is now complete\nAs you have selected a directory rather than a USB drive you will need to copy the contents of your chosen directory to a ExFAT (MBR) formatted USB drive\n\nIf Syn3 Updater has been useful to you please consider donating from the \"About\" tab.",
+    "MessageBox.CancelDownloadIsFolder": "Download directory and selected destination directory are the same, please change one of these directories"
 }
