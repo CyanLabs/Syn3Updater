@@ -124,5 +124,9 @@
     "MessageBox.UploadLog": "Per aiutare nella risoluzione di potenziali problemi, ti consigliamo di caricare il tuo registro nel nostro database, questo file di registro contiene i dettagli sulle opzioni selezionate, se scegli di non caricare questo log puoi farlo in un secondo momento dalla scheda \"Utility\" e facendo clic su \"Carica registro\".\n\nVuoi caricare il tuo registro ora?",
     "MessageBox.UploadLogNoDrive": "È necessario selezionare un'unità che è stata utilizzata in precedenza e contiene un file log.txt per caricare il registro.",
     "Settings.ReleaseType": "Tipo di rilascio applicazione:",
-    "MessageBox.ChangeApplicationReleaseBranch": "La modifica della versione riavvierà Syn3 Updater e scaricherà automaticamente la versione pertinente.  N  Il passaggio a Beta / Release potrebbe comportare eccezioni non gestite e richiedere il ripristino delle impostazioni!  N  Fare riferimento alla documentazione per ulteriori informazioni  N  Are sei sicuro di voler cambiare la \"versione di rilascio\" di Syn3 Updater?"
+    "MessageBox.ChangeApplicationReleaseBranch": "La modifica della versione riavvierà Syn3 Updater e scaricherà automaticamente la versione pertinente.  N  Il passaggio a Beta / Release potrebbe comportare eccezioni non gestite e richiedere il ripristino delle impostazioni!  N  Fare riferimento alla documentazione per ulteriori informazioni  N  Are sei sicuro di voler cambiare la \"versione di rilascio\" di Syn3 Updater?",
+    "Home.NoUSBDir": "Select A Directory",
+    "MessageBox.CancelDeleteFiles": "WARNING, ALL DATA IN THE SELECTED DIRECTORY WILL BE LOST\nPath: {0}\n\nClick YES to continue.",
+    "MessageBox.CompletedFolder": "The download and copying of the files is now complete\nAs you have selected a directory rather than a USB drive you will need to copy the contents of your chosen directory to a ExFAT (MBR) formatted USB drive\n\nIf Syn3 Updater has been useful to you please consider donating from the \"About\" tab.",
+    "MessageBox.CancelDownloadIsFolder": "Download directory and selected destination directory are the same, please change one of these directories"
 }
