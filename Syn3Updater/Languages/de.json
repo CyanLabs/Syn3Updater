@@ -125,8 +125,8 @@
     "MessageBox.UploadLogNoDrive": "Sie müssen ein Laufwerk auswählen, das zuvor verwendet wurde und die Datei \"log.txt\" enthält, /num Ihre Log-Datei hochzuladen.",
     "Settings.ReleaseType": "Applikations-Release-Type:",
     "MessageBox.ChangeApplicationReleaseBranch": "Durch das Verändern des Branch wird der Syn3 Updater neu starten und automatisch den relevanten Build herunterladen.\n\nDas Ändern von \"Ci\" nach \"Beta/Release\" kann zu \"unhandled exceptions\" führen und es müssen die Einstellungen zurückgesetzt werden!\n\nBitte lesen Sie die Dokumentation für weiter Informationen.\n\nSind Sie sich sicher, dass Sie die 'Release Branch' des Syn3 Updater ändern wollen?",
-    "Home.NoUSBDir": "Select A Directory",
-    "MessageBox.CancelDeleteFiles": "WARNING, ALL DATA IN THE SELECTED DIRECTORY WILL BE LOST\nPath: {0}\n\nClick YES to continue.",
-    "MessageBox.CompletedFolder": "The download and copying of the files is now complete\nAs you have selected a directory rather than a USB drive you will need to copy the contents of your chosen directory to a ExFAT (MBR) formatted USB drive\n\nIf Syn3 Updater has been useful to you please consider donating from the \"About\" tab.",
-    "MessageBox.CancelDownloadIsFolder": "Download directory and selected destination directory are the same, please change one of these directories"
+    "Home.NoUSBDir": "Wählen Sie ein Verzeichnis aus",
+    "MessageBox.CancelDeleteFiles": "WARNUNG, ALLE DATEN IN DEM AUSGEWÄHLTEN VERZEICHNIS WERDEN GELÖSCHT\nPath: {0}\n\nDrücken Sie JA um fortzufahren.",
+    "MessageBox.CompletedFolder": "Der \"Download\" und das Kopieren der Dateien ist nun abgeschlossen\nDa Sie ein Verzeichnis statt eines USB-Sticks ausgewählt haben, müssen Sie nun den Inhalt des ausgewählten Verzeichnis auf einen ExFAT (MBR) formatierten USB-Stick kopieren.\n\nWenn Syn3 Updater für Sie hilfreich war, erwägen Sie bitte eine Spende über die Registerkarte \"Info",
+    "MessageBox.CancelDownloadIsFolder": "Das Verzeichnis für den Download und das ausgewählte Ziel-Verzeichnis sind identisch, bitte verändern Sie eins der Verzeichnisse"
 }
