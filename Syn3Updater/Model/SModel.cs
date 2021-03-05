@@ -1,19 +1,19 @@
 ﻿namespace Cyanlabs.Syn3Updater.Model
 {
     /// <summary>
-    ///     Json class for additional Sync Models such as SyncIvsu and SyncRegion
+    ///     Json class for additional Models such as Ivsu and SRegion
     /// </summary>
-    public static class SyncModel
+    public static class SModel
     {
         #region Properties & Fields
 
-        public class SyncRegion
+        public class SRegion
         {
             public string Code { get; set; }
             public string Name { get; set; }
         }
 
-        public class SyncIvsu
+        public class Ivsu
         {
             public bool Selected { get; set; }
             public string Type { get; set; }

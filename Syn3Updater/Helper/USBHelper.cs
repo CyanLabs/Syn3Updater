@@ -105,7 +105,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             data += $@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}";
             data += Environment.NewLine;
             data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
-            data += $@"Version: {ApplicationManager.Instance.SyncVersion}{Environment.NewLine}";
+            data += $@"Version: {ApplicationManager.Instance.SVersion}{Environment.NewLine}";
             data += $@"Region: {ApplicationManager.Instance.Settings.CurrentSyncRegion}{Environment.NewLine}";
             data += $@"Navigation: {ApplicationManager.Instance.Settings.CurrentSyncNav}{Environment.NewLine}";
             data +=

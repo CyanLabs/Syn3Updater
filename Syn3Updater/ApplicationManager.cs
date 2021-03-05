@@ -32,7 +32,7 @@ namespace Cyanlabs.Syn3Updater
         }
 
         public static readonly SimpleLogger Logger = new SimpleLogger();
-        public ObservableCollection<SyncModel.SyncIvsu> Ivsus = new ObservableCollection<SyncModel.SyncIvsu>();
+        public ObservableCollection<SModel.Ivsu> Ivsus = new ObservableCollection<SModel.Ivsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
         public LauncherPrefs LauncherPrefs { get; set; }
         public JsonSettings Settings { get; set; }
@@ -95,7 +95,7 @@ namespace Cyanlabs.Syn3Updater
             SelectedRelease,
             SelectedRegion,
             InstallMode,
-            SyncVersion,
+            SVersion,
             Action,
             ConfigFile,
             ConfigFolderPath,
@@ -253,13 +253,13 @@ namespace Cyanlabs.Syn3Updater
 
             string version = Instance.Settings.CurrentSyncVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            Logger.Debug($"Current Sync Version set to {version}, Decimal seperator set to {decimalSeparator}");
+            Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
             {
                 if (version.Length == 7)
-                    SyncVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
+                    SVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
                 else
-                    SyncVersion = $"0{decimalSeparator}0{decimalSeparator}00000";
+                    SVersion = $"0{decimalSeparator}0{decimalSeparator}00000";
             }
             catch (IndexOutOfRangeException e)
             {

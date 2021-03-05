@@ -30,12 +30,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         #region Properties & Fields
 
-        private ObservableCollection<SyncModel.SyncRegion> _syncRegions;
+        private ObservableCollection<SModel.SRegion> _sRegions;
 
-        public ObservableCollection<SyncModel.SyncRegion> SyncRegions
+        public ObservableCollection<SModel.SRegion> SRegions
         {
-            get => _syncRegions;
-            set => SetProperty(ref _syncRegions, value);
+            get => _sRegions;
+            set => SetProperty(ref _sRegions, value);
         }
 
         private ObservableCollection<string> _installModes;
@@ -91,7 +91,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null && value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
                 {
                     SetProperty(ref _currentSyncVersion, value);
-                    ApplicationManager.Instance.SyncVersion = value;
+                    ApplicationManager.Instance.SVersion = value;
                     ApplicationManager.Instance.Settings.CurrentSyncVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
                 }
             }
@@ -241,13 +241,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.FireHomeTabEvent();
             //TODO Fix need for temp string
             string currentSyncRegionTemp = ApplicationManager.Instance.Settings.CurrentSyncRegion;
-            SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
+            SRegions = new ObservableCollection<SModel.SRegion>
             {
-                new SyncModel.SyncRegion {Code = "EU", Name = "Europe"},
-                new SyncModel.SyncRegion {Code = "NA", Name = "United States, Canada & Mexico"},
-                new SyncModel.SyncRegion {Code = "CN", Name = "China"},
-                new SyncModel.SyncRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
-                new SyncModel.SyncRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean and Central America"}
+                new SModel.SRegion {Code = "EU", Name = "Europe"},
+                new SModel.SRegion {Code = "NA", Name = "United States, Canada & Mexico"},
+                new SModel.SRegion {Code = "CN", Name = "China"},
+                new SModel.SRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
+                new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean and Central America"}
             };
             CurrentSyncRegion = currentSyncRegionTemp;
 
@@ -283,7 +283,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
-            CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
+            CurrentSyncVersion = ApplicationManager.Instance.SVersion;
             CurrentTheme = ApplicationManager.Instance.Settings.Theme;
         }
 

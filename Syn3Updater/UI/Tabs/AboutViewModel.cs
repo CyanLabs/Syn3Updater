@@ -11,14 +11,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private ActionCommand _documentationButton;
         private ActionCommand _donateButton;
-        private ActionCommand _fordhubButton;
+        private ActionCommand _fhubButton;
         private ActionCommand _forumButton;
         private ActionCommand _websiteButton;
         public ActionCommand WebsiteButton => _websiteButton ?? (_websiteButton = new ActionCommand(WebsiteAction));
         public ActionCommand ForumButton => _forumButton ?? (_forumButton = new ActionCommand(ForumAction));
         public ActionCommand DonateButton => _donateButton ?? (_donateButton = new ActionCommand(DonateAction));
         public ActionCommand DocButton => _documentationButton ?? (_documentationButton = new ActionCommand(DocAction));
-        public ActionCommand FordHubButton => _fordhubButton ?? (_fordhubButton = new ActionCommand(FordHubAction));
+        public ActionCommand FHubButton => _fhubButton ?? (_fhubButton = new ActionCommand(FHubAction));
 
         private bool _disclaimerAccepted;
 
@@ -75,9 +75,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Process.Start("https://cyanlabs.net/applications/syn3-updater/");
         }
 
-        private void FordHubAction()
+        private void FHubAction()
         {
-            Process.Start("https://cyanlabs.net/ford");
+            Process.Start("https://cyanlabs.net/fhub");
         }
 
         #endregion

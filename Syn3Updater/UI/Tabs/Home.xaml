@@ -37,17 +37,17 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
                                        Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
-                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentSyncVersion}" />
+                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentVersion}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
                                        Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
-                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentSyncRegion}" />
+                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentRegion}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
                                        Text="{Binding Language, ConverterParameter=Home.SyncNav, Converter={StaticResource LocConverter}}" />
-                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentSyncNav}" />
+                            <TextBlock Margin="0,0,10,10" Text="{Binding CurrentNav}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
@@ -149,7 +149,7 @@
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="0"
                                    Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="246px" ItemsSource="{Binding SyncRegions}"
+                        <ComboBox VerticalAlignment="Center" MinWidth="246px" ItemsSource="{Binding SRegions}"
                                   DisplayMemberPath="Name" SelectedValuePath="Code"
                                   SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" 
                                   SelectedIndex="{Binding SelectedRegionIndex}" />
@@ -166,7 +166,7 @@
                                    Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
                         <ComboBox VerticalAlignment="Center" MinWidth="246px"
                                   SelectedIndex="{Binding SelectedReleaseIndex}"
-                                  IsEnabled="{Binding SyncVersionsEnabled}" ItemsSource="{Binding SyncVersion}"
+                                  IsEnabled="{Binding SVersionsEnabled}" ItemsSource="{Binding SVersion}"
                                   SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1"
                                   Grid.ColumnSpan="2" />
 
@@ -175,7 +175,7 @@
                                    Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}" />
                         <ComboBox VerticalAlignment="Center" MinWidth="246px"
                                   SelectedIndex="{Binding SelectedMapVersionIndex}"
-                                  IsEnabled="{Binding SyncMapVersionsEnabled}" ItemsSource="{Binding SyncMapVersion}"
+                                  IsEnabled="{Binding SMapVersionsEnabled}" ItemsSource="{Binding SMapVersion}"
                                   Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
                                   SelectedItem="{Binding SelectedMapVersion}" />
                     </Grid>

@@ -120,7 +120,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             PercentageChanged += DownloadPercentageChanged;
 
             DownloadQueueList = new ObservableCollection<string>();
-            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
 
             _ct = _tokenSource.Token;
 
@@ -144,7 +144,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             _count = 0;
             TotalPercentageMax = 100 * ApplicationManager.Instance.Ivsus.Count * (ApplicationManager.Instance.DownloadOnly ? 2 : 4);
 
-            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (_ct.IsCancellationRequested)
                 {
@@ -271,7 +271,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task DoCopy()
 #pragma warning restore 1998
         {
-            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (_ct.IsCancellationRequested)
                 {
@@ -398,7 +398,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         ApplicationManager.Instance.Settings.CurrentSyncVersion =
                             Convert.ToInt32(ApplicationManager.Instance.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
-                        ApplicationManager.Instance.SyncVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
+                        ApplicationManager.Instance.SVersion = ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "");
                     }
 
                     if (ApplicationManager.Instance.DownloadToFolder)
@@ -409,7 +409,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     else
                     {
                         ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                        Process.Start($"https://cyanlabs.net/tutorials/update-ford-sync-3-2-2-3-0-to-version-3-4-all-years-3-4-19200/#{InstallMode}");
+                        Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
                     }
                     
                     ApplicationManager.Instance.FireHomeTabEvent();
@@ -534,7 +534,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             else if (_action == "logutility" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade") CreateAutoInstall();
 
 
-            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadPath + item.FileName));
 
             Directory.CreateDirectory($@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\");
@@ -561,7 +561,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             string extrafiles = "";
             int baseint = 0, extraint = 0;
-            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
                 if (item.Type == @"APPS" || item.Type == @"VOICE" || item.Type == @"ENH_DAB" || item.Type == @"MAP_LICENSE" || item.Type == @"VOICE_NAV" ||
                     ApplicationManager.Instance.AppsSelected == false)
                 {
@@ -574,7 +574,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     if (extraint == 10)
                     {
                         extraint = 0;
-                        extrafiles += $@"Options = Delay,Include,Transaction{Environment.NewLine}[SYNCGen3.0_{ApplicationManager.Instance.SyncVersion}]{Environment.NewLine}";
+                        extrafiles += $@"Options = Delay,Include,Transaction{Environment.NewLine}[SYNCGen3.0_{ApplicationManager.Instance.SVersion}]{Environment.NewLine}";
                     }
 
                     extraint++;
@@ -595,7 +595,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             string reformatlst = "";
             int i = 0;
-            foreach (SyncModel.SyncIvsu item in ApplicationManager.Instance.Ivsus)
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (InstallMode == @"reformat")
                 {

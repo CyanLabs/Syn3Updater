@@ -102,7 +102,7 @@
     <Compile Include="Model\LanguageModel.cs" />
     <Compile Include="Model\BaseViewModel.cs" />
     <Compile Include="Model\JsonSettings.cs" />
-    <Compile Include="Model\SyncModel.cs" />
+    <Compile Include="Model\SModel.cs" />
     <Compile Include="UI\AttachedProperties.cs" />
     <Compile Include="UI\CrashWindow.xaml.cs">
       <DependentUpon>CrashWindow.xaml</DependentUpon>

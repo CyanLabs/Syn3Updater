@@ -52,7 +52,7 @@
                                StretchDirection="UpOnly" />
                         <StackPanel Background="DarkRed" Grid.Column="2" Margin="5" Grid.ColumnSpan="2">
                             <TextBlock FontSize="12" Foreground="White" TextAlignment="Center"
-                                       Text="{Binding Language, ConverterParameter=Settings.EnterSyncVersion, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, ConverterParameter=Settings.EnterVersion, Converter={StaticResource LocConverter}}" />
                             <TextBlock FontSize="12" Foreground="White" TextAlignment="Center"
                                        Text="{Binding Language, ConverterParameter=Settings.EnterRegionNav, Converter={StaticResource LocConverter}}" />
                             <TextBlock FontSize="12" Foreground="White" FontWeight="Bold" Margin="0,10"
@@ -86,7 +86,7 @@
                                    Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Settings.SyncRegion, Converter={StaticResource LocConverter}}" />
                         <ComboBox SelectedIndex="0" Width="200" VerticalAlignment="Center" Grid.Column="1"
-                                  IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding SyncRegions}"
+                                  IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding SRegions}"
                                   VerticalContentAlignment="Center" DisplayMemberPath="Name" SelectedValuePath="Code"
                                   SelectedValue="{Binding CurrentSyncRegion}" />
                     </Grid>

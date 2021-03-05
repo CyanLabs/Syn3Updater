@@ -38,7 +38,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 
-        public static SyncModel.SyncIvsu ReformatTool, DowngradeApp, DowngradeTool, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
+        public static SModel.Ivsu ReformatTool, DowngradeApp, DowngradeTool, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
 
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
         public const string AsBuiltPost = "https://api.cyanlabs.net/Syn3Updater/apim-asbuilt-decode/";

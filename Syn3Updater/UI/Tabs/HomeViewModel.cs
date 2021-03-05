@@ -69,9 +69,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private SyncModel.SyncRegion _selectedRegion;
+        private SModel.SRegion _selectedRegion;
 
-        public SyncModel.SyncRegion SelectedRegion
+        public SModel.SRegion SelectedRegion
         {
             get => _selectedRegion;
             set
@@ -137,44 +137,44 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _driveList, value);
         }
 
-        private ObservableCollection<SyncModel.SyncRegion> _syncRegions;
+        private ObservableCollection<SModel.SRegion> _sRegions;
 
-        public ObservableCollection<SyncModel.SyncRegion> SyncRegions
+        public ObservableCollection<SModel.SRegion> SRegions
         {
-            get => _syncRegions;
-            set => SetProperty(ref _syncRegions, value);
+            get => _sRegions;
+            set => SetProperty(ref _sRegions, value);
         }
 
-        private ObservableCollection<string> _syncVersion;
+        private ObservableCollection<string> _sVersion;
 
-        public ObservableCollection<string> SyncVersion
+        public ObservableCollection<string> SVersion
         {
-            get => _syncVersion;
-            set => SetProperty(ref _syncVersion, value);
+            get => _sVersion;
+            set => SetProperty(ref _sVersion, value);
         }
 
-        private ObservableCollection<string> _syncMapVersion;
+        private ObservableCollection<string> _sMapVersion;
 
-        public ObservableCollection<string> SyncMapVersion
+        public ObservableCollection<string> SMapVersion
         {
-            get => _syncMapVersion;
-            set => SetProperty(ref _syncMapVersion, value);
+            get => _sMapVersion;
+            set => SetProperty(ref _sMapVersion, value);
         }
 
-        private bool _syncVersionsEnabled;
+        private bool _sVersionsEnabled;
 
-        public bool SyncVersionsEnabled
+        public bool SVersionsEnabled
         {
-            get => _syncVersionsEnabled;
-            set => SetProperty(ref _syncVersionsEnabled, value);
+            get => _sVersionsEnabled;
+            set => SetProperty(ref _sVersionsEnabled, value);
         }
 
-        private bool _syncMapVersionsEnabled;
+        private bool _sMapVersionsEnabled;
 
-        public bool SyncMapVersionsEnabled
+        public bool SMapVersionsEnabled
         {
-            get => _syncMapVersionsEnabled;
-            set => SetProperty(ref _syncMapVersionsEnabled, value);
+            get => _sMapVersionsEnabled;
+            set => SetProperty(ref _sMapVersionsEnabled, value);
         }
 
         private string _notes;
@@ -193,43 +193,43 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _notesVisibility, value);
         }
 
-        private ObservableCollection<SyncModel.SyncIvsu> _ivsuList;
+        private ObservableCollection<SModel.Ivsu> _ivsuList;
 
-        public ObservableCollection<SyncModel.SyncIvsu> IvsuList
+        public ObservableCollection<SModel.Ivsu> IvsuList
         {
             get => _ivsuList;
             set => SetProperty(ref _ivsuList, value);
         }
 
-        private string _currentSyncRegion;
+        private string _currentRegion;
 
-        public string CurrentSyncRegion
+        public string CurrentRegion
         {
-            get => _currentSyncRegion;
+            get => _currentRegion;
             set
             {
                 if (value != null)
                 {
-                    SetProperty(ref _currentSyncRegion, value);
+                    SetProperty(ref _currentRegion, value);
                     ApplicationManager.Instance.Settings.CurrentSyncRegion = value;
                 }
             }
         }
 
-        private string _currentSyncVersion;
+        private string _currentVersion;
 
-        public string CurrentSyncVersion
+        public string CurrentVersion
         {
-            get => _currentSyncVersion;
-            set => SetProperty(ref _currentSyncVersion, value);
+            get => _currentVersion;
+            set => SetProperty(ref _currentVersion, value);
         }
 
-        private string _currentSyncNav;
+        private string _currentNav;
 
-        public string CurrentSyncNav
+        public string CurrentNav
         {
-            get => _currentSyncNav;
-            set => SetProperty(ref _currentSyncNav, value);
+            get => _currentNav;
+            set => SetProperty(ref _currentNav, value);
         }
 
         private string _downloadLocation;
@@ -274,37 +274,37 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void ReloadSettings()
         {
             NotesVisibility = Visibility.Hidden;
-            CurrentSyncNav = ApplicationManager.Instance.Settings.CurrentSyncNav ? "Yes" : "No";
-            CurrentSyncRegion = ApplicationManager.Instance.Settings.CurrentSyncRegion;
-            CurrentSyncVersion = ApplicationManager.Instance.SyncVersion;
+            CurrentNav = ApplicationManager.Instance.Settings.CurrentSyncNav ? "Yes" : "No";
+            CurrentRegion = ApplicationManager.Instance.Settings.CurrentSyncRegion;
+            CurrentVersion = ApplicationManager.Instance.SVersion;
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
             SelectedMapVersionIndex = -1;
             SelectedReleaseIndex = -1;
             SelectedRegionIndex = -1;
             StartEnabled = false;
-            IvsuList = new ObservableCollection<SyncModel.SyncIvsu>();
+            IvsuList = new ObservableCollection<SModel.Ivsu>();
             InstallMode = "";
             RefreshUsb();
-            SyncMapVersion = new ObservableCollection<string>();
-            SyncVersion?.Clear();
-            SyncMapVersion?.Clear();
+            SMapVersion = new ObservableCollection<string>();
+            SVersion?.Clear();
+            SMapVersion?.Clear();
             DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path == "" ? Visibility.Hidden : Visibility.Visible;
-            ApplicationManager.Logger.Info($"Current Sync Details - Region: {CurrentSyncRegion} - Version: {CurrentSyncVersion} - Navigation: {CurrentSyncNav}");
+            ApplicationManager.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
         }
 
         public void Init()
         {
             SelectedRegionIndex = -1;
             ApplicationManager.Instance.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
-            SyncRegions = new ObservableCollection<SyncModel.SyncRegion>
+            SRegions = new ObservableCollection<SModel.SRegion>
             {
-                new SyncModel.SyncRegion {Code = "EU", Name = "Europe"},
-                new SyncModel.SyncRegion {Code = "NA", Name = "United States, Canada & Mexico"},
-                new SyncModel.SyncRegion {Code = "CN", Name = "China"},
-                new SyncModel.SyncRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
-                new SyncModel.SyncRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
+                new SModel.SRegion {Code = "EU", Name = "Europe"},
+                new SModel.SRegion {Code = "NA", Name = "United States, Canada & Mexico"},
+                new SModel.SRegion {Code = "CN", Name = "China"},
+                new SModel.SRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
+                new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
             };
-            SyncVersionsEnabled = false;
+            SVersionsEnabled = false;
         }
 
         private void RegionInfoAction()
@@ -385,7 +385,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 IvsuList.Clear();
                 SelectedMapVersion = null;
                 SelectedRelease = null;
-                SyncMapVersion.Clear();
+                SMapVersion.Clear();
                 if (ApplicationManager.Instance.Settings.ShowAllReleases)
                 {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[licensekeys][_in]=v2,{ApplicationManager.Instance.Settings.LicenseKey}");
@@ -413,23 +413,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (!ApplicationManager.Instance.Settings.CurrentSyncNav)
                 {
-                    SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
+                    SMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                 }
                 else
                 {
                     if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion)
-                        SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
+                        SMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                 }
 
 
                 _jsonReleases = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringReleasesJson);
-                SyncVersion = new ObservableCollection<string>();
+                SVersion = new ObservableCollection<string>();
 
                 foreach (Api.Data item in _jsonReleases.Releases)
                     if (item.Regions.Contains(SelectedRegion.Code))
-                        SyncVersion.Add(item.Name);
+                        SVersion.Add(item.Name);
 
-                SyncVersionsEnabled = true;
+                SVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             }
         }
@@ -461,23 +461,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (ApplicationManager.Instance.Settings.CurrentSyncNav)
                 {
-                    SyncMapVersion.Clear();
-                    SyncMapVersion.Add(LanguageManager.GetValue("String.NoMaps"));
+                    SMapVersion.Clear();
+                    SMapVersion.Add(LanguageManager.GetValue("String.NoMaps"));
                     if (ApplicationManager.Instance.Settings.CurrentSyncNav)
                     {
                         if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion)
-                            SyncMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
+                            SMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                     }
                     else
                     {
-                        SyncMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
+                        SMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                     }
 
                     _jsonMapReleases = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringMapReleasesJson);
-                    foreach (Api.Data item in _jsonMapReleases.Releases) SyncMapVersion.Add(item.Name);
+                    foreach (Api.Data item in _jsonMapReleases.Releases) SMapVersion.Add(item.Name);
                 }
 
-                SyncMapVersionsEnabled = true;
+                SMapVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             }
         }
@@ -546,7 +546,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
 
                         string fileName = FileHelper.url_to_filename(item.Ivsu.Url);
-                        IvsuList.Add(new SyncModel.SyncIvsu
+                        IvsuList.Add(new SModel.Ivsu
                         {
                             Type = item.Ivsu.Type, Name = item.Ivsu.Name, Version = item.Ivsu.Version,
                             Notes = item.Ivsu.Notes, Url = item.Ivsu.Url, Md5 = item.Ivsu.Md5, Selected = true,
@@ -560,7 +560,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (item.MapIvsu.Regions.Contains("ALL") || item.MapIvsu.Regions.Contains(SelectedRegion.Code))
                         {
                             string fileName = FileHelper.url_to_filename(item.MapIvsu.Url);
-                            IvsuList.Add(new SyncModel.SyncIvsu
+                            IvsuList.Add(new SModel.Ivsu
                             {
                                 Type = item.MapIvsu.Type, Name = item.MapIvsu.Name, Version = item.MapIvsu.Version,
                                 Notes = item.MapIvsu.Notes, Url = item.MapIvsu.Url, Md5 = item.MapIvsu.Md5,
@@ -595,7 +595,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             ApplicationManager.Instance.DownloadOnly = false;
             ApplicationManager.Instance.DriveLetter = DriveLetter;
-            foreach (SyncModel.SyncIvsu item in IvsuList)
+            foreach (SModel.Ivsu item in IvsuList)
                 if (item.Selected)
                 {
                     if (item.Type == "APPS") ApplicationManager.Instance.AppsSelected = true;

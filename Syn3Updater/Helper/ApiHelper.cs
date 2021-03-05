@@ -15,7 +15,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         ///     Get special IVSU package such as Downgrade or Reformat from our API and passes it to ConvertIvsu
         /// </summary>
         /// <param name="url">URL of a valid 'SpecialPackage'</param>
-        public static SyncModel.SyncIvsu GetSpecialIvsu(string url)
+        public static SModel.Ivsu GetSpecialIvsu(string url)
         {
             HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(url).Result;
             Api.Ivsu ivsu = JsonConvert.DeserializeObject<Api.Ivsu>(response.Content.ReadAsStringAsync().Result);
@@ -23,14 +23,14 @@ namespace Cyanlabs.Syn3Updater.Helper
         }
 
         /// <summary>
-        ///     Converts a API retrieved Api.Ivsu to SyncModel.SyncIvsu
+        ///     Converts a API retrieved Api.Ivsu to SModel.Ivsu
         /// </summary>
         /// <param name="ivsu">SpecialPackage IVSU object from GetSpecialIvsu</param>
-        /// <returns>ivsu as type SyncModel.SyncIvsu</returns>
-        public static SyncModel.SyncIvsu ConvertIvsu(Api.Ivsu ivsu)
+        /// <returns>ivsu as type SModel.Ivsu</returns>
+        public static SModel.Ivsu ConvertIvsu(Api.Ivsu ivsu)
         {
             string fileName = FileHelper.url_to_filename(ivsu.Url);
-            SyncModel.SyncIvsu output = new SyncModel.SyncIvsu
+            SModel.Ivsu output = new SModel.Ivsu
             {
                 Type = ivsu.Type,
                 Name = ivsu.Name,
