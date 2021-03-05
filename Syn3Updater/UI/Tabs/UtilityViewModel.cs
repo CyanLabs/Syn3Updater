@@ -302,7 +302,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                     "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                                 {
-                                    ApplicationManager.Instance.Settings.CurrentSyncVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
+                                    ApplicationManager.Instance.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
                                     ApplicationManager.Instance.SVersion = convertedsversion;
                                 }
                         }

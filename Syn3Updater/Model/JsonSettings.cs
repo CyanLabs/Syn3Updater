@@ -5,10 +5,10 @@
     /// </summary>
     public class JsonSettings
     {
-        public string CurrentSyncRegion { get; set; }
+        public string CurrentRegion { get; set; }
         public string Lang { get; set; }
-        public int CurrentSyncVersion { get; set; } = 3319052;
-        public bool CurrentSyncNav { get; set; } = false;
+        public int CurrentVersion { get; set; } = 3319052;
+        public bool CurrentNav { get; set; } = false;
         public string DownloadPath { get; set; }
         public string CurrentInstallMode { get; set; }
         public bool ShowAllReleases { get; set; } = false;

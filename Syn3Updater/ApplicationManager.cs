@@ -251,7 +251,7 @@ namespace Cyanlabs.Syn3Updater
                 DownloadPath = Instance.Settings.DownloadPath;
             }
 
-            string version = Instance.Settings.CurrentSyncVersion.ToString();
+            string version = Instance.Settings.CurrentVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try

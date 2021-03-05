@@ -68,10 +68,10 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
                                    Grid.Column="0"
-                                   Text="{Binding Language, ConverterParameter=Settings.FullSyncVersion, Converter={StaticResource LocConverter}}" />
+                                   Text="{Binding Language, ConverterParameter=Settings.FullVersion, Converter={StaticResource LocConverter}}" />
                         <ui:MaskedTextBox MinWidth="80" MaxWidth="80" AcceptsReturn="True" FontSize="12"
                                           Grid.Column="1"
-                                          Text="{Binding CurrentSyncVersion, UpdateSourceTrigger=PropertyChanged}"
+                                          Text="{Binding CurrentVersion, UpdateSourceTrigger=PropertyChanged}"
                                           Mask="#.#.#####" MaxLength="9" VerticalContentAlignment="Center"
                                           VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Left" />
                     </Grid>
@@ -84,11 +84,11 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
                                    Grid.Column="0"
-                                   Text="{Binding Language, ConverterParameter=Settings.SyncRegion, Converter={StaticResource LocConverter}}" />
+                                   Text="{Binding Language, ConverterParameter=Settings.Region, Converter={StaticResource LocConverter}}" />
                         <ComboBox SelectedIndex="0" Width="200" VerticalAlignment="Center" Grid.Column="1"
                                   IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding SRegions}"
                                   VerticalContentAlignment="Center" DisplayMemberPath="Name" SelectedValuePath="Code"
-                                  SelectedValue="{Binding CurrentSyncRegion}" />
+                                  SelectedValue="{Binding CurrentRegion}" />
                     </Grid>
 
 
@@ -99,9 +99,9 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
                                    Grid.Column="0"
-                                   Text="{Binding Language, ConverterParameter=Settings.SyncNavigation, Converter={StaticResource LocConverter}}" />
+                                   Text="{Binding Language, ConverterParameter=Settings.Navigation, Converter={StaticResource LocConverter}}" />
                         <controls:ToggleSwitch Width="40" BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
-                                               Grid.Row="0" Grid.Column="1" IsOn="{Binding CurrentSyncNav}"
+                                               Grid.Row="0" Grid.Column="1" IsOn="{Binding CurrentNav}"
                                                OnContent="" OffContent="" />
                     </Grid>
                 </Grid>

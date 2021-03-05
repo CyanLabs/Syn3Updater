@@ -86,9 +86,9 @@ namespace Cyanlabs.Syn3Updater.UI
                     ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
-                else if (value == "home" && (ApplicationManager.Instance.Settings.CurrentSyncRegion == "" || ApplicationManager.Instance.Settings.CurrentSyncVersion == 0 || ApplicationManager.Instance.Settings.CurrentSyncVersion.ToString().Length != 7))
+                else if (value == "home" && (ApplicationManager.Instance.Settings.CurrentRegion == "" || ApplicationManager.Instance.Settings.CurrentVersion == 0 || ApplicationManager.Instance.Settings.CurrentVersion.ToString().Length != 7))
                 {
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoSyncVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
                 }
                 else if (value != "downloads" && ApplicationManager.Instance.IsDownloading)

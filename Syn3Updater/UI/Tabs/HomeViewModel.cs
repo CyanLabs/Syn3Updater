@@ -211,7 +211,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentRegion, value);
-                    ApplicationManager.Instance.Settings.CurrentSyncRegion = value;
+                    ApplicationManager.Instance.Settings.CurrentRegion = value;
                 }
             }
         }
@@ -274,8 +274,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void ReloadSettings()
         {
             NotesVisibility = Visibility.Hidden;
-            CurrentNav = ApplicationManager.Instance.Settings.CurrentSyncNav ? "Yes" : "No";
-            CurrentRegion = ApplicationManager.Instance.Settings.CurrentSyncRegion;
+            CurrentNav = ApplicationManager.Instance.Settings.CurrentNav ? "Yes" : "No";
+            CurrentRegion = ApplicationManager.Instance.Settings.CurrentRegion;
             CurrentVersion = ApplicationManager.Instance.SVersion;
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
             SelectedMapVersionIndex = -1;
@@ -411,13 +411,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     //TODO Exception handling
                 }
 
-                if (!ApplicationManager.Instance.Settings.CurrentSyncNav)
+                if (!ApplicationManager.Instance.Settings.CurrentNav)
                 {
                     SMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                 }
                 else
                 {
-                    if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion)
+                    if (ApplicationManager.Instance.Settings.CurrentVersion >= Api.ReformatVersion)
                         SMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                 }
 
@@ -459,13 +459,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(_apiMapReleases).Result;
                 _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
 
-                if (ApplicationManager.Instance.Settings.CurrentSyncNav)
+                if (ApplicationManager.Instance.Settings.CurrentNav)
                 {
                     SMapVersion.Clear();
                     SMapVersion.Add(LanguageManager.GetValue("String.NoMaps"));
-                    if (ApplicationManager.Instance.Settings.CurrentSyncNav)
+                    if (ApplicationManager.Instance.Settings.CurrentNav)
                     {
-                        if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion)
+                        if (ApplicationManager.Instance.Settings.CurrentVersion >= Api.ReformatVersion)
                             SMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                     }
                     else
@@ -489,14 +489,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 IvsuList.Clear();
 
                 //LESS THAN 3.2
-                if (ApplicationManager.Instance.Settings.CurrentSyncVersion < Api.ReformatVersion)
+                if (ApplicationManager.Instance.Settings.CurrentVersion < Api.ReformatVersion)
                 {
                     InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect" ? "reformat" : ApplicationManager.Instance.Settings.CurrentInstallMode;
                 }
 
                 //Above 3.2 and  Below 3.4.19274
-                else if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.ReformatVersion &&
-                         ApplicationManager.Instance.Settings.CurrentSyncVersion < Api.BlacklistedVersion)
+                else if (ApplicationManager.Instance.Settings.CurrentVersion >= Api.ReformatVersion &&
+                         ApplicationManager.Instance.Settings.CurrentVersion < Api.BlacklistedVersion)
                 {
                     //Update Nav?
                     if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
@@ -511,7 +511,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 //3.4.19274 or above
-                else if (ApplicationManager.Instance.Settings.CurrentSyncVersion >= Api.BlacklistedVersion)
+                else if (ApplicationManager.Instance.Settings.CurrentVersion >= Api.BlacklistedVersion)
                 {
                     //Update Nav?
                     if (SelectedMapVersion == LanguageManager.GetValue("String.NoMaps") || SelectedMapVersion == LanguageManager.GetValue("String.NonNavAPIM") ||
@@ -528,7 +528,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 ApplicationManager.Instance.Action = "main";
                 ApplicationManager.Instance.InstallMode = InstallMode;
 
-                string appReleaseSingle = ApplicationManager.Instance.Settings.CurrentSyncNav
+                string appReleaseSingle = ApplicationManager.Instance.Settings.CurrentNav
                     ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
                     : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
 
@@ -621,7 +621,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
 
             //Warn is users region is different to new selection
-            if (SelectedRegion.Code != ApplicationManager.Instance.Settings.CurrentSyncRegion)
+            if (SelectedRegion.Code != ApplicationManager.Instance.Settings.CurrentRegion)
                 if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                     MessageBoxResult.Yes)
                     canceldownload = true;

@@ -65,47 +65,47 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public ObservableCollection<LanguageOption> Languages { get; set; } =
             new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption {Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji}));
 
-        private string _currentSyncRegion;
+        private string _currentRegion;
 
-        public string CurrentSyncRegion
+        public string CurrentRegion
         {
-            get => _currentSyncRegion;
+            get => _currentRegion;
             set
             {
                 if (value != null)
                 {
-                    SetProperty(ref _currentSyncRegion, value);
-                    ApplicationManager.Instance.Settings.CurrentSyncRegion = value;
+                    SetProperty(ref _currentRegion, value);
+                    ApplicationManager.Instance.Settings.CurrentRegion = value;
                 }
             }
         }
 
-        private string _currentSyncVersion;
+        private string _currentVersion;
 
-        public string CurrentSyncVersion
+        public string CurrentVersion
         {
-            get => _currentSyncVersion;
+            get => _currentVersion;
             set
             {
                 string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
                 if (value != null && value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
                 {
-                    SetProperty(ref _currentSyncVersion, value);
+                    SetProperty(ref _currentVersion, value);
                     ApplicationManager.Instance.SVersion = value;
-                    ApplicationManager.Instance.Settings.CurrentSyncVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
+                    ApplicationManager.Instance.Settings.CurrentVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
                 }
             }
         }
 
-        private bool _currentSyncNav;
+        private bool _currentNav;
 
-        public bool CurrentSyncNav
+        public bool CurrentNav
         {
-            get => _currentSyncNav;
+            get => _currentNav;
             set
             {
-                SetProperty(ref _currentSyncNav, value);
-                ApplicationManager.Instance.Settings.CurrentSyncNav = value;
+                SetProperty(ref _currentNav, value);
+                ApplicationManager.Instance.Settings.CurrentNav = value;
             }
         }
 
@@ -240,7 +240,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             ApplicationManager.Instance.FireHomeTabEvent();
             //TODO Fix need for temp string
-            string currentSyncRegionTemp = ApplicationManager.Instance.Settings.CurrentSyncRegion;
+            string currentRegionTemp = ApplicationManager.Instance.Settings.CurrentRegion;
             SRegions = new ObservableCollection<SModel.SRegion>
             {
                 new SModel.SRegion {Code = "EU", Name = "Europe"},
@@ -249,7 +249,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 new SModel.SRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
                 new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean and Central America"}
             };
-            CurrentSyncRegion = currentSyncRegionTemp;
+            CurrentRegion = currentRegionTemp;
 
             //TODO Fix need for temp string
             string currentInstallModeTemp = ApplicationManager.Instance.Settings.CurrentInstallMode != "" ? ApplicationManager.Instance.Settings.CurrentInstallMode : "autodetect";
@@ -273,7 +273,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             };
             
             ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
-            CurrentSyncNav = ApplicationManager.Instance.Settings.CurrentSyncNav;
+            CurrentNav = ApplicationManager.Instance.Settings.CurrentNav;
 
             DownloadLocation = ApplicationManager.Instance.DownloadPath;
             ShowAllReleases = ApplicationManager.Instance.Settings.ShowAllReleases;
@@ -283,7 +283,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
-            CurrentSyncVersion = ApplicationManager.Instance.SVersion;
+            CurrentVersion = ApplicationManager.Instance.SVersion;
             CurrentTheme = ApplicationManager.Instance.Settings.Theme;
         }
 

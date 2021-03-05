@@ -36,17 +36,17 @@
                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
-                                       Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, ConverterParameter=Home.Version, Converter={StaticResource LocConverter}}" />
                             <TextBlock Margin="0,0,10,10" Text="{Binding CurrentVersion}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
-                                       Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, ConverterParameter=Home.Region, Converter={StaticResource LocConverter}}" />
                             <TextBlock Margin="0,0,10,10" Text="{Binding CurrentRegion}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
-                                       Text="{Binding Language, ConverterParameter=Home.SyncNav, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, ConverterParameter=Home.Nav, Converter={StaticResource LocConverter}}" />
                             <TextBlock Margin="0,0,10,10" Text="{Binding CurrentNav}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
@@ -122,7 +122,7 @@
                     </Grid.RowDefinitions>
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
-                               Text="{Binding Language, ConverterParameter=Home.NewSyncVersion, Converter={StaticResource LocConverter}}" />
+                               Text="{Binding Language, ConverterParameter=Home.NewVersion, Converter={StaticResource LocConverter}}" />
                     <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
                         <TextBlock Margin="20,15,20,0" FontWeight="Bold"
                                    Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />
@@ -148,7 +148,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="0"
                                    Grid.Column="0"
-                                   Text="{Binding Language, ConverterParameter=Home.SyncRegion, Converter={StaticResource LocConverter}}" />
+                                   Text="{Binding Language, ConverterParameter=Home.Region, Converter={StaticResource LocConverter}}" />
                         <ComboBox VerticalAlignment="Center" MinWidth="246px" ItemsSource="{Binding SRegions}"
                                   DisplayMemberPath="Name" SelectedValuePath="Code"
                                   SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" 
@@ -163,7 +163,7 @@
 
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"
                                    Grid.Column="0"
-                                   Text="{Binding Language, ConverterParameter=Home.SyncVersion, Converter={StaticResource LocConverter}}" />
+                                   Text="{Binding Language, ConverterParameter=Home.Version, Converter={StaticResource LocConverter}}" />
                         <ComboBox VerticalAlignment="Center" MinWidth="246px"
                                   SelectedIndex="{Binding SelectedReleaseIndex}"
                                   IsEnabled="{Binding SVersionsEnabled}" ItemsSource="{Binding SVersion}"
@@ -172,7 +172,7 @@
 
                         <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
                                    Grid.Row="2" Grid.Column="0"
-                                   Text="{Binding Language, ConverterParameter=Home.SyncMapVersion, Converter={StaticResource LocConverter}}" />
+                                   Text="{Binding Language, ConverterParameter=Home.MapVersion, Converter={StaticResource LocConverter}}" />
                         <ComboBox VerticalAlignment="Center" MinWidth="246px"
                                   SelectedIndex="{Binding SelectedMapVersionIndex}"
                                   IsEnabled="{Binding SMapVersionsEnabled}" ItemsSource="{Binding SMapVersion}"

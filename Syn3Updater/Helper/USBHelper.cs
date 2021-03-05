@@ -106,8 +106,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             data += Environment.NewLine;
             data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
             data += $@"Version: {ApplicationManager.Instance.SVersion}{Environment.NewLine}";
-            data += $@"Region: {ApplicationManager.Instance.Settings.CurrentSyncRegion}{Environment.NewLine}";
-            data += $@"Navigation: {ApplicationManager.Instance.Settings.CurrentSyncNav}{Environment.NewLine}";
+            data += $@"Region: {ApplicationManager.Instance.Settings.CurrentRegion}{Environment.NewLine}";
+            data += $@"Navigation: {ApplicationManager.Instance.Settings.CurrentNav}{Environment.NewLine}";
             data +=
                 $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}";
             data += Environment.NewLine;
@@ -146,7 +146,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 data += Environment.NewLine;
                 DirectoryInfo di = new DirectoryInfo($@"{driveletter}\SyncMyRide");
                 FileInfo[] allFiles = di.GetFiles("*", SearchOption.AllDirectories);
-                data += $@"SYNCMYRIDE FILES ({allFiles.Length}){Environment.NewLine}";
+                data += $@"FILES ({allFiles.Length}){Environment.NewLine}";
                 foreach (FileInfo file in allFiles)
                     data += $"{file.Name} ({MathHelper.BytesToString(file.Length)}){Environment.NewLine}";
                 data += Environment.NewLine;

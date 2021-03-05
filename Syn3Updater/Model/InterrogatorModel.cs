@@ -46,7 +46,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("@vmcuVersion")] public string VmcuVersion { get; set; }
             [JsonProperty("d2p1:PartitionHealth")] public D2P1PartitionHealth[] D2P1PartitionHealth { get; set; }
             [JsonProperty("d2p1:InstallationLog")] public object D2P1InstallationLog { get; set; }
-            [JsonProperty("d2p1:SyncData")] public string D2P1SyncData { get; set; }
+            [JsonProperty("d2p1:SyncData")] public string D2P1SData { get; set; }
         }
 
         public class D2P1PartitionHealth
