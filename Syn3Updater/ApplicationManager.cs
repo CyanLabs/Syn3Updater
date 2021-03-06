@@ -99,7 +99,8 @@ namespace Cyanlabs.Syn3Updater
             Action,
             ConfigFile,
             ConfigFolderPath,
-            LauncherConfigFile;
+            LauncherConfigFile,
+            Header;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder;
         #endregion
@@ -266,6 +267,7 @@ namespace Cyanlabs.Syn3Updater
                 Logger.Debug(e.GetFullMessage());
             }
 
+            Randomize();
 
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
@@ -273,6 +275,22 @@ namespace Cyanlabs.Syn3Updater
             if (_mainWindow.WindowState == WindowState.Minimized) _mainWindow.WindowState = WindowState.Normal;
         }
 
+
+
+        public void Randomize()
+        {
+            List<string> header = new List<string>();
+            var rand = new Random();
+            string result = Client.GetStringAsync(Api.HeaderURL).Result;
+            Api.Headers UAs = JsonConvert.DeserializeObject<Api.Headers>(result);
+
+            foreach (Api.Header ua in UAs.Header)
+                header.Add(ua.Ua.Replace("[PLACEHOLDER]", rand.Next(ua.Min, ua.Max).ToString()));
+
+            int index = rand.Next(header.Count);
+            Header = header[index];
+            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
+        }
 
         public void RestartApp()
         {

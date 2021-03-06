@@ -35,6 +35,8 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";
         public const string LogPost = "https://api.cyanlabs.net/Syn3Updater/logs/post.php";
 
+        public const string HeaderURL = "https://api.cyanlabs.net/syn3updater/useragents";
+
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 
@@ -109,6 +111,17 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("regions")] public IList<string> Regions { get; set; }
         }
 
+        public class Header
+        { 
+            [JsonProperty("ua")] public string Ua { get; set; }
+            [JsonProperty("min")] public int Min { get; set; }
+            [JsonProperty("max")] public int Max { get; set; }
+        }
+
+        public class Headers
+        {
+            [JsonProperty("data")] public IList<Header> Header { get; set; }
+        }
         #endregion
     }
 }

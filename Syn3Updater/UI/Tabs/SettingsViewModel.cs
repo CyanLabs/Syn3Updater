@@ -336,7 +336,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             //TODO Catch better
                         }
                     }
-                DownloadLocation = dialog.SelectedPath;
+                DownloadLocation = dialog.SelectedPath + "\\";
             }
         }
         #endregion

@@ -171,8 +171,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             };
 
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = client.PostAsync(Api.LogPost, content).Result;
+            HttpResponseMessage response = ApplicationManager.Instance.Client.PostAsync(Api.LogPost, content).Result;
 
             string responseString = response.Content.ReadAsStringAsync().Result;
             var definition = new {uuid = "", status = ""};

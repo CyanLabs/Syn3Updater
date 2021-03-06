@@ -85,18 +85,17 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
             }
         }
-
-        private static readonly HttpClient Client = new HttpClient();
-
+        
         /// <summary>
-        ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
+        ///     Downloads file from URL to specified filename with CancellationToken support
         ///     <see href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">See more</see>
         /// </summary>
         /// <param name="path">Source URL</param>
         /// <param name="filename">Destination filename</param>
         /// <param name="ct">CancellationToken</param>
-        public async Task DownloadFile(string path, string filename, CancellationToken ct)
+        public async Task DownloadFile(string path, string filename, CancellationToken ct, HttpClient Client)
         {
+            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
             using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
                 long total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
@@ -167,7 +166,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="localonly">Set to true if comparing to local sources else set to false</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>validateResult with Message and Result properties</returns>
-        public ValidateResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
+        public ValidateResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct, HttpClient Client)
         {
             ValidateResult validateResult = new ValidateResult();
             string filename = Path.GetFileName(localfile);
@@ -197,12 +196,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    using (HttpClient httpClient = new HttpClient())
-                    {
-                        long newfilesize = -1;
+                    long newfilesize = -1;
                         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(source));
 
-                        if (long.TryParse(httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content.Headers.ContentLength.ToString(),
+                        if (long.TryParse(Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content.Headers.ContentLength.ToString(),
                             out long contentLength))
                             newfilesize = contentLength;
 
@@ -212,7 +209,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                             validateResult.Result = true;
                             return validateResult;
                         }
-                    }
                 }
             }
             else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))

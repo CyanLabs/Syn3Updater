@@ -43,7 +43,6 @@ namespace Cyanlabs.Syn3Updater.UI
 
                 string text = JsonConvert.SerializeObject(crashContainer);
                 string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
-                HttpClient client = new HttpClient();
 
 
                 Dictionary<string, string> values = new Dictionary<string, string>
@@ -58,7 +57,7 @@ namespace Cyanlabs.Syn3Updater.UI
 
                 FormUrlEncodedContent content = new FormUrlEncodedContent(values);
 
-                HttpResponseMessage response = client.PostAsync(Api.CrashLogPost, content).Result;
+                HttpResponseMessage response = ApplicationManager.Instance.Client.PostAsync(Api.CrashLogPost, content).Result;
 
                 string responseString = response.Content.ReadAsStringAsync().Result;
 
