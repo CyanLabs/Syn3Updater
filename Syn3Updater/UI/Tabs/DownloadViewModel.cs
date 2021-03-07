@@ -153,7 +153,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     return;
                 }
 
-                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
+                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false,true))
                 {
                     string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
@@ -643,9 +643,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             File.Create($@"{ApplicationManager.Instance.DriveLetter}\DONTINDX.MSA");
         }
 
-        private bool ValidateFile(string srcfile, string localfile, string md5, bool copy)
+        private bool ValidateFile(string srcfile, string localfile, string md5, bool copy, bool existing = false)
         {
             string text = $"Validating: {Path.GetFileName(localfile)}";
+            if (existing) text = $"Checking Existing File: {Path.GetFileName(localfile)}";
             DownloadInfo = text;
             Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
             ApplicationManager.Logger.Info(text);
