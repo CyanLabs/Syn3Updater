@@ -6,6 +6,8 @@ using System.IO;
 using System.Management;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
 
@@ -100,63 +102,64 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="upload">Set to true to upload log file <see cref="UploadLog"/>, else false to only save it to USB drive</param>
         public static void GenerateLog(string log, bool upload)
         {
-            string data = $@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}";
-            data += $@"Branch: {ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled}{Environment.NewLine}";
-            data += $@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}";
-            data += Environment.NewLine;
-            data += $@"PREVIOUS CONFIGURATION{Environment.NewLine}";
-            data += $@"Version: {ApplicationManager.Instance.SVersion}{Environment.NewLine}";
-            data += $@"Region: {ApplicationManager.Instance.Settings.CurrentRegion}{Environment.NewLine}";
-            data += $@"Navigation: {ApplicationManager.Instance.Settings.CurrentNav}{Environment.NewLine}";
-            data +=
-                $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}";
-            data += Environment.NewLine;
-            data += $@"DESTINATION DETAILS{Environment.NewLine}";
+            StringBuilder data = new StringBuilder($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
+            data.Append($@"Branch: {ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled}{Environment.NewLine}");
+            data.Append($@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}");
+            data.Append(Environment.NewLine);
+            data.Append($@"PREVIOUS CONFIGURATION{Environment.NewLine}");
+            data.Append($@"Version: {ApplicationManager.Instance.SVersion}{Environment.NewLine}");
+            data.Append($@"Region: {ApplicationManager.Instance.Settings.CurrentRegion}{Environment.NewLine}");
+            data.Append($@"Navigation: {ApplicationManager.Instance.Settings.CurrentNav}{Environment.NewLine}");
+            data.Append(
+             $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}");
+            data.Append(Environment.NewLine;
+            data.Append($@"DESTINATION DETAILS{Environment.NewLine}";
             if (ApplicationManager.Instance.DownloadToFolder)
             {
-                data += $@"Mode: Directory{Environment.NewLine}";
-                data += $@"Path: {ApplicationManager.Instance.DriveLetter}{Environment.NewLine}";
+                data.Append($@"Mode: Directory{Environment.NewLine}";
+                data.Append($@"Path: {ApplicationManager.Instance.DriveLetter}{Environment.NewLine}";
             }
             else
             {
-                data += $@"Mode: Drive{Environment.NewLine}";
-                data += $@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}";
-                data += $@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}";
-                data += $@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}";
+                data.Append($@"Mode: Drive{Environment.NewLine}");
+                data.Append($@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}");
+                data.Append($@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}");
+                data.Append($@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}");
             }
 
 
             string driveletter = ApplicationManager.Instance.DriveLetter;
             if (File.Exists($@"{driveletter}\reformat.lst"))
             {
-                data += Environment.NewLine;
-                data += $@"REFORMAT.LST{Environment.NewLine}";
-                data += File.ReadAllText($@"{driveletter}\reformat.lst") + Environment.NewLine;
+                data.Append(Environment.NewLine);
+                data.Append($@"REFORMAT.LST{Environment.NewLine}");
+                data.Append(File.ReadAllText($@"{driveletter}\reformat.lst") + Environment.NewLine);
             }
 
             if (File.Exists($@"{driveletter}\autoinstall.lst"))
             {
-                data += Environment.NewLine;
-                data += $@"AUTOINSTALL.LST{Environment.NewLine}";
-                data += File.ReadAllText($@"{driveletter}\autoinstall.lst") + Environment.NewLine;
+                data.Append(Environment.NewLine);
+                data.Append($@"AUTOINSTALL.LST{Environment.NewLine}");
+                data.Append(File.ReadAllText($@"{driveletter}\autoinstall.lst") + Environment.NewLine);
             }
 
             if (Directory.Exists($@"{driveletter}\SyncMyRide"))
             {
-                data += Environment.NewLine;
+                data.Append(Environment.NewLine);
                 DirectoryInfo di = new DirectoryInfo($@"{driveletter}\SyncMyRide");
                 FileInfo[] allFiles = di.GetFiles("*", SearchOption.AllDirectories);
-                data += $@"FILES ({allFiles.Length}){Environment.NewLine}";
+                data.Append($@"FILES ({allFiles.Length}){Environment.NewLine}");
                 foreach (FileInfo file in allFiles)
-                    data += $"{file.Name} ({MathHelper.BytesToString(file.Length)}){Environment.NewLine}";
-                data += Environment.NewLine;
+                    data.Append($"{file.Name} ({MathHelper.BytesToString(file.Length)}){Environment.NewLine}");
+                data.Append(Environment.NewLine);
             }
 
-            data += $@"LOG{Environment.NewLine}";
-            data += log;
-            File.WriteAllText($@"{driveletter}\log.txt", data);
+            data.Append($@"LOG{Environment.NewLine}");
+            data.Append(log);
+            string complete = data.ToString();
+            File.WriteAllText($@"{driveletter}\log.txt", complete);
 
-            if (upload) UploadLog(data);
+            if (upload)  UploadLog(complete);
         }
 
         /// <summary>
@@ -171,9 +174,9 @@ namespace Cyanlabs.Syn3Updater.Helper
             };
 
             FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-            HttpResponseMessage response = ApplicationManager.Instance.Client.PostAsync(Api.LogPost, content).Result;
+            HttpResponseMessage response =  ApplicationManager.Instance.Client.PostAsync(Api.LogPost, content).GetAwaiter().GetResult();
 
-            string responseString = response.Content.ReadAsStringAsync().Result;
+            string responseString =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var definition = new {uuid = "", status = ""};
             var output = JsonConvert.DeserializeAnonymousType(responseString, definition);
             Process.Start(Api.LogUrl + output.uuid);
