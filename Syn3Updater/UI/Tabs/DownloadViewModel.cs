@@ -281,7 +281,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
-                    true))
+                    true,true))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
