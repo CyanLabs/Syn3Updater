@@ -37,7 +37,7 @@ namespace Cyanlabs.Syn3Updater
         public LauncherPrefs LauncherPrefs { get; set; }
         public JsonSettings Settings { get; set; }
 
-        public readonly HttpClient Client = new HttpClient();
+        public HttpClient Client;
 
         #endregion
 
@@ -145,8 +145,9 @@ namespace Cyanlabs.Syn3Updater
 
         public void Initialize()
         {
-            ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            var httpClientHandler = new HttpClientHandler { Proxy = WebRequest.GetSystemWebProxy() };
+            Client = new HttpClient();
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
 
             if (!Environment.GetCommandLineArgs().Contains("/launcher"))
