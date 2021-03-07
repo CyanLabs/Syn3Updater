@@ -112,12 +112,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             data.Append($@"Navigation: {ApplicationManager.Instance.Settings.CurrentNav}{Environment.NewLine}");
             data.Append(
              $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}");
-            data.Append(Environment.NewLine;
-            data.Append($@"DESTINATION DETAILS{Environment.NewLine}";
+            data.Append(Environment.NewLine);
+            data.Append($@"DESTINATION DETAILS{Environment.NewLine}");
             if (ApplicationManager.Instance.DownloadToFolder)
             {
-                data.Append($@"Mode: Directory{Environment.NewLine}";
-                data.Append($@"Path: {ApplicationManager.Instance.DriveLetter}{Environment.NewLine}";
+                data.Append($@"Mode: Directory{Environment.NewLine}");
+                data.Append($@"Path: {ApplicationManager.Instance.DriveLetter}{Environment.NewLine}");
             }
             else
             {
