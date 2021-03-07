@@ -147,7 +147,7 @@ namespace Cyanlabs.Syn3Updater
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var httpClientHandler = new HttpClientHandler { Proxy = WebRequest.GetSystemWebProxy() };
-            Client = new HttpClient();
+            Client = new HttpClient(httpClientHandler);
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
 
             if (!Environment.GetCommandLineArgs().Contains("/launcher"))
