@@ -256,7 +256,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                     byte[] buffer;
                     do
                     {
-                        if (ct.IsCancellationRequested) return null;
+                        if (ct.IsCancellationRequested)
+                        {
+                           file.Close();
+                           file.Dispose();
+                           return null;
+                        }
                         buffer = new byte[4096];
                         bytesRead = file.Read(buffer, 0, buffer.Length);
                         totalBytesRead += bytesRead;
