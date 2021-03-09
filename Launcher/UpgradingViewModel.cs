@@ -2,7 +2,6 @@
 {
     public class UpgradingViewModel : BaseViewModel
     {
-
         #region Properties & Fields
         private string _message;
         private int _percentage = 100;

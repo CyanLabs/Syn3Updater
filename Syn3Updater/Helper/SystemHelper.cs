@@ -80,7 +80,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return path;
             }
 
-            throw new ExternalException("Unable to retrieve the known folder path. It may not " + "be available on this system.", result);
+            throw new ExternalException("Unable to retrieve the known folder path. It may not be available on this system.", result);
         }
 
         public static string GetOsFriendlyName()

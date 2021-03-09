@@ -86,7 +86,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
-                else if (value == "home" && (ApplicationManager.Instance.Settings.CurrentRegion == "" || ApplicationManager.Instance.Settings.CurrentVersion == 0 || ApplicationManager.Instance.Settings.CurrentVersion.ToString().Length != 7))
+                else if (value == "home" && (ApplicationManager.Instance.Settings.CurrentRegion?.Length == 0 || ApplicationManager.Instance.Settings.CurrentVersion == 0 || ApplicationManager.Instance.Settings.CurrentVersion.ToString().Length != 7))
                 {
                     ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.NoVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
@@ -105,7 +105,8 @@ namespace Cyanlabs.Syn3Updater.UI
                 }
 
                 SetProperty(ref _currentTab, value);
-                foreach (TabItem tabItem in TabItems) tabItem.IsCurrent = tabItem.Key.ToLower() == value.ToLower();
+                foreach (TabItem tabItem in TabItems)
+                    tabItem.IsCurrent = string.Equals(tabItem.Key, value, System.StringComparison.OrdinalIgnoreCase);
             }
         }
 
