@@ -55,7 +55,6 @@ namespace Cyanlabs.Syn3Updater.Model
             return true;
         }
 
-
         /// <summary>
         ///     Triggers the <see cref="PropertyChanged" />-event when a a property value has changed.
         /// </summary>

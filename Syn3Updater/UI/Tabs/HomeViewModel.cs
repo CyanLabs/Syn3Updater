@@ -288,7 +288,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             SMapVersion = new ObservableCollection<string>();
             SVersion?.Clear();
             SMapVersion?.Clear();
-            DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path == "" ? Visibility.Hidden : Visibility.Visible;
+            DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path?.Length == 0 ? Visibility.Hidden : Visibility.Visible;
             ApplicationManager.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
         }
 
@@ -338,7 +338,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             if (SelectedDrive?.Name == LanguageManager.GetValue("Home.NoUSBDir"))
             {
-                VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog {};
+                VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
                 if (dialog.ShowDialog().GetValueOrDefault())
                 {
                     string destination = dialog.SelectedPath;
@@ -356,7 +356,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         DriveDetailsVisible = Visibility.Visible;
                     }
                 }
-
             }
             else
             {
@@ -374,7 +373,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 DriveName = driveInfo.Name;
                 DriveDetailsVisible = driveInfo.Name == null ? Visibility.Hidden : Visibility.Visible;
             }
-            
         }
 
         private void UpdateSelectedRegion()
@@ -420,7 +418,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     if (ApplicationManager.Instance.Settings.CurrentVersion >= Api.ReformatVersion)
                         SMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                 }
-
 
                 _jsonReleases = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringReleasesJson);
                 SVersion = new ObservableCollection<string>();
@@ -544,7 +541,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList)
                     if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(SelectedRegion.Code))
                     {
-
                         string fileName = FileHelper.url_to_filename(item.Ivsu.Url);
                         IvsuList.Add(new SModel.Ivsu
                         {
@@ -627,7 +623,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     canceldownload = true;
 
             //Cancel no apps package selected
-            if (ApplicationManager.Instance.AppsSelected == false && (InstallMode == "reformat" || InstallMode == "downgrade"))
+            if (!ApplicationManager.Instance.AppsSelected && (InstallMode == "reformat" || InstallMode == "downgrade"))
             {
                 ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 canceldownload = true;
@@ -635,7 +631,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (!canceldownload && !SanityCheckHelper.CancelDownloadCheck(SelectedDrive))
             {
-                if (ApplicationManager.Instance.DownloadOnly == false)
+                if (!ApplicationManager.Instance.DownloadOnly)
                 {
                     ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
                     ApplicationManager.Instance.DriveLetter = DriveLetter;

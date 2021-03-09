@@ -8,7 +8,7 @@ namespace Cyanlabs.Syn3Updater.Helper
     /// <summary>
     ///     Helper class to "Sanity Check" before running the main methods to prevent user error etc
     /// </summary>
-    public class SanityCheckHelper
+    public static class SanityCheckHelper
     {
         /// <summary>
         ///     A multi-section check to ensure nothing prevents the download from beginning
@@ -52,7 +52,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                     ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return true;
                 }
-
 
             // Optional Format
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)

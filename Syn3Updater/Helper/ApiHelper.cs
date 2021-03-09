@@ -7,9 +7,8 @@ namespace Cyanlabs.Syn3Updater.Helper
     /// <summary>
     ///     Helper class for API functions
     /// </summary>
-    internal class ApiHelper
+    internal static class ApiHelper
     {
-
         #region Methods
         /// <summary>
         ///     Get special IVSU package such as Downgrade or Reformat from our API and passes it to ConvertIvsu

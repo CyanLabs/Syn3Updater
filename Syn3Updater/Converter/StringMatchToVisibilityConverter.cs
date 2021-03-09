@@ -17,7 +17,6 @@ namespace Cyanlabs.Syn3Updater.Converter
             return Visibility.Collapsed;
         }
 
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value as Visibility? == Visibility.Visible;
@@ -37,7 +36,6 @@ namespace Cyanlabs.Syn3Updater.Converter
 
             return Visibility.Collapsed;
         }
-
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -309,7 +309,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             //likely no internet connection ignore
                         }
 
-
                         AsBuilt.DirectConfiguration asbult = new AsBuilt.DirectConfiguration
                         {
                             VEHICLE = new AsBuilt.VEHICLE
@@ -376,7 +375,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"Starting process (Gracenotes Removal");
+            ApplicationManager.Logger.Info("Starting process (Gracenotes Removal");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -400,7 +399,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"Starting process (Voice Package Shrinker");
+            ApplicationManager.Logger.Info("Starting process (Voice Package Shrinker");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -423,7 +422,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"Starting process (Enforced Downgrade");
+            ApplicationManager.Logger.Info("Starting process (Enforced Downgrade");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 

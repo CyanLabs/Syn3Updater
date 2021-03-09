@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-///
 namespace Cyanlabs.Syn3Updater.Helper
 {
     /// <summary>
@@ -85,7 +84,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
             }
         }
-        
+
         /// <summary>
         ///     Downloads file from URL to specified filename with CancellationToken support
         ///     <see href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">See more</see>
@@ -96,13 +95,13 @@ namespace Cyanlabs.Syn3Updater.Helper
         public async Task DownloadFile(string path, string filename, CancellationToken ct, HttpClient Client)
         {
             Client.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
-            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                long total = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
+                long total = response.Content.Headers.ContentLength ?? -1L;
 
                 bool canReportProgress = total != -1;
 
-                using (Stream stream = await response.Content.ReadAsStreamAsync())
+                using (Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
                     long totalRead = 0L;
                     byte[] buffer = new byte[4096];
@@ -138,7 +137,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         {
                             byte[] data = new byte[read];
                             buffer.ToList().CopyTo(0, data, 0, read);
-                            await fileStream.WriteAsync(buffer, 0, read, ct);
+                            await fileStream.WriteAsync(buffer, 0, read, ct).ConfigureAwait(false);
                             totalRead += read;
 
                             if (canReportProgress)

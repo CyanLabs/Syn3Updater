@@ -44,7 +44,6 @@ namespace Cyanlabs.Syn3Updater.UI
                 string text = JsonConvert.SerializeObject(crashContainer);
                 string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
 
-
                 Dictionary<string, string> values = new Dictionary<string, string>
                 {
                     {"detail", text},
@@ -59,9 +58,7 @@ namespace Cyanlabs.Syn3Updater.UI
 
                 HttpResponseMessage response = ApplicationManager.Instance.Client.PostAsync(Api.CrashLogPost, content).Result;
 
-                string responseString = response.Content.ReadAsStringAsync().Result;
-
-                return responseString;
+                return response.Content.ReadAsStringAsync().Result;
             }
             catch (HttpRequestException)
             {

@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
 using Newtonsoft.Json;
 using SharedCode;
 
@@ -18,7 +17,6 @@ namespace Cyanlabs.Launcher
     /// </summary>
     public partial class UpgradingWindow
     {
-
         #region Constructors
         public UpgradingWindow()
         {
@@ -43,7 +41,7 @@ namespace Cyanlabs.Launcher
         private async Task StartCheck()
         {
             // Set 'SecurityProtocolType' to Tls12 to allow Windows 7 and old .NET Framework versions to access TLS1.2 secure sites
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             // Check if Syn3Updater Installer path exists in registry, if so use it's path as the destination path
             Process[] processlist = Process.GetProcesses();
@@ -69,13 +67,12 @@ namespace Cyanlabs.Launcher
                 {
                     Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
                 }
-                catch (Newtonsoft.Json.JsonReaderException e)
+                catch (JsonReaderException e)
                 {
                     File.Delete(configFolderPath + "\\launcherPrefs.json");
                     Application.Current.Shutdown();
                     Process.Start(BaseFolder + "\\Syn3Updater.exe", "/launcher");
                 }
-                
             }
 
             // Delete Launcher_OldVersion.exe
@@ -84,7 +81,8 @@ namespace Cyanlabs.Launcher
             // Start and wait for the UpdateCheck to complete
             UpdateCheck check = new UpdateCheck();
             await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);
-            while (!check.Complete) await Task.Delay(100);
+            while (!check.Complete)
+                await Task.Delay(100);
 
             // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe
             Process p = new Process

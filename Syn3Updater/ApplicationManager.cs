@@ -45,29 +45,28 @@ namespace Cyanlabs.Syn3Updater
 
         public void FireLanguageChangedEvent()
         {
-            LanguageChangedEvent?.Invoke(this, new EventArgs());
+            LanguageChangedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public void FireDownloadsTabEvent()
         {
-            ShowDownloadsTab?.Invoke(this, new EventArgs());
+            ShowDownloadsTab?.Invoke(this, EventArgs.Empty);
         }
 
         public void FireHomeTabEvent()
         {
-            ShowHomeTab?.Invoke(this, new EventArgs());
+            ShowHomeTab?.Invoke(this, EventArgs.Empty);
         }
 
         public void FireUtilityTabEvent()
         {
-            ShowUtilityTab?.Invoke(this, new EventArgs());
+            ShowUtilityTab?.Invoke(this, EventArgs.Empty);
         }
 
         public void FireSettingsTabEvent()
         {
-            ShowSettingsTab?.Invoke(this, new EventArgs());
+            ShowSettingsTab?.Invoke(this, EventArgs.Empty);
         }
-
 
         public event EventHandler LanguageChangedEvent;
 
@@ -124,7 +123,6 @@ namespace Cyanlabs.Syn3Updater
             {
                 Logger.Debug(e.GetFullMessage());
             }
-            
         }
 
         public void UpdateLauncherSettings()
@@ -202,7 +200,6 @@ namespace Cyanlabs.Syn3Updater
             {
                 LauncherPrefs = new LauncherPrefs();
             }
-                
 
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
@@ -276,8 +273,6 @@ namespace Cyanlabs.Syn3Updater
             if (_mainWindow.WindowState == WindowState.Minimized) _mainWindow.WindowState = WindowState.Normal;
         }
 
-
-
         public void Randomize()
         {
             List<string> header = new List<string>();
@@ -299,7 +294,6 @@ namespace Cyanlabs.Syn3Updater
             Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
         }
-
 
         public void Exit()
         {
