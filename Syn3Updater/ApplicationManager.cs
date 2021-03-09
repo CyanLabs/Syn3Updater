@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
@@ -37,7 +38,7 @@ namespace Cyanlabs.Syn3Updater
         public LauncherPrefs LauncherPrefs { get; set; }
         public JsonSettings Settings { get; set; }
 
-        public HttpClient Client;
+        public readonly HttpClient Client = new HttpClient();
 
         #endregion
 
@@ -98,8 +99,8 @@ namespace Cyanlabs.Syn3Updater
             Action,
             ConfigFile,
             ConfigFolderPath,
-            LauncherConfigFile,
-            Header;
+            Header,
+            LauncherConfigFile;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder;
         #endregion
@@ -144,8 +145,6 @@ namespace Cyanlabs.Syn3Updater
         public void Initialize()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var httpClientHandler = new HttpClientHandler { Proxy = WebRequest.GetSystemWebProxy() };
-            Client = new HttpClient(httpClientHandler);
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
 
             if (!Environment.GetCommandLineArgs().Contains("/launcher"))
@@ -285,8 +284,8 @@ namespace Cyanlabs.Syn3Updater
 
             int index = rand.Next(header.Count);
             Header = header[index];
-            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
         }
+
 
         public void RestartApp()
         {

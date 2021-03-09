@@ -50,6 +50,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private ActionCommand _uploadLog;
         public ActionCommand UploadLog => _uploadLog ??= new ActionCommand(UploadLogAction);
 
+        private static readonly HttpClient Client = new HttpClient();
+
         #endregion
 
         #region Properties & Fields
@@ -289,10 +291,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                         ToggleLogXmlDetails = Visibility.Visible;
 
-                        ApplicationManager.Instance.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
+                        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
                         try
                         {
-                            HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(Api.IvsuSingle + sappname).Result;
+                            HttpResponseMessage response = Client.GetAsync(Api.IvsuSingle + sappname).Result;
                             Api.JsonReleases sversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
                             string convertedsversion = sversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                             if (convertedsversion != ApplicationManager.Instance.SVersion)
@@ -349,7 +351,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                     });
-                    HttpResponseMessage response = await ApplicationManager.Instance.Client.PostAsync(Api.AsBuiltPost, formContent);
+                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent);
                     var definition = new {filename = "", status = ""};
                     string contents = await response.Content.ReadAsStringAsync();
                     var output = JsonConvert.DeserializeAnonymousType(contents, definition);

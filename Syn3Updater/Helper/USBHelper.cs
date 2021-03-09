@@ -172,11 +172,14 @@ namespace Cyanlabs.Syn3Updater.Helper
             Dictionary<string, string> values = new Dictionary<string, string>
             {
                 {"contents", log}
-            };          
-            HttpResponseMessage response =  ApplicationManager.Instance.Client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values)).GetAwaiter().GetResult();
+            };
 
-            string responseString =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult();       
-            var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
+            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = client.PostAsync(Api.LogPost, content).GetAwaiter().GetResult();
+            string responseString =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var definition = new {uuid = "", status = ""};
+            var output = JsonConvert.DeserializeAnonymousType(responseString, definition);
             Process.Start(Api.LogUrl + output.uuid);
         }
         #endregion
