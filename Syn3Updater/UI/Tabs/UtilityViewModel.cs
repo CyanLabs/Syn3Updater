@@ -197,7 +197,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
-            ApplicationManager.Logger.Info(@"Starting process (Logging Utility");
+            ApplicationManager.Logger.Info("Starting process (Logging Utility");
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
@@ -217,7 +217,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void LogParseXmlAction()
         {
-            VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
+            VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Interrogator Log XML Files|*.xml" };
             if (dialog.ShowDialog().GetValueOrDefault())
                 try
                 {
@@ -286,7 +286,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
                         {
                             LogXmlDetails += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
-                            asBuiltValues.Add(new AsBuilt.DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
+                            asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
                         }
 
                         ToggleLogXmlDetails = Visibility.Visible;
@@ -351,10 +351,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                     });
-                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent);
-                    var definition = new {filename = "", status = ""};
-                    string contents = await response.Content.ReadAsStringAsync();
-                    var output = JsonConvert.DeserializeAnonymousType(contents, definition);
+                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);              
+                    string contents = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var output = JsonConvert.DeserializeAnonymousType(contents, new { filename = "", status = "" });
                     Process.Start(Api.AsBuiltOutput + output.filename);
                 }
         }

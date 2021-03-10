@@ -198,7 +198,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    using (HttpClient httpClient = new HttpClient()) 
+                    using (HttpClient httpClient = new HttpClient())
                     {
                         httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
                         long newfilesize = -1;
@@ -257,16 +257,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         if (ct.IsCancellationRequested)
                         {
-                           file.Close();
-                           file.Dispose();
-                           return null;
+                            file.Close();
+                            file.Dispose();
+                            return null;
                         }
                         buffer = new byte[4096];
                         bytesRead = file.Read(buffer, 0, buffer.Length);
                         totalBytesRead += bytesRead;
                         hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                         long read = totalBytesRead;
-                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int) ((double) read / size * 100));
+                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100));
                     } while (bytesRead != 0);
 
                     hasher.TransformFinalBlock(buffer, 0, 0);

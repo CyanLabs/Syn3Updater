@@ -29,7 +29,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static SModel.Ivsu ConvertIvsu(Api.Ivsu ivsu)
         {
             string fileName = FileHelper.url_to_filename(ivsu.Url);
-            SModel.Ivsu output = new SModel.Ivsu
+            return new SModel.Ivsu
             {
                 Type = ivsu.Type,
                 Name = ivsu.Name,
@@ -40,7 +40,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Selected = true,
                 FileName = fileName.Replace("?dl=1", "")
             };
-            return output;
         }
         #endregion
 

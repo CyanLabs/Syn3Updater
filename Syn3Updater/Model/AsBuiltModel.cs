@@ -7,7 +7,7 @@ namespace Cyanlabs.Syn3Updater.Model
     /// <summary>
     ///     Json Class to parse the AsBuilt and post to it to our API
     /// </summary>
-    public class AsBuilt
+    public static class AsBuilt
     {
         public class DID
         {

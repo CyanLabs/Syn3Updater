@@ -3,22 +3,22 @@ using Newtonsoft.Json;
 
 namespace Cyanlabs.Syn3Updater.Model
 {
-/*
-    /// <summary>
-    ///     Class to store the API Token, this is a duplicate with palceholder token
-    ///     of the file APISecretModel.cs which is not included in the GitHub Repo
-    /// </summary>
-    public static class ApiSecret
-    {
-        public const string Token = "TOKEN";
-    }
-*/
+    /*
+        /// <summary>
+        ///     Class to store the API Token, this is a duplicate with palceholder token
+        ///     of the file APISecretModel.cs which is not included in the GitHub Repo
+        /// </summary>
+        public static class ApiSecret
+        {
+            public const string Token = "TOKEN";
+        }
+    */
 
     /// <summary>
     ///     Class for Api related properties and models
     ///     Json Classes for parsing JSON correctly
     /// </summary>
-    public class Api
+    public static class Api
     {
         #region Properties & Fields
 
@@ -112,7 +112,7 @@ namespace Cyanlabs.Syn3Updater.Model
         }
 
         public class Header
-        { 
+        {
             [JsonProperty("ua")] public string Ua { get; set; }
             [JsonProperty("min")] public int Min { get; set; }
             [JsonProperty("max")] public int Max { get; set; }

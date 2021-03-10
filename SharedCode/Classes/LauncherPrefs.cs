@@ -1,4 +1,4 @@
-﻿namespace SharedCode
+﻿namespace Cyanlabs.Updater.Common
 {
     /// <summary>
     ///     Shared class used for Launcher preferences

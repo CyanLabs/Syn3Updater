@@ -95,15 +95,14 @@ namespace Cyanlabs.Syn3Updater.Model
         {
             try
             {
-                LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());
+                LanguageModel l = (Languages.Find(x => string.Equals(x.Code, lang, StringComparison.OrdinalIgnoreCase))
+                    ?? Languages.Find(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-')[0])))
+                    ?? Languages.Find(x => x.Code.StartsWith("EN", StringComparison.OrdinalIgnoreCase));
+
                 if (l == null)
-                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
+                    return $"[{lang}:{key}]";
 
-                if (l == null) l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
-
-                if (l == null) return $"[{lang}:{key}]";
-
-                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
+                string r = l.Items.Find(x => string.Equals(x.Key, key, StringComparison.OrdinalIgnoreCase))?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
                     .Replace("\\r", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
                 {
@@ -138,11 +137,9 @@ namespace Cyanlabs.Syn3Updater.Model
                     ApplicationManager.Instance.Settings.Lang = lang;
                 }
 
-                LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());
-                if (l == null)
-                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
-
-                if (l == null) l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
+                LanguageModel l = (Languages.Find(x => string.Equals(x.Code, lang, StringComparison.OrdinalIgnoreCase))
+                    ?? Languages.Find(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-')[0])))
+                    ?? Languages.Find(x => x.Code.StartsWith("EN", StringComparison.OrdinalIgnoreCase));
 
                 if (l == null)
                 {
@@ -159,7 +156,7 @@ namespace Cyanlabs.Syn3Updater.Model
                 if (l == null) return $"[{lang}:{key}]";
 
                 // ReSharper disable once ConstantConditionalAccessQualifier
-                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
+                string r = l.Items.Find(x => string.Equals(x.Key, key, StringComparison.OrdinalIgnoreCase))?.Value.Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
                     .Replace("\\r\\n", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
                 {

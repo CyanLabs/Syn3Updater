@@ -5,10 +5,11 @@
     <HasSharedItems>true</HasSharedItems>
     <SharedGUID>285a3e6c-652a-4ca2-9b27-3a4dc4e1177b</SharedGUID>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>SharedCode</Import_RootNamespace>
-  </PropertyGroup>
+  <PropertyGroup Label="Configuration" />
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)LauncherPrefs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\LauncherPrefs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Classes\" />
   </ItemGroup>
 </Project>
