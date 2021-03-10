@@ -24,7 +24,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         #region Constructors
 
         private ActionCommand _cancelButton;
-        public ActionCommand CancelButton => _cancelButton ?? (_cancelButton = new ActionCommand(CancelAction));
+        public ActionCommand CancelButton => _cancelButton ??= new ActionCommand(CancelAction);
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
         #endregion
@@ -127,18 +127,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             _fileHelper = new FileHelper(PercentageChanged);
 
-             _downloadTask = Task.Run(DoDownload, _tokenSource.Token).ContinueWith(t =>
-            {
-                if (t.IsFaulted)
-                {
-                    if (t.Exception != null) Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
+            _downloadTask = Task.Run(DoDownload, _tokenSource.Token).ContinueWith(t =>
+           {
+               if (t.IsFaulted)
+               {
+                   if (t.Exception != null) Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
 
-                    CancelAction();
-                }
+                   CancelAction();
+               }
 
-                if (t.IsCompleted && !t.IsFaulted) 
-                    DownloadComplete();
-            }, _tokenSource.Token);
+               if (t.IsCompleted && !t.IsFaulted)
+                   DownloadComplete();
+           }, _tokenSource.Token);
         }
 
         private async Task DoDownload()
@@ -155,7 +155,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     return;
                 }
 
-                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false,true))
+                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false, true))
                 {
                     string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
@@ -187,7 +187,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                             try
                             {
-                                await _fileHelper.DownloadFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct);
+                                await _fileHelper.DownloadFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct).ConfigureAwait(false);
                             }
                             catch (HttpRequestException webException)
                             {
@@ -237,7 +237,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     }
                 }
 
-                Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Remove(item.Url); });
+                Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(item.Url));
                 _count++;
                 PercentageChanged.Raise(this, 100);
             }
@@ -282,7 +282,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
-                    true,true))
+                    true, true))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
@@ -301,7 +301,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ApplicationManager.Logger.Info(text);
 
                     _progressBarSuffix = LanguageManager.GetValue("String.Copied");
-                 
 
                     for (int i = 1; i < 4; i++)
                     {
@@ -317,8 +316,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                         try
                         {
-                            _fileHelper.CopyFile(ApplicationManager.Instance.DownloadPath + item.FileName,
-                                $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
+                            await _fileHelper.CopyFileAsync(ApplicationManager.Instance.DownloadPath + item.FileName,
+                                $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct).ConfigureAwait(false);
                         }
                         catch (HttpRequestException webException)
                         {
@@ -440,7 +439,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentProgress = 0;
             DownloadInfo = "";
             DownloadPercentage = "";
-            Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
+            Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
             ApplicationManager.Instance.AppsSelected = false;
             ApplicationManager.Instance.SkipFormat = false;
             _tokenSource.Dispose();
@@ -489,8 +488,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 DirectoryInfo di = new DirectoryInfo(ApplicationManager.Instance.DriveLetter);
                 foreach (FileInfo file in di.GetFiles()) file.Delete();
                 foreach (DirectoryInfo dir in di.GetDirectories()) dir.Delete(true);
-            } else {
-                if (ApplicationManager.Instance.SkipFormat == false && ApplicationManager.Instance.DownloadOnly == false)
+            }
+            else
+            {
+                if (!ApplicationManager.Instance.SkipFormat && !ApplicationManager.Instance.DownloadOnly)
                 {
                     Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
                     ApplicationManager.Logger.Info("Formatting USB drive");
@@ -526,7 +527,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     case "autoinstall":
                         CreateAutoInstall();
                         break;
-                    case "downgrade":                       
+                    case "downgrade":
                     case "reformat":
                         CreateReformat();
                         break;
@@ -569,7 +570,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 else if (ApplicationManager.Instance.AppsSelected)
                 {
-                    if (extrafiles?.Length == 0) extrafiles = $@"[SYNCGen3.0_ALL]{Environment.NewLine}";
+                    if (extrafiles?.Length == 0) extrafiles = $"[SYNCGen3.0_ALL]{Environment.NewLine}";
                     if (extraint == 10)
                     {
                         extraint = 0;
@@ -580,7 +581,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     extrafiles += $@"Item{extraint} = {item.Type} - {item.FileName}\rOpen{extraint} = SyncMyRide\{item.FileName}\r".Replace(@"\r", Environment.NewLine);
                 }
 
-            if (extrafiles != "") extrafiles += @"Options = Delay,Include,Transaction";
+            if (extrafiles != "")
+                extrafiles += "Options = Delay,Include,Transaction";
             autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine)
                 .Append(extrafiles);
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
@@ -600,13 +602,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     if (item.Md5 == Api.ReformatTool.Md5) continue;
                 }
-                else if(InstallMode == "downgrade")
+                else if (InstallMode == "downgrade")
                 {
-                    if (item.Md5 == Api.ReformatTool.Md5 || (item.Md5 == Api.DowngradeApp.Md5 && _selectedRelease != @"Sync 3.3.19052") || item.Md5 == Api.DowngradeTool.Md5) continue;
+                    if (item.Md5 == Api.ReformatTool.Md5 || (item.Md5 == Api.DowngradeApp.Md5 && _selectedRelease != "Sync 3.3.19052") || item.Md5 == Api.DowngradeTool.Md5)
+                        continue;
                 }
                 i++;
-                reformatlst += $@"{item.Type}={item.FileName}";
-                if (i != ApplicationManager.Instance.Ivsus.Count) reformatlst += Environment.NewLine;
+                reformatlst += $"{item.Type}={item.FileName}";
+                if (i != ApplicationManager.Instance.Ivsus.Count)
+                    reformatlst += Environment.NewLine;
             }
 
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\reformat.lst", reformatlst);
@@ -626,9 +630,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Environment.NewLine);
                 autoinstalllst.Append($@"Options = AutoInstall{Environment.NewLine}[SYNCGen3.0_ALL]{Environment.NewLine}");
                 autoinstalllst.Append($@"Item1 = REFORMAT TOOL - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r").Replace(@"\r", Environment.NewLine);
-                autoinstalllst.Append($@"Options = AutoInstall,Include,Transaction{Environment.NewLine}");
+                autoinstalllst.Append("Options = AutoInstall,Include,Transaction").Append(Environment.NewLine);
             }
-            else if (InstallMode == @"reformat")
+            else if (InstallMode == "reformat")
             {
                 autoinstalllst.Append($@"Item1 = REFORMAT TOOL  - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r").Replace(@"\r", Environment.NewLine);
                 autoinstalllst.Append("Options = AutoInstall");

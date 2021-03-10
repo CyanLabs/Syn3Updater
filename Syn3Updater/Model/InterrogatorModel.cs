@@ -6,7 +6,7 @@ namespace Cyanlabs.Syn3Updater.Model
     /// <summary>
     ///     Json Class to parse the Interrogator log Direct Configuration XML to JSON
     /// </summary>
-    public class Interrogator
+    public static class Interrogator
     {
         public class InterrogatorModel
         {

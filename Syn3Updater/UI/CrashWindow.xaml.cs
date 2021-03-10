@@ -7,7 +7,6 @@ using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
-using SharedCode;
 
 namespace Cyanlabs.Syn3Updater.UI
 {
@@ -33,22 +32,19 @@ namespace Cyanlabs.Syn3Updater.UI
             try
             {
                 CrashContainer crashContainer = new CrashContainer();
-
                 StackTrace st = new StackTrace(exception, true);
                 StackFrame frame = st.GetFrame(st.FrameCount - 1);
 
                 crashContainer.ErrorName = exception.GetType().ToString();
-                if (frame != null) crashContainer.ErrorLocation = frame.GetFileName() + " / " + frame.GetMethod().Name + " / " + frame.GetFileLineNumber();
+                if (frame != null)
+                    crashContainer.ErrorLocation = $"{frame.GetFileName()}/{frame.GetMethod().Name}/{frame.GetFileLineNumber()}";
                 crashContainer.Logs = ApplicationManager.Logger.Log;
 
-                string text = JsonConvert.SerializeObject(crashContainer);
-                string version = Assembly.GetEntryAssembly()?.GetName().Version.ToString();
                 HttpClient client = new HttpClient();
-
                 Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    {"detail", text},
-                    {"version", version},
+                    {"detail", JsonConvert.SerializeObject(crashContainer)},
+                    {"version", Assembly.GetEntryAssembly()?.GetName().Version.ToString()},
                     {"error", crashContainer.ErrorName},
                     {"message", exception.Message},
                     {"operatingsystem", SystemHelper.GetOsFriendlyName()},
@@ -56,10 +52,8 @@ namespace Cyanlabs.Syn3Updater.UI
                 };
 
                 FormUrlEncodedContent content = new FormUrlEncodedContent(values);
-
-                HttpResponseMessage response = client.PostAsync(Api.CrashLogPost, content).Result;
-
-                return response.Content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = client.PostAsync(Api.CrashLogPost, content).GetAwaiter().GetResult();
+                return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
             catch (HttpRequestException)
             {

@@ -54,7 +54,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
 
             // Optional Format
-            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && ApplicationManager.Instance.DownloadOnly == false)
+            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && !ApplicationManager.Instance.DownloadOnly)
             {
                 if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
@@ -67,7 +67,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
 
             // Format USB Drive
-            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && ApplicationManager.Instance.DownloadOnly == false && ApplicationManager.Instance.SkipFormat == false)
+            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && !ApplicationManager.Instance.DownloadOnly && !ApplicationManager.Instance.SkipFormat)
                 if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 {

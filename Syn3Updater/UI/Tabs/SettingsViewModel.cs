@@ -11,7 +11,7 @@ using Cyanlabs.Syn3Updater.Model;
 using Microsoft.VisualBasic.FileIO;
 using ModernWpf;
 using Ookii.Dialogs.Wpf;
-using SharedCode;
+using Cyanlabs.Updater.Common;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
@@ -63,7 +63,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
-            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption {Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji}));
+            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption { Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji }));
 
         private string _currentRegion;
 
@@ -271,7 +271,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 LauncherPrefs.ReleaseType.Beta,
                 LauncherPrefs.ReleaseType.Ci
             };
-            
+
             ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
             CurrentNav = ApplicationManager.Instance.Settings.CurrentNav;
 

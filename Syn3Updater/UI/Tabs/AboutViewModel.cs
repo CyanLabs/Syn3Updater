@@ -14,11 +14,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private ActionCommand _fhubButton;
         private ActionCommand _forumButton;
         private ActionCommand _websiteButton;
-        public ActionCommand WebsiteButton => _websiteButton ?? (_websiteButton = new ActionCommand(WebsiteAction));
-        public ActionCommand ForumButton => _forumButton ?? (_forumButton = new ActionCommand(ForumAction));
-        public ActionCommand DonateButton => _donateButton ?? (_donateButton = new ActionCommand(DonateAction));
-        public ActionCommand DocButton => _documentationButton ?? (_documentationButton = new ActionCommand(DocAction));
-        public ActionCommand FHubButton => _fhubButton ?? (_fhubButton = new ActionCommand(FHubAction));
+        public ActionCommand WebsiteButton => _websiteButton ??= new ActionCommand(WebsiteAction);
+        public ActionCommand ForumButton => _forumButton ??= new ActionCommand(ForumAction);
+        public ActionCommand DonateButton => _donateButton ??= new ActionCommand(DonateAction);
+        public ActionCommand DocButton => _documentationButton ??= new ActionCommand(DocAction);
+        public ActionCommand FHubButton => _fhubButton ??= new ActionCommand(FHubAction);
 
         private bool _disclaimerAccepted;
 

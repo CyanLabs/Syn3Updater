@@ -41,23 +41,24 @@ namespace Cyanlabs.Syn3Updater.Helper
         #region Methods
 
         /// <summary>
-        ///     Copy file from source to destination with CancellationToken support
+        /// Async copy file from source to destination with CancellationToken support
         /// </summary>
         /// <param name="source">Source file</param>
         /// <param name="destination">Destination file</param>
         /// <param name="ct">CancellationToken</param>
-        public void CopyFile(string source, string destination, CancellationToken ct)
+        public async Task CopyFileAsync(string source, string destination, CancellationToken ct)
         {
+            var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
             int bufferSize = 1024 * 512;
-            using FileStream inStream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            using FileStream fileStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write);
+            using FileStream inStream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize, fileOptions);
+            using FileStream fileStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, bufferSize, fileOptions);
             int bytesRead;
             int totalReads = 0;
             long totalBytes = inStream.Length;
             byte[] bytes = new byte[bufferSize];
             int prevPercent = 0;
 
-            while ((bytesRead = inStream.Read(bytes, 0, bufferSize)) > 0)
+            while ((bytesRead = await inStream.ReadAsync(bytes, 0, bufferSize).ConfigureAwait(false)) > 0)
             {
                 if (ct.IsCancellationRequested)
                 {
@@ -74,7 +75,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     return;
                 }
 
-                fileStream.Write(bytes, 0, bytesRead);
+                await fileStream.WriteAsync(bytes, 0, bytesRead).ConfigureAwait(false);
                 totalReads += bytesRead;
                 int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
                 if (percent != prevPercent)
@@ -198,7 +199,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    using (HttpClient httpClient = new HttpClient()) 
+                    using (HttpClient httpClient = new HttpClient())
                     {
                         httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
                         long newfilesize = -1;
@@ -257,16 +258,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         if (ct.IsCancellationRequested)
                         {
-                           file.Close();
-                           file.Dispose();
-                           return null;
+                            file.Close();
+                            file.Dispose();
+                            return null;
                         }
                         buffer = new byte[4096];
                         bytesRead = file.Read(buffer, 0, buffer.Length);
                         totalBytesRead += bytesRead;
                         hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                         long read = totalBytesRead;
-                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int) ((double) read / size * 100));
+                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100));
                     } while (bytesRead != 0);
 
                     hasher.TransformFinalBlock(buffer, 0, 0);

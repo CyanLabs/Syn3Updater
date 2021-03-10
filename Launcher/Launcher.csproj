@@ -1,44 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->
+	<PropertyGroup>
+		<!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->
 		<!--<TargetFramework>net5.0-windows10.0.18362.0</TargetFramework>-->
 		<TargetFramework>net472</TargetFramework>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>Cyanlabs.Launcher</RootNamespace>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>cyanlabs.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <ItemGroup>
-    <Resource Include="cyanlabs.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentWPF" Version="0.8.0"/> 
-    <PackageReference Include="ModernWpf.MessageBox" Version="0.4.0"/>    
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>  
-    <PackageReference Include="Octokit" Version="0.48.0"/>    
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.212405">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  	<!-- Only needed for net core 3.1+ -->
+		<OutputType>WinExe</OutputType>
+		<RootNamespace>Cyanlabs.Launcher</RootNamespace>
+		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWPF>true</UseWPF>
+		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+		<ApplicationIcon>cyanlabs.ico</ApplicationIcon>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<OutputPath>..\bin\Debug\</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>none</DebugType>
+		<OutputPath>..\bin\Release\</OutputPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Resource Include="Syn3Updater Logo Cropped.png" />
+		<Resource Include="cyanlabs.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentWPF" Version="0.9.0" />
+		<PackageReference Include="ModernWpf.MessageBox" Version="0.4.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Octokit" Version="0.50.0" />
+		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.212405">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<!-- Only needed for net core 3.1+ -->
 		<!-- <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" /> -->
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Syn3Updater Logo Cropped.png" />
-  </ItemGroup>
-  <Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
+	</ItemGroup>	
+	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
 </Project>

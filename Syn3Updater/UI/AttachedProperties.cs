@@ -13,7 +13,7 @@ namespace Cyanlabs.Syn3Updater.UI
 
         public static bool GetAutoScrollToEnd(DependencyObject obj)
         {
-            return (bool) obj.GetValue(AutoScrollToEndProperty);
+            return (bool)obj.GetValue(AutoScrollToEndProperty);
         }
 
         public static void SetAutoScrollToEnd(DependencyObject obj, bool value)

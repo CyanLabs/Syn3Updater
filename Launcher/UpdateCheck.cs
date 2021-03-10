@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Octokit;
-using SharedCode;
+using Cyanlabs.Updater.Common;
 using Application = System.Windows.Application;
 
 namespace Cyanlabs.Launcher
@@ -175,8 +175,7 @@ namespace Cyanlabs.Launcher
             if (!string.IsNullOrWhiteSpace(destDirName) && !Directory.Exists(destDirName)) Directory.CreateDirectory(destDirName);
 
             // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
+            foreach (FileInfo file in dir.GetFiles())
             {
                 // ReSharper disable once AssignNullToNotNullAttribute
                 string temppath = Path.Combine(destDirName, file.Name);
@@ -210,7 +209,7 @@ namespace Cyanlabs.Launcher
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
 
-            Vm.Message = "Downloaded " + e.BytesReceived / 1000000 + " MB of " + e.TotalBytesToReceive / 1000000 + " MB.";
+            Vm.Message = $"Downloaded {e.BytesReceived / 1000000}  MB of {e.TotalBytesToReceive / 1000000} MB.";
 
             Vm.Percentage = 100 - (int)percentage;
         }
@@ -219,7 +218,8 @@ namespace Cyanlabs.Launcher
     }
 
     // ReSharper disable once InconsistentNaming
-    public class CIRelease {
+    public class CIRelease
+    {
         [JsonProperty("id")] public int Id { get; set; }
         [JsonProperty("number")] public string Number { get; set; }
         [JsonProperty("branchName")] public string BranchName { get; set; }

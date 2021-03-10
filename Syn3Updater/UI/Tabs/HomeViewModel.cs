@@ -544,8 +544,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         string fileName = FileHelper.url_to_filename(item.Ivsu.Url);
                         IvsuList.Add(new SModel.Ivsu
                         {
-                            Type = item.Ivsu.Type, Name = item.Ivsu.Name, Version = item.Ivsu.Version,
-                            Notes = item.Ivsu.Notes, Url = item.Ivsu.Url, Md5 = item.Ivsu.Md5, Selected = true,
+                            Type = item.Ivsu.Type,
+                            Name = item.Ivsu.Name,
+                            Version = item.Ivsu.Version,
+                            Notes = item.Ivsu.Notes,
+                            Url = item.Ivsu.Url,
+                            Md5 = item.Ivsu.Md5,
+                            Selected = true,
                             FileName = fileName
                         });
                     }
@@ -558,9 +563,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             string fileName = FileHelper.url_to_filename(item.MapIvsu.Url);
                             IvsuList.Add(new SModel.Ivsu
                             {
-                                Type = item.MapIvsu.Type, Name = item.MapIvsu.Name, Version = item.MapIvsu.Version,
-                                Notes = item.MapIvsu.Notes, Url = item.MapIvsu.Url, Md5 = item.MapIvsu.Md5,
-                                Selected = true, FileName = fileName
+                                Type = item.MapIvsu.Type,
+                                Name = item.MapIvsu.Name,
+                                Version = item.MapIvsu.Version,
+                                Notes = item.MapIvsu.Notes,
+                                Url = item.MapIvsu.Url,
+                                Md5 = item.MapIvsu.Md5,
+                                Selected = true,
+                                FileName = fileName
                             });
                         }
 

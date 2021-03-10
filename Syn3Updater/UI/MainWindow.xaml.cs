@@ -28,7 +28,7 @@ namespace Cyanlabs.Syn3Updater.UI
             }
         }
 
-        private MainWindowViewModel Vm => (MainWindowViewModel) DataContext;
+        private MainWindowViewModel Vm => (MainWindowViewModel)DataContext;
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {

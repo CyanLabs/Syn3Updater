@@ -72,7 +72,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags, bool defaultUser)
         {
-            int result = SHGetKnownFolderPath(new Guid(KnownFolderGuids[(int) knownFolder]), (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
+            int result = SHGetKnownFolderPath(new Guid(KnownFolderGuids[(int)knownFolder]), (uint)flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
             if (result >= 0)
             {
                 string path = Marshal.PtrToStringUni(outPath);
@@ -89,7 +89,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
             foreach (ManagementBaseObject o in searcher.Get())
             {
-                ManagementObject os = (ManagementObject) o;
+                ManagementObject os = (ManagementObject)o;
                 result = os["Caption"].ToString();
                 break;
             }

@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
-using SharedCode;
+using Cyanlabs.Updater.Common;
 
 namespace Cyanlabs.Launcher
 {
@@ -76,7 +76,8 @@ namespace Cyanlabs.Launcher
             }
 
             // Delete Launcher_OldVersion.exe
-            if (File.Exists("Launcher_OldVersion.exe")) File.Delete("Launcher_OldVersion.exe");
+            if (File.Exists("Launcher_OldVersion.exe"))
+                File.Delete("Launcher_OldVersion.exe");
 
             // Start and wait for the UpdateCheck to complete
             UpdateCheck check = new UpdateCheck();
@@ -85,12 +86,13 @@ namespace Cyanlabs.Launcher
                 await Task.Delay(100);
 
             // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe
-            Process p = new Process
+            Process p;
+            p = new Process
             {
                 StartInfo =
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = BaseFolder + "\\Syn3Updater.exe",
+                    FileName = BaseFolder+"\\Syn3Updater.exe",
                     WorkingDirectory = BaseFolder ?? string.Empty,
                     Arguments = "/launcher",
                     UseShellExecute = false

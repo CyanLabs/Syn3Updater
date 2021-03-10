@@ -51,14 +51,15 @@ namespace Cyanlabs.Syn3Updater.Helper
             ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
-                ManagementObject d = (ManagementObject) o;
+                ManagementObject d = (ManagementObject)o;
                 string diskName = Convert.ToString(d.Properties["Caption"].Value);
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
                 if (friendlySize != "0B")
                     // Add to array of drives
-                    driveList.Add(new Drive {Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}"});
+                    driveList.Add(new Drive { Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}" });
             }
-            if (fakeusb) driveList.Add(new Drive { Path = "", Name = LanguageManager.GetValue("Home.NoUSBDir") });
+            if (fakeusb)
+                driveList.Add(new Drive { Path = "", Name = LanguageManager.GetValue("Home.NoUSBDir") });
 
             // Return a list of drives
             return driveList;
@@ -78,18 +79,19 @@ namespace Cyanlabs.Syn3Updater.Helper
             ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
             foreach (ManagementBaseObject o in partitionQuery.Get())
             {
-                ManagementObject p = (ManagementObject) o;
+                ManagementObject p = (ManagementObject)o;
                 string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
                 ManagementObjectSearcher logicalDriveQuery = new ManagementObjectSearcher(logicalDriveQueryText);
                 foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                 {
-                    ManagementObject ld = (ManagementObject) managementBaseObject;
+                    ManagementObject ld = (ManagementObject)managementBaseObject;
                     driveInfo.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
                     driveInfo.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
                     driveInfo.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
                     driveInfo.Name = ld.Properties["VolumeName"].Value.ToString();
 
-                    if (driveInfo.FileSystem == "exFAT" && driveInfo.PartitionType == "MBR" && driveInfo.Name == "CYANLABS") driveInfo.SkipFormat = true;
+                    if (driveInfo.FileSystem == "exFAT" && driveInfo.PartitionType == "MBR" && driveInfo.Name == "CYANLABS")
+                        driveInfo.SkipFormat = true;
                 }
             }
 
@@ -105,7 +107,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             StringBuilder data = new StringBuilder($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
             data.Append(@"Branch: ").Append(ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled).Append(Environment.NewLine)
-                .Append($@"Operating System: {SystemHelper.GetOsFriendlyName()}{Environment.NewLine}")
+                .Append(@"Operating System: ").Append(SystemHelper.GetOsFriendlyName()).Append(Environment.NewLine)
                 .Append(Environment.NewLine)
                 .Append($@"PREVIOUS CONFIGURATION{Environment.NewLine}")
                 .Append($@"Version: {ApplicationManager.Instance.SVersion}{Environment.NewLine}")
@@ -113,19 +115,18 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"Navigation: {ApplicationManager.Instance.Settings.CurrentNav}{Environment.NewLine}")
                 .Append(
              $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}")
-                .Append(Environment.NewLine)
-                .Append($@"DESTINATION DETAILS{Environment.NewLine}");
+                .Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
             if (ApplicationManager.Instance.DownloadToFolder)
             {
                 data.Append("Mode: Directory").Append(Environment.NewLine)
-                    .Append($@"Path: {ApplicationManager.Instance.DriveLetter}{Environment.NewLine}");
+                    .Append(@"Path: ").Append(ApplicationManager.Instance.DriveLetter).Append(Environment.NewLine);
             }
             else
             {
                 data.Append("Mode: Drive").Append(Environment.NewLine)
-                    .Append($@"Model: {ApplicationManager.Instance.DriveName}{Environment.NewLine}")
-                    .Append($@"FileSystem: {ApplicationManager.Instance.DriveFileSystem}{Environment.NewLine}")
-                    .Append($@"Partition Type: {ApplicationManager.Instance.DrivePartitionType}{Environment.NewLine}");
+                    .Append("Model: ").Append(ApplicationManager.Instance.DriveName).Append(Environment.NewLine)
+                    .Append("FileSystem: ").Append(ApplicationManager.Instance.DriveFileSystem).Append(Environment.NewLine)
+                    .Append("Partition Type: ").Append(ApplicationManager.Instance.DrivePartitionType).Append(Environment.NewLine);
             }
 
             string driveletter = ApplicationManager.Instance.DriveLetter;
@@ -173,13 +174,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 {"contents", log}
             };
-
-            FormUrlEncodedContent content = new FormUrlEncodedContent(values);
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = client.PostAsync(Api.LogPost, content).GetAwaiter().GetResult();
-            string responseString =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var definition = new {uuid = "", status = ""};
-            var output = JsonConvert.DeserializeAnonymousType(responseString, definition);
+            HttpResponseMessage response = client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values)).GetAwaiter().GetResult();
+            string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
             Process.Start(Api.LogUrl + output.uuid);
         }
         #endregion

@@ -45,7 +45,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         public void RaiseCanExecuteChanged()
         {
-            CanExecuteChanged?.Invoke(this, new EventArgs());
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

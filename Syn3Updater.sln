@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syn3Updater", "Syn3Updater\Syn3Updater.csproj", "{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Syn3Updater", "Syn3Updater\Syn3Updater.csproj", "{0A3F08DD-2B7B-40A9-A740-7C3BFE4BC2C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launcher", "Launcher\Launcher.csproj", "{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Launcher", "Launcher\Launcher.csproj", "{400FEC06-C6E7-4A09-80A6-B9A4E750D41A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedCode", "SharedCode\SharedCode.shproj", "{285A3E6C-652A-4CA2-9B27-3A4DC4E1177B}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Updater.Common", "SharedCode\Updater.Common.shproj", "{285A3E6C-652A-4CA2-9B27-3A4DC4E1177B}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

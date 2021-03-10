@@ -11,14 +11,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.UI;
 using Newtonsoft.Json;
-using SharedCode;
+using Cyanlabs.Updater.Common;
 
 namespace Cyanlabs.Syn3Updater
 {
@@ -147,7 +146,7 @@ namespace Cyanlabs.Syn3Updater
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
 
-            if (!Environment.GetCommandLineArgs().Contains("/launcher"))
+            if (!Environment.GetCommandLineArgs().Contains("/launcher")) 
             {
                 try
                 {
@@ -285,7 +284,6 @@ namespace Cyanlabs.Syn3Updater
             int index = rand.Next(header.Count);
             Header = header[index];
         }
-
 
         public void RestartApp()
         {

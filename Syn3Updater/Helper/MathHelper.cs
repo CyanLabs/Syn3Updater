@@ -30,7 +30,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         public static float Clamp(float value, float min, float max)
         {
-            return (float) Clamp((double) value, min, max);
+            return (float)Clamp((double)value, min, max);
         }
 
         public static int Clamp(int value, int min, int max)
@@ -40,7 +40,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         public static string BytesToString(long byteCount)
         {
-            string[] suf = {"B", "KB", "MB", "GB", "TB", "PB", "EB"}; //Longs run out around EB
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
             if (byteCount == 0) return $"0{suf[0]}";
 
             long bytes = Math.Abs(byteCount);

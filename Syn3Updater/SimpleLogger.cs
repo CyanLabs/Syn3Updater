@@ -28,13 +28,12 @@ namespace Cyanlabs.Syn3Updater
 
         public void CrashWindow(Exception ex, [CallerMemberName] string callerMemberName = "")
         {
-            CrashWindow crashWindow = new CrashWindow {ErrorName = {Text = ex.GetType().ToString()}, Message = {Text = ex.Message}, StackTrace = {Text = ex.StackTrace}};
+            CrashWindow crashWindow = new CrashWindow { ErrorName = { Text = ex.GetType().ToString() }, Message = { Text = ex.Message }, StackTrace = { Text = ex.StackTrace } };
             crashWindow.Show();
 
             Log.Add(new LogEntry(ex.GetType().ToString(), "Crash", ex));
             string guid = crashWindow.SendReport(ex);
-            var definition = new {uuid = "", status = ""};
-            var output = JsonConvert.DeserializeAnonymousType(guid, definition);
+            var output = JsonConvert.DeserializeAnonymousType(guid, new { uuid = "", status = "" });
             string url = Api.CrashLogUrl + output.uuid;
             crashWindow.ErrorReportUrl = url;
 
