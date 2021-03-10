@@ -316,8 +316,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                         try
                         {
-                            _fileHelper.CopyFile(ApplicationManager.Instance.DownloadPath + item.FileName,
-                                $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
+                            await _fileHelper.CopyFileAsync(ApplicationManager.Instance.DownloadPath + item.FileName,
+                                $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct).ConfigureAwait(false);
                         }
                         catch (HttpRequestException webException)
                         {
