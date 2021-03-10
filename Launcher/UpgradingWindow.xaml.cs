@@ -87,12 +87,9 @@ namespace Cyanlabs.Launcher
 
             // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe
             Process p;
-
-            if (!Debugger.IsAttached)
+            p = new Process
             {
-                p = new Process
-                {
-                    StartInfo =
+                StartInfo =
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = BaseFolder+"\\Syn3Updater.exe",
@@ -100,23 +97,7 @@ namespace Cyanlabs.Launcher
                     Arguments = "/launcher",
                     UseShellExecute = false
                 }
-                };
-            }
-            // Launch da one built by VS 
-            else
-            {
-                p = new Process
-                {
-                    StartInfo =
-                {
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "Syn3Updater.exe",
-                    WorkingDirectory = BaseFolder ?? string.Empty,
-                    Arguments = "/launcher",
-                    UseShellExecute = false
-                }
-                };
-            }
+            };
             p.Start();
 
             await Task.Delay(2000);
