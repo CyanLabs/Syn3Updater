@@ -571,7 +571,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Url = item.MapIvsu.Url,
                                 Md5 = item.MapIvsu.Md5,
                                 Selected = true,
-                                FileName = fileName
+                                FileName = fileName,
+                                Source = item.MapIvsu.Source
                             });
                         }
 

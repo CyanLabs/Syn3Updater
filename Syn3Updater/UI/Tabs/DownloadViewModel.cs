@@ -165,7 +165,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                 {
                     if (_ct.IsCancellationRequested) return;
-                    DownloadInfo = $"Downloading: {item.Url}";
+                    DownloadInfo = $"Downloading: {item.FileName}";
 
                     Log += "[" + DateTime.Now + "] " + $"Downloading: {item.FileName}" + Environment.NewLine;
                     ApplicationManager.Logger.Info($"Downloading: {item.FileName}");
@@ -214,6 +214,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
                                 _count++;
+
+                                
                                 break;
                             }
 

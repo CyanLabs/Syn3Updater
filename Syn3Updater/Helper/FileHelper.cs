@@ -3,9 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Model;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
+
 namespace Cyanlabs.Syn3Updater.Helper
 {
     /// <summary>
@@ -288,6 +293,35 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="url">URL</param>
         /// <returns>filename as String</returns>
         public static string url_to_filename(string url) => url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1, url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+
+        /// <summary>
+        ///     Extracts the tar.gz file in to multiple packages (naviextras)
+        /// </summary>
+        /// <param name="path">Full path to source file</param>
+        /// <returns>status</returns>
+        public static bool ExtractMultiPackage(string path)
+        {
+            string destination = System.IO.Path.ChangeExtension(path, null);
+            MessageBox.Show(destination);
+            Stream inStream = File.OpenRead(path);
+            Stream gzipStream = new GZipInputStream(inStream);
+
+            TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream,Encoding.ASCII);
+            tarArchive.ExtractContents(destination);
+            tarArchive.Close();
+
+            gzipStream.Close();
+            inStream.Close();
+            
+
+            string[] allfiles = Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories);
+            foreach (var file in allfiles)
+            {
+                FileInfo info = new FileInfo(file);
+                // Do something with the Folder or just add them to a list via nameoflist.add();
+            }
+            return true;
+        }
         #endregion
     }
 }
