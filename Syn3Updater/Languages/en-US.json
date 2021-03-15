@@ -106,7 +106,7 @@
     "Utility.TroubleshootMoreDetails": "More Details!",
     "Utility.ViewAsBuilt": "View Detailed AsBuilt",
     "About.Endorsed": "This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo",
-    "MessageBox.AsBuiltVinWarning": "WARNING: This will submit your vehicles VIN along to our automatic online decoding service, by submitting your VIN this will help increase the accurasy od \n\nNOTE: This will submit your vehicles VIN number to Cyanlabs's online decoding service. By submitting your VIN, this will help increase our database's accuracy.\n\nIf you do not wish to submit your VIN click Cancel.",
+    "MessageBox.AsBuiltVinWarning": "WARNING: This will submit your vehicles VIN along to our automatic online decoding service, by submitting your VIN this will help increase the accuracy of our database. \n\nIf you do not wish to submit your VIN click Cancel.",
     "Utility.UploadLog": "Upload Log",
     "MessageBox.UploadLog": "To assist in troubleshooting any potential issues we would recommend uploading your Syn3Updater log to our database, this log file contains details on what options were selected.\n\nIf you choose not to upload this log you can do so at a later date from the \"Utility\" tab and clicking the \"Upload Log\" button.\n\nDo you want to upload your log now?",
     "MessageBox.UploadLogNoDrive": "The USB Drive you have selected does not contain a log.txt file",
