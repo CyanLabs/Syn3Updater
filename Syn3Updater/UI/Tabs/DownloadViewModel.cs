@@ -444,7 +444,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (_action == "main")
                 {
-                    if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), "Syn3 Updater", MessageBoxButton.YesNo,
+                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"),ApplicationManager.Instance.SVersion,ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "")), "Syn3 Updater", MessageBoxButton.YesNo,
                         MessageBoxImage.Information) == MessageBoxResult.Yes)
                     {
                         ApplicationManager.Instance.Settings.CurrentVersion =

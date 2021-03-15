@@ -298,7 +298,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             Api.JsonReleases sversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
                             string convertedsversion = sversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                             if (convertedsversion != ApplicationManager.Instance.SVersion)
-                                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), convertedsversion),
+                                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"),ApplicationManager.Instance.SVersion, convertedsversion),
                                     "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                                 {
