@@ -3,9 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Model;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
+
 namespace Cyanlabs.Syn3Updater.Helper
 {
     /// <summary>
@@ -21,7 +26,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         #region Properties & Fields
 
-        public struct ValidateResult
+        public struct OutputResult
         {
             public string Message;
             public bool Result;
@@ -168,17 +173,17 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="md5">MD5 checksum to compare against</param>
         /// <param name="localonly">Set to true if comparing to local sources else set to false</param>
         /// <param name="ct">CancellationToken</param>
-        /// <returns>validateResult with Message and Result properties</returns>
-        public ValidateResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
+        /// <returns>outputResult with Message and Result properties</returns>
+        public OutputResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
         {
-            ValidateResult validateResult = new ValidateResult();
+            OutputResult outputResult = new OutputResult();
             string filename = Path.GetFileName(localfile);
 
             if (!File.Exists(localfile))
             {
-                validateResult.Message = "";
-                validateResult.Result = false;
-                return validateResult;
+                outputResult.Message = "";
+                outputResult.Result = false;
+                return outputResult;
             }
 
             string localMd5 = GenerateMd5(localfile, ct);
@@ -192,9 +197,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                     if (srcfilesize == filesize)
                         if (localMd5 == GenerateMd5(source, ct))
                         {
-                            validateResult.Message = $"{filename} checksum matches already verified local copy";
-                            validateResult.Result = true;
-                            return validateResult;
+                            outputResult.Message = $"{filename} checksum matches already verified local copy";
+                            outputResult.Result = true;
+                            return outputResult;
                         }
                 }
                 else
@@ -211,30 +216,30 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                         if (newfilesize == filesize)
                         {
-                            validateResult.Message = $"no source checksum available for {filename} comparing file size";
-                            validateResult.Result = true;
-                            return validateResult;
+                            outputResult.Message = $"no source checksum available for {filename} comparing file size";
+                            outputResult.Result = true;
+                            return outputResult;
                         }
                     }
                 }
             }
             else if (string.Equals(localMd5, md5, StringComparison.CurrentCultureIgnoreCase))
             {
-                validateResult.Message = "";
-                validateResult.Result = true;
-                return validateResult;
+                outputResult.Message = "";
+                outputResult.Result = true;
+                return outputResult;
             }
 
             if (ct.IsCancellationRequested)
             {
-                validateResult.Message = "Process cancelled by user";
-                validateResult.Result = false;
-                return validateResult;
+                outputResult.Message = "Process cancelled by user";
+                outputResult.Result = false;
+                return outputResult;
             }
 
-            validateResult.Message = $"Validate: {filename} (Failed!, Downloading)";
-            validateResult.Result = false;
-            return validateResult;
+            outputResult.Message = $"Validate: {filename} (Failed!, Downloading)";
+            outputResult.Result = false;
+            return outputResult;
         }
 
         /// <summary>
@@ -288,6 +293,69 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="url">URL</param>
         /// <returns>filename as String</returns>
         public static string url_to_filename(string url) => url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1, url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+
+        /// <summary>
+        ///     Extracts the tar.gz file in to multiple packages (naviextras)
+        /// </summary>
+        /// <param name="item">The SModel.Ivsu of the item to extract</param>
+        /// <param name="ct"></param>
+        /// <returns>outputResult with Message and Result properties</returns>
+        public OutputResult ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
+        {
+            OutputResult outputResult = new OutputResult{Message = ""};
+            if (item.Source != "naviextras")
+            {
+                outputResult.Result = true;
+                return outputResult;
+            }
+            else
+            {
+                string path = ApplicationManager.Instance.DownloadPath + item.FileName;
+                string destination = System.IO.Path.ChangeExtension(path, null);
+                Stream inStream = File.OpenRead(path);
+                Stream gzipStream = new GZipInputStream(inStream);
+
+                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream,Encoding.ASCII);
+                tarArchive.ExtractContents(destination);
+                tarArchive.Close();
+
+                gzipStream.Close();
+                inStream.Close();
+
+                string[] allfiles = Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories);
+                foreach (var tarfile in allfiles)
+                {
+                    
+                    string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar","");
+                    string filename = Path.GetFileName(tarfile);
+                    string newpath = ApplicationManager.Instance.DownloadPath + filename;
+                    if (File.Exists(newpath)) File.Delete(newpath);
+                    File.Move(tarfile,newpath);
+                    string type = "";
+                    
+                    if (name.Contains("14G424")) {
+                        type = "MAP_LICENSE";
+                    } else if (name.Contains("14G421")) {
+                        type = "MAP";
+                    }
+                    
+                    ApplicationManager.Instance.ExtraIvsus.Add(new SModel.Ivsu
+                    {
+                        Type = type,
+                        Name = name,
+                        Version = "",
+                        Notes = "",
+                        Url = "",
+                        Md5 = GenerateMd5(newpath,ct),
+                        Selected = true,
+                        FileName = filename
+                    });
+                }
+                outputResult.Message = "Added MultiPackage files to Queue";
+                outputResult.Result = true;
+            }
+            return outputResult;
+        }
         #endregion
     }
 }

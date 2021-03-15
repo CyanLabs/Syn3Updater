@@ -160,12 +160,27 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                     ApplicationManager.Logger.Info(text);
+                    
+                    if (item.Source == "naviextras")
+                    {
+                        FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
+                        
+                        text = $"Extracting: {item.FileName} (This may take some time!)";
+                        Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                        ApplicationManager.Logger.Info(text);
+                        
+                        if (outputResult.Result)
+                        {
+                            Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
+                            ApplicationManager.Logger.Info(outputResult.Message);
+                        }
+                    }
                     _count++;
                 }
                 else
                 {
                     if (_ct.IsCancellationRequested) return;
-                    DownloadInfo = $"Downloading: {item.Url}";
+                    DownloadInfo = $"Downloading: {item.FileName}";
 
                     Log += "[" + DateTime.Now + "] " + $"Downloading: {item.FileName}" + Environment.NewLine;
                     ApplicationManager.Logger.Info($"Downloading: {item.FileName}");
@@ -213,6 +228,20 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 text = $"Downloaded: {item.FileName}";
                                 Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
                                 ApplicationManager.Logger.Info(text);
+                                if (item.Source == "naviextras")
+                                {
+                                    FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item,_ct);
+                        
+                                    text = $"Extracting: {item.FileName} (This may take some time!)";
+                                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                                    ApplicationManager.Logger.Info(text);
+                        
+                                    if (outputResult.Result)
+                                    {
+                                        Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
+                                        ApplicationManager.Logger.Info(outputResult.Message);
+                                    }
+                                }
                                 _count++;
                                 break;
                             }
@@ -272,6 +301,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task DoCopy()
 #pragma warning restore 1998
         {
+            foreach (SModel.Ivsu extraitem in ApplicationManager.Instance.ExtraIvsus)
+            {
+                ApplicationManager.Instance.Ivsus.Add(extraitem);
+            }
             foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
             {
                 if (_ct.IsCancellationRequested)
@@ -280,7 +313,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ApplicationManager.Logger.Info("Process cancelled by user");
                     return;
                 }
-
+                if (item.Source == "naviextras")
+                {
+                    _count++;
+                    continue;
+                }
                 if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
                     true, true))
                 {
@@ -371,6 +408,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void CopyComplete()
         {
+            if (_action == "main")
+                switch (InstallMode)
+                {
+                    case "autoinstall":
+                        CreateAutoInstall();
+                        break;
+                    case "downgrade":
+                    case "reformat":
+                        CreateReformat();
+                        break;
+                }
+            else if (_action == "logutility" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade") CreateAutoInstall();
+
             CancelButtonEnabled = false;
             string text;
             if (ApplicationManager.Instance.DownloadToFolder)
@@ -520,20 +570,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     Thread.Sleep(5000);
                 }
             }
-
-            if (_action == "main")
-                switch (InstallMode)
-                {
-                    case "autoinstall":
-                        CreateAutoInstall();
-                        break;
-                    case "downgrade":
-                    case "reformat":
-                        CreateReformat();
-                        break;
-                }
-            else if (_action == "logutility" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade") CreateAutoInstall();
-
+            
             foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadPath + item.FileName));
 
@@ -562,8 +599,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             string extrafiles = "";
             int baseint = 0, extraint = 0;
             foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+            {
+                if (item.Source == "naviextras") continue;
                 if (item.Type == "APPS" || item.Type == "VOICE" || item.Type == "ENH_DAB" || item.Type == "MAP_LICENSE" || item.Type == "VOICE_NAV" ||
-                    !ApplicationManager.Instance.AppsSelected)
+                     !ApplicationManager.Instance.AppsSelected)
                 {
                     baseint++;
                     autoinstalllst.Append($@"Item{baseint} = {item.Type} - {item.FileName}\rOpen{baseint} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
@@ -580,6 +619,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     extraint++;
                     extrafiles += $@"Item{extraint} = {item.Type} - {item.FileName}\rOpen{extraint} = SyncMyRide\{item.FileName}\r".Replace(@"\r", Environment.NewLine);
                 }
+            }
 
             if (extrafiles != "")
                 extrafiles += "Options = Delay,Include,Transaction";
@@ -598,6 +638,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             int i = 0;
             foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
             {
+                if (item.Source == "naviextras") continue;
                 if (InstallMode == "reformat")
                 {
                     if (item.Md5 == Api.ReformatTool.Md5) continue;
@@ -651,15 +692,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Logger.Info(text);
 
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");
-            FileHelper.ValidateResult validateResult = _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
+            FileHelper.OutputResult outputResult = _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
 
-            if (validateResult.Message != "")
+            if (outputResult.Message != "")
             {
-                Log += "[" + DateTime.Now + "] " + validateResult.Message + Environment.NewLine;
-                ApplicationManager.Logger.Info(validateResult.Message);
+                Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
+                ApplicationManager.Logger.Info(outputResult.Message);
             }
 
-            return validateResult.Result;
+            return outputResult.Result;
         }
 
         #endregion

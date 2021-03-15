@@ -100,6 +100,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("notes")] public string Notes { get; set; }
             [JsonProperty("url")] public string Url { get; set; }
             [JsonProperty("version")] public string Version { get; set; }
+            [JsonProperty("source")] public string Source { get; set; }
         }
 
         public class Release

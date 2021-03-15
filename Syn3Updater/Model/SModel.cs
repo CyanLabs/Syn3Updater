@@ -23,6 +23,7 @@
             public string Url { get; set; }
             public string Md5 { get; set; }
             public string FileName { get; set; }
+            public string Source { get; set; }
         }
 
         #endregion

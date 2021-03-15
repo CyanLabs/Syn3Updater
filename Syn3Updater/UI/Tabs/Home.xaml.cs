@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
