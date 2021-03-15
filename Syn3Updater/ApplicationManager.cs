@@ -266,6 +266,8 @@ namespace Cyanlabs.Syn3Updater
 
             Randomize();
 
+            InstallMode = "autodetect";
+            
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
             if (!_mainWindow.IsVisible) _mainWindow.Show();
