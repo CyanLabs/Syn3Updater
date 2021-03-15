@@ -33,6 +33,7 @@ namespace Cyanlabs.Syn3Updater
 
         public static readonly SimpleLogger Logger = new SimpleLogger();
         public ObservableCollection<SModel.Ivsu> Ivsus = new ObservableCollection<SModel.Ivsu>();
+        public ObservableCollection<SModel.Ivsu> ExtraIvsus = new ObservableCollection<SModel.Ivsu>();
         public static ApplicationManager Instance { get; } = new ApplicationManager();
         public LauncherPrefs LauncherPrefs { get; set; }
         public JsonSettings Settings { get; set; }

@@ -19,10 +19,5 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if ((bool)e.NewValue && !(bool)e.OldValue) (DataContext as HomeViewModel)?.ReloadSettings();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            FileHelper.ExtractMultiPackage(@"D:\Syn3Updater\FordCaribbean19Q4.tgz");
-        }
     }
 }
