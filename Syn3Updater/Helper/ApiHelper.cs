@@ -7,7 +7,7 @@ namespace Cyanlabs.Syn3Updater.Helper
     /// <summary>
     ///     Helper class for API functions
     /// </summary>
-    internal static class ApiHelper
+    public static class ApiHelper
     {
         #region Methods
         /// <summary>
