@@ -230,7 +230,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                     Interrogator.D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
                     string sappname = d2P1Did!.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
-                    LogXmlDetails += $"{LanguageManager.GetValue("Utility.SVersion")} {sappname}{Environment.NewLine}";
+                    LogXmlDetails += $"{LanguageManager.GetValue("Home.Version")} {sappname}{Environment.NewLine}";
 
                     string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
