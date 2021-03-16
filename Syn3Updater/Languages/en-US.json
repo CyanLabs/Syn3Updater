@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Full Version:",
     "Settings.Region": "Region:",
     "Settings.Navigation": "Navigation:",
-    "MessageBox.NoVersionOrRegionSelected": "You have not set your current Version or Region!",
-    "Utility.Version": "Version:3.4+"
+    "MessageBox.NoVersionOrRegionSelected": "You have not set your current Version or Region!"
 }
