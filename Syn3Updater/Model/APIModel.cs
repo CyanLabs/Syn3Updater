@@ -49,7 +49,9 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string SpecialPackageBase = "https://api.cyanlabs.net/syn3updater/get/";
         public const string GetDowngradeApp = SpecialPackageBase + "downgradeapp";
         public const string GetDowngradeTool = SpecialPackageBase + "downgradetool";
-        public const string GetLogTool = SpecialPackageBase + "logtool";
+        public const string GetLogTool34 = SpecialPackageBase + "logtool34";
+        public const string GetLogTool32 = SpecialPackageBase + "logtool32";
+        public const string GetLogTool30 = SpecialPackageBase + "logtool30";
         public const string GetGracenotesRemoval = SpecialPackageBase + "gracenotesremoval";
         public const string GetSmallVoice = SpecialPackageBase + "smallvoice";
         public const string GetReformat = SpecialPackageBase + "reformat";
