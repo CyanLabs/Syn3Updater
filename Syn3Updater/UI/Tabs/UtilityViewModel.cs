@@ -187,7 +187,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "logutility";
             ApplicationManager.Instance.SelectedRelease = "Interrogator Log Utility";
-            Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool);
+            
+            string currentversion = ApplicationManager.Instance.SVersion;
+            if (currentversion.StartsWith("3.4"))
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+            else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
+            else if (currentversion.StartsWith("3."))
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+            else
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
+            
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
                 ? "autoinstall"
