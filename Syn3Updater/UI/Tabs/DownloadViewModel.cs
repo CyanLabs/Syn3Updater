@@ -106,13 +106,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             _selectedRegion = ApplicationManager.Instance.SelectedRegion;
             _selectedMapVersion = ApplicationManager.Instance.SelectedMapVersion;
             string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
-            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
 
             InstallMode = ApplicationManager.Instance.InstallMode;
             _action = ApplicationManager.Instance.Action;
 
             text = $"Install Mode: {InstallMode}";
-            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             ApplicationManager.Logger.Info(text);
 
             CancelButtonEnabled = true;
@@ -158,17 +158,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false, true))
                 {
                     string text = $"Validated: {item.FileName} (Skipping Download)";
-                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                    Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                     ApplicationManager.Logger.Info(text);
-                    
+
                     if (item.Source == "naviextras")
                     {
                         FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
-                        
+
                         text = $"Extracting: {item.FileName} (This may take some time!)";
-                        Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                        Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                         ApplicationManager.Logger.Info(text);
-                        
+
                         if (outputResult.Result)
                         {
                             Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
@@ -226,16 +226,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                             {
                                 text = $"Downloaded: {item.FileName}";
-                                Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                                Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                                 ApplicationManager.Logger.Info(text);
                                 if (item.Source == "naviextras")
                                 {
                                     FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item,_ct);
-                        
+
                                     text = $"Extracting: {item.FileName} (This may take some time!)";
-                                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                                    Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                                     ApplicationManager.Logger.Info(text);
-                        
+
                                     if (outputResult.Result)
                                     {
                                         Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
@@ -249,7 +249,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             if (i == 3)
                             {
                                 text = $"unable to validate {item.FileName} after 3 tries, ABORTING PROCESS!";
-                                Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                                Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                                 ApplicationManager.Logger.Info(text);
 
                                 Application.Current.Dispatcher.Invoke(() =>
@@ -271,7 +271,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 PercentageChanged.Raise(this, 100);
             }
 
-            Application.Current.Dispatcher.Invoke(() => { DownloadQueueList.Clear(); });
+            Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
         }
 
         private void DownloadComplete()
@@ -281,7 +281,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (ApplicationManager.Instance.DownloadOnly)
                 {
                     string text = "Process completed successfully (download only)";
-                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                    Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                     ApplicationManager.Logger.Info(text);
 
                     DownloadInfo = LanguageManager.GetValue("String.Completed");
@@ -322,7 +322,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     true, true))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
-                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+
+                    Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                     ApplicationManager.Logger.Info(text);
 
                     _count++;
@@ -334,7 +335,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     string text = $"Copying: {item.FileName}";
                     DownloadInfo = text;
 
-                    Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                    Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                     ApplicationManager.Logger.Info(text);
 
                     _progressBarSuffix = LanguageManager.GetValue("String.Copied");
@@ -347,7 +348,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             text = $"Copying (Attempt #{i}): {item.FileName}";
                             DownloadInfo = text;
 
-                            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                             ApplicationManager.Logger.Info(text);
                         }
 
@@ -379,7 +380,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
                         {
                             text = $"Copied: {item.FileName}";
-                            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                             ApplicationManager.Logger.Info(text);
                             _count++;
                             break;
@@ -388,7 +389,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (i == 3)
                         {
                             text = $"unable to validate {item.FileName} after 3 tries, ABORTING PROCESS!";
-                            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+                            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                             ApplicationManager.Logger.Info(text);
 
                             Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
@@ -409,6 +410,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void CopyComplete()
         {
             if (_action == "main")
+            {
                 switch (InstallMode)
                 {
                     case "autoinstall":
@@ -419,10 +421,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         CreateReformat();
                         break;
                 }
-            else if (_action == "logutility" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade") CreateAutoInstall();
+            }
+            else if (_action == "logutility" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
+                CreateAutoInstall();
 
             CancelButtonEnabled = false;
-            string text;
+            string text=String.Empty;
             if (ApplicationManager.Instance.DownloadToFolder)
             {
                 text = "ALL FILES DOWNLOADED AND COPIED TO THE SELECTED FOLDER SUCCESSFULLY!";
@@ -432,7 +436,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 text = "ALL FILES DOWNLOADED AND COPIED TO THE USB DRIVE SUCCESSFULLY!";
             }
 
-            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             ApplicationManager.Logger.Info(text);
 
             DownloadInfo = LanguageManager.GetValue("String.Completed");
@@ -570,7 +574,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     Thread.Sleep(5000);
                 }
             }
-            
+
             foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadPath + item.FileName));
 
@@ -661,7 +665,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             var autoinstalllst = new StringBuilder(
                 $@"; CyanLabs Syn3Updater 2.x - {InstallMode} Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
-            if (InstallMode == @"downgrade")
+            if (InstallMode == "downgrade")
             {
                 autoinstalllst.Append(
                     $@"Item1 = TOOL - {Api.DowngradeTool.FileName}\rOpen1 = SyncMyRide\{Api.DowngradeTool.FileName}\r").Replace(@"\r",
@@ -686,9 +690,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private bool ValidateFile(string srcfile, string localfile, string md5, bool copy, bool existing = false)
         {
             string text = $"Validating: {Path.GetFileName(localfile)}";
-            if (existing) text = $"Checking Existing File: {Path.GetFileName(localfile)}";
+            if (existing)
+                text = $"Checking Existing File: {Path.GetFileName(localfile)}";
             DownloadInfo = text;
-            Log += "[" + DateTime.Now + "] " + text + Environment.NewLine;
+            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             ApplicationManager.Logger.Info(text);
 
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");

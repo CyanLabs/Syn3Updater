@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 
 namespace Cyanlabs.Syn3Updater.Helper
@@ -16,9 +17,12 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="url">URL of a valid 'SpecialPackage'</param>
         public static SModel.Ivsu GetSpecialIvsu(string url)
         {
-            HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(url).Result;
-            Api.Ivsu ivsu = JsonConvert.DeserializeObject<Api.Ivsu>(response.Content.ReadAsStringAsync().Result);
-            return ConvertIvsu(ivsu);
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new System.ArgumentNullException("Url to download file is empty");
+            }
+            HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(url).GetAwaiter().GetResult();
+            return ConvertIvsu(JsonHelpers.Deserialize<Api.Ivsu>(response.Content.ReadAsStreamAsync().GetAwaiter().GetResult()));
         }
 
         /// <summary>

@@ -8,6 +8,8 @@
   <PropertyGroup Label="Configuration" />
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Classes\LauncherPrefs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Methods\JsonHelpers.cs" />
+    <Compile Include="..\SharedCode\Services\HomeViewModelService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Classes\" />

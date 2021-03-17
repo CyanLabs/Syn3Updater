@@ -361,3 +361,4 @@ Syn3Updater/Model/APISecretModel.cs
 references/ModernWpf.dll
 references/ModernWpf.Controls.dll
 Syn3Updater/PullLanguages.ps1
+/Syn3Updater/Properties/launchSettings.json

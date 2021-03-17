@@ -147,7 +147,7 @@ namespace Cyanlabs.Syn3Updater
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
 
-            if (!Environment.GetCommandLineArgs().Contains("/launcher")) 
+            if (!Environment.GetCommandLineArgs().Contains("/launcher"))
             {
                 try
                 {
@@ -267,7 +267,7 @@ namespace Cyanlabs.Syn3Updater
             Randomize();
 
             InstallMode = "autodetect";
-            
+
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
             if (!_mainWindow.IsVisible) _mainWindow.Show();
