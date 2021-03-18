@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -21,18 +20,17 @@ namespace Cyanlabs.Syn3Updater.Model
             Code = Path.GetFileName(path).Replace(".json", "");
             EnglishName = new CultureInfo(Code, false).DisplayName;
             NativeName = new CultureInfo(Code, false).NativeName;
-            var dict = JObject.Parse(contents);
-            Items = new List<LanguageItem>();
-            foreach (var s in dict)
+            Items = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var s in JObject.Parse(contents))
             {
-                if (s.Value?.ToString() != "")
-                    Items.Add(new LanguageItem
-                    {
-                        Key = s.Key,
-                        Value = s.Value?.ToString()
-                    });
+                if (!string.IsNullOrEmpty(s.Value?.ToString()))
+                {
+                    Items.Add(s.Key, Regex.Replace(s.Value?.ToString(), @"\r\n|\n|\r", Environment.NewLine));
+                }
                 else
+                {
                     Debug.WriteLine(s.Key + ":" + s.Value?.ToString());
+                }
             }
         }
 
@@ -44,14 +42,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public string EnglishName { get; set; }
         public string NativeName { get; set; }
         public string Emoji { get; set; }
-        public List<LanguageItem> Items { get; set; }
-
-        public class LanguageItem
-        {
-            public string Key { get; set; }
-            public string Value { get; set; }
-        }
-
+        internal Dictionary<string, string> Items { get; set; }
         #endregion
     }
 
@@ -63,17 +54,19 @@ namespace Cyanlabs.Syn3Updater.Model
         {
             try
             {
-                IEnumerable<string> files = Directory.EnumerateFiles("Languages");
-
-                foreach (string file in files)
+                foreach (string file in Directory.EnumerateFiles("Languages"))
+                {
                     try
                     {
-                        Languages.Add(new LanguageModel(file));
+                        var lang = new LanguageModel(file);
+                        Languages.Add(lang);
+                        InternalLanguages.Add(lang.Code, lang);
                     }
                     catch (Exception e)
                     {
                         Debug.WriteLine(e.Message);
                     }
+                }
             }
             catch
             {
@@ -87,89 +80,75 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public static List<LanguageModel> Languages { get; set; } = new List<LanguageModel>();
 
+        private static Dictionary<string, LanguageModel> InternalLanguages = new Dictionary<string, LanguageModel>(StringComparer.OrdinalIgnoreCase);
+
         #endregion
 
         #region Methods
 
         public static string GetValue(string key, string lang)
         {
-            try
+
+            LanguageModel l = (InternalLanguages[lang] ?? InternalLanguages[lang?.Split('-')[0]] ?? InternalLanguages["en-US"]);
+            if (l == null)
+                return $"[{lang}:{key}]";
+
+            string r = l.Items[key];
+
+            if (string.IsNullOrWhiteSpace(r))
             {
-                LanguageModel l = (Languages.Find(x => string.Equals(x.Code, lang, StringComparison.OrdinalIgnoreCase))
-                    ?? Languages.Find(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-')[0])))
-                    ?? Languages.Find(x => x.Code.StartsWith("EN", StringComparison.OrdinalIgnoreCase));
-
-                if (l == null)
-                    return $"[{lang}:{key}]";
-
-                string r = l.Items.Find(x => string.Equals(x.Key, key, StringComparison.OrdinalIgnoreCase))?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
-                    .Replace("\\r", Environment.NewLine);
-                if (string.IsNullOrWhiteSpace(r))
-                {
-                    r = $"[{lang}:{key}]";
-                    Debug.WriteLine($"couldn't find {r}");
-                }
-
-                return r;
-            }
-            catch
-            {
-                // ignored
+                r = $"[{lang}:{key}]";
+                Debug.WriteLine($"couldn't find {r}");
             }
 
-            return $"{lang}:::{key}";
+            return r;
         }
 
         public static string GetValue(string key)
         {
-            if (key == null) return null;
+            if (key == null)
+                return null;
 
-            try
+            string lang = string.Empty; // "EN-US";
+
+            if (ApplicationManager.Instance.Settings.Lang != null)
+                lang = ApplicationManager.Instance.Settings.Lang;
+
+            if (string.IsNullOrWhiteSpace(lang))
             {
-                string lang = string.Empty; // "EN-US";
+                lang = CultureInfo.CurrentCulture.Name;
 
-                if (ApplicationManager.Instance.Settings.Lang != null) lang = ApplicationManager.Instance.Settings.Lang;
-
-                if (string.IsNullOrWhiteSpace(lang))
-                {
-                    lang = CultureInfo.CurrentCulture.Name;
-
-                    ApplicationManager.Instance.Settings.Lang = lang;
-                }
-
-                LanguageModel l = (Languages.Find(x => string.Equals(x.Code, lang, StringComparison.OrdinalIgnoreCase))
-                    ?? Languages.Find(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-')[0])))
-                    ?? Languages.Find(x => x.Code.StartsWith("EN", StringComparison.OrdinalIgnoreCase));
-
-                if (l == null)
-                {
-                    //Have to hardcode path for design time :(
-                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.json";
-
-                    if (File.Exists(fn))
-                    {
-                        l = new LanguageModel(fn);
-                        Languages.Add(l);
-                    }
-                }
-
-                if (l == null) return $"[{lang}:{key}]";
-
-                // ReSharper disable once ConstantConditionalAccessQualifier
-                string r = l.Items.Find(x => string.Equals(x.Key, key, StringComparison.OrdinalIgnoreCase))?.Value.Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
-                    .Replace("\\r\\n", Environment.NewLine);
-                if (string.IsNullOrWhiteSpace(r))
-                {
-                    r = $"[{lang}:{key}]";
-                    Debug.WriteLine($"couldn't find {r}");
-                }
-
-                return r;
+                ApplicationManager.Instance.Settings.Lang = lang;
             }
-            catch (Exception e)
+
+            LanguageModel l = (InternalLanguages[lang] ?? InternalLanguages[lang?.Split('-')[0]] ?? InternalLanguages["en-US"]);
+
+            if (l == null)
             {
-                return e.Message;
+                //Have to hardcode path for design time :(
+                string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.json";
+
+                if (File.Exists(fn))
+                {
+                    l = new LanguageModel(fn);
+                    Languages.Add(l);
+                }
             }
+
+            if (l == null)
+                return $"[{lang}:{key}]";
+
+            // ReSharper disable once ConstantConditionalAccessQualifier
+            string r = l.Items[key];
+
+            if (string.IsNullOrWhiteSpace(r))
+            {
+                r = $"[{lang}:{key}]";
+                Debug.WriteLine($"couldn't find {r}");
+            }
+
+            return r;
+
         }
 
         #endregion
