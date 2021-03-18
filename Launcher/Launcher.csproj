@@ -36,6 +36,5 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Syn3Updater\Syn3Updater.csproj" />
-	</ItemGroup>	
-	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
+	</ItemGroup>
 </Project>

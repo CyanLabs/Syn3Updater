@@ -326,7 +326,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar","");
                     string filename = Path.GetFileName(tarfile);
                     string newpath = ApplicationManager.Instance.DownloadPath + filename;
-                    if (File.Exists(newpath)) 
+                    if (File.Exists(newpath))
                         File.Delete(newpath);
                     File.Move(tarfile,newpath);
                     string type = "";
