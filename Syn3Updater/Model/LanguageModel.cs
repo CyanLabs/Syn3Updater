@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -24,7 +25,7 @@ namespace Cyanlabs.Syn3Updater.Model
             {
                 if (!string.IsNullOrEmpty(s.Value?.ToString()))
                 {
-                    Items.Add(s.Key, s.Value?.ToString());
+                    Items.Add(s.Key, Regex.Replace(s.Value?.ToString(), @"\r\n|\n|\r", Environment.NewLine));
                 }
                 else
                 {
@@ -88,11 +89,11 @@ namespace Cyanlabs.Syn3Updater.Model
         public static string GetValue(string key, string lang)
         {
 
-            LanguageModel l = (InternalLanguages[lang] ?? InternalLanguages[lang?.ToUpper()?.Split('-')[0]] ?? InternalLanguages["en-US"]);
+            LanguageModel l = (InternalLanguages[lang] ?? InternalLanguages[lang?.Split('-')[0]] ?? InternalLanguages["en-US"]);
             if (l == null)
                 return $"[{lang}:{key}]";
 
-            string r = l.Items[key]?.Replace("\\r\\n", Environment.NewLine)?.Replace("\\n", Environment.NewLine)?.Replace("\\r", Environment.NewLine);
+            string r = l.Items[key];
 
             if (string.IsNullOrWhiteSpace(r))
             {
@@ -120,7 +121,7 @@ namespace Cyanlabs.Syn3Updater.Model
                 ApplicationManager.Instance.Settings.Lang = lang;
             }
 
-            LanguageModel l = (InternalLanguages[lang] ?? InternalLanguages[lang?.ToUpper()?.Split('-')[0]] ?? InternalLanguages["en-US"]);
+            LanguageModel l = (InternalLanguages[lang] ?? InternalLanguages[lang?.Split('-')[0]] ?? InternalLanguages["en-US"]);
 
             if (l == null)
             {
@@ -138,7 +139,7 @@ namespace Cyanlabs.Syn3Updater.Model
                 return $"[{lang}:{key}]";
 
             // ReSharper disable once ConstantConditionalAccessQualifier
-            string r = l.Items[key]?.Replace("\\n", Environment.NewLine)?.Replace("\\r", Environment.NewLine)?.Replace("\\r\\n", Environment.NewLine);
+            string r = l.Items[key];
 
             if (string.IsNullOrWhiteSpace(r))
             {
