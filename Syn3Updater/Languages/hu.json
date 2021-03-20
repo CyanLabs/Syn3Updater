@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Ezt az USB-meghajtót már használta a Syn3 Updater.  N  n {0}  nHajtó levél: {1}  n  nAz USB-meghajtón lévő meglévő fájlok használatához kattintson a Nem gombra  Az USB-meghajtó formázásához kattintson az Igen  n  nKész formázni szeretné a kiválasztott USB-meghajtót?",
     "MessageBox.FailedToValidate3": "Nem sikerült {0} háromszor érvényesíteni, FOLYAMATOS FOLYAMAT!",
     "MessageBox.WebException": "Nem sikerült csatlakozni a letöltőkiszolgálóhoz, {0}",
-    "MessageBox.UpdateCurrentversion": "Szeretné frissíteni az alkalmazás jelenlegi szinkronizálási verzióját, hogy az megfelelő legyen a jövőbeni felhasználásra?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "A fájlok letöltése és másolása befejeződött, egyszerűen vegye ki ezt az USB-t a számítógépéből, és helyezze be az autójába, győződjön meg róla, hogy a motor működik!  NSyn3Updater most közvetlenül a CyanLabs oktatóprogram megfelelő részéhez nyitja meg Önt követni az autójában.  n  nHa a Syn3 Updater hasznos volt Önnek, fontolja meg az adományozást a \"Névjegy\" fülről.",
     "String.NonNavAPIM": "Nem Nav APIM",
     "MessageBox.LogUtilityComplete": "Az USB napló előkészítése befejeződött, vegye ki az USB meghajtót a számítógépről, helyezze be autójába, ellenőrizze, hogy be van-e kapcsolva a gyújtás. Néhány perccel az USB behelyezése után a telepítés befejeződött. Helyezze vissza az USB-meghajtót a számítógépére, és nyomja meg a \"3. lépés\" gombot",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "APIM méret:",
     "Utility.APIMType": "APIM típus:",
     "Utility.APIMFree": "APIM szabad hely:",
-    "MessageBox.UpdateCurrentVersionUtility": "Azt észleltük, hogy a telepített verzió nem egyezik a beállításokban jelenleg kiválasztott verzióval. Szeretné automatikusan frissíteni erre: {0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "A kiválasztott XML fájl nem olvasható el. Kérjük, ellenőrizze, hogy ez a helyes fájl. Ha biztos benne, hogy ez a fájl helyes, kérjük, vegye fel a kapcsolatot a CyanLabs céggel, hogy tovább vizsgálhassuk.",
     "Utility.GracenotesRemovalTitle": "Hozzon létre Gracenotes eltávolító USB-t",
     "Utility.GracenotesRemovalDesc": "Ezzel a funkcióval USB-t hozhat létre a Gracenotes eltávolításának kényszerítésére egységből.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Teljes szinkron verzió:",
     "Settings.Region": "régió:",
     "Settings.Navigation": "Navigáció:",
-    "MessageBox.NoVersionOrRegionSelected": "Még nem állította be jelenlegi szinkronizálási verzióját vagy szinkronizálási régióját!",
-    "Utility.Version": "Szinkronizálási verzió:"
+    "MessageBox.NoVersionOrRegionSelected": "Még nem állította be jelenlegi szinkronizálási verzióját vagy szinkronizálási régióját!"
 }
