@@ -9,7 +9,7 @@
     "Home.Refresh": "Обновить",
     "Home.CurrentConfiguration": "Текущая конфигурация",
     "Home.DownloadPath": "Путь загрузки:",
-    "Home.SelectUSBDrive": "Select A USB Drive or Directory",
+    "Home.SelectUSBDrive": "Выберите USB-накопитель",
     "Home.DriveName": "Сведения о диске:",
     "Home.DriveLetter": "Буква диска:",
     "Home.RecommendedUSBFlashDriveTitle": "Рекомендуемые размеры USB-накопителя",
@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Этот USB-накопитель уже использовался Syn3 Updater.  N  n {0}  nПисьмо диска: {1}  n  nЧтобы использовать существующие файлы на USB-накопителе, нажмите «Нет»  nЧтобы отформатировать USB-накопитель, нажмите «Да»  n  nДействовать вы хотите отформатировать выбранный USB-накопитель?",
     "MessageBox.FailedToValidate3": "Не удалось подтвердить {0} 3 раза, ПРОЦЕСС ПРЕРЫВАНИЯ!",
     "MessageBox.WebException": "Не удалось подключиться к серверу загрузки, {0}",
-    "MessageBox.UpdateCurrentversion": "Хотели бы вы обновить текущую версию синхронизации в приложении, чтобы ее можно было использовать в будущем?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "На этом загрузка и копирование файлов завершены, просто извлеките этот USB-накопитель из своего компьютера и вставьте его в машину, убедитесь, что двигатель работает!  NSyn3Updater теперь откроет вам соответствующую часть руководства CyanLabs. за вами в автомобиле.  n  nЕсли Syn3 Updater был вам полезен, рассмотрите возможность пожертвования на вкладке «О программе».",
     "String.NonNavAPIM": "Без навигации APIM",
     "MessageBox.LogUtilityComplete": "Подготовка журнала USB завершена, выньте USB-накопитель из компьютера и вставьте его в машину, убедитесь, что зажигание включено. Через несколько секунд после подключения USB появится сообщение о завершении установки. Снова вставьте USB-накопитель в компьютер и нажмите «Шаг 3».",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "Размер APIM:",
     "Utility.APIMType": "Тип APIM:",
     "Utility.APIMFree": "Свободное пространство APIM:",
-    "MessageBox.UpdateCurrentVersionUtility": "Мы обнаружили, что установленная версия не соответствует вашей текущей версии, выбранной в настройках, вы хотите автоматически обновить ее до {0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "Выбранный XML-файл не может быть прочитан, убедитесь, что это правильный файл. Если вы уверены, что этот файл правильный, свяжитесь с CyanLabs, чтобы мы могли продолжить расследование.",
     "Utility.GracenotesRemovalTitle": "Создание USB для удаления Gracenotes",
     "Utility.GracenotesRemovalDesc": "Используйте эту функцию для создания USB-накопителя для принудительного удаления Gracenotes из вашего устройства.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Полная версия синхронизации:",
     "Settings.Region": "регион:",
     "Settings.Navigation": "Навигация:",
-    "MessageBox.NoVersionOrRegionSelected": "Вы не установили текущую версию синхронизации или регион синхронизации!",
-    "Utility.Version": "Версия синхронизации:"
+    "MessageBox.NoVersionOrRegionSelected": "Вы не установили текущую версию синхронизации или регион синхронизации!"
 }
