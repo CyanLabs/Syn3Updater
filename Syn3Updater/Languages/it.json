@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Questa unità USB è già stata utilizzata da Syn3 Updater.\n {0}\nLettera unità: {1}\nPer utilizzare i file esistenti sulla chiavetta USB fare clic su No\nPer formattare la chiavetta USB fare clic su Sì\nVuoi formattare la chiavetta USB selezionata?",
     "MessageBox.FailedToValidate3": "Impossibile convalidare {0} 3 volte,  INTERRUZIONE PROCESSO!",
     "MessageBox.WebException": "Impossibile connettersi al server per scaricare, {0}",
-    "MessageBox.UpdateCurrentversion": "Desideri aggiornare la versione indicata nelle impostazioni in modo che sia possibile utilizzarla come base per un futuro aggiornamento?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "Il download e la copia dei file è stato completato, rimuovi la chiavetta USB dal tuo computer e inseriscila nella tua auto. Assicurati che il motore sia acceso!\nSyn3Updater ora ti manderà alla parte pertinente delle istruzioni CyanLabs che devi seguire in macchina.\nSe Syn3 Updater ti è stato utile, considera la possibilità di donare dalla scheda \"Informazioni\".",
     "String.NonNavAPIM": "APIM senza navigatore",
     "MessageBox.LogUtilityComplete": "Preparazione del log USB completato, rimuovere la pennetta USB dal computer e inserirla nella presa USB della vettura, assicurarsi che il motore sia acceso. Qualche istante dopo aver inserito l'USB ci comunicherà che l'installazione è completata. Reinserisci l'unità USB nel tuo PC e premi \"Step 3\"",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "APIM Capienza:",
     "Utility.APIMType": "Tipo di APIM:",
     "Utility.APIMFree": "APIM Spazio Libero:",
-    "MessageBox.UpdateCurrentVersionUtility": "Abbiamo notato che la versione installata non coincide con la versione attualmente indicata nelle impostazioni. Vuoi che aggiorniamo automaticamente la tua nuova versione nelle impostazioni? {0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "Il file XML che hai selezionato non può essere letto, assicurati che sia il file corretto. Se sei sicuro che il file sia corretto per favore contatta CyanLabs così noi possiamo controllare per capire il problema.",
     "Utility.GracenotesRemovalTitle": "Creare una chiavetta USB per rimuovere Gracenote",
     "Utility.GracenotesRemovalDesc": "Utilizzare questa funzione per creare una chiavetta USB per forzare la rimozione di Gracenote dall'unità.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Versione attualmente installata:",
     "Settings.Region": "Regione:",
     "Settings.Navigation": "Navigatore:",
-    "MessageBox.NoVersionOrRegionSelected": "Non hai impostato la tua versione attuale o non hai selezionato la tua regione corrente!",
-    "Utility.Version": "Versione:"
+    "MessageBox.NoVersionOrRegionSelected": "Non hai impostato la tua versione attuale o non hai selezionato la tua regione corrente!"
 }
