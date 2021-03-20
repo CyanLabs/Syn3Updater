@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Bu USB sürücüsü Syn3 Updater tarafından zaten kullanılıyor.  N  n {0}  nDrive Letter: {1}  n  nUSB sürücüsündeki mevcut dosyaları kullanmak için Hayır'a tıklayın  nUSB sürücüsünü biçimlendirmek için Evet'e tıklayın  n  n seçilen USB sürücüsünü biçimlendirmek istiyor musunuz?",
     "MessageBox.FailedToValidate3": "{0} 3 kez doğrulanamadı, İŞLEMİ DURDURUYOR!",
     "MessageBox.WebException": "İndirme sunucusuna bağlanılamadı, {0}",
-    "MessageBox.UpdateCurrentversion": "Gelecekte kullanım için doğru olması için uygulamadaki mevcut senkronizasyon sürümünüzü güncellemek ister misiniz?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "Dosyaların indirilmesi ve kopyalanması artık tamamlandı, bu USB'yi bilgisayarınızdan çıkarın ve arabanıza takın, motorun çalıştığından emin olun!  NSyn3Updater şimdi sizi doğrudan CyanLabs öğreticisinin ilgili bölümüne açacak Aracınızda takip etmek için.  n  nSyn3 Updater sizin için yararlı olduysa lütfen \"Hakkında\" sekmesinden bağış yapmayı düşünün.",
     "String.NonNavAPIM": "Gezinmesiz APIM",
     "MessageBox.LogUtilityComplete": "Log USB'nin hazırlanması tamamlandı, USB sürücüsünü bilgisayarınızdan çıkarın ve arabanıza takın, kontağın açık olduğundan emin olun. USB'yi taktıktan birkaç dakika sonra kurulumun tamamlandığını söyleyecektir. USB sürücüsünü bilgisayarınıza yeniden takın ve \"Adım 3\" e basın",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "APIM Boyutu:",
     "Utility.APIMType": "APIM Türü:",
     "Utility.APIMFree": "APIM Boş Alan:",
-    "MessageBox.UpdateCurrentVersionUtility": "Yüklenen sürümün ayarlarda şu anda seçili sürümünüzle eşleşmediğini tespit ettik, bunu otomatik olarak {0} olarak güncellemek ister misiniz?",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "Seçtiğiniz XML dosyası okunamadı, lütfen bunun doğru dosya olduğundan emin olun. Bu dosyanın doğru olduğundan eminseniz lütfen CyanLabs ile iletişime geçin, böylece daha fazla araştırma yapabiliriz.",
     "Utility.GracenotesRemovalTitle": "Gracenotes Kaldırma USB'si Oluşturun",
     "Utility.GracenotesRemovalDesc": "Gracenotes'u biriminizden kaldırmaya zorlamak üzere bir USB oluşturmak için bu işlevi kullanın.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Tam Senkronizasyon Sürümü:",
     "Settings.Region": "Bölgesi:",
     "Settings.Navigation": "Navigasyon:",
-    "MessageBox.NoVersionOrRegionSelected": "Mevcut Senkronizasyon Sürümünüzü veya Senkronizasyon Bölgenizi ayarlamadınız!",
-    "Utility.Version": "Senkronizasyon Sürümü:"
+    "MessageBox.NoVersionOrRegionSelected": "Mevcut Senkronizasyon Sürümünüzü veya Senkronizasyon Bölgenizi ayarlamadınız!"
 }
