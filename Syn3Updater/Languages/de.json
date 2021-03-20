@@ -62,7 +62,7 @@
     "MessageBox.CancelRegionMismatch": "Aktuelle Region und neue Region sind nicht identisch. Dies funktioniert möglicherweise nicht. Möchten Sie trotzdem fortfahren?",
     "MessageBox.CancelDownloadIsDrive": "Download-Pfad und Ziel-USB-Laufwerk sind identisch. \nBitte ändern Sie Ihren Download-Pfad.",
     "MessageBox.CancelNoApps": "Der Modus ist \"reformat\" oder \"downgrade\" und es wurde kein App-Paket ausgewähl. Der Syn3 Updater hat aber festgestellt, dass ein Downgrade oder eine Reformat erforderlich ist. Dies führt zu einem nicht bootenden System. ABBRECHEN!",
-    "MessageBox.CancelFormatUSB": "WARNUNG! \nALLE DATEN AUF DEM AUSGEWÄHLTEN LAUFWERK WERDEN PERMANENT GELÖSCHT.",
+    "MessageBox.CancelFormatUSB": "WARNING, ALL DATA ON THE SELECTED DRIVE WILL BE LOST {0}\nDrive Letter: {1}\n\nClick YES to format and continue.",
     "MessageBox.DownloadInProgress": "Es wird bereits ein Vorgang ausgeführt. Bitte warten Sie bis zur Beendigung bevor Sie weitere Vorgänge starten.",
     "MessageBox.CopyVerificationFailed": "Fehler beim 3-maligen Überprüfen der Datei. Stellen Sie sicher, dass USB-Laufwerk und Anschluss voll funktionsfähig sind. Der Vorgang wird abgebrochen!",
     "MessageBox.DownloadVerificationFailed": "Fehler beim 3-maligen Überprüfen der heruntergeladenen Datei. Stellen Sie sicher, das die Internetverbindung funktioniert. Vorgang abgebrochen!",
@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Dieses USB-Laufwerk wurde bereits von Syn3 Updater verwendet.\n\n{0}\nLaufwerksbuchstabe: {1}\n\nUm vorhandene Dateien auf dem USB-Laufwerk zu verwenden, klicken Sie auf Nein\nUm das USB-Laufwerk zu formatieren, klicken Sie auf Ja\n\nMöchten Sie das ausgewählte USB-Laufwerk formatieren?",
     "MessageBox.FailedToValidate3": "Validierung der Datei {0} 3 mal fehlgeschlagen , PROZESS WIRD ABGEBROCHEN!",
     "MessageBox.WebException": "Verbindung zum Download-Server fehlgeschlagen, {0}",
-    "MessageBox.UpdateCurrentversion": "Möchten Sie Ihre aktuelle Version in der App aktualisieren, um die zukünftige Auswahl zu erleichtern?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "Das Herunterladen und Kopieren der Dateien ist nun abgeschlossen. \nEntfernen Sie diesen USB-Stick und stecken ihn in Ihr Auto. Stellen Sie sicher, dass der Motor läuft!\n\nSyn3Updater öffnet jetzt direkt für Sie den entsprechenden Teil des CyanLabs-Tutorials. \n\nBitte befolgen Sie die Anweisungen des Tutorials in Ihrem Auto.\n\nWenn Syn3 Updater für Sie hilfreich war, erwägen Sie bitte eine Spende über die Registerkarte \"Über\".",
     "String.NonNavAPIM": "APIM ohne Navigation",
     "MessageBox.LogUtilityComplete": "Die Vorbereitung des Log USB-Sticks ist abgeschlossen. \nEntfernen Sie den USB-Stick und stecken Sie diesen in Ihr Auto. \n\nStellen Sie sicher, dass die Zündung eingeschaltet ist. \nEinige Momente nach dem Einstecken des USB wird angezeigt, \ndass die Installation abgeschlossen ist. \n\nStecken Sie den USB-Stick wieder in Ihren PC und drücken Sie \"Schritt 3\".",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "APIM Größe:",
     "Utility.APIMType": "APIM-Typ:",
     "Utility.APIMFree": "APIM Freier Speicherplatz:",
-    "MessageBox.UpdateCurrentVersionUtility": "Wir haben festgestellt, dass die installierte Version nicht mit Ihrer aktuell ausgewählten Version in den Einstellungen übereinstimmt. \nMöchten Sie diese automatisch auf {0} aktualisieren?",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "Die von Ihnen ausgewählte XML-Datei konnte nicht gelesen werden. Stellen Sie sicher, dass dies die richtige Datei ist. Wenn Sie sicher sind, dass diese Datei korrekt ist, wenden Sie sich bitte an CyanLabs, damit wir weitere Analysen durchführen können.",
     "Utility.GracenotesRemovalTitle": "USB-Stick zur Entfernung von Gracenotes erstellen",
     "Utility.GracenotesRemovalDesc": "Erstellt einen USB-Stick, mit dem das Entfernen von Gracenotes von Ihrer Einheit erzwungen wird.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Version:",
     "Settings.Region": "Region:",
     "Settings.Navigation": "Navigation:",
-    "MessageBox.NoVersionOrRegionSelected": "Sie haben Ihre aktuelle Version oder Region nicht festgelegt!",
-    "Utility.Version": "Version:"
+    "MessageBox.NoVersionOrRegionSelected": "Sie haben Ihre aktuelle Version oder Region nicht festgelegt!"
 }
