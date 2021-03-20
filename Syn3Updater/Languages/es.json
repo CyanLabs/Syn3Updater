@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Esta unidad USB ya ha sido usada por Syn3 Updater.\n\n{0}\nLetra de Unidad: {1}\n\nPara usar los archivos existentes en la unidad USB seleccione No\nPara formatear la unidad USB seleccione Si\n\nQuiere formatear la unidad USB seleccionada?",
     "MessageBox.FailedToValidate3": "Fallo al validar {0} 3 veces, ABORTANDO EL PROCESO!",
     "MessageBox.WebException": "Fallo al conectar al servidor de descarga, {0}",
-    "MessageBox.UpdateCurrentversion": "Quiere actualizar su versión actual en la aplicación para que sea correcta en un futuro uso?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "La descarga y copia de los archivos está completa, simplemente expulse éste USB de su computadora e insértelo en su vehículo\nAsegúrese que el motor esté en marcha!\nSyn3Updater ahora abrirá la parte relevante del tutorial CyanLabs para que pueda seguirlo en su vehículo\n\nSi Syn3 Updater ha sido útil para usted, por favor considere donar desde la tab \"Acerca de\".",
     "String.NonNavAPIM": "Apim No Nav",
     "MessageBox.LogUtilityComplete": "La preparación del log USB fue completada, remueva el dispositivo USB de su computadora e insértelo en su vehículo, asegúrese que el mismo esté en contacto.\nUnos momentos después de insertar el dispositivo USB se mostrará \"instalación completa\". Re inserte el dispositivo USB en su PC y presione \"Paso 3\"",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "Tamaño de APIM:",
     "Utility.APIMType": "Tipo de APIM:",
     "Utility.APIMFree": "Espacio libre en APIM:",
-    "MessageBox.UpdateCurrentVersionUtility": "Hemos detectado que la versión instalada no coincide con la actualmente seleccionada en los Ajustes, quiere que automáticamente cambiemos el Ajuste a {0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "El archivo XML que seleccionó no pudo ser leído, asegúrese que sea el archivo correcto. Si está seguro que el archivo es él correcto por favor contacte a CyanLabs para que podamos investigarlo.",
     "Utility.GracenotesRemovalTitle": "Crear USB para remoción de GRACENOTES",
     "Utility.GracenotesRemovalDesc": "Use ésta función para crear un USB para forzar la remoción de GRACENOTES de su unidad.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Versión Full:",
     "Settings.Region": "Región:",
     "Settings.Navigation": "Navegación:",
-    "MessageBox.NoVersionOrRegionSelected": "No ha configurado su Versión Actual o Región",
-    "Utility.Version": "Versión:"
+    "MessageBox.NoVersionOrRegionSelected": "No ha configurado su Versión Actual o Región"
 }
