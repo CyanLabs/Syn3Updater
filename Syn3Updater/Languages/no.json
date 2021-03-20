@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Denne USB-stasjonen har allerede blitt brukt av Syn3 Updater.  N  n {0}  nDrive Letter: {1}  n  nFor å bruke eksisterende filer på USB-stasjonen, klikk Nei  nFor å formatere USB-stasjonen, klikk Ja  n  nGjør vil du formatere den valgte USB-stasjonen?",
     "MessageBox.FailedToValidate3": "Kunne ikke validere {0} tre ganger, ABORTING PROCESS!",
     "MessageBox.WebException": "Kunne ikke koble til nedlastingsserveren, {0}",
-    "MessageBox.UpdateCurrentversion": "Vil du oppdatere den nåværende synkroniseringsversjonen i appen slik at den er riktig for fremtidig bruk?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "Nedlastingen og kopieringen av filene er nå fullført, bare kast ut denne USB-en fra datamaskinen og sett den inn i bilen din, sørg for at motoren går!  NSyn3Updater åpner deg nå direkte til den relevante delen av CyanLabs-opplæringen for deg å følge i bilen.  n  nHvis Syn3 Updater har vært nyttig for deg, kan du vurdere å donere fra \"Om\" -fanen.",
     "String.NonNavAPIM": "Ikke Nav APIM",
     "MessageBox.LogUtilityComplete": "Klargjøring av logg-USB er fullført, fjern USB-stasjonen fra datamaskinen og sett den inn i bilen din, sørg for at tenningen er på. Noen øyeblikk etter at USB er satt inn, står installasjonen fullført. Sett USB-stasjonen inn på datamaskinen din og trykk \"Trinn 3\"",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "APIM-størrelse:",
     "Utility.APIMType": "APIM-type:",
     "Utility.APIMFree": "APIM ledig plass:",
-    "MessageBox.UpdateCurrentVersionUtility": "Vi har oppdaget at den installerte versjonen ikke samsvarer med den valgte versjonen i innstillingene. Vil du oppdatere denne automatisk til {0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "XML-filen du valgte, kunne ikke leses. Forsikre deg om at det er riktig fil. Hvis du er sikker på at denne filen er riktig, kan du kontakte CyanLabs slik at vi kan undersøke nærmere.",
     "Utility.GracenotesRemovalTitle": "Opprett fjerning av Gracenotes USB",
     "Utility.GracenotesRemovalDesc": "Bruk denne funksjonen til å lage en USB for å tvinge fjerning av Gracenotes fra enheten.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Full synkroniseringsversjon:",
     "Settings.Region": "region:",
     "Settings.Navigation": "Navigasjon:",
-    "MessageBox.NoVersionOrRegionSelected": "Du har ikke angitt den nåværende versjonen eller regionen!",
-    "Utility.Version": "Synkroniser versjon:"
+    "MessageBox.NoVersionOrRegionSelected": "Du har ikke angitt den nåværende versjonen eller regionen!"
 }
