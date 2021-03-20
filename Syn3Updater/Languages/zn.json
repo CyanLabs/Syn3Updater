@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "此USB驱动器已被Syn3 Updater使用。 n  n {0}  n驱动器号：{1}  n  n要使用USB驱动器上的现有文件，请单击“否”。 n要格式化USB驱动器，请单击“是”  n  n您要格式化所选的USB驱动器吗？",
     "MessageBox.FailedToValidate3": "验证{0} 3次失败，正在中止过程！",
     "MessageBox.WebException": "无法连接到下载服务器{0}",
-    "MessageBox.UpdateCurrentversion": "您想在应用中更新当前的SYCN版本，以便将来使用吗？",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "文件的下载和复制现已完成，只需从计算机弹出该USB并将其插入汽车中，确保引擎正在运行！ nSyn3Updater现在将直接为您打开CyanLabs教程的相关部分 n  n如果Syn3 Updater对您有用，请考虑从“关于”标签中进行捐赠。",
     "String.NonNavAPIM": "非导航APIM",
     "MessageBox.LogUtilityComplete": "日志USB的准备工作已经完成，请从计算机上卸下USB驱动器，然后将其插入汽车中，并确保点火开关已打开。插入USB片刻后，将显示安装完成。将USB驱动器重新插入您的计算机，然后按“步骤3”",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "APIM大小：",
     "Utility.APIMType": "APIM类型：",
     "Utility.APIMFree": "APIM可用空间：",
-    "MessageBox.UpdateCurrentVersionUtility": "我们检测到安装的版本与您在设置中当前选择的版本不匹配，是否要自动将其更新为{0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "无法读取您选择的XML文件，请确保这是正确的文件。如果您确定此文件正确，请联系CyanLabs，以便我们进一步调查。",
     "Utility.GracenotesRemovalTitle": "创建Gracenotes移除USB",
     "Utility.GracenotesRemovalDesc": "使用此功能创建一个USB，以强制从您的单元中删除Gracenotes。",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "完整的  版本：",
     "Settings.Region": "区域：",
     "Settings.Navigation": "导航：",
-    "MessageBox.NoVersionOrRegionSelected": "您尚未设置当前的版本或区域！",
-    "Utility.Version": "版本："
+    "MessageBox.NoVersionOrRegionSelected": "您尚未设置当前的版本或区域！"
 }
