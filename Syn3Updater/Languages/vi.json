@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Ổ USB này đã được Syn3 Updater sử dụng.  N  n {0}  nDrive Letter: {1}  n  nĐể sử dụng các tệp hiện có trên ổ USB, hãy nhấp vào Không  nĐể định dạng ổ USB, hãy nhấp vào Có  n  nDo bạn muốn định dạng ổ USB đã chọn?",
     "MessageBox.FailedToValidate3": "Không thể xác thực {0} 3 lần, QUÁ TRÌNH RÚT RA!",
     "MessageBox.WebException": "Không kết nối được với máy chủ tải xuống, {0}",
-    "MessageBox.UpdateCurrentversion": "Bạn có muốn cập nhật phiên bản đồng bộ hóa hiện tại của mình trong ứng dụng để phiên bản này chính xác để sử dụng trong tương lai không?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "Quá trình tải xuống và sao chép tệp hiện đã hoàn tất, bạn chỉ cần rút USB này ra khỏi máy tính và cắm nó vào ô tô của bạn, đảm bảo động cơ đang chạy!  NSyn3Updater giờ sẽ mở bạn trực tiếp đến phần có liên quan của hướng dẫn CyanLabs cho bạn để theo dõi trong ô tô của bạn.  n  nNếu Syn3 Updater hữu ích cho bạn, vui lòng xem xét đóng góp từ tab \"Giới thiệu\".",
     "String.NonNavAPIM": "APIM không điều hướng",
     "MessageBox.LogUtilityComplete": "Chuẩn bị USB log đã hoàn tất, hãy tháo ổ USB khỏi máy tính của bạn và lắp nó vào ô tô của bạn, đảm bảo đã bật lửa. Một lúc sau khi cắm USB, nó sẽ thông báo cài đặt hoàn tất. Cắm lại ổ USB vào máy tính của bạn và nhấn \"Bước 3\"",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "Kích thước APIM:",
     "Utility.APIMType": "Loại APIM:",
     "Utility.APIMFree": "Dung lượng trống APIM:",
-    "MessageBox.UpdateCurrentVersionUtility": "Chúng tôi đã phát hiện ra rằng phiên bản đã cài đặt không khớp với phiên bản bạn đang chọn trong cài đặt, bạn có muốn tự động cập nhật phiên bản này lên {0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "Không thể đọc được tệp XML bạn đã chọn, vui lòng đảm bảo đây là tệp chính xác. Nếu bạn chắc chắn rằng tệp này là chính xác, vui lòng liên hệ với CyanLabs để chúng tôi có thể điều tra thêm.",
     "Utility.GracenotesRemovalTitle": "Tạo USB loại bỏ Gracenotes",
     "Utility.GracenotesRemovalDesc": "Sử dụng chức năng này để tạo USB nhằm buộc xóa Gracenotes khỏi thiết bị của bạn.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Phiên bản đồng bộ hóa đầy đủ:",
     "Settings.Region": "Khu vực:",
     "Settings.Navigation": "Dẫn đường:",
-    "MessageBox.NoVersionOrRegionSelected": "Bạn chưa đặt Phiên bản đồng bộ hóa hoặc Khu vực đồng bộ hóa hiện tại của mình!",
-    "Utility.Version": "Phiên bản đồng bộ hóa:"
+    "MessageBox.NoVersionOrRegionSelected": "Bạn chưa đặt Phiên bản đồng bộ hóa hoặc Khu vực đồng bộ hóa hiện tại của mình!"
 }
