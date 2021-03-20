@@ -70,7 +70,7 @@
     "MessageBox.OptionalFormatUSB": "Denna USB-enhet har redan använts av Syn3 Updater.  N  n {0}  nDrive Letter: {1}  n  nFör att använda befintliga filer på USB-enheten klickar du på Nej  nFör att formatera USB-enheten klickar du på Ja  n  nGör vill du formatera den valda USB-enheten?",
     "MessageBox.FailedToValidate3": "Det gick inte att validera {0} tre gånger, ABORTING PROCESS!",
     "MessageBox.WebException": "Det gick inte att ansluta till nedladdningsservern, {0}",
-    "MessageBox.UpdateCurrentversion": "Vill du uppdatera din nuvarande synkroniseringsversion i appen så att den är korrekt för framtida användning?",
+    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
     "MessageBox.Completed": "Nedladdningen och kopieringen av filerna är nu klar, mata bara ut den här USB: n från din dator och sätt in den i din bil, se till att motorn är igång!  NSyn3Updater öppnar dig nu direkt till den relevanta delen av CyanLabs handledning för dig att följa i din bil.  n  nOm Syn3 Updater har varit till nytta för dig, kan du överväga att donera från fliken \"Om\".",
     "String.NonNavAPIM": "Icke Nav APIM",
     "MessageBox.LogUtilityComplete": "Förberedelsen av USB-loggen är klar, ta bort USB-enheten från din dator och sätt in den i din bil, se till att tändningen är på. Några ögonblick efter att USB har satts i kommer det att sägas att installationen är klar. Sätt tillbaka USB-enheten i din dator och tryck på \"Steg 3\"",
@@ -91,7 +91,7 @@
     "Utility.APIMSize": "APIM-storlek:",
     "Utility.APIMType": "APIM-typ:",
     "Utility.APIMFree": "APIM ledigt utrymme:",
-    "MessageBox.UpdateCurrentVersionUtility": "Vi har upptäckt att den installerade versionen inte matchar din aktuella valda version i inställningarna. Vill du automatiskt uppdatera den till {0}",
+    "MessageBox.UpdateCurrentVersionUtility": "We have detected that the version installed does not match your currently selected version in the settings, would you like to automatically update this from {0} to {1}",
     "MessageBox.LogUtilityInvalidFile": "Den valda XML-filen kunde inte läsas, se till att den är rätt fil. Om du är säker på att den här filen stämmer, kontakta CyanLabs så att vi kan undersöka mer.",
     "Utility.GracenotesRemovalTitle": "Skapa Gracenotes borttagning USB",
     "Utility.GracenotesRemovalDesc": "Använd den här funktionen för att skapa en USB för att tvinga bort Gracenotes från din enhet.",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Full version:",
     "Settings.Region": "region:",
     "Settings.Navigation": "Navigering:",
-    "MessageBox.NoVersionOrRegionSelected": "Du har inte ställt in din nuvarande version eller region!",
-    "Utility.Version": "Synkroniseringsversion:"
+    "MessageBox.NoVersionOrRegionSelected": "Du har inte ställt in din nuvarande version eller region!"
 }
