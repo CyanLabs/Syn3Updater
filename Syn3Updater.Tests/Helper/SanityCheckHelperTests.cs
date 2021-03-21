@@ -19,7 +19,7 @@ namespace Syn3Updater.Tests.Helper
         [Test]
         public static void CannotCallCancelDownloadCheckWithNullSelectedDrive()
         {
-            Assert.Throws<ArgumentNullException>(() => SanityCheckHelper.CancelDownloadCheck(default(USBHelper.Drive), false));
+            Assert.Throws<ArgumentNullException>(() => SanityCheckHelper.CancelDownloadCheck(default, false));
         }
     }
 }

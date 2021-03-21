@@ -1,14 +1,14 @@
+using Cyanlabs.Syn3Updater.Helper;
+using System;
+using NUnit.Framework;
+using Cyanlabs.Syn3Updater.Model;
+
 namespace Syn3Updater.Tests.Helper
 {
-    using Cyanlabs.Syn3Updater.Helper;
-    using System;
-    using NUnit.Framework;
-    using Cyanlabs.Syn3Updater.Model;
-    using System.Collections.Generic;
-
     [TestFixture]
     public static class ApiHelperTests
     {
+        //TODO:FIXME
         [Test]
         public static void CanCallGetSpecialIvsu()
         {
@@ -44,7 +44,7 @@ namespace Syn3Updater.Tests.Helper
         [Test]
         public static void CannotCallConvertIvsuWithNullIvsu()
         {
-            Assert.Throws<ArgumentNullException>(() => ApiHelper.ConvertIvsu(default(Api.Ivsu)));
+            Assert.Throws<ArgumentNullException>(() => ApiHelper.ConvertIvsu(default));
         }
 
         [Test]

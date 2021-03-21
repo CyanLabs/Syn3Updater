@@ -301,7 +301,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>outputResult with Message and Result properties</returns>
         public OutputResult ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
         {
-            OutputResult outputResult = new OutputResult{Message = ""};
+            OutputResult outputResult = new OutputResult { Message = "" };
             if (item.Source != "naviextras")
             {
                 outputResult.Result = true;
@@ -314,7 +314,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Stream inStream = File.OpenRead(path);
                 Stream gzipStream = new GZipInputStream(inStream);
 
-                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream,Encoding.ASCII);
+                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.ASCII);
                 tarArchive.ExtractContents(destination);
                 tarArchive.Close();
 
@@ -323,20 +323,23 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 foreach (var tarfile in Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories))
                 {
-                    string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar","");
+                    string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar", "");
                     string filename = Path.GetFileName(tarfile);
                     string newpath = ApplicationManager.Instance.DownloadPath + filename;
                     if (File.Exists(newpath))
                         File.Delete(newpath);
-                    File.Move(tarfile,newpath);
+                    File.Move(tarfile, newpath);
                     string type = "";
-                    
-                    if (name.Contains("14G424")) {
+
+                    if (name.Contains("14G424"))
+                    {
                         type = "MAP_LICENSE";
-                    } else if (name.Contains("14G421")) {
+                    }
+                    else if (name.Contains("14G421"))
+                    {
                         type = "MAP";
                     }
-                    
+
                     ApplicationManager.Instance.ExtraIvsus.Add(new SModel.Ivsu
                     {
                         Type = type,
@@ -344,7 +347,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         Version = "",
                         Notes = "",
                         Url = "",
-                        Md5 = GenerateMd5(newpath,ct),
+                        Md5 = GenerateMd5(newpath, ct),
                         Selected = true,
                         FileName = filename
                     });

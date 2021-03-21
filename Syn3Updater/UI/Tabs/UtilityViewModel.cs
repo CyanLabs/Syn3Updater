@@ -298,7 +298,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             Api.JsonReleases sversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
                             string convertedsversion = sversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                             if (convertedsversion != ApplicationManager.Instance.SVersion)
-                                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"),ApplicationManager.Instance.SVersion, convertedsversion),
+                                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"), ApplicationManager.Instance.SVersion, convertedsversion),
                                     "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                                 {
@@ -351,7 +351,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                     });
-                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);              
+                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);
                     string contents = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var output = JsonConvert.DeserializeAnonymousType(contents, new { filename = "", status = "" });
                     Process.Start(Api.AsBuiltOutput + output.filename);

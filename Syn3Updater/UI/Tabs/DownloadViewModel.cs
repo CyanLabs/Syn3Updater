@@ -230,7 +230,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 ApplicationManager.Logger.Info(text);
                                 if (item.Source == "naviextras")
                                 {
-                                    FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item,_ct);
+                                    FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
 
                                     text = $"Extracting: {item.FileName} (This may take some time!)";
                                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -426,7 +426,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 CreateAutoInstall();
 
             CancelButtonEnabled = false;
-            string text=String.Empty;
+            string text = String.Empty;
             if (ApplicationManager.Instance.DownloadToFolder)
             {
                 text = "ALL FILES DOWNLOADED AND COPIED TO THE SELECTED FOLDER SUCCESSFULLY!";
@@ -448,7 +448,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (_action == "main")
                 {
-                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"),ApplicationManager.Instance.SVersion,ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "")), "Syn3 Updater", MessageBoxButton.YesNo,
+                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentversion"), ApplicationManager.Instance.SVersion, ApplicationManager.Instance.SelectedRelease.Replace("Sync ", "")), "Syn3 Updater", MessageBoxButton.YesNo,
                         MessageBoxImage.Information) == MessageBoxResult.Yes)
                     {
                         ApplicationManager.Instance.Settings.CurrentVersion =

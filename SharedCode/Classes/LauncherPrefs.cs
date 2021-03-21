@@ -12,8 +12,8 @@
             Ci
         }
 
-        public ReleaseType ReleaseBranch { get; set; } = ReleaseType.Release;
+        public ReleaseType ReleaseBranch { get; set; }
         public string ReleaseInstalled { get; set; } = "0.0.0.0";
-        public ReleaseType ReleaseTypeInstalled { get; set; } = ReleaseType.Release;
+        public ReleaseType ReleaseTypeInstalled { get; set; }
     }
 }

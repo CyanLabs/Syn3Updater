@@ -1,9 +1,8 @@
+using Cyanlabs.Syn3Updater.Helper;
+using NUnit.Framework;
+
 namespace Syn3Updater.Tests.Helper
 {
-    using Cyanlabs.Syn3Updater.Helper;
-    using System;
-    using NUnit.Framework;
-
     [TestFixture]
     public static class SystemHelperTests
     {

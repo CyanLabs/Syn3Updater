@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
-using Newtonsoft.Json;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -32,7 +31,6 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>ivsu as type SModel.Ivsu</returns>
         public static SModel.Ivsu ConvertIvsu(Api.Ivsu ivsu)
         {
-            string fileName = FileHelper.url_to_filename(ivsu.Url);
             return new SModel.Ivsu
             {
                 Type = ivsu.Type,
@@ -42,7 +40,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Url = ivsu.Url,
                 Md5 = ivsu.Md5,
                 Selected = true,
-                FileName = fileName.Replace("?dl=1", "")
+                FileName = FileHelper.url_to_filename(ivsu.Url).Replace("?dl=1", "")
             };
         }
         #endregion

@@ -31,7 +31,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         #region Properties & Fields
 
         private string _apiAppReleases, _apiMapReleases;
-        private string _stringCompatibility, _stringReleasesJson, _stringMapReleasesJson, _stringDownloadJson, _stringMapDownloadJson;
+        private string _stringCompatibility, _stringReleasesJson, _stringMapReleasesJson;
         private Api.JsonReleases _jsonMapReleases, _jsonReleases;
 
         private string _driveLetter;
@@ -483,7 +483,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void UpdateSelectedMapVersion()
         {
-            if (SelectedMapVersion != "")
+            if (!String.IsNullOrWhiteSpace(SelectedMapVersion))
             {
                 IvsuList.Clear();
 
@@ -532,13 +532,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
 
                 HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(appReleaseSingle).Result;
-                _stringDownloadJson = response.Content.ReadAsStringAsync().Result;
+                var _stringDownloadJson = response.Content.ReadAsStreamAsync().Result;
 
                 response = ApplicationManager.Instance.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion).Result;
-                _stringMapDownloadJson = response.Content.ReadAsStringAsync().Result;
+                var _stringMapDownloadJson = response.Content.ReadAsStreamAsync().Result;
 
-                Api.JsonReleases jsonIvsUs = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringDownloadJson);
-                Api.JsonReleases jsonMapIvsUs = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringMapDownloadJson);
+                Api.JsonReleases jsonIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(_stringDownloadJson);
+                Api.JsonReleases jsonMapIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(_stringMapDownloadJson);
 
                 foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList)
                     if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(SelectedRegion.Code))
@@ -562,7 +562,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     foreach (Api.Ivsus item in jsonMapIvsUs.Releases[0].IvsusList)
                         if (item.MapIvsu.Regions.Contains("ALL") || item.MapIvsu.Regions.Contains(SelectedRegion.Code))
                         {
-                            string fileName = FileHelper.url_to_filename(item.MapIvsu.Url);
                             IvsuList.Add(new SModel.Ivsu
                             {
                                 Type = item.MapIvsu.Type,
@@ -572,7 +571,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Url = item.MapIvsu.Url,
                                 Md5 = item.MapIvsu.Md5,
                                 Selected = true,
-                                FileName = fileName,
+                                FileName = FileHelper.url_to_filename(item.MapIvsu.Url),
                                 Source = item.MapIvsu.Source
                             });
                         }
@@ -583,8 +582,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void StartAction()
         {
-            HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion,DriveLetter,SelectedDrive);
-
+            HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
             StartEnabled = false;
         }
 

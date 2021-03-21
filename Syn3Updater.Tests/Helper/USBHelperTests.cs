@@ -26,15 +26,15 @@ namespace Syn3Updater.Tests.Helper
         [Test]
         public static void CannotCallUpdateDriveInfoWithNullSelectedDrive()
         {
-            Assert.Throws<ArgumentNullException>(() => USBHelper.UpdateDriveInfo(default(USBHelper.Drive)));
+            Assert.Throws<ArgumentNullException>(() => USBHelper.UpdateDriveInfo(default));
         }
 
 
-       // TODO: make test smarter 
+        // TODO: make test smarter 
         [Test]
         public static void CanCallGenerateLog()
         {
-            var log = "TestValue202940782";         
+            var log = "TestValue202940782";
             USBHelper.GenerateLog(log, false);
             Assert.Fail("Create or modify test");
         }
@@ -52,7 +52,7 @@ namespace Syn3Updater.Tests.Helper
         public static void CanCallUploadLog()
         {
             var log = "TestValue70820892";
-           // USBHelper.UploadLog(log);
+            // USBHelper.UploadLog(log);
             Assert.Fail("Create or modify test");
         }
 
@@ -61,7 +61,7 @@ namespace Syn3Updater.Tests.Helper
         [TestCase("   ")]
         public static void CannotCallUploadLogWithInvalidLog(string value)
         {
-           // Assert.Throws<ArgumentNullException>(() => USBHelper.UploadLog(value));
+            // Assert.Throws<ArgumentNullException>(() => USBHelper.UploadLog(value));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Syn3Updater.Tests.Helper
         [SetUp]
         public void SetUp()
         {
-            _externalPercentageChanged = default(EventHandler<EventArgs<int>>);
+            _externalPercentageChanged = default;
             _testClass = new FileHelper(_externalPercentageChanged);
         }
 
@@ -30,7 +30,7 @@ namespace Syn3Updater.Tests.Helper
         [Test]
         public void CannotConstructWithNullExternalPercentageChanged()
         {
-            Assert.Throws<ArgumentNullException>(() => new FileHelper(default(EventHandler<EventArgs<int>>)));
+            Assert.Throws<ArgumentNullException>(() => new FileHelper(default));
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace Syn3Updater.Tests.Helper
         [Test]
         public void CannotCallExtractMultiPackageWithNullItem()
         {
-            Assert.Throws<ArgumentNullException>(() => _testClass.ExtractMultiPackage(default(SModel.Ivsu), CancellationToken.None));
+            Assert.Throws<ArgumentNullException>(() => _testClass.ExtractMultiPackage(default, CancellationToken.None));
         }
     }
 }
