@@ -96,7 +96,7 @@
     "Utility.GracenotesRemovalTitle": "Create Gracenotes Removal USB",
     "Utility.GracenotesRemovalDesc": "Use this function to create a USB to force the removal of Gracenotes from your unit.",
     "Utility.GracenotesButton": "Prepare USB",
-    "MessageBox.GenericUtilityComplete": "Preparation of the USB Drive completed successfully!\n\nRemove the USB drive from your computer and insert it in to your car, ensure the ignition is on and wait a few moments for it to say \"Installation Complete\" ",
+    "MessageBox.GenericUtilityComplete": "Preparation of the USB Drive completed successfully!\n\nRemove the USB drive from your computer and insert it in to your car, ensure the ignition is on and wait a few moments for it to say \"Installation Complete\"",
     "Utility.VoiceShrinkerTitle": "Create Small Voice Package Replacement USB",
     "Utility.VoiceShrinkerDesc": "Use this function if after removing gracenotes you are still having MEM_ERR's.",
     "Utility.DowngradeTitle": "Create Downgrade USB",
@@ -126,6 +126,5 @@
     "Settings.FullVersion": "Full Version:",
     "Settings.Region": "Region:",
     "Settings.Navigation": "Navigation:",
-    "MessageBox.NoVersionOrRegionSelected": "You have not set your current Version or Region!",
-    "Utility.Version": "Version:3.4+"
+    "MessageBox.NoVersionOrRegionSelected": "You have not set your current Version or Region!"
 }

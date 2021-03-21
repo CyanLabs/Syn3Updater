@@ -67,7 +67,7 @@ namespace Cyanlabs.Launcher
                 {
                     Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
                 }
-                catch (JsonReaderException e)
+                catch (JsonReaderException)
                 {
                     File.Delete(configFolderPath + "\\launcherPrefs.json");
                     Application.Current.Shutdown();

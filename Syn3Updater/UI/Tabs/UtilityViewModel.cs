@@ -187,7 +187,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "logutility";
             ApplicationManager.Instance.SelectedRelease = "Interrogator Log Utility";
-            Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool);
+            
+            string currentversion = ApplicationManager.Instance.SVersion;
+            if (currentversion.StartsWith("3.4"))
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+            else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
+            else if (currentversion.StartsWith("3."))
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+            else
+                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
+            
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
                 ? "autoinstall"
@@ -230,7 +240,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                     Interrogator.D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
                     string sappname = d2P1Did!.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
-                    LogXmlDetails += $"{LanguageManager.GetValue("Utility.SVersion")} {sappname}{Environment.NewLine}";
+                    LogXmlDetails += $"{LanguageManager.GetValue("Home.Version")} {sappname}{Environment.NewLine}";
 
                     string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                     LogXmlDetails += $"{LanguageManager.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
