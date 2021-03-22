@@ -7,10 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using System.Xml;
 using System.Xml.Linq;
+using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
@@ -29,8 +31,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private ActionCommand _refreshUSB;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsbAction);
 
-        private ActionCommand _logPrepareUSB;
-        public ActionCommand LogPrepareUSB => _logPrepareUSB ??= new ActionCommand(LogPrepareUSBAction);
+        private AsyncCommand _logPrepareUSB;
+        public AsyncCommand LogPrepareUSB => _logPrepareUSB ??= new AsyncCommand(LogPrepareUSBAction);
 
         private ActionCommand _logParseXml;
         public ActionCommand LogParseXml => _logParseXml ??= new ActionCommand(LogParseXmlAction);
@@ -179,7 +181,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     $"USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
         }
 
-        private void LogPrepareUSBAction()
+        private async Task LogPrepareUSBAction()
         {
             //Reset ApplicationManager variables
             ApplicationManager.Instance.Ivsus.Clear();
@@ -190,13 +192,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             
             string currentversion = ApplicationManager.Instance.SVersion;
             if (currentversion.StartsWith("3.4"))
-                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
             else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
-                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32).ConfigureAwait(false); 
             else if (currentversion.StartsWith("3."))
-                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
             else
-                Api.InterrogatorTool = ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30).ConfigureAwait(false);
             
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
@@ -376,7 +378,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "gracenotesremoval";
             ApplicationManager.Instance.SelectedRelease = "Gracenotes Removal";
-            Api.GracenotesRemoval = ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
+            Api.GracenotesRemoval = ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval).GetAwaiter().GetResult();
             ApplicationManager.Instance.Ivsus.Add(Api.GracenotesRemoval);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
                 ? "autoinstall"
@@ -399,7 +401,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.Action = "voiceshrinker";
             ApplicationManager.Instance.SelectedRelease = "Voice Package Shrinker";
 
-            Api.SmallVoicePackage = ApiHelper.GetSpecialIvsu(Api.GetSmallVoice);
+            Api.SmallVoicePackage = ApiHelper.GetSpecialIvsu(Api.GetSmallVoice).GetAwaiter().GetResult();
             ApplicationManager.Instance.Ivsus.Add(Api.SmallVoicePackage);
 
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
@@ -422,7 +424,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "downgrade";
             ApplicationManager.Instance.SelectedRelease = "Enforced Downgrade";
-            Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
+            Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp).GetAwaiter().GetResult();
             ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
 
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"

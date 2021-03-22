@@ -5,8 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Newtonsoft.Json;
@@ -18,12 +20,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     {
         #region Constructors
 
-        private ActionCommand _startButton;
+        private AsyncCommand _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
         public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
-        public ActionCommand StartButton => _startButton ??= new ActionCommand(StartAction);
+        public AsyncCommand StartButton => _startButton ??= new AsyncCommand(StartAction);
 
         #endregion
 
@@ -89,7 +91,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedRelease, value);
-                if (value != null) UpdateSelectedRelease();
+                if (value != null)
+                {
+                    UpdateSelectedRelease();
+                }
             }
         }
 
@@ -101,7 +106,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedMapVersion, value);
-                if (value != null) UpdateSelectedMapVersion();
+                if (value != null)
+                {
+                    UpdateSelectedMapVersion();
+                }
             }
         }
 
@@ -580,7 +588,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private void StartAction()
+        private async Task StartAction()
         {
             ApplicationManager.Logger.Info(
                 $"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
@@ -588,16 +596,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (InstallMode == "downgrade")
             {
-                Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
+                Api.DowngradeApp =  await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
                 ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
 
-                Api.DowngradeTool = ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
+                Api.DowngradeTool = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
                 ApplicationManager.Instance.Ivsus.Add(Api.DowngradeTool);
             }
 
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                Api.ReformatTool = ApiHelper.GetSpecialIvsu(Api.GetReformat);
+                Api.ReformatTool = await ApiHelper.GetSpecialIvsu(Api.GetReformat);
                 ApplicationManager.Instance.Ivsus.Add(Api.ReformatTool);
             }
 

@@ -174,7 +174,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="localonly">Set to true if comparing to local sources else set to false</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>outputResult with Message and Result properties</returns>
-        public OutputResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
+        public async Task<OutputResult> ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
         {
             OutputResult outputResult = new OutputResult();
             string filename = Path.GetFileName(localfile);
@@ -194,13 +194,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     long srcfilesize = new FileInfo(source).Length;
 
-                    if (srcfilesize == filesize)
-                        if (localMd5 == GenerateMd5(source, ct))
-                        {
-                            outputResult.Message = $"{filename} checksum matches already verified local copy";
-                            outputResult.Result = true;
-                            return outputResult;
-                        }
+                    if (srcfilesize == filesize && localMd5 == GenerateMd5(source, ct))
+                    {
+                        outputResult.Message = $"{filename} checksum matches already verified local copy";
+                        outputResult.Result = true;
+                        return outputResult;
+                    }
                 }
                 else
                 {
@@ -210,9 +209,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                         long newfilesize = -1;
                         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(source));
 
-                        if (long.TryParse(httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content.Headers.ContentLength.ToString(),
-                            out long contentLength))
-                            newfilesize = contentLength;
+                        var len = ((await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false)).Content.Headers.ContentLength);
+
+                        if (len != null)
+                        {
+                            newfilesize = len.GetValueOrDefault();
+                        }
+                        else
+                        {
+                            throw new Exception("Could not get size of file from remote server");
+                        }
 
                         if (newfilesize == filesize)
                         {
@@ -302,7 +308,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>outputResult with Message and Result properties</returns>
         public OutputResult ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
         {
-            OutputResult outputResult = new OutputResult{Message = ""};
+            OutputResult outputResult = new OutputResult { Message = "" };
             if (item.Source != "naviextras")
             {
                 outputResult.Result = true;
@@ -315,7 +321,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Stream inStream = File.OpenRead(path);
                 Stream gzipStream = new GZipInputStream(inStream);
 
-                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream,Encoding.ASCII);
+                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.ASCII);
                 tarArchive.ExtractContents(destination);
                 tarArchive.Close();
 
@@ -325,20 +331,23 @@ namespace Cyanlabs.Syn3Updater.Helper
                 string[] allfiles = Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories);
                 foreach (var tarfile in allfiles)
                 {
-                    
-                    string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar","");
+
+                    string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar", "");
                     string filename = Path.GetFileName(tarfile);
                     string newpath = ApplicationManager.Instance.DownloadPath + filename;
                     if (File.Exists(newpath)) File.Delete(newpath);
-                    File.Move(tarfile,newpath);
+                    File.Move(tarfile, newpath);
                     string type = "";
-                    
-                    if (name.Contains("14G424")) {
+
+                    if (name.Contains("14G424"))
+                    {
                         type = "MAP_LICENSE";
-                    } else if (name.Contains("14G421")) {
+                    }
+                    else if (name.Contains("14G421"))
+                    {
                         type = "MAP";
                     }
-                    
+
                     ApplicationManager.Instance.ExtraIvsus.Add(new SModel.Ivsu
                     {
                         Type = type,
@@ -346,7 +355,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         Version = "",
                         Notes = "",
                         Url = "",
-                        Md5 = GenerateMd5(newpath,ct),
+                        Md5 = GenerateMd5(newpath, ct),
                         Selected = true,
                         FileName = filename
                     });
