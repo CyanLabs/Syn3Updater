@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -34,17 +35,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private AsyncCommand _logPrepareUSB;
         public AsyncCommand LogPrepareUSB => _logPrepareUSB ??= new AsyncCommand(LogPrepareUSBAction);
 
-        private ActionCommand _logParseXml;
-        public ActionCommand LogParseXml => _logParseXml ??= new ActionCommand(LogParseXmlAction);
+        private AsyncCommand _logParseXml;
+        public AsyncCommand LogParseXml => _logParseXml ??= new AsyncCommand(LogParseXmlAction);
 
-        private ActionCommand _gracenotesRemovalUSB;
-        public ActionCommand GracenotesRemovalUSB => _gracenotesRemovalUSB ??= new ActionCommand(GracenotesRemovalAction);
+        private AsyncCommand _gracenotesRemovalUSB;
+        public AsyncCommand GracenotesRemovalUSB => _gracenotesRemovalUSB ??= new AsyncCommand(GracenotesRemovalAction);
 
-        private ActionCommand _smallVoiceUSB;
-        public ActionCommand SmallVoiceUSB => _smallVoiceUSB ??= new ActionCommand(SmallVoiceAction);
+        private AsyncCommand _smallVoiceUSB;
+        public AsyncCommand SmallVoiceUSB => _smallVoiceUSB ??= new AsyncCommand(SmallVoiceAction);
 
-        private ActionCommand _downgradeUSB;
-        public ActionCommand DowngradeUSB => _downgradeUSB ??= new ActionCommand(DowngradeAction);
+        private AsyncCommand _downgradeUSB;
+        public AsyncCommand DowngradeUSB => _downgradeUSB ??= new AsyncCommand(DowngradeAction);
 
         private ActionCommand _troubleshootingDetails;
         public ActionCommand TroubleshootingDetails => _troubleshootingDetails ??= new ActionCommand(TroubleshootingDetailsAction);
@@ -227,13 +228,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private ApimDetails _apimDetails;
 
-        private void LogParseXmlAction()
+        private async Task LogParseXmlAction()
         {
             VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Interrogator Log XML Files|*.xml" };
             if (dialog.ShowDialog().GetValueOrDefault())
                 try
                 {
                     XmlDocument doc = new XmlDocument();
+                    //TODO: swtich to Async once code moves to dotnet 5+ 
                     doc.Load(dialog.FileName);
                     string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
                     Interrogator.InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<Interrogator.InterrogatorModel>(json);
@@ -306,8 +308,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
                         try
                         {
-                            HttpResponseMessage response = Client.GetAsync(Api.IvsuSingle + sappname).Result;
-                            Api.JsonReleases sversion = JsonConvert.DeserializeObject<Api.JsonReleases>(response.Content.ReadAsStringAsync().Result);
+                            HttpResponseMessage response = await Client.GetAsync(Api.IvsuSingle + sappname);
+                            Api.JsonReleases sversion = JsonHelpers.Deserialize<Api.JsonReleases>(await response.Content.ReadAsStreamAsync());
                             string convertedsversion = sversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
                             if (convertedsversion != ApplicationManager.Instance.SVersion)
                                 if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.UpdateCurrentVersionUtility"),ApplicationManager.Instance.SVersion, convertedsversion),
@@ -363,14 +365,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                     });
-                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);              
+                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);             
                     string contents = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var output = JsonConvert.DeserializeAnonymousType(contents, new { filename = "", status = "" });
                     Process.Start(Api.AsBuiltOutput + output.filename);
                 }
         }
 
-        private void GracenotesRemovalAction()
+        private async Task GracenotesRemovalAction()
         {
             //Reset ApplicationManager variables
             ApplicationManager.Instance.Ivsus.Clear();
@@ -378,7 +380,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "gracenotesremoval";
             ApplicationManager.Instance.SelectedRelease = "Gracenotes Removal";
-            Api.GracenotesRemoval = ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval).GetAwaiter().GetResult();
+            //don't call ConfigureAwait(false) here either 
+            Api.GracenotesRemoval = await ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
             ApplicationManager.Instance.Ivsus.Add(Api.GracenotesRemoval);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
                 ? "autoinstall"
@@ -392,7 +395,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
-        private void SmallVoiceAction()
+        private async Task SmallVoiceAction()
         {
             //Reset ApplicationManager variables
             ApplicationManager.Instance.Ivsus.Clear();
@@ -401,7 +404,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.Action = "voiceshrinker";
             ApplicationManager.Instance.SelectedRelease = "Voice Package Shrinker";
 
-            Api.SmallVoicePackage = ApiHelper.GetSpecialIvsu(Api.GetSmallVoice).GetAwaiter().GetResult();
+            Api.SmallVoicePackage = await ApiHelper.GetSpecialIvsu(Api.GetSmallVoice);
             ApplicationManager.Instance.Ivsus.Add(Api.SmallVoicePackage);
 
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
@@ -416,7 +419,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.FireDownloadsTabEvent();
         }
 
-        private void DowngradeAction()
+        private async Task DowngradeAction()
         {
             //Reset ApplicationManager variables
             ApplicationManager.Instance.Ivsus.Clear();
@@ -424,7 +427,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "downgrade";
             ApplicationManager.Instance.SelectedRelease = "Enforced Downgrade";
-            Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp).GetAwaiter().GetResult();
+            Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
             ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
 
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
