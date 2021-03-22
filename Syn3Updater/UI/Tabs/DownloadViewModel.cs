@@ -121,7 +121,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             PercentageChanged += DownloadPercentageChanged;
 
             DownloadQueueList = new ObservableCollection<string>();
-            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus) 
+                DownloadQueueList.Add(item.Url);
 
             _ct = _tokenSource.Token;
 
@@ -137,7 +138,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                }
 
                if (t.IsCompleted && !t.IsFaulted)
-                   await DownloadComplete();
+                   await DownloadComplete().ConfigureAwait(false);
            }, _tokenSource.Token);
         }
 

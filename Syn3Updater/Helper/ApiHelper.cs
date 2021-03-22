@@ -18,8 +18,8 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="url">URL of a valid 'SpecialPackage'</param>
         public async static Task<SModel.Ivsu> GetSpecialIvsu(string url)
         {
-            HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(url);     
-            return ConvertIvsu(JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync()));
+            HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(url).ConfigureAwait(false);
+            return ConvertIvsu(JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync().ConfigureAwait(false)));
         }
 
         /// <summary>

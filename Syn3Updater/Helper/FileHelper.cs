@@ -134,7 +134,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             return;
                         }
 
-                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct).ConfigureAwait(false);
 
                         if (read == 0)
                         {
