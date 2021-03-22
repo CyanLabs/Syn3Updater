@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using Newtonsoft.Json;
+using Cyanlabs.Updater.Common;
 using Ookii.Dialogs.Wpf;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
@@ -18,19 +21,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     {
         #region Constructors
 
-        private ActionCommand _startButton;
+        private AsyncCommand _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
         public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
-        public ActionCommand StartButton => _startButton ??= new ActionCommand(StartAction);
+        public AsyncCommand StartButton => _startButton ??= new AsyncCommand(StartAction);
 
         #endregion
 
         #region Properties & Fields
 
         private string _apiAppReleases, _apiMapReleases;
-        private string _stringCompatibility, _stringReleasesJson, _stringMapReleasesJson, _stringDownloadJson, _stringMapDownloadJson;
+        private string _stringCompatibility;
         private Api.JsonReleases _jsonMapReleases, _jsonReleases;
 
         private string _driveLetter;
@@ -77,7 +80,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedRegion, value);
-                if (value != null) UpdateSelectedRegion();
+                if (value != null)
+                {
+                    //we don't need to run this code using the WPF dispatcher, so use Cleary's libary 
+                    Nito.AsyncEx.AsyncContext.Run(async () => await UpdateSelectedRegion());
+                }
             }
         }
 
@@ -89,7 +96,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedRelease, value);
-                if (value != null) UpdateSelectedRelease();
+                if (value != null)
+                {
+                    Nito.AsyncEx.AsyncContext.Run(async () => await UpdateSelectedRelease());
+                }
             }
         }
 
@@ -101,7 +111,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedMapVersion, value);
-                if (value != null) UpdateSelectedMapVersion();
+                if (value != null)
+                {
+                    Nito.AsyncEx.AsyncContext.Run(async () => await UpdateSelectedMapVersion());
+                }
             }
         }
 
@@ -376,7 +389,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private void UpdateSelectedRegion()
+        private async Task UpdateSelectedRegion()
         {
             NotesVisibility = Visibility.Hidden;
             if (SelectedRegion.Code != "")
@@ -398,10 +411,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
 
+                Stream _stringReleasesJson;
                 try
                 {
-                    HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(_apiAppReleases).Result;
-                    _stringReleasesJson = response.Content.ReadAsStringAsync().Result;
+                    // however don't call ConfigureAwait(false) here or on any of it's friends below as you need this code to run on the previous context (ie the UI context)
+                    // https://blog.stephencleary.com/2012/02/async-and-await.html#context
+                    HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(_apiAppReleases);
+                    _stringReleasesJson = await response.Content.ReadAsStreamAsync();
                 }
                 // ReSharper disable once RedundantCatchClause
                 catch (WebException)
@@ -420,7 +436,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         SMapVersion.Add(LanguageManager.GetValue("String.KeepExistingMaps"));
                 }
 
-                _jsonReleases = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringReleasesJson);
+                _jsonReleases = JsonHelpers.Deserialize<Api.JsonReleases>(_stringReleasesJson);
                 SVersion = new ObservableCollection<string>();
 
                 foreach (Api.Data item in _jsonReleases.Releases)
@@ -432,7 +448,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private void UpdateSelectedRelease()
+        private async Task UpdateSelectedRelease()
         {
             if (SelectedRelease != "")
             {
@@ -454,8 +470,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][_contains]={_stringCompatibility}");
 
-                HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(_apiMapReleases).Result;
-                _stringMapReleasesJson = response.Content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(_apiMapReleases);
+                var _stringMapReleasesJson = await response.Content.ReadAsStreamAsync();
 
                 if (ApplicationManager.Instance.Settings.CurrentNav)
                 {
@@ -471,7 +487,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         SMapVersion.Add(LanguageManager.GetValue("String.NonNavAPIM"));
                     }
 
-                    _jsonMapReleases = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringMapReleasesJson);
+                    _jsonMapReleases = JsonHelpers.Deserialize<Api.JsonReleases>(_stringMapReleasesJson);
                     foreach (Api.Data item in _jsonMapReleases.Releases) SMapVersion.Add(item.Name);
                 }
 
@@ -480,7 +496,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private void UpdateSelectedMapVersion()
+        private async Task UpdateSelectedMapVersion()
         {
             if (SelectedMapVersion != "")
             {
@@ -530,14 +546,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
                     : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
 
-                HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(appReleaseSingle).Result;
-                _stringDownloadJson = response.Content.ReadAsStringAsync().Result;
+                HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(appReleaseSingle);
+                var _stringDownloadJson = await response.Content.ReadAsStreamAsync();
 
-                response = ApplicationManager.Instance.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion).Result;
-                _stringMapDownloadJson = response.Content.ReadAsStringAsync().Result;
+                response = await ApplicationManager.Instance.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion);
+                var _stringMapDownloadJson = await response.Content.ReadAsStreamAsync();
 
-                Api.JsonReleases jsonIvsUs = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringDownloadJson);
-                Api.JsonReleases jsonMapIvsUs = JsonConvert.DeserializeObject<Api.JsonReleases>(_stringMapDownloadJson);
+                Api.JsonReleases jsonIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(_stringDownloadJson);
+                Api.JsonReleases jsonMapIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(_stringMapDownloadJson);
 
                 foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList)
                     if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(SelectedRegion.Code))
@@ -580,7 +596,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private void StartAction()
+        private async Task StartAction()
         {
             ApplicationManager.Logger.Info(
                 $"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
@@ -588,16 +604,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (InstallMode == "downgrade")
             {
-                Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
+                Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
                 ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
 
-                Api.DowngradeTool = ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
+                Api.DowngradeTool = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
                 ApplicationManager.Instance.Ivsus.Add(Api.DowngradeTool);
             }
 
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                Api.ReformatTool = ApiHelper.GetSpecialIvsu(Api.GetReformat);
+                Api.ReformatTool = await ApiHelper.GetSpecialIvsu(Api.GetReformat);
                 ApplicationManager.Instance.Ivsus.Add(Api.ReformatTool);
             }
 

@@ -1,5 +1,7 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
 using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 
 namespace Cyanlabs.Syn3Updater.Helper
@@ -14,11 +16,10 @@ namespace Cyanlabs.Syn3Updater.Helper
         ///     Get special IVSU package such as Downgrade or Reformat from our API and passes it to ConvertIvsu
         /// </summary>
         /// <param name="url">URL of a valid 'SpecialPackage'</param>
-        public static SModel.Ivsu GetSpecialIvsu(string url)
+        public async static Task<SModel.Ivsu> GetSpecialIvsu(string url)
         {
-            HttpResponseMessage response = ApplicationManager.Instance.Client.GetAsync(url).Result;
-            Api.Ivsu ivsu = JsonConvert.DeserializeObject<Api.Ivsu>(response.Content.ReadAsStringAsync().Result);
-            return ConvertIvsu(ivsu);
+            HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(url).ConfigureAwait(false);
+            return ConvertIvsu(JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync().ConfigureAwait(false)));
         }
 
         /// <summary>
