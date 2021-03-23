@@ -307,7 +307,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            ModernWpf.MessageBox.Show(LanguageManager.GetValue("About.Endorsed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             SelectedRegionIndex = -1;
             ApplicationManager.Instance.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SRegions = new ObservableCollection<SModel.SRegion>
