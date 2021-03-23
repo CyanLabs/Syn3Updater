@@ -265,9 +265,10 @@ namespace Cyanlabs.Syn3Updater
             }
 
             Randomize();
-
-            InstallMode = "autodetect";
             
+            // TODO remove install mode from settings, keeping it only as a application wide variable
+            Settings.CurrentInstallMode = "autodetect";
+
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
             if (!_mainWindow.IsVisible) _mainWindow.Show();
