@@ -82,7 +82,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 await fileStream.WriteAsync(bytes, 0, bytesRead).ConfigureAwait(false);
                 totalReads += bytesRead;
-                int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
+                int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
                 if (percent != prevPercent)
                 {
                     _percentageChanged.Raise(this, percent);
@@ -100,67 +100,90 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="path">Source URL</param>
         /// <param name="filename">Destination filename</param>
         /// <param name="ct">CancellationToken</param>
-        public async Task DownloadFile(string path, string filename, CancellationToken ct)
+        /// <returns>bool with True if successful or False if not</returns>
+        public async Task<bool> DownloadFile(string path, string filename, CancellationToken ct)
         {
             Client = new HttpClient();
             Client.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
+
             using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                long total = response.Content.Headers.ContentLength ?? -1L;
-
-                bool canReportProgress = total != -1;
-
-                using (Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                try
                 {
-                    long totalRead = 0L;
-                    byte[] buffer = new byte[4096];
-                    bool moreToRead = true;
-                    const int chunkSize = 4096;
-                    FileStream fileStream = File.Create(filename, chunkSize);
-                    do
+                    long total = response.Content.Headers.ContentLength ?? -1L;
+                    bool canReportProgress = total != -1;
+
+                    using (Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     {
-                        if (ct.IsCancellationRequested)
+                        long totalRead = 0L;
+                        byte[] buffer = new byte[4096];
+                        bool moreToRead = true;
+                        const int chunkSize = 4096;
+                        using (FileStream fileStream = File.Create(filename, chunkSize))
                         {
-                            fileStream.Close();
-                            fileStream.Dispose();
                             try
                             {
-                                File.Delete(filename);
+                                do
+                                {
+                                    if (ct.IsCancellationRequested) return false;
+                                    int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct).ConfigureAwait(false);
+                                    if (read == 0)
+                                    {
+                                        moreToRead = false;
+                                        fileStream.Close();
+                                        fileStream.Dispose();
+                                    }
+                                    else
+                                    {
+                                        byte[] data = new byte[read];
+                                        buffer.ToList().CopyTo(0, data, 0, read);
+                                        await fileStream.WriteAsync(buffer, 0, read, ct).ConfigureAwait(false);
+                                        totalRead += read;
+
+                                        if (!canReportProgress) continue;
+                                        double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
+                                        int value = Convert.ToInt32(downloadPercentage);
+                                        _percentageChanged.Raise(this, value);
+                                    }
+                                } while (moreToRead);
                             }
-                            catch (IOException)
+                            catch (IOException ioException)
                             {
+                                try
+                                {
+                                    if(File.Exists(filename)) File.Delete(filename);
+                                }
+                                catch (Exception)
+                                {
+                                    // ignored
+                                }
+                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
+                                    ioException.GetFullMessage(), "Syn3 Updater",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation));
+                                ApplicationManager.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                                return false;
                             }
-
-                            return;
-                        }
-
-                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct).ConfigureAwait(false);
-
-                        if (read == 0)
-                        {
-                            moreToRead = false;
-                            fileStream.Close();
-                            fileStream.Dispose();
-                        }
-                        else
-                        {
-                            byte[] data = new byte[read];
-                            buffer.ToList().CopyTo(0, data, 0, read);
-                            await fileStream.WriteAsync(buffer, 0, read, ct).ConfigureAwait(false);
-                            totalRead += read;
-
-                            if (canReportProgress)
+                            finally
                             {
-                                double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
-                                int value = Convert.ToInt32(downloadPercentage);
-                                _percentageChanged.Raise(this, value);
+                                fileStream.Close();
+                                fileStream.Dispose();
                             }
                         }
-                    } while (moreToRead);
-                    fileStream.Close();
-                    fileStream.Dispose();
+                    }
+                }
+                catch (HttpRequestException webException)
+                {
+                    Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
+                        webException.GetFullMessage(), "Syn3 Updater",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation));
+                    ApplicationManager.Logger.Info("ERROR: " + webException.GetFullMessage());
+                    return false;
                 }
             }
+            
+            return true;
         }
 
         /// <summary>
