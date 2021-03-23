@@ -2,16 +2,17 @@
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Cyanlabs.Updater.Common
 {
     public static class HomeViewModelService
     {
-        public static void Download(string InstallMode, ObservableCollection<SModel.Ivsu> IvsuList,
+        public async static Task Download(string InstallMode, ObservableCollection<SModel.Ivsu> IvsuList,
             SModel.SRegion SelectedRegion, string SelectedRelease, string SelectedMapVersion, string DriveLetter, USBHelper.Drive SelectedDrive)
         {
-            SetIvsuList(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter);
+            await SetIvsuList(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter);
 
             bool canceldownload = false;
             //Install Mode is reformat or downgrade My20 warning
@@ -62,7 +63,7 @@ namespace Cyanlabs.Updater.Common
             }
         }
 
-        public static void SetIvsuList(string InstallMode, ObservableCollection<SModel.Ivsu> IvsuList, SModel.SRegion SelectedRegion, string SelectedRelease, string SelectedMapVersion, string DriveLetter)
+        public async static Task SetIvsuList(string InstallMode, ObservableCollection<SModel.Ivsu> IvsuList, SModel.SRegion SelectedRegion, string SelectedRelease, string SelectedMapVersion, string DriveLetter)
         {
             ApplicationManager.Logger.Info(
                 $"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
@@ -70,16 +71,16 @@ namespace Cyanlabs.Updater.Common
 
             if (InstallMode == "downgrade")
             {
-                Api.DowngradeApp = ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
+                Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
                 ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
 
-                Api.DowngradeTool = ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
+                Api.DowngradeTool = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
                 ApplicationManager.Instance.Ivsus.Add(Api.DowngradeTool);
             }
 
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                Api.ReformatTool = ApiHelper.GetSpecialIvsu(Api.GetReformat);
+                Api.ReformatTool = await ApiHelper.GetSpecialIvsu(Api.GetReformat);
                 ApplicationManager.Instance.Ivsus.Add(Api.ReformatTool);
             }
 

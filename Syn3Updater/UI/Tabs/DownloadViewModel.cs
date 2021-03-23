@@ -121,13 +121,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             PercentageChanged += DownloadPercentageChanged;
 
             DownloadQueueList = new ObservableCollection<string>();
-            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus) DownloadQueueList.Add(item.Url);
+            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus) 
+                DownloadQueueList.Add(item.Url);
 
             _ct = _tokenSource.Token;
 
             _fileHelper = new FileHelper(PercentageChanged);
 
-            _downloadTask = Task.Run(DoDownload, _tokenSource.Token).ContinueWith(t =>
+            _downloadTask = Task.Run(DoDownload, _tokenSource.Token).ContinueWith(async t =>
            {
                if (t.IsFaulted)
                {
@@ -137,7 +138,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                }
 
                if (t.IsCompleted && !t.IsFaulted)
-                   DownloadComplete();
+                   await DownloadComplete().ConfigureAwait(false);
            }, _tokenSource.Token);
         }
 
@@ -155,7 +156,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     return;
                 }
 
-                if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false, true))
+                if (await ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false, true).ConfigureAwait(false))
                 {
                     string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -223,7 +224,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 CancelAction();
                             }
 
-                            if (ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
+                            if (await ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false).ConfigureAwait(false))
                             {
                                 text = $"Downloaded: {item.FileName}";
                                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -274,7 +275,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
         }
 
-        private void DownloadComplete()
+        private async Task DownloadComplete()
         {
             if (!_ct.IsCancellationRequested)
             {
@@ -292,7 +293,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 else
                 {
-                    PrepareUsb();
+                    await PrepareUsbAsync().ConfigureAwait(false);
                 }
             }
         }
@@ -318,8 +319,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     _count++;
                     continue;
                 }
-                if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
-                    true, true))
+                if (await ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
+                    true, true).ConfigureAwait(false))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
 
@@ -376,8 +377,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             CancelAction();
                         }
 
-                        if (ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName,
-                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
+                        if (await ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName,
+                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true).ConfigureAwait(false))
                         {
                             text = $"Copied: {item.FileName}";
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -441,10 +442,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             DownloadInfo = LanguageManager.GetValue("String.Completed");
             ApplicationManager.Instance.IsDownloading = false;
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 USBHelper.GenerateLog(Log, ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.UploadLog"), "Syn3 Updater", MessageBoxButton.YesNo,
-                    MessageBoxImage.Information) == MessageBoxResult.Yes);
+                MessageBoxImage.Information) == MessageBoxResult.Yes);
 
                 if (_action == "main")
                 {
@@ -480,6 +482,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     ApplicationManager.Instance.FireUtilityTabEvent();
                 }
+
             });
             Reset();
         }
@@ -524,7 +527,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             TotalPercentage = _count == 0 ? e.Value : (_count * 100) + e.Value;
         }
 
-        private void PrepareUsb()
+        private async Task PrepareUsbAsync()
         {
             if (ApplicationManager.Instance.DownloadToFolder)
             {
@@ -579,7 +582,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(ApplicationManager.Instance.DownloadPath + item.FileName));
 
             Directory.CreateDirectory($@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\");
-            Task.Run(DoCopy, _tokenSource.Token).ContinueWith(t =>
+            await DoCopy().ContinueWith(t =>
             {
                 if (t.IsFaulted)
                 {
@@ -588,8 +591,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     CancelAction();
                 }
 
-                if (t.IsCompleted && !t.IsFaulted) CopyComplete();
-            }, _tokenSource.Token);
+                if (t.IsCompleted && !t.IsFaulted)
+                    CopyComplete();
+            }, _tokenSource.Token).ConfigureAwait(false);
+
         }
 
         private void CreateAutoInstall()
@@ -687,7 +692,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             File.Create($@"{ApplicationManager.Instance.DriveLetter}\DONTINDX.MSA");
         }
 
-        private bool ValidateFile(string srcfile, string localfile, string md5, bool copy, bool existing = false)
+        private async Task<bool> ValidateFile(string srcfile, string localfile, string md5, bool copy, bool existing = false)
         {
             string text = $"Validating: {Path.GetFileName(localfile)}";
             if (existing)
@@ -697,7 +702,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Logger.Info(text);
 
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");
-            FileHelper.OutputResult outputResult = _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
+            FileHelper.OutputResult outputResult = await _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct).ConfigureAwait(false);
 
             if (outputResult.Message != "")
             {

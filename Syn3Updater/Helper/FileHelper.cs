@@ -134,7 +134,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             return;
                         }
 
-                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct).ConfigureAwait(false);
 
                         if (read == 0)
                         {
@@ -174,7 +174,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="localonly">Set to true if comparing to local sources else set to false</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>outputResult with Message and Result properties</returns>
-        public OutputResult ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
+        public async Task<OutputResult> ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
         {
             OutputResult outputResult = new OutputResult();
             string filename = Path.GetFileName(localfile);
@@ -209,9 +209,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                         long newfilesize = -1;
                         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(source));
 
-                        if (long.TryParse(httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).Result.Content.Headers.ContentLength.ToString(),
-                            out long contentLength))
-                            newfilesize = contentLength;
+                        var len = ((await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false)).Content.Headers.ContentLength);
+
+                        if (len != null)
+                        {
+                            newfilesize = len.GetValueOrDefault();
+                        }
+                        else
+                        {
+                            throw new Exception("Could not get size of file from remote server");
+                        }
 
                         if (newfilesize == filesize)
                         {

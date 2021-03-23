@@ -2,6 +2,7 @@ using Cyanlabs.Syn3Updater.Helper;
 using System;
 using NUnit.Framework;
 using Cyanlabs.Syn3Updater.Model;
+using System.Threading.Tasks;
 
 namespace Syn3Updater.Tests.Helper
 {
@@ -26,10 +27,10 @@ namespace Syn3Updater.Tests.Helper
         }
 
         [Test]
-        public static void GetSpecialIvsuPerformsMapping()
+        public async static Task GetSpecialIvsuPerformsMapping()
         {
             var url = "TestValue615803767";
-            var result = ApiHelper.GetSpecialIvsu(url);
+            var result = await ApiHelper.GetSpecialIvsu(url);
             Assert.That(result.Url, Is.EqualTo(url));
         }
 

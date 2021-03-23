@@ -14,10 +14,12 @@
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutputPath>..\bin\Debug\</OutputPath>
+		<LangVersion>8</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>none</DebugType>
 		<OutputPath>..\bin\Release\</OutputPath>
+		<LangVersion>8</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<Resource Include="Syn3Updater Logo Cropped.png" />
