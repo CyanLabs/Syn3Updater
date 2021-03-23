@@ -200,28 +200,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Log += "[" + DateTime.Now + "] " + $"Downloading: {item.FileName}" + Environment.NewLine;
                                 ApplicationManager.Logger.Info($"Downloading: {item.FileName}");
                             }
-
-                            try
+                            
+                            if (!await _fileHelper.DownloadFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct).ConfigureAwait(false))
                             {
-                                await _fileHelper.DownloadFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct).ConfigureAwait(false);
-                            }
-                            catch (HttpRequestException webException)
-                            {
-                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                                    webException.GetFullMessage(), "Syn3 Updater",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Exclamation));
-                                ApplicationManager.Logger.Info("ERROR: " + webException.GetFullMessage());
                                 CancelAction();
-                            }
-                            catch (IOException ioException)
-                            {
-                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                                    ioException.GetFullMessage(), "Syn3 Updater",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Exclamation));
-                                ApplicationManager.Logger.Info("ERROR: " + ioException.GetFullMessage());
-                                CancelAction();
+                                break;
                             }
 
                             if (await ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false).ConfigureAwait(false))
