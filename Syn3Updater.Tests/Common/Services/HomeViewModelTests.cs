@@ -3,6 +3,7 @@ using Cyanlabs.Syn3Updater;
 using Cyanlabs.Updater.Common;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.Helper;
+using System.Threading.Tasks;
 
 namespace Syn3Updater.Tests.Common.Services
 {
@@ -71,9 +72,9 @@ namespace Syn3Updater.Tests.Common.Services
 
         //"Unit" test
         [Test]
-        public void WhenTheProperParametersArePassedTheStateVariablesAreSetProperly()
+        public async Task WhenTheProperParametersArePassedTheStateVariablesAreSetProperly()
         {
-            HomeViewModelService.SetIvsuList("downgrade", IvsuList, merica, "Sync 3.4.19101", "Non Nav APIM", null);
+            await HomeViewModelService.SetIvsuList("downgrade", IvsuList, merica, "Sync 3.4.19101", "Non Nav APIM", null);
 
             Assert.AreEqual(ApplicationManager.Instance.Ivsus.Count, 4);
             Assert.AreEqual(ApplicationManager.Instance.DriveLetter, null);

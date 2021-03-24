@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Updater.Common;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -482,7 +483,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     ApplicationManager.Instance.FireUtilityTabEvent();
                 }
-
             });
             Reset();
         }
@@ -542,9 +542,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (ApplicationManager.Instance.DownloadToFolder)
             {
-                DirectoryInfo di = new DirectoryInfo(ApplicationManager.Instance.DriveLetter);
-                foreach (FileInfo file in di.GetFiles()) file.Delete();
-                foreach (DirectoryInfo dir in di.GetDirectories()) dir.Delete(true);
+                foreach (string file in Directory.GetFiles(ApplicationManager.Instance.DriveLetter))
+                    File.Delete(file);
+                foreach (string dir in Directory.GetDirectories(ApplicationManager.Instance.DriveLetter))
+                    Directory.Delete(dir, true);
             }
             else
             {
@@ -586,8 +587,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (t.IsFaulted)
                 {
-                    if (t.Exception != null) Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
-
+                    if (t.Exception != null) 
+                        Application.Current.Dispatcher.Invoke(() => ApplicationManager.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
                     CancelAction();
                 }
 
@@ -601,42 +602,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             Log += "[" + DateTime.Now + "] Generating Autoinstall.lst" + Environment.NewLine;
             ApplicationManager.Logger.Info("Generating Autoinstall.lst");
-
-            var autoinstalllst = new StringBuilder(
-                $@"; CyanLabs Syn3Updater 2.x - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
-
-            string extrafiles = "";
-            int baseint = 0, extraint = 0;
-            foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
-            {
-                if (item.Source == "naviextras") continue;
-                if (item.Type == "APPS" || item.Type == "VOICE" || item.Type == "ENH_DAB" || item.Type == "MAP_LICENSE" || item.Type == "VOICE_NAV" ||
-                     !ApplicationManager.Instance.AppsSelected)
-                {
-                    baseint++;
-                    autoinstalllst.Append($@"Item{baseint} = {item.Type} - {item.FileName}\rOpen{baseint} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                }
-                else if (ApplicationManager.Instance.AppsSelected)
-                {
-                    if (extrafiles?.Length == 0) extrafiles = $"[SYNCGen3.0_ALL]{Environment.NewLine}";
-                    if (extraint == 10)
-                    {
-                        extraint = 0;
-                        extrafiles += $@"Options = Delay,Include,Transaction{Environment.NewLine}[SYNCGen3.0_{ApplicationManager.Instance.SVersion}]{Environment.NewLine}";
-                    }
-
-                    extraint++;
-                    extrafiles += $@"Item{extraint} = {item.Type} - {item.FileName}\rOpen{extraint} = SyncMyRide\{item.FileName}\r".Replace(@"\r", Environment.NewLine);
-                }
-            }
-
-            if (extrafiles != "")
-                extrafiles += "Options = Delay,Include,Transaction";
-            autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine)
-                .Append(extrafiles);
+            StringBuilder autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease, _selectedRegion);
             File.WriteAllText($@"{ApplicationManager.Instance.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
             File.Create($@"{ApplicationManager.Instance.DriveLetter}\DONTINDX.MSA");
         }
+
+    
 
         private void CreateReformat()
         {
