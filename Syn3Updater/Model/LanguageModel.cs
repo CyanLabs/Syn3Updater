@@ -88,11 +88,18 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public static string GetValue(string key, string lang)
         {
-
-            LanguageModel l = (InternalLanguages[lang] ?? InternalLanguages[lang?.Split('-')[0]] ?? InternalLanguages["en-US"]);
-            if (l == null)
-                return $"[{lang}:{key}]";
-
+            LanguageModel l = null;
+            // If this is not a 2 char culture (or doesn't exist in list) then...
+            if (!InternalLanguages.TryGetValue(lang, out l))
+            {
+                //toss the 2 chars after the "-" 
+                var culture = lang?.Split('-')[0];
+                if (culture != null && !InternalLanguages.TryGetValue(culture, out l))
+                {
+                    //default to USA 
+                    l = InternalLanguages["en-US"];
+                }
+            }
             string r = l.Items[key];
 
             if (string.IsNullOrWhiteSpace(r))
