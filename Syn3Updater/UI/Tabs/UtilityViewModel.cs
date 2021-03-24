@@ -26,8 +26,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     {
         #region Constructors
 
-        private ActionCommand _viewAsBuilt;
-        public ActionCommand ViewAsBuilt => _viewAsBuilt ??= new ActionCommand(UploadFile);
+        private AsyncCommand _viewAsBuilt;
+        public AsyncCommand ViewAsBuilt => _viewAsBuilt ??= new AsyncCommand(UploadFile);
 
         private ActionCommand _refreshUSB;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsbAction);
@@ -190,17 +190,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.DriveLetter = DriveLetter;
             ApplicationManager.Instance.Action = "logutility";
             ApplicationManager.Instance.SelectedRelease = "Interrogator Log Utility";
-            
+
             string currentversion = ApplicationManager.Instance.SVersion;
             if (currentversion.StartsWith("3.4"))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
             else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32).ConfigureAwait(false); 
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32).ConfigureAwait(false);
             else if (currentversion.StartsWith("3."))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
             else
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30).ConfigureAwait(false);
-            
+
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
                 ? "autoinstall"
@@ -351,25 +351,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
         }
 
-        private async void UploadFile()
+        private async Task UploadFile()
         {
-            if (_node != null)
-                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
+            if (_node != null && ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
                     MessageBoxResult.OK)
+            {
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
                 {
-                    FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
-                    {
                         new KeyValuePair<string, string>("xml", _node.ToString()),
                         new KeyValuePair<string, string>("apim", _apimDetails.PartNumber),
                         new KeyValuePair<string, string>("nav", _apimDetails.Nav.ToString()),
                         new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                     });
-                    HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);             
-                    string contents = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    var output = JsonConvert.DeserializeAnonymousType(contents, new { filename = "", status = "" });
-                    Process.Start(Api.AsBuiltOutput + output.filename);
-                }
+                HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);               
+                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync().ConfigureAwait(false), new { filename = "", status = "" });
+                Process.Start(Api.AsBuiltOutput + output.filename);
+            }
         }
 
         private async Task GracenotesRemovalAction()
