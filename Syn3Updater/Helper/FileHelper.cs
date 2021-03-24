@@ -351,14 +351,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                 gzipStream.Close();
                 inStream.Close();
 
-                string[] allfiles = Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories);
-                foreach (var tarfile in allfiles)
+                foreach (var tarfile in Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories))
                 {
-
                     string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar", "");
                     string filename = Path.GetFileName(tarfile);
                     string newpath = ApplicationManager.Instance.DownloadPath + filename;
-                    if (File.Exists(newpath)) File.Delete(newpath);
+                    if (File.Exists(newpath))
+                        File.Delete(newpath);
                     File.Move(tarfile, newpath);
                     string type = "";
 

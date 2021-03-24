@@ -35,6 +35,8 @@
 		</PackageReference>
 		<!-- Only needed for net core 3.1+ -->
 		<!-- <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" /> -->
-	</ItemGroup>	
-	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Syn3Updater\Syn3Updater.csproj" />
+	</ItemGroup>
 </Project>

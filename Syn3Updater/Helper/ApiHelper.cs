@@ -2,14 +2,13 @@
 using System.Threading.Tasks;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
-using Newtonsoft.Json;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
     /// <summary>
     ///     Helper class for API functions
     /// </summary>
-    internal static class ApiHelper
+    public static class ApiHelper
     {
         #region Methods
         /// <summary>
@@ -18,8 +17,13 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="url">URL of a valid 'SpecialPackage'</param>
         public async static Task<SModel.Ivsu> GetSpecialIvsu(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new System.ArgumentNullException("Url to download file is empty");
+            }
             HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(url).ConfigureAwait(false);
-            return ConvertIvsu(JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync().ConfigureAwait(false)));
+            Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
+            return ConvertIvsu(ivsu);
         }
 
         /// <summary>
@@ -29,7 +33,6 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>ivsu as type SModel.Ivsu</returns>
         public static SModel.Ivsu ConvertIvsu(Api.Ivsu ivsu)
         {
-            string fileName = FileHelper.url_to_filename(ivsu.Url);
             return new SModel.Ivsu
             {
                 Type = ivsu.Type,
@@ -39,7 +42,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Url = ivsu.Url,
                 Md5 = ivsu.Md5,
                 Selected = true,
-                FileName = fileName.Replace("?dl=1", "")
+                FileName = FileHelper.url_to_filename(ivsu.Url).Replace("?dl=1", "")
             };
         }
         #endregion
