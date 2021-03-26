@@ -125,7 +125,7 @@ namespace Cyanlabs.Launcher
                 {
                     UpgradingWindow.Hide();
                     UpgradingWindow.Close();
-                }));          
+                }));         
 
                 // Update settings to match new release version and branch
                 Core.LauncherPrefs.ReleaseInstalled = version;
@@ -138,10 +138,7 @@ namespace Cyanlabs.Launcher
                 File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", JsonConvert.SerializeObject(Core.LauncherPrefs));
 
             }
-            else
-            {
-                Complete = true;
-            } // end of If 'current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing'
+           // end of If 'current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing'
         }
 
         /// <summary>
