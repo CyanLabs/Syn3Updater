@@ -79,7 +79,6 @@ namespace Cyanlabs.Launcher
             if (releaseType == LauncherPrefs.ReleaseType.Ci)
             {
                 version = ciRelease.Number;
-                version = version.Split('-')[0].Trim();
             }
             else
             {
