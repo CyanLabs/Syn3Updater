@@ -139,7 +139,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                }
 
                if (t.IsCompleted && !t.IsFaulted)
-                   await DownloadComplete().ConfigureAwait(false);
+                   await DownloadComplete();
            }, _tokenSource.Token);
         }
 
@@ -157,7 +157,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     return;
                 }
 
-                if (await ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false, true).ConfigureAwait(false))
+                if (await ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false, true))
                 {
                     string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -202,13 +202,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 ApplicationManager.Logger.Info($"Downloading: {item.FileName}");
                             }
                             
-                            if (!await _fileHelper.DownloadFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct).ConfigureAwait(false))
+                            if (!await _fileHelper.DownloadFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, _ct))
                             {
                                 CancelAction();
                                 break;
                             }
 
-                            if (await ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false).ConfigureAwait(false))
+                            if (await ValidateFile(item.Url, ApplicationManager.Instance.DownloadPath + item.FileName, item.Md5, false))
                             {
                                 text = $"Downloaded: {item.FileName}";
                                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -277,7 +277,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 else
                 {
-                    await PrepareUsbAsync().ConfigureAwait(false);
+                    await PrepareUsbAsync();
                 }
             }
         }
@@ -304,7 +304,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     continue;
                 }
                 if (await ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName, $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
-                    true, true).ConfigureAwait(false))
+                    true, true))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
 
@@ -340,7 +340,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         try
                         {
                             await _fileHelper.CopyFileAsync(ApplicationManager.Instance.DownloadPath + item.FileName,
-                                $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct).ConfigureAwait(false);
+                                $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
                         }
                         catch (HttpRequestException webException)
                         {
@@ -362,7 +362,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         }
 
                         if (await ValidateFile(ApplicationManager.Instance.DownloadPath + item.FileName,
-                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true).ConfigureAwait(false))
+                            $@"{ApplicationManager.Instance.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
                         {
                             text = $"Copied: {item.FileName}";
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -577,7 +577,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (t.IsCompleted && !t.IsFaulted)
                     CopyComplete();
-            }, _tokenSource.Token).ConfigureAwait(false);
+            }, _tokenSource.Token);
 
         }
 
@@ -656,7 +656,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Logger.Info(text);
 
             _progressBarSuffix = LanguageManager.GetValue("String.Validated");
-            FileHelper.OutputResult outputResult = await _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct).ConfigureAwait(false);
+            FileHelper.OutputResult outputResult = await _fileHelper.ValidateFile(srcfile, localfile, md5, copy, _ct);
 
             if (outputResult.Message != "")
             {

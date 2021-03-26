@@ -63,7 +63,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             byte[] bytes = new byte[bufferSize];
             int prevPercent = 0;
 
-            while ((bytesRead = await inStream.ReadAsync(bytes, 0, bufferSize).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await inStream.ReadAsync(bytes, 0, bufferSize)) > 0)
             {
                 if (ct.IsCancellationRequested)
                 {
@@ -80,7 +80,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     return;
                 }
 
-                await fileStream.WriteAsync(bytes, 0, bytesRead).ConfigureAwait(false);
+                await fileStream.WriteAsync(bytes, 0, bytesRead);
                 totalReads += bytesRead;
                 int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
                 if (percent != prevPercent)
@@ -106,14 +106,14 @@ namespace Cyanlabs.Syn3Updater.Helper
             Client = new HttpClient();
             Client.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
 
-            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
                 try
                 {
                     long total = response.Content.Headers.ContentLength ?? -1L;
                     bool canReportProgress = total != -1;
 
-                    using (Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (Stream stream = await response.Content.ReadAsStreamAsync())
                     {
                         long totalRead = 0L;
                         byte[] buffer = new byte[4096];
@@ -126,7 +126,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                                 do
                                 {
                                     if (ct.IsCancellationRequested) return false;
-                                    int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct).ConfigureAwait(false);
+                                    int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
                                     if (read == 0)
                                     {
                                         moreToRead = false;
@@ -137,7 +137,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                                     {
                                         byte[] data = new byte[read];
                                         buffer.ToList().CopyTo(0, data, 0, read);
-                                        await fileStream.WriteAsync(buffer, 0, read, ct).ConfigureAwait(false);
+                                        await fileStream.WriteAsync(buffer, 0, read, ct);
                                         totalRead += read;
 
                                         if (!canReportProgress) continue;
@@ -232,7 +232,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         long newfilesize = -1;
                         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(source));
 
-                        var len = ((await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false)).Content.Headers.ContentLength);
+                        var len = ((await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)).Content.Headers.ContentLength);
 
                         if (len != null)
                         {

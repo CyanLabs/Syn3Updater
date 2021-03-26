@@ -193,20 +193,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             string currentversion = ApplicationManager.Instance.SVersion;
             if (currentversion.StartsWith("3.4"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
             else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
             else if (currentversion.StartsWith("3."))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
             else
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
 
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
                 ? "autoinstall"
                 : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
+            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) 
+                return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
@@ -364,8 +365,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                     });
-                HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);               
-                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync().ConfigureAwait(false), new { filename = "", status = "" });
+                HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent);               
+                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { filename = "", status = "" });
                 Process.Start(Api.AsBuiltOutput + output.filename);
             }
         }

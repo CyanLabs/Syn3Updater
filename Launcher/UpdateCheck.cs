@@ -55,14 +55,14 @@ namespace Cyanlabs.Launcher
                     // Beta
                     case LauncherPrefs.ReleaseType.Beta:
                         // Get all GitHub releases for Syn3Updater and sets the value of 'latest' to the first (newest) retrieved
-                        IReadOnlyList<Release> githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater").ConfigureAwait(false);
+                        IReadOnlyList<Release> githubreleases = await githubclient.Repository.Release.GetAll("cyanlabs", "Syn3Updater");
                         githubrelease = githubreleases[0];
                         break;
 
                     // Release
                     case LauncherPrefs.ReleaseType.Release:
                         // Get all GitHub releases for Syn3Updater that aren't marked as 'prerelease' and sets the value of 'latest' to the first (newest) retrieved
-                        githubrelease = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater").ConfigureAwait(false);
+                        githubrelease = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
                         break;
                 } // End of Switch 'Get Correct Release'
             }
