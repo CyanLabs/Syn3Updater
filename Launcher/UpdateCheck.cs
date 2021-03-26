@@ -49,7 +49,7 @@ namespace Cyanlabs.Launcher
                     case LauncherPrefs.ReleaseType.Ci:
                         // Gets latest build via API at Cyanlabs.net
                         WebClient wc = new WebClient();
-                        ciRelease = JsonConvert.DeserializeObject<CIRelease>(wc.DownloadString(new Uri("https://cyanlabs.net/api/ci/Syn3Updater/latest")));
+                        ciRelease = JsonConvert.DeserializeObject<CIRelease>(wc.DownloadString(new Uri("https://api.cyanlabs.net/ci/Syn3Updater/latest")));
                         break;
 
                     // Beta
