@@ -193,13 +193,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             string currentversion = ApplicationManager.Instance.SVersion;
             if (currentversion.StartsWith("3.4"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
             else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
             else if (currentversion.StartsWith("3."))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
             else
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30).ConfigureAwait(false);
+                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
 
             ApplicationManager.Instance.Ivsus.Add(Api.InterrogatorTool);
             ApplicationManager.Instance.InstallMode = ApplicationManager.Instance.Settings.CurrentInstallMode == "autodetect"
