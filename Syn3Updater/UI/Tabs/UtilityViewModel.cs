@@ -206,7 +206,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 ? "autoinstall"
                 : ApplicationManager.Instance.Settings.CurrentInstallMode;
 
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) return;
+            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive, false)) 
+                return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             ApplicationManager.Instance.IsDownloading = true;
@@ -364,8 +365,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                         new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                     });
-                HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent).ConfigureAwait(false);               
-                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync().ConfigureAwait(false), new { filename = "", status = "" });
+                HttpResponseMessage response = await Client.PostAsync(Api.AsBuiltPost, formContent);               
+                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { filename = "", status = "" });
                 Process.Start(Api.AsBuiltOutput + output.filename);
             }
         }

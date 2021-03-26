@@ -21,8 +21,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 throw new System.ArgumentNullException("Url to download file is empty");
             }
-            HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(url).ConfigureAwait(false);
-            Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
+            HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(url);
+            Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());
             return ConvertIvsu(ivsu);
         }
 
