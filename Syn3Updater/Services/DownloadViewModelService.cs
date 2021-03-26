@@ -3,7 +3,7 @@ using Cyanlabs.Syn3Updater.Model;
 using System;
 using System.Text;
 
- namespace Cyanlabs.Updater.Common
+ namespace Cyanlabs.Updater.Services
 {
     public static class DownloadViewModelService
     {

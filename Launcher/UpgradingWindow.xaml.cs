@@ -81,13 +81,9 @@ namespace Cyanlabs.Launcher
 
             // Start and wait for the UpdateCheck to complete
             UpdateCheck check = new UpdateCheck();
-            await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);
-            while (!check.Complete)
-                await Task.Delay(100);
-
-            // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe
-            Process p;
-            p = new Process
+            await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);       
+            // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe           
+            Process p = new Process
             {
                 StartInfo =
                 {

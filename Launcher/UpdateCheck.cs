@@ -18,8 +18,7 @@ namespace Cyanlabs.Launcher
     /// </summary
     public class UpdateCheck
     {
-        #region Properties & Fields
-        public bool Complete;
+        #region Properties & Fields  
         public UpgradingWindow UpgradingWindow;
         private UpgradingViewModel Vm => UpgradingWindow.Vm;
         #endregion
@@ -36,9 +35,9 @@ namespace Cyanlabs.Launcher
             await Task.Delay(1000);
 
             // Sets up Octokit API with a UserAgent and assigns latest to a new Release();
-            Release githubrelease = new Release();
+            Release githubrelease = null;
             GitHubClient githubclient = new GitHubClient(new ProductHeaderValue("CyanLabs-Launcher"));
-            CIRelease ciRelease = new CIRelease();
+            CIRelease ciRelease = null;
             // Attempt to get latest GitHub release
             try
             {
@@ -96,64 +95,50 @@ namespace Cyanlabs.Launcher
 
                 WebClient wc = new WebClient();
 
-                // Hook  WebClient DownloadProgressChanged handler
+                // Hook WebClient DownloadProgressChanged handler
                 wc.DownloadProgressChanged += client_DownloadProgressChanged;
 
-                // Setup WebClient DownloadFileCompleted handler
-                wc.DownloadFileCompleted += (sender, e) =>
-                {
-                    if (Directory.Exists(destFolder + "\\temp")) Directory.Delete(destFolder + "\\temp", true);
-                    Directory.CreateDirectory(destFolder + "\\temp");
-
-                    string archivePath = destFolder + "\\Launcher_OldVersion.exe";
-
-                    if (File.Exists(archivePath)) File.Delete(archivePath);
-                    File.Move(destFolder + "\\Launcher.exe", archivePath);
-
-                    Vm.Message = "Extracting...";
-                    ZipFile.ExtractToDirectory(zipPath, destFolder + "\\temp");
-                    DirectoryCopy(destFolder + "\\temp", destFolder, true);
-                    File.Delete(zipPath);
-
-                    // Attempt to delete temp folder, if failed do nothing
-                    try
-                    {
-                        Directory.Delete(destFolder + "\\temp", true);
-                    }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-
-                    UpgradingWindow.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        UpgradingWindow.Hide();
-                        UpgradingWindow.Close();
-                    }));
-
-                    Complete = true;
-
-                    // Update settings to match new release version and branch
-                    Core.LauncherPrefs.ReleaseInstalled = version;
-                    Core.LauncherPrefs.ReleaseTypeInstalled = releaseType;
-
-                    // Save settings to json file, create if doesn't already exist.
-                    string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
-                    string json = JsonConvert.SerializeObject(Core.LauncherPrefs);
-                    if (!Directory.Exists(configFolderPath)) Directory.CreateDirectory(configFolderPath);
-                    File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", json);
-                };
-
                 // Do the actual file download of the first Asset in the chosen GitHub Release or the CI download link with the previously created WebClient
-                wc.DownloadFileAsync(
-                    releaseType == LauncherPrefs.ReleaseType.Ci
-                        ? new Uri(ciRelease.Download)
-                        : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
+                await wc.DownloadFileTaskAsync(
+                     releaseType == LauncherPrefs.ReleaseType.Ci
+                         ? new Uri(ciRelease.Download)
+                         : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
+
+                if (Directory.Exists(destFolder + "\\temp"))
+                    Directory.Delete(destFolder + "\\temp", true);
+                Directory.CreateDirectory(destFolder + "\\temp");
+
+                string archivePath = destFolder + "\\Launcher_OldVersion.exe";
+
+                if (File.Exists(archivePath))
+                    File.Delete(archivePath);
+                File.Move(destFolder + "\\Launcher.exe", archivePath);
+
+                Vm.Message = "Extracting...";
+                ZipFile.ExtractToDirectory(zipPath, destFolder + "\\temp");
+                DirectoryCopy(destFolder + "\\temp", destFolder, true);
+                File.Delete(zipPath);
+
+                Directory.Delete(destFolder + "\\temp", true);
+
+                await UpgradingWindow.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    UpgradingWindow.Hide();
+                    UpgradingWindow.Close();
+                }));         
+
+                // Update settings to match new release version and branch
+                Core.LauncherPrefs.ReleaseInstalled = version;
+                Core.LauncherPrefs.ReleaseTypeInstalled = releaseType;
+
+                // Save settings to json file, create if doesn't already exist.
+                string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+                if (!Directory.Exists(configFolderPath))
+                    Directory.CreateDirectory(configFolderPath);
+                File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", JsonConvert.SerializeObject(Core.LauncherPrefs));
+
             }
-            else
-            {
-                Complete = true;
-            } // end of If 'current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing'
+           // end of If 'current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing'
         }
 
         /// <summary>
@@ -167,11 +152,16 @@ namespace Cyanlabs.Launcher
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
 
-            if (!dir.Exists) throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
+            if (!dir.Exists)
+                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
 
             DirectoryInfo[] dirs = dir.GetDirectories();
+
             // If the destination directory doesn't exist, create it.
-            if (!string.IsNullOrWhiteSpace(destDirName) && !Directory.Exists(destDirName)) Directory.CreateDirectory(destDirName);
+            if (!string.IsNullOrWhiteSpace(destDirName) && !Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
 
             // Get the files in the directory and copy them to the new location.
             foreach (FileInfo file in dir.GetFiles())
@@ -185,7 +175,7 @@ namespace Cyanlabs.Launcher
                 }
                 catch
                 {
-                    // ignored
+
                 }
             }
 
