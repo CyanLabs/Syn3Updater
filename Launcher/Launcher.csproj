@@ -36,4 +36,10 @@
 		<!-- Only needed for net core 3.1+ -->
 		<!-- <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" /> -->
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Methods" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Methods\JsonHelpers.cs" />
+	</ItemGroup>
 </Project>
