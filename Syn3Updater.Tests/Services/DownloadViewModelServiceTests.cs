@@ -1,10 +1,10 @@
 using NUnit.Framework;
-using Cyanlabs.Updater.Common;
+using Cyanlabs.Updater.Services;
 using Cyanlabs.Syn3Updater;
 using System;
 
 namespace Syn3Updater.Tests.Common.Services
-{   
+{  
 
     [TestFixture]
     public class DownloadViewModelServiceTests
