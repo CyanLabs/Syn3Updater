@@ -36,7 +36,4 @@
 		<!-- Only needed for net core 3.1+ -->
 		<!-- <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" /> -->
 	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\Syn3Updater\Syn3Updater.csproj" />
-	</ItemGroup>
 </Project>

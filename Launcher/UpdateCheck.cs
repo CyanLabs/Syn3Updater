@@ -15,7 +15,7 @@ namespace Cyanlabs.Launcher
 {
     /// <summary>
     ///     Checks for any update on the selected branch, if found downloads and extracts it
-    /// </summary
+    /// </summary>
     public class UpdateCheck
     {
         #region Properties & Fields
