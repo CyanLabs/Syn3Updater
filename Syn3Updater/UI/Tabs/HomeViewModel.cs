@@ -397,15 +397,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SelectedMapVersion = null;
                 SelectedRelease = null;
                 SMapVersion.Clear();
+                string license = "";
+                if (ApplicationManager.Instance.Settings.LicenseKey != "")
+                {
+                    license = "{\"licensekeys\":{\"_contains\":\"" + ApplicationManager.Instance.Settings.LicenseKey + "\"}},";
+                }
                 if (ApplicationManager.Instance.Settings.ShowAllReleases)
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", $"filter[licensekeys][_in]=v2,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":["+ license +"{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\",\"testing\",\"archived\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
                 else
                 {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
-                        $"filter[status][_in]=published,private&filter[licensekeys][_in]=v2,{ApplicationManager.Instance.Settings.LicenseKey}");
+                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":["+ license +"{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
                         $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{ApplicationManager.Instance.Settings.LicenseKey}");
                 }
@@ -467,7 +471,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Notes = item.Notes.Replace("\n", Environment.NewLine);
                     }
 
-                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", $"filter[regions]={SelectedRegion.Code}&filter[compatibility][_contains]={_stringCompatibility}");
+                _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
+                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
 
                 HttpResponseMessage response = await ApplicationManager.Instance.Client.GetAsync(_apiMapReleases);
                 var _stringMapReleasesJson = await response.Content.ReadAsStreamAsync();
