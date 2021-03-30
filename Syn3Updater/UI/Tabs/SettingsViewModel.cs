@@ -311,6 +311,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ReleaseType = _currentReleaseType;
                 }
             }
+
+            if (LicenseKey.Length < 10) LicenseKey = "";
             ApplicationManager.Instance.FireHomeTabEvent();
         }
 
