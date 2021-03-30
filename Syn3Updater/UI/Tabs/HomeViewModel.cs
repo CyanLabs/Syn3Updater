@@ -398,7 +398,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SelectedRelease = null;
                 SMapVersion.Clear();
                 string license = "";
-                if (ApplicationManager.Instance.Settings.LicenseKey != "")
+                if (ApplicationManager.Instance.Settings.LicenseKey != "" && ApplicationManager.Instance.Settings.LicenseKey.Length > 10)
                 {
                     license = "{\"licensekeys\":{\"_contains\":\"" + ApplicationManager.Instance.Settings.LicenseKey + "\"}},";
                 }
