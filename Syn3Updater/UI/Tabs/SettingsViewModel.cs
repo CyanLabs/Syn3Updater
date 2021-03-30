@@ -312,7 +312,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
             }
 
-            if (LicenseKey.Length < 10) LicenseKey = "";
+            if (LicenseKey?.Length < 10) LicenseKey = "";
             ApplicationManager.Instance.FireHomeTabEvent();
         }
 
