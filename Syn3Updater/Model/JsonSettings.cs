@@ -12,7 +12,7 @@
         public string DownloadPath { get; set; }
         public string CurrentInstallMode { get; set; }
         public bool ShowAllReleases { get; set; } = false;
-        public string LicenseKey { get; set; }
+        public string LicenseKey { get; set; } = "";
         public bool DisclaimerAccepted { get; set; } = false;
         public string Theme { get; set; }
     }
