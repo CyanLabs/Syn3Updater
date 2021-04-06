@@ -369,7 +369,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         type = "MAP";
                     }
-
+                    FileInfo fi = new FileInfo(newpath);
+                    long size = fi.Length;
                     ApplicationManager.Instance.ExtraIvsus.Add(new SModel.Ivsu
                     {
                         Type = type,
@@ -379,7 +380,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                         Url = "",
                         Md5 = GenerateMd5(newpath, ct),
                         Selected = true,
-                        FileName = filename
+                        FileName = filename,
+                        FileSize = size
                     });
                 }
                 outputResult.Message = "Added MultiPackage files to Queue";

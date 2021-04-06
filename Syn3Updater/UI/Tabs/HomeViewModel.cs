@@ -562,7 +562,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList)
                     if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(SelectedRegion.Code))
                     {
-                        string fileName = FileHelper.url_to_filename(item.Ivsu.Url);
                         IvsuList.Add(new SModel.Ivsu
                         {
                             Type = item.Ivsu.Type,
@@ -572,7 +571,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             Url = item.Ivsu.Url,
                             Md5 = item.Ivsu.Md5,
                             Selected = true,
-                            FileName = fileName
+                            FileName = FileHelper.url_to_filename(item.Ivsu.Url),
+                            FileSize = item.Ivsu.FileSize
                         });
                     }
 
@@ -591,6 +591,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Md5 = item.MapIvsu.Md5,
                                 Selected = true,
                                 FileName = FileHelper.url_to_filename(item.MapIvsu.Url),
+                                FileSize = item.MapIvsu.FileSize,
                                 Source = item.MapIvsu.Source
                             });
                         }

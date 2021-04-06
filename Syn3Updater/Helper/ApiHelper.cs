@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
@@ -42,7 +43,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Url = ivsu.Url,
                 Md5 = ivsu.Md5,
                 Selected = true,
-                FileName = FileHelper.url_to_filename(ivsu.Url).Replace("?dl=1", "")
+                FileName = FileHelper.url_to_filename(ivsu.Url).Replace("?dl=1", ""),
+                FileSize = ivsu.FileSize
             };
         }
         #endregion

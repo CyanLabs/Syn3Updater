@@ -158,7 +158,7 @@ namespace Syn3Updater.Tests.Helper
         [Test]
         public void CanCallExtractMultiPackage()
         {
-            var item = new SModel.Ivsu { Selected = true, Type = "TestValue818008845", Name = "TestValue126881402", Version = "TestValue1525867736", Notes = "TestValue1513126080", Url = "TestValue918057671", Md5 = "TestValue165400975", FileName = "TestValue1848913370", Source = "TestValue1373573975" };
+            var item = new SModel.Ivsu { Selected = true, Type = "TestValue818008845", Name = "TestValue126881402", Version = "TestValue1525867736", Notes = "TestValue1513126080", Url = "TestValue918057671", Md5 = "TestValue165400975", FileName = "TestValue1848913370", Source = "TestValue1373573975", FileSize = "Test"};
             var ct = CancellationToken.None;
             var result = _testClass.ExtractMultiPackage(item, ct);
             Assert.Fail("Create or modify test");

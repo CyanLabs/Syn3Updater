@@ -77,6 +77,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("url")] public string Url { get; set; }
             [JsonProperty("notes")] public string Notes { get; set; }
             [JsonProperty("version")] public string Version { get; set; }
+            [JsonProperty("filesize")] public long FileSize { get; set; }
         }
 
         public class Ivsus
@@ -103,6 +104,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("url")] public string Url { get; set; }
             [JsonProperty("version")] public string Version { get; set; }
             [JsonProperty("source")] public string Source { get; set; }
+            [JsonProperty("filesize")] public long FileSize { get; set; }
         }
 
         public class Release
