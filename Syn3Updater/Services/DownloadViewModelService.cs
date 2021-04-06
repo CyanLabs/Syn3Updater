@@ -14,7 +14,7 @@ namespace Cyanlabs.Updater.Services
     {
         public static StringBuilder CreateAutoInstallFile(string _selectedRelease, string _selectedRegion)
         {
-            int baseint = 0, part2int = 1, part1int = 1;
+            int baseint = 1, part2int = 1, part1int = 1;
             var autoinstalllst = new StringBuilder();
 
             // Sort by filesize, smallest first.
@@ -29,15 +29,14 @@ namespace Cyanlabs.Updater.Services
                     if (item.Source == "naviextras") continue;
                     if (MathHelper.IsOdd(baseint))
                     {
-                        autoinstalllstPart2.Append($@"Item{part2int} = {item.Type} - {item.FileName}\rOpen{part2int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                        part2int++;
-                    }
-                    else
-                    {
                         autoinstalllstPart1.Append($@"Item{part1int} = {item.Type} - {item.FileName}\rOpen{part1int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
                         part1int++;
                     }
-
+                    else
+                    {
+                        autoinstalllstPart2.Append($@"Item{part2int} = {item.Type} - {item.FileName}\rOpen{part2int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
+                        part2int++;
+                    }
                     baseint++;
                 }
                 autoinstalllstPart1.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine);
