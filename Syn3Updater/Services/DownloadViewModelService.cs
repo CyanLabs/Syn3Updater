@@ -22,7 +22,7 @@ namespace Cyanlabs.Updater.Services
 
             if (ApplicationManager.Instance.Ivsus.Any(i => i.Type == "MAP"))
             {
-                var autoinstalllstPart1 = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
+                var autoinstalllstPart1 = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
                 var autoinstalllstPart2 = new StringBuilder($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
                 foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
                 {
