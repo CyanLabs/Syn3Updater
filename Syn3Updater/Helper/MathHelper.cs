@@ -48,6 +48,11 @@ namespace Cyanlabs.Syn3Updater.Helper
             double num = Math.Round(bytes / Math.Pow(1024, place), 1);
             return Math.Sign(byteCount) * num + suf[place];
         }
+        
+        public static bool IsOdd(int value)
+        {
+            return value % 2 != 0;
+        }
 
         #endregion
     }
