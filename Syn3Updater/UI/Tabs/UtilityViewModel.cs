@@ -192,11 +192,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ApplicationManager.Instance.SelectedRelease = "Interrogator Log Utility";
 
             string currentversion = ApplicationManager.Instance.SVersion;
-            if (currentversion.StartsWith("3.4"))
+            if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}4"))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-            else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
+            else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}2") || currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}3"))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
-            else if (currentversion.StartsWith("3."))
+            else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}"))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
             else
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
