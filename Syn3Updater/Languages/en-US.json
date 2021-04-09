@@ -81,6 +81,7 @@
     "String.Copied": "copied",
     "String.Downloaded": "downloaded",
     "String.Validated": "validated",
+    "String.OnlyMaps": "Only Update Maps",
     "Utility.CreateLogTitle": "Create Interrogator Log USB",
     "Utility.CreateLogDesc": "Create a special USB drive used to generate a log file with various details relating to your unit, follow the steps below to get started.",
     "Utility.CreateLogStep1": "1. Prepare drive",
