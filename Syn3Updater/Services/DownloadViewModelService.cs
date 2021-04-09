@@ -48,7 +48,7 @@ namespace Cyanlabs.Updater.Services
                     }
                 }
                 autoinstalllstPart1.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine);
-                autoinstalllstPart2.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine);
+                autoinstalllstPart2.Append("Options = AutoInstall, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine);
                 autoinstalllstPart3.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine);
                 autoinstalllst.Append(autoinstalllstPart1).Append(autoinstalllstPart2).Append(autoinstalllstPart3);
             }

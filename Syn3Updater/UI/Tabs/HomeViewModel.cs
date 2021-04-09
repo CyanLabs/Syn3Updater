@@ -602,6 +602,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                 {
                     InstallMode = "autoinstall";
+                    ApplicationManager.Instance.InstallMode = InstallMode;
                 }
 
                 response = await ApplicationManager.Instance.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion);
