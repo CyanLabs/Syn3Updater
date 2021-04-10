@@ -57,8 +57,8 @@
     "MessageBox.NoDownloads": "Actualmente no hay nada en la cola de descarga, visite la página principal para elegir que descargar.",
     "MessageBox.CancelNoUSB": "No hay unidad USB seleccionada, quiere continuar sólo con la descarga?",
     "MessageBox.CancelNoUSBForced": "No hay un dispositivo USB seleccionado, debe seleccionar un dispositivo USB para continuar!",
-    "MessageBox.CancelMy20": "Syn3 Updater estableció el método de instalación {0}\nNO CONTINUE SI TIENE UN AUTO FABRICADO EN 2020!\n\nSI CONTINUA Y TIENE UN AUTO FABRICADO EN 2020 INUTILIZARÁ SU UNIDAD!\n\nAl elegir \"Si\" usted comprende la advertencia previa y confirma que no tiene un auto fabricado en 2020!",
-    "MessageBox.CancelMy20Final": "ADVERTENCIA FINAL!\n\nAl elegir \"Si\" usted confirma que no tiene un auto fabricado en 2020!",
+    "MessageBox.CancelMy20": "Syn3 Updater estableció el método de instalación {0}\nNO CONTINUE SI TIENE UN AUTO FABRICADO EN 2020 O POSTERIOR!\n\nSI CONTINUA Y TIENE UN AUTO FABRICADO EN 2020 O POSTERIOR INUTILIZARÁ SU UNIDAD!\n\nAl elegir \"Si\" usted comprende la advertencia previa y confirma que no tiene un auto fabricado en 2020 o posterior!",
+    "MessageBox.CancelMy20Final": "ADVERTENCIA FINAL!\n\nAl elegir \"Si\" usted confirma que no tiene un auto fabricado en 2020 o posterior!",
     "MessageBox.CancelRegionMismatch": "La Región Actual y la Región Seleccionada no son la misma, esto puede no funcionar!\nDesea continuar?",
     "MessageBox.CancelDownloadIsDrive": "El directorio de descarga y USB destino son iguales, por favor cambie el directorio de descarga",
     "MessageBox.CancelNoApps": "El modo es reformat o downgrade y no se seleccionó paquete de APPS, esto resultará en un sistema que no inicia\nABORTANDO! No se seleccionó paquete \"APPS\" pero Syn3 Updater determinó que downgrade o reformat es requerido, lo cual resultará en un sistema que no inicia. Abortando!",
@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Versión Full:",
     "Settings.Region": "Región:",
     "Settings.Navigation": "Navegación:",
-    "MessageBox.NoVersionOrRegionSelected": "No ha configurado su Versión Actual o Región"
+    "MessageBox.NoVersionOrRegionSelected": "No ha configurado su Versión Actual o Región",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
