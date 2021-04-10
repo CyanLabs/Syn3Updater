@@ -126,5 +126,11 @@
     "Settings.FullVersion": "نسخة المزامنة الكاملة:",
     "Settings.Region": "منطقة:",
     "Settings.Navigation": "التنقل:",
-    "MessageBox.NoVersionOrRegionSelected": "لم تقم بتعيين إصدار المزامنة الحالي أو منطقة المزامنة!"
+    "MessageBox.NoVersionOrRegionSelected": "لم تقم بتعيين إصدار المزامنة الحالي أو منطقة المزامنة!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
