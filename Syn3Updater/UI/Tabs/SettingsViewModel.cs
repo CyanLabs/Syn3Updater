@@ -134,8 +134,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (value == null) return;
                 SetProperty(ref _currentInstallMode, value);
-                if (value != "autodetect")
-                    AppMan.App.ModeForced = value != "autodetect";
+                AppMan.App.ModeForced = value != "autodetect";
             }
         }
 

@@ -15,7 +15,7 @@ namespace Cyanlabs.Updater.Services
         public static StringBuilder CreateAutoInstallFile(string _selectedRelease, string _selectedRegion)
         {
             int baseint = 1, part3int = 1, part2int = 1, part1int = 1;
-            var autoinstalllst = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}");
+            var autoinstalllst = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall {(AppMan.App.ModeForced ? "FORCED " : "")}Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}");
 
             // Sort by filesize, smallest first.
             AppMan.App.Ivsus = new ObservableCollection<SModel.Ivsu>(from i in AppMan.App.Ivsus orderby i.FileSize select i);
