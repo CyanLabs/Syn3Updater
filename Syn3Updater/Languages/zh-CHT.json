@@ -126,5 +126,11 @@
     "Settings.FullVersion": "完整版本:",
     "Settings.Region": "區域:",
     "Settings.Navigation": "導航:",
-    "MessageBox.NoVersionOrRegionSelected": "你尚未設定你的版本或區域!"
+    "MessageBox.NoVersionOrRegionSelected": "你尚未設定你的版本或區域!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
