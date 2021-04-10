@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -20,17 +21,18 @@ namespace Cyanlabs.Syn3Updater.Model
             Code = Path.GetFileName(path).Replace(".json", "");
             EnglishName = new CultureInfo(Code, false).DisplayName;
             NativeName = new CultureInfo(Code, false).NativeName;
-            Items = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var s in JObject.Parse(contents))
+            var dict = JObject.Parse(contents);
+            Items = new List<LanguageItem>();
+            foreach (var s in dict)
             {
-                if (!string.IsNullOrEmpty(s.Value?.ToString()))
-                {
-                    Items.Add(s.Key, Regex.Replace(s.Value?.ToString(), @"\r\n|\n|\r", Environment.NewLine));
-                }
+                if (s.Value?.ToString() != "")
+                    Items.Add(new LanguageItem
+                    {
+                        Key = s.Key,
+                        Value = s.Value?.ToString()
+                    });
                 else
-                {
                     Debug.WriteLine(s.Key + ":" + s.Value?.ToString());
-                }
             }
         }
 
@@ -42,31 +44,36 @@ namespace Cyanlabs.Syn3Updater.Model
         public string EnglishName { get; set; }
         public string NativeName { get; set; }
         public string Emoji { get; set; }
-        internal Dictionary<string, string> Items { get; set; }
+        public List<LanguageItem> Items { get; set; }
+
+        public class LanguageItem
+        {
+            public string Key { get; set; }
+            public string Value { get; set; }
+        }
+
         #endregion
     }
 
-    public static class LanguageManager
+    public static class LM
     {
         #region Constructors
 
-        static LanguageManager()
+        static LM()
         {
             try
             {
-                foreach (string file in Directory.EnumerateFiles("Languages"))
-                {
+                IEnumerable<string> files = Directory.EnumerateFiles("Languages");
+
+                foreach (string file in files)
                     try
                     {
-                        var lang = new LanguageModel(file);
-                        Languages.Add(lang);
-                        InternalLanguages.Add(lang.Code, lang);
+                        Languages.Add(new LanguageModel(file));
                     }
                     catch (Exception e)
                     {
                         Debug.WriteLine(e.Message);
                     }
-                }
             }
             catch
             {
@@ -80,92 +87,92 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public static List<LanguageModel> Languages { get; set; } = new List<LanguageModel>();
 
-        private static Dictionary<string, LanguageModel> InternalLanguages = new Dictionary<string, LanguageModel>(StringComparer.OrdinalIgnoreCase);
-
         #endregion
 
         #region Methods
 
         public static string GetValue(string key, string lang)
         {
-            LanguageModel l = null;
-            // If this is not a 2 char culture (or doesn't exist in list) then...
-            if (!InternalLanguages.TryGetValue(lang, out l))
+            try
             {
-                //toss the 2 chars after the "-" 
-                var culture = lang?.Split('-')[0];
-                if (culture != null && !InternalLanguages.TryGetValue(culture, out l))
+                LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());
+                if (l == null)
+                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
+
+                if (l == null) l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
+
+                if (l == null) return $"[{lang}:{key}]";
+
+                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
+                    .Replace("\\r", Environment.NewLine);
+                if (string.IsNullOrWhiteSpace(r))
                 {
-                    //default to USA 
-                    l = InternalLanguages["en-US"];
+                    r = $"[{lang}:{key}]";
+                    Debug.WriteLine($"couldn't find {r}");
                 }
-            }
-            string r = l.Items[key];
 
-            if (string.IsNullOrWhiteSpace(r))
+                return r;
+            }
+            catch
             {
-                r = $"[{lang}:{key}]";
-                Debug.WriteLine($"couldn't find {r}");
+                // ignored
             }
 
-            return r;
+            return $"{lang}:::{key}";
         }
 
         public static string GetValue(string key)
         {
-            if (key == null)
-                return null;
+            if (key == null) return null;
 
-            string lang = string.Empty; // "EN-US";
-
-            if (ApplicationManager.Instance.Settings.Lang != null)
-                lang = ApplicationManager.Instance.Settings.Lang;
-
-            if (string.IsNullOrWhiteSpace(lang))
+            try
             {
-                lang = CultureInfo.CurrentCulture.Name;
+                string lang = string.Empty; // "EN-US";
 
-                ApplicationManager.Instance.Settings.Lang = lang;
-            }
-            LanguageModel l = null;
-            // If this is not a 2 char culture (or doesn't exist in list) then...
-            if (!InternalLanguages.TryGetValue(lang, out l))
-            {
-                //toss the 2 chars after the "-" 
-                var culture = lang?.Split('-')[0];
-                if (culture != null && !InternalLanguages.TryGetValue(culture, out l))
+                if (AppMan.App.Settings.Lang != null) lang = AppMan.App.Settings.Lang;
+
+                if (string.IsNullOrWhiteSpace(lang))
                 {
-                    //default to USA 
-                    l = InternalLanguages["en-US"];
+                    lang = CultureInfo.CurrentCulture.Name;
+
+                    AppMan.App.Settings.Lang = lang;
                 }
-            }
 
-            if (l == null)
-            {
-                //Have to hardcode path for design time :(
-                string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.json";
+                LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());
+                if (l == null)
+                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
 
-                if (File.Exists(fn))
+                if (l == null) l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
+
+                if (l == null)
                 {
-                    l = new LanguageModel(fn);
-                    Languages.Add(l);
+                    //Have to hardcode path for design time :(
+                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.json";
+
+                    if (File.Exists(fn))
+                    {
+                        l = new LanguageModel(fn);
+                        Languages.Add(l);
+                    }
                 }
+
+                if (l == null) return $"[{lang}:{key}]";
+
+                // ReSharper disable once ConstantConditionalAccessQualifier
+                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\n", Environment.NewLine).Replace("\\r", Environment.NewLine)
+                    .Replace("\\r\\n", Environment.NewLine);
+                if (string.IsNullOrWhiteSpace(r))
+                {
+                    r = $"[{lang}:{key}]";
+                    Debug.WriteLine($"couldn't find {r}");
+                }
+
+                return r;
             }
-
-            if (l == null)
-                return $"[{lang}:{key}]";
-
-            // ReSharper disable once ConstantConditionalAccessQualifier
-            string r = l.Items[key];
-
-            if (string.IsNullOrWhiteSpace(r))
+            catch (Exception e)
             {
-                r = $"[{lang}:{key}]";
-                Debug.WriteLine($"couldn't find {r}");
+                return e.Message;
             }
-
-            return r;
-
         }
 
         #endregion
