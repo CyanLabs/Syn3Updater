@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Tam Senkronizasyon Sürümü:",
     "Settings.Region": "Bölgesi:",
     "Settings.Navigation": "Navigasyon:",
-    "MessageBox.NoVersionOrRegionSelected": "Mevcut Senkronizasyon Sürümünüzü veya Senkronizasyon Bölgenizi ayarlamadınız!"
+    "MessageBox.NoVersionOrRegionSelected": "Mevcut Senkronizasyon Sürümünüzü veya Senkronizasyon Bölgenizi ayarlamadınız!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
