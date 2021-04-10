@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Versiune de sincronizare completă:",
     "Settings.Region": "Regiunea:",
     "Settings.Navigation": "Navigare:",
-    "MessageBox.NoVersionOrRegionSelected": "Nu ați setat versiunea actuală de sincronizare sau regiunea de sincronizare!"
+    "MessageBox.NoVersionOrRegionSelected": "Nu ați setat versiunea actuală de sincronizare sau regiunea de sincronizare!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
