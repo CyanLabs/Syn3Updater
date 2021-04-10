@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Úplná Verzia:",
     "Settings.Region": "Región:",
     "Settings.Navigation": "Navigácia:",
-    "MessageBox.NoVersionOrRegionSelected": "Nevybral si aktuálnu Verziu alebo Región!"
+    "MessageBox.NoVersionOrRegionSelected": "Nevybral si aktuálnu Verziu alebo Región!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
