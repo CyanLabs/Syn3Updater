@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Volledige:",
     "Settings.Region": "regio:",
     "Settings.Navigation": "Navigatie:",
-    "MessageBox.NoVersionOrRegionSelected": "U heeft uw huidige niet ingesteld!"
+    "MessageBox.NoVersionOrRegionSelected": "U heeft uw huidige niet ingesteld!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
