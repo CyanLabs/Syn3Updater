@@ -18,10 +18,10 @@ namespace Cyanlabs.Updater.Common
             //Install Mode is reformat or downgrade My20 warning
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo,
+                if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                    if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                         MessageBoxResult.Yes)
                     {
                         canceldownload = true;
@@ -34,9 +34,9 @@ namespace Cyanlabs.Updater.Common
             }
 
             //Warn is users region is different to new selection
-            if (SelectedRegion.Code != ApplicationManager.Instance.Settings.CurrentRegion)
+            if (SelectedRegion.Code != AppMan.App.Settings.CurrentRegion)
             {
-                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                     MessageBoxResult.Yes)
                 {
                     canceldownload = true;
@@ -44,62 +44,62 @@ namespace Cyanlabs.Updater.Common
             }
 
             //Cancel no apps package selected
-            if (!ApplicationManager.Instance.AppsSelected && (InstallMode == "reformat" || InstallMode == "downgrade"))
+            if (!AppMan.App.AppsSelected && (InstallMode == "reformat" || InstallMode == "downgrade"))
             {
-                ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 canceldownload = true;
             }
 
             if (!canceldownload && !SanityCheckHelper.CancelDownloadCheck(SelectedDrive))
             {
-                if (!ApplicationManager.Instance.DownloadOnly)
+                if (!AppMan.App.DownloadOnly)
                 {
-                    ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
-                    ApplicationManager.Instance.DriveLetter = DriveLetter;
+                    AppMan.App.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+                    AppMan.App.DriveLetter = DriveLetter;
                 }
-                ApplicationManager.Instance.IsDownloading = true;
-                ApplicationManager.Logger.Info($"Starting process ({SelectedRelease} - {SelectedRegion.Code} - {SelectedMapVersion})");
-                ApplicationManager.Instance.FireDownloadsTabEvent();
+                AppMan.App.IsDownloading = true;
+                AppMan.Logger.Info($"Starting process ({SelectedRelease} - {SelectedRegion.Code} - {SelectedMapVersion})");
+                AppMan.App.FireDownloadsTabEvent();
             }
         }
 
         public async static Task SetIvsuList(string InstallMode, ObservableCollection<SModel.Ivsu> IvsuList, SModel.SRegion SelectedRegion, string SelectedRelease, string SelectedMapVersion, string DriveLetter)
         {
-            ApplicationManager.Logger.Info(
-                $"USB Drive selected - Name: {ApplicationManager.Instance.DriveName} - FileSystem: {ApplicationManager.Instance.DriveFileSystem} - PartitionType: {ApplicationManager.Instance.DrivePartitionType} - Letter: {DriveLetter}");
-            ApplicationManager.Instance.Ivsus.Clear();
+            AppMan.Logger.Info(
+                $"USB Drive selected - Name: {AppMan.App.DriveName} - FileSystem: {AppMan.App.DriveFileSystem} - PartitionType: {AppMan.App.DrivePartitionType} - Letter: {DriveLetter}");
+            AppMan.App.Ivsus.Clear();
 
             if (InstallMode == "downgrade")
             {
                 Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
-                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeApp);
+                AppMan.App.Ivsus.Add(Api.DowngradeApp);
 
                 Api.DowngradeTool = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeTool);
-                ApplicationManager.Instance.Ivsus.Add(Api.DowngradeTool);
+                AppMan.App.Ivsus.Add(Api.DowngradeTool);
             }
 
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
                 Api.ReformatTool = await ApiHelper.GetSpecialIvsu(Api.GetReformat);
-                ApplicationManager.Instance.Ivsus.Add(Api.ReformatTool);
+                AppMan.App.Ivsus.Add(Api.ReformatTool);
             }
 
-            ApplicationManager.Instance.DownloadOnly = false;
-            ApplicationManager.Instance.DriveLetter = DriveLetter;
+            AppMan.App.DownloadOnly = false;
+            AppMan.App.DriveLetter = DriveLetter;
             foreach (SModel.Ivsu item in IvsuList)
             {
                 if (item.Selected)
                 {
                     if (item.Type == "APPS")
-                        ApplicationManager.Instance.AppsSelected = true;
+                        AppMan.App.AppsSelected = true;
 
-                    ApplicationManager.Instance.Ivsus.Add(item);
+                    AppMan.App.Ivsus.Add(item);
                 }
             }
 
-            ApplicationManager.Instance.SelectedRegion = SelectedRegion.Code;
-            ApplicationManager.Instance.SelectedRelease = SelectedRelease;
-            ApplicationManager.Instance.SelectedMapVersion = SelectedMapVersion;
+            AppMan.App.SelectedRegion = SelectedRegion.Code;
+            AppMan.App.SelectedRelease = SelectedRelease;
+            AppMan.App.SelectedMapVersion = SelectedMapVersion;
         }
     }
 }

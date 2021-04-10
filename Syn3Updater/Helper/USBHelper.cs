@@ -46,7 +46,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             ObservableCollection<Drive> driveList = new ObservableCollection<Drive>
             {
-                fakeusb ? new Drive { Path = "", Name = LanguageManager.GetValue("Home.NoUSB") } : new Drive { Path = "", Name = "" }
+                fakeusb ? new Drive { Path = "", Name = LM.GetValue("Home.NoUSB") } : new Drive { Path = "", Name = "" }
             };
             ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject o in driveQuery.Get())
@@ -59,7 +59,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     driveList.Add(new Drive { Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}" });
             }
             if (fakeusb)
-                driveList.Add(new Drive { Path = "", Name = LanguageManager.GetValue("Home.NoUSBDir") });
+                driveList.Add(new Drive { Path = "", Name = LM.GetValue("Home.NoUSBDir") });
 
             // Return a list of drives
             return driveList;
@@ -73,7 +73,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static DriveInfo UpdateDriveInfo(Drive selectedDrive)
         {
             DriveInfo driveInfo = new DriveInfo();
-            if (selectedDrive == null || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB") || selectedDrive.Name == LanguageManager.GetValue("Home.NoUSBDir") || selectedDrive.Path?.Length == 0) return driveInfo;
+            if (selectedDrive == null || selectedDrive.Name == LM.GetValue("Home.NoUSB") || selectedDrive.Name == LM.GetValue("Home.NoUSBDir") || selectedDrive.Path?.Length == 0) return driveInfo;
 
             string partitionQueryText = $@"associators of {{{selectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
             ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
@@ -106,30 +106,30 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static void GenerateLog(string log, bool upload)
         {
             StringBuilder data = new StringBuilder($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
-            data.Append(@"Branch: ").Append(ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled).Append(Environment.NewLine)
+            data.Append(@"Branch: ").Append(AppMan.App.LauncherPrefs.ReleaseTypeInstalled).Append(Environment.NewLine)
                 .Append(@"Operating System: ").Append(SystemHelper.GetOsFriendlyName()).Append(Environment.NewLine)
                 .Append(Environment.NewLine)
                 .Append($@"PREVIOUS CONFIGURATION{Environment.NewLine}")
-                .Append($@"Version: {ApplicationManager.Instance.SVersion}{Environment.NewLine}")
-                .Append($@"Region: {ApplicationManager.Instance.Settings.CurrentRegion}{Environment.NewLine}")
-                .Append($@"Navigation: {ApplicationManager.Instance.Settings.CurrentNav}{Environment.NewLine}")
-                .Append(
-             $@"Mode: {(ApplicationManager.Instance.Settings.CurrentInstallMode == @"autodetect" ? ApplicationManager.Instance.InstallMode : $"{ApplicationManager.Instance.Settings.CurrentInstallMode} FORCED")}{Environment.NewLine}")
+                .Append($@"Version: {AppMan.App.SVersion}{Environment.NewLine}")
+                .Append($@"Region: {AppMan.App.Settings.CurrentRegion}{Environment.NewLine}")
+                .Append($@"Navigation: {AppMan.App.Settings.CurrentNav}{Environment.NewLine}")
+                .Append($@"Mode: {AppMan.App.InstallMode}{Environment.NewLine}")
+                .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}")
                 .Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
-            if (ApplicationManager.Instance.DownloadToFolder)
+            if (AppMan.App.DownloadToFolder)
             {
                 data.Append("Mode: Directory").Append(Environment.NewLine)
-                    .Append(@"Path: ").Append(ApplicationManager.Instance.DriveLetter).Append(Environment.NewLine);
+                    .Append(@"Path: ").Append(AppMan.App.DriveLetter).Append(Environment.NewLine);
             }
             else
             {
                 data.Append("Mode: Drive").Append(Environment.NewLine)
-                    .Append("Model: ").Append(ApplicationManager.Instance.DriveName).Append(Environment.NewLine)
-                    .Append("FileSystem: ").Append(ApplicationManager.Instance.DriveFileSystem).Append(Environment.NewLine)
-                    .Append("Partition Type: ").Append(ApplicationManager.Instance.DrivePartitionType).Append(Environment.NewLine);
+                    .Append("Model: ").Append(AppMan.App.DriveName).Append(Environment.NewLine)
+                    .Append("FileSystem: ").Append(AppMan.App.DriveFileSystem).Append(Environment.NewLine)
+                    .Append("Partition Type: ").Append(AppMan.App.DrivePartitionType).Append(Environment.NewLine);
             }
 
-            string driveletter = ApplicationManager.Instance.DriveLetter;
+            string driveletter = AppMan.App.DriveLetter;
             if (File.Exists($@"{driveletter}\reformat.lst"))
             {
                 data.Append(Environment.NewLine)

@@ -17,12 +17,12 @@ namespace Cyanlabs.Syn3Updater
                 DispatcherUnhandledException += App_DispatcherUnhandledException;
             }
 
-            ApplicationManager.Instance.Initialize();
+            AppMan.App.Initialize();
         }
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            ApplicationManager.Logger.CrashWindow(e.Exception);
+            AppMan.Logger.CrashWindow(e.Exception);
             e.Handled = true;
         }
 

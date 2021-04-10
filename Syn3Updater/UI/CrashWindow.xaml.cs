@@ -24,7 +24,7 @@ namespace Cyanlabs.Syn3Updater.UI
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplicationManager.Instance.Exit();
+            AppMan.App.Exit();
         }
 
         public string SendReport(Exception exception)
@@ -38,7 +38,7 @@ namespace Cyanlabs.Syn3Updater.UI
                 crashContainer.ErrorName = exception.GetType().ToString();
                 if (frame != null)
                     crashContainer.ErrorLocation = $"{frame.GetFileName()}/{frame.GetMethod().Name}/{frame.GetFileLineNumber()}";
-                crashContainer.Logs = ApplicationManager.Logger.Log;
+                crashContainer.Logs = AppMan.Logger.Log;
 
                 HttpClient client = new HttpClient();
                 Dictionary<string, string> values = new Dictionary<string, string>
@@ -48,7 +48,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     {"error", crashContainer.ErrorName},
                     {"message", exception.Message},
                     {"operatingsystem", SystemHelper.GetOsFriendlyName()},
-                    {"branch", ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled.ToString()},
+                    {"branch", AppMan.App.LauncherPrefs.ReleaseTypeInstalled.ToString()},
                 };
 
                 FormUrlEncodedContent content = new FormUrlEncodedContent(values);
@@ -73,8 +73,8 @@ namespace Cyanlabs.Syn3Updater.UI
 
         private void ResetSettings_Click(object sender, RoutedEventArgs e)
         {
-            ApplicationManager.Instance.ResetSettings();
-            ApplicationManager.Instance.RestartApp();
+            AppMan.App.ResetSettings();
+            AppMan.App.RestartApp();
         }
 
         public class CrashContainer

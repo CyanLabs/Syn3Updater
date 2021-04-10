@@ -15,14 +15,14 @@ namespace Cyanlabs.Syn3Updater.Converter
             try
             {
                 if (!string.IsNullOrWhiteSpace((string)value))
-                    return LanguageManager.GetValue(parameter?.ToString(), value.ToString());
+                    return LM.GetValue(parameter?.ToString(), value.ToString());
             }
             catch
             {
                 // ignored
             }
 
-            return LanguageManager.GetValue(parameter?.ToString());
+            return LM.GetValue(parameter?.ToString());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

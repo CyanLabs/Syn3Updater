@@ -15,17 +15,17 @@ namespace Cyanlabs.Updater.Services
         public static StringBuilder CreateAutoInstallFile(string _selectedRelease, string _selectedRegion)
         {
             int baseint = 1, part3int = 1, part2int = 1, part1int = 1;
-            var autoinstalllst = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}");
+            var autoinstalllst = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}");
 
             // Sort by filesize, smallest first.
-            ApplicationManager.Instance.Ivsus = new ObservableCollection<SModel.Ivsu>(from i in ApplicationManager.Instance.Ivsus orderby i.FileSize select i);
+            AppMan.App.Ivsus = new ObservableCollection<SModel.Ivsu>(from i in AppMan.App.Ivsus orderby i.FileSize select i);
 
-            if (ApplicationManager.Instance.Ivsus.Any(i => i.Type == "MAP"))
+            if (AppMan.App.Ivsus.Any(i => i.Type == "MAP"))
             {
                 var autoinstalllstPart1 = new StringBuilder($@"[SYNCGen3.0_3.0.1_PRODUCT]{Environment.NewLine}");
                 var autoinstalllstPart2 = new StringBuilder($@"[SYNCGen3.0_3.0.1]{Environment.NewLine}");
                 var autoinstalllstPart3 = new StringBuilder($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
-                foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+                foreach (SModel.Ivsu item in AppMan.App.Ivsus)
                 {
                     if (item.Source == "naviextras") continue;
                     switch (baseint)
@@ -55,7 +55,7 @@ namespace Cyanlabs.Updater.Services
             else
             {
                 autoinstalllst.Append($@"[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
-                foreach (SModel.Ivsu item in ApplicationManager.Instance.Ivsus)
+                foreach (SModel.Ivsu item in AppMan.App.Ivsus)
                 {
                     if (item.Source == "naviextras") continue;
                     autoinstalllst.Append($@"Item{baseint} = {item.Type} - {item.FileName}\rOpen{baseint} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);

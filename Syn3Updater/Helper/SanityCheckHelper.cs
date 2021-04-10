@@ -19,19 +19,19 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static bool CancelDownloadCheck(USBHelper.Drive selectedDrive, bool allowDownloadonly = true)
         {
             // Set local variables to the values of application level variables
-            string driveLetter = ApplicationManager.Instance.DriveLetter;
-            string downloadPath = ApplicationManager.Instance.DownloadPath;
+            string driveLetter = AppMan.App.DriveLetter;
+            string downloadPath = AppMan.App.DownloadPath;
 
             // No USB drive selected, download only?
-            if (string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name == LanguageManager.GetValue("Home.NoUSB"))
+            if (string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name == LM.GetValue("Home.NoUSB"))
             {
                 if (allowDownloadonly)
                 {
-                    if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                    if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelNoUSB"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
                         MessageBoxResult.Yes)
                     {
-                        ApplicationManager.Logger.Info("No usb has been selected, download only mode activated");
-                        ApplicationManager.Instance.DownloadOnly = true;
+                        AppMan.Logger.Info("No usb has been selected, download only mode activated");
+                        AppMan.App.DownloadOnly = true;
                     }
                     else
                     {
@@ -40,7 +40,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelNoUSBForced"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelNoUSBForced"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return true;
                 }
             }
@@ -49,40 +49,40 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
                 {
-                    ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return true;
                 }
 
             // Optional Format
-            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LanguageManager.GetValue("Home.NoUSB") && !ApplicationManager.Instance.DownloadOnly)
+            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && selectedDrive.Name != LM.GetValue("Home.NoUSB") && !AppMan.App.DownloadOnly)
             {
-                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
+                if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                    ApplicationManager.Instance.SkipFormat = false;
+                    AppMan.App.SkipFormat = false;
                 else
                 {
-                    ApplicationManager.Logger.Info("USB Drive not formatted, using existing filesystem and files");
-                    ApplicationManager.Instance.SkipFormat = true;
+                    AppMan.Logger.Info("USB Drive not formatted, using existing filesystem and files");
+                    AppMan.App.SkipFormat = true;
                 }
             }
 
             // Format USB Drive
-            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && !ApplicationManager.Instance.DownloadOnly && !ApplicationManager.Instance.SkipFormat)
-                if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
+            if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && !AppMan.App.DownloadOnly && !AppMan.App.SkipFormat)
+                if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                 {
                     return true;
                 }
 
-            if (selectedDrive.Name == LanguageManager.GetValue("Home.NoUSBDir"))
+            if (selectedDrive.Name == LM.GetValue("Home.NoUSBDir"))
             {
-                ApplicationManager.Logger.Info("Using 'Select a Directory' instead of a USB Drive");
-                ApplicationManager.Instance.DownloadOnly = false;
-                ApplicationManager.Instance.DownloadToFolder = true;
+                AppMan.Logger.Info("Using 'Select a Directory' instead of a USB Drive");
+                AppMan.App.DownloadOnly = false;
+                AppMan.App.DownloadToFolder = true;
 
                 if (Directory.EnumerateFiles(driveLetter).Any())
                 {
-                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater",
+                    if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater",
                         MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                     {
                         return true;

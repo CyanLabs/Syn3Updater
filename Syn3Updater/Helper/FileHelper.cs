@@ -104,7 +104,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         public async Task<bool> DownloadFile(string path, string filename, CancellationToken ct)
         {
             Client = new HttpClient();
-            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
+            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
 
             using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
@@ -161,7 +161,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                                     ioException.GetFullMessage(), "Syn3 Updater",
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation));
-                                ApplicationManager.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                                AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                                 return false;
                             }
                             finally
@@ -178,7 +178,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         webException.GetFullMessage(), "Syn3 Updater",
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation));
-                    ApplicationManager.Logger.Info("ERROR: " + webException.GetFullMessage());
+                    AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
                     return false;
                 }
             }
@@ -228,7 +228,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     using (HttpClient httpClient = new HttpClient())
                     {
-                        httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(ApplicationManager.Instance.Header);
+                        httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
                         long newfilesize = -1;
                         HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(source));
 
@@ -311,7 +311,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             catch (IOException e)
             {
                 Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
-                ApplicationManager.Logger.Info("ERROR: " + e.GetFullMessage());
+                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }
         }
@@ -339,7 +339,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             else
             {
-                string path = ApplicationManager.Instance.DownloadPath + item.FileName;
+                string path = AppMan.App.DownloadPath + item.FileName;
                 string destination = System.IO.Path.ChangeExtension(path, null);
                 Stream inStream = File.OpenRead(path);
                 Stream gzipStream = new GZipInputStream(inStream);
@@ -355,7 +355,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar", "");
                     string filename = Path.GetFileName(tarfile);
-                    string newpath = ApplicationManager.Instance.DownloadPath + filename;
+                    string newpath = AppMan.App.DownloadPath + filename;
                     if (File.Exists(newpath))
                         File.Delete(newpath);
                     File.Move(tarfile, newpath);
@@ -371,7 +371,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                     FileInfo fi = new FileInfo(newpath);
                     long size = fi.Length;
-                    ApplicationManager.Instance.ExtraIvsus.Add(new SModel.Ivsu
+                    AppMan.App.ExtraIvsus.Add(new SModel.Ivsu
                     {
                         Type = type,
                         Name = name,

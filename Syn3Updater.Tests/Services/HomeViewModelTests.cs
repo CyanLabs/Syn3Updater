@@ -76,14 +76,14 @@ namespace Syn3Updater.Tests.Common.Services
         {
             await HomeViewModelService.SetIvsuList("downgrade", IvsuList, merica, "Sync 3.4.19101", "Non Nav APIM", null);
 
-            Assert.AreEqual(ApplicationManager.Instance.Ivsus.Count, 4);
-            Assert.AreEqual(ApplicationManager.Instance.DriveLetter, null);
-            Assert.AreEqual(ApplicationManager.Instance.DownloadOnly, false);
-            Assert.AreEqual(ApplicationManager.Instance.SelectedRegion, merica.Code);
-            Assert.AreEqual(ApplicationManager.Instance.SelectedRelease, "Sync 3.4.19101");
-            Assert.AreEqual(ApplicationManager.Instance.SelectedMapVersion, "Non Nav APIM");
+            Assert.AreEqual(AppMan.App.Ivsus.Count, 4);
+            Assert.AreEqual(AppMan.App.DriveLetter, null);
+            Assert.AreEqual(AppMan.App.DownloadOnly, false);
+            Assert.AreEqual(AppMan.App.SelectedRegion, merica.Code);
+            Assert.AreEqual(AppMan.App.SelectedRelease, "Sync 3.4.19101");
+            Assert.AreEqual(AppMan.App.SelectedMapVersion, "Non Nav APIM");
             //TODO: wire in deep equality checker 
-            Assert.AreEqual(ApplicationManager.Instance.Ivsus[3].Url, toTest.Url);
+            Assert.AreEqual(AppMan.App.Ivsus[3].Url, toTest.Url);
         }
     }
 }

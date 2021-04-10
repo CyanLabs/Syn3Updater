@@ -63,7 +63,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
-            new ObservableCollection<LanguageOption>(LanguageManager.Languages.Select(x => new LanguageOption { Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji }));
+            new ObservableCollection<LanguageOption>(LM.Languages.Select(x => new LanguageOption { Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji }));
 
         private string _currentRegion;
 
@@ -75,7 +75,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentRegion, value);
-                    ApplicationManager.Instance.Settings.CurrentRegion = value;
+                    AppMan.App.Settings.CurrentRegion = value;
                 }
             }
         }
@@ -91,8 +91,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null && value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
                 {
                     SetProperty(ref _currentVersion, value);
-                    ApplicationManager.Instance.SVersion = value;
-                    ApplicationManager.Instance.Settings.CurrentVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
+                    AppMan.App.SVersion = value;
+                    AppMan.App.Settings.CurrentVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _currentNav, value);
-                ApplicationManager.Instance.Settings.CurrentNav = value;
+                AppMan.App.Settings.CurrentNav = value;
             }
         }
 
@@ -119,8 +119,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _downloadLocation, value);
-                    ApplicationManager.Instance.DownloadPath = value;
-                    ApplicationManager.Instance.Settings.DownloadPath = value;
+                    AppMan.App.DownloadPath = value;
+                    AppMan.App.Settings.DownloadPath = value;
                 }
             }
         }
@@ -132,11 +132,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _currentInstallMode;
             set
             {
-                if (value != null)
-                {
-                    SetProperty(ref _currentInstallMode, value);
-                    ApplicationManager.Instance.Settings.CurrentInstallMode = value;
-                }
+                if (value == null) return;
+                SetProperty(ref _currentInstallMode, value);
+                if (value != "autodetect")
+                    AppMan.App.ModeForced = value != "autodetect";
             }
         }
 
@@ -150,7 +149,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentTheme, value);
-                    ApplicationManager.Instance.Settings.Theme = value;
+                    AppMan.App.Settings.Theme = value;
                     if (value == "Dark")
                     {
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
@@ -173,7 +172,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _showAllReleases, value);
-                ApplicationManager.Instance.Settings.ShowAllReleases = value;
+                AppMan.App.Settings.ShowAllReleases = value;
             }
         }
 
@@ -187,7 +186,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _licenseKey, value);
-                    ApplicationManager.Instance.Settings.LicenseKey = value;
+                    AppMan.App.Settings.LicenseKey = value;
                 }
             }
         }
@@ -203,8 +202,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentLanguage, value);
-                    ApplicationManager.Instance.Settings.Lang = value;
-                    ApplicationManager.Instance.FireLanguageChangedEvent();
+                    AppMan.App.Settings.Lang = value;
+                    AppMan.App.FireLanguageChangedEvent();
                 }
             }
         }
@@ -218,8 +217,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             {
                 SetProperty(ref _releaseType, value);
-                ApplicationManager.Instance.LauncherPrefs.ReleaseBranch = value;
-                ApplicationManager.Instance.UpdateLauncherSettings();
+                AppMan.App.LauncherPrefs.ReleaseBranch = value;
+                AppMan.App.UpdateLauncherSettings();
             }
         }
 
@@ -230,7 +229,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             public string Code { get; set; }
         }
 
-        private LauncherPrefs.ReleaseType _currentReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
+        private LauncherPrefs.ReleaseType _currentReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
 
         #endregion
 
@@ -238,9 +237,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            ApplicationManager.Instance.FireHomeTabEvent();
+            AppMan.App.FireHomeTabEvent();
             //TODO Fix need for temp string
-            string currentRegionTemp = ApplicationManager.Instance.Settings.CurrentRegion;
+            string currentRegionTemp = AppMan.App.Settings.CurrentRegion;
             SRegions = new ObservableCollection<SModel.SRegion>
             {
                 new SModel.SRegion {Code = "EU", Name = "Europe"},
@@ -252,7 +251,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentRegion = currentRegionTemp;
 
             //TODO Fix need for temp string
-            string currentInstallModeTemp = ApplicationManager.Instance.Settings.CurrentInstallMode != "" ? ApplicationManager.Instance.Settings.CurrentInstallMode : "autodetect";
+            if (!AppMan.App.ModeForced)
+                AppMan.App.InstallMode = "autodetect";
+            
+            string currentInstallModeTemp = AppMan.App.InstallMode;
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect", "autoinstall", "reformat", "downgrade"
@@ -263,7 +265,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 "Dark", "Light"
             };
-            CurrentTheme = ApplicationManager.Instance.Settings.Theme;
+            CurrentTheme = AppMan.App.Settings.Theme;
 
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
             {
@@ -272,26 +274,26 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 LauncherPrefs.ReleaseType.Ci
             };
 
-            ReleaseType = ApplicationManager.Instance.LauncherPrefs.ReleaseBranch;
-            CurrentNav = ApplicationManager.Instance.Settings.CurrentNav;
+            ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
+            CurrentNav = AppMan.App.Settings.CurrentNav;
 
-            DownloadLocation = ApplicationManager.Instance.DownloadPath;
-            ShowAllReleases = ApplicationManager.Instance.Settings.ShowAllReleases;
-            LicenseKey = ApplicationManager.Instance.Settings.LicenseKey;
-            CurrentLanguage = ApplicationManager.Instance.Settings.Lang;
+            DownloadLocation = AppMan.App.DownloadPath;
+            ShowAllReleases = AppMan.App.Settings.ShowAllReleases;
+            LicenseKey = AppMan.App.Settings.LicenseKey;
+            CurrentLanguage = AppMan.App.Settings.Lang;
         }
 
         public void ReloadSettings()
         {
-            CurrentVersion = ApplicationManager.Instance.SVersion;
-            CurrentTheme = ApplicationManager.Instance.Settings.Theme;
+            CurrentVersion = AppMan.App.SVersion;
+            CurrentTheme = AppMan.App.Settings.Theme;
         }
 
         private void ApplySettingsAction()
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (ModernWpf.MessageBox.Show(LanguageManager.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
+                if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     _currentReleaseType = ReleaseType;
@@ -302,7 +304,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     }
                     catch (Win32Exception e)
                     {
-                        ApplicationManager.Logger.Debug(e.GetFullMessage());
+                        AppMan.Logger.Debug(e.GetFullMessage());
                         ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
@@ -313,17 +315,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
 
             if (LicenseKey?.Length < 10) LicenseKey = "";
-            ApplicationManager.Instance.FireHomeTabEvent();
+            AppMan.App.FireHomeTabEvent();
         }
 
         private void DownloadPathAction()
         {
-            string oldPath = ApplicationManager.Instance.Settings.DownloadPath;
+            string oldPath = AppMan.App.Settings.DownloadPath;
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
-                    if (ModernWpf.MessageBox.Show(string.Format(LanguageManager.GetValue("MessageBox.DownloadPathChangeCopy"),
+                    if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
                             Environment.NewLine + oldPath + Environment.NewLine,
                             Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
                         MessageBoxResult.Yes)

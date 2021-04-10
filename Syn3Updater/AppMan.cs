@@ -21,11 +21,11 @@ using Cyanlabs.Updater.Common;
 
 namespace Cyanlabs.Syn3Updater
 {
-    public class ApplicationManager
+    public class AppMan
     {
         #region Constructors
 
-        private ApplicationManager()
+        private AppMan()
         {
             LauncherPrefs = new LauncherPrefs();
             Settings = new JsonSettings();
@@ -34,7 +34,7 @@ namespace Cyanlabs.Syn3Updater
         public static readonly SimpleLogger Logger = new SimpleLogger();
         public ObservableCollection<SModel.Ivsu> Ivsus = new ObservableCollection<SModel.Ivsu>();
         public ObservableCollection<SModel.Ivsu> ExtraIvsus = new ObservableCollection<SModel.Ivsu>();
-        public static ApplicationManager Instance { get; } = new ApplicationManager();
+        public static AppMan App { get; } = new AppMan();
         public LauncherPrefs LauncherPrefs { get; set; }
         public JsonSettings Settings { get; set; }
 
@@ -102,7 +102,7 @@ namespace Cyanlabs.Syn3Updater
             Header,
             LauncherConfigFile;
 
-        public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder;
+        public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced;
         #endregion
 
         #region Methods
@@ -203,7 +203,7 @@ namespace Cyanlabs.Syn3Updater
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
             Logger.Debug("Determining language to use for the application");
-            List<LanguageModel> langs = LanguageManager.Languages;
+            List<LanguageModel> langs = LM.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (string.IsNullOrWhiteSpace(Settings.Lang))
             {
@@ -222,7 +222,7 @@ namespace Cyanlabs.Syn3Updater
             }
 
             Logger.Debug("Determining download path to use for the application");
-            DownloadPath = Instance.Settings.DownloadPath;
+            DownloadPath = App.Settings.DownloadPath;
 
             try
             {
@@ -239,17 +239,17 @@ namespace Cyanlabs.Syn3Updater
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
                 Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = Instance.Settings.DownloadPath;
+                DownloadPath = App.Settings.DownloadPath;
             }
             catch (IOException)
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
                 Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = Instance.Settings.DownloadPath;
+                DownloadPath = App.Settings.DownloadPath;
             }
 
-            string version = Instance.Settings.CurrentVersion.ToString();
+            string version = App.Settings.CurrentVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
@@ -265,9 +265,6 @@ namespace Cyanlabs.Syn3Updater
             }
 
             Randomize();
-            
-            // TODO remove install mode from settings, keeping it only as a application wide variable
-            Settings.CurrentInstallMode = "autodetect";
 
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
@@ -301,7 +298,7 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug("Saving settings before shutdown");
             try
             {
-                Instance.SaveSettings();
+                App.SaveSettings();
             }
             catch (Exception e)
             {

@@ -11,22 +11,22 @@ namespace Syn3Updater.Tests.Common.Services
     public class DownloadViewModelServiceTests
     {
         //private string expectedString = $@"; CyanLabs Syn3Updater 2.x - Autoinstall Mode - Sync 3.3.19052 NA{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}Item1 = APPS - 4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Open1 = SyncMyRide\4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Options = AutoInstall{Environment.NewLine}";
-        private string expectedString = $@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {ApplicationManager.Instance.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall Mode - Sync 3.3.19052 NA{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}Item1 = APPS - 4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Open1 = SyncMyRide\4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Options = AutoInstall{Environment.NewLine}";
+        private string expectedString = $@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall Mode - Sync 3.3.19052 NA{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}Item1 = APPS - 4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Open1 = SyncMyRide\4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Options = AutoInstall{Environment.NewLine}";
 
         //called before each [Test] 
         [SetUp]
         public void SetUp()
         {
             //so we know that this list is clear before every run 
-            ApplicationManager.Instance.Ivsus.Clear();
-            ApplicationManager.Instance.SVersion = string.Empty;
+            AppMan.App.Ivsus.Clear();
+            AppMan.App.SVersion = string.Empty;
         }
         //A real unit test(since this method is being tested in total isolation)! 
         [Test]
         public void ServiceGeneratesProperAutoInstallFile()
         {
-            ApplicationManager.Instance.SVersion = "3.3.19052";
-            ApplicationManager.Instance.Ivsus.Add(new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
+            AppMan.App.SVersion = "3.3.19052";
+            AppMan.App.Ivsus.Add(new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
                 Selected = true,
                 Type = "APPS",

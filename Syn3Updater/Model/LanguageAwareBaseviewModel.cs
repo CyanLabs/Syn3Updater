@@ -11,10 +11,10 @@
         {
             try
             {
-                if (ApplicationManager.Instance != null)
-                    ApplicationManager.Instance.LanguageChangedEvent += (sender, args) =>
+                if (AppMan.App != null)
+                    AppMan.App.LanguageChangedEvent += (sender, args) =>
                     {
-                        if (ApplicationManager.Instance.Settings.Lang != null) Language = ApplicationManager.Instance.Settings.Lang;
+                        if (AppMan.App.Settings.Lang != null) Language = AppMan.App.Settings.Lang;
                     };
             }
             catch
