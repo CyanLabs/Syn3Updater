@@ -133,15 +133,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 if (value == null) return;
-                if(value != "autodetect" && AppMan.App.Settings.My20)
-                {
-                    My20Mode = false;
-                }
-                else
-                {
-                    AppMan.App.InstallMode = value;
-                    SetProperty(ref _currentInstallMode, value);
-                }
+                AppMan.App.InstallMode = value; 
+                SetProperty(ref _currentInstallMode, value);
                 AppMan.App.ModeForced = value != "autodetect";
             }
         }

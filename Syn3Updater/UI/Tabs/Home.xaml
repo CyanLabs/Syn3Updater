@@ -224,10 +224,14 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center"
-                                   Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallMode}" />
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                        <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
+                        <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallMode}" />
+                        <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="Forced: " />
+                        <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />
+                        <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="My20 Protection: " />
+                        <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding My20Mode}" />
+
                     </StackPanel>
                     <Button IsEnabled="{Binding StartEnabled}" Grid.Column="1" Margin="5" HorizontalAlignment="Right"
                             Padding="7" Width="100" Style="{DynamicResource AccentButtonStyle}"

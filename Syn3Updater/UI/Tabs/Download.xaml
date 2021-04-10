@@ -46,6 +46,8 @@
                                            Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
                                 <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center"
                                            Text="{Binding InstallMode}" />
+                                <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="Forced: " />
+                                <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />
                             </StackPanel>
                             <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
                                     IsEnabled="{Binding CancelButtonEnabled}"

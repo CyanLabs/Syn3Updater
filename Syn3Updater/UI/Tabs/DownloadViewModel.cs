@@ -60,6 +60,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _installMode, value);
         }
 
+        private string _installModeForced;
+
+        public string InstallModeForced
+        {
+            get => _installModeForced;
+            set => SetProperty(ref _installModeForced, value);
+        }
+
         public int CurrentProgress
         {
             get => _currentProgress;
@@ -111,7 +119,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
 
             InstallMode = AppMan.App.InstallMode;
-            _action = AppMan.App.Action;
+            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No"; _action = AppMan.App.Action;
 
             text = $"Install Mode: {InstallMode}";
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";

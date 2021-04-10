@@ -264,6 +264,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _installMode, value);
         }
 
+        private string _installModeForced;
+
+        public string InstallModeForced
+        {
+            get => _installModeForced;
+            set => SetProperty(ref _installModeForced, value);
+        }
+
+        private string _My20Mode;
+
+        public string My20Mode
+        {
+            get => _My20Mode;
+            set => SetProperty(ref _My20Mode, value);
+        }
+
         private bool _startEnabled;
 
         public bool StartEnabled
@@ -291,6 +307,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentRegion = AppMan.App.Settings.CurrentRegion;
             CurrentVersion = AppMan.App.SVersion;
             DownloadLocation = AppMan.App.DownloadPath;
+            My20Mode = AppMan.App.Settings.My20 ? "Enabled" : "Disabled / Not MY20";
+            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No"; 
             SelectedMapVersionIndex = -1;
             SelectedReleaseIndex = -1;
             SelectedRegionIndex = -1;
