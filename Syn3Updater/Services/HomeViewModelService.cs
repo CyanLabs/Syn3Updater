@@ -18,14 +18,10 @@ namespace Cyanlabs.Updater.Common
             //Install Mode is reformat or downgrade My20 warning
             if (InstallMode == "reformat" || InstallMode == "downgrade")
             {
-                if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelMy20"), InstallMode), "Syn3 Updater", MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Check"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelMy20Final"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
-                        MessageBoxResult.Yes)
-                    {
-                        canceldownload = true;
-                    }
+                    await USBHelper.LogPrepareUSBAction(SelectedDrive,DriveLetter,"logutilitymy20");
+                    return;
                 }
                 else
                 {

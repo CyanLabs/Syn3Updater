@@ -36,6 +36,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string LogPost = "https://api.cyanlabs.net/Syn3Updater/logs/post.php";
 
         public const string HeaderURL = "https://api.cyanlabs.net/syn3updater/useragents";
+        public const string My20URL = "https://api.cyanlabs.net/syn3updater/my20";
 
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
@@ -126,6 +127,11 @@ namespace Cyanlabs.Syn3Updater.Model
         public class Headers
         {
             [JsonProperty("data")] public IList<Header> Header { get; set; }
+        }
+
+        public class My20Models
+        {
+            [JsonProperty("data")] public IList<string> My20Model { get; set; }
         }
         #endregion
     }

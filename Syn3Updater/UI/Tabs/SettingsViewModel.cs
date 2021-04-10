@@ -134,6 +134,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (value == null) return;
                 SetProperty(ref _currentInstallMode, value);
+                AppMan.App.InstallMode = value;
                 AppMan.App.ModeForced = value != "autodetect";
             }
         }
@@ -250,9 +251,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentRegion = currentRegionTemp;
 
             //TODO Fix need for temp string
-            if (!AppMan.App.ModeForced)
-                AppMan.App.InstallMode = "autodetect";
-            
             string currentInstallModeTemp = AppMan.App.InstallMode;
             InstallModes = new ObservableCollection<string>
             {
@@ -312,9 +310,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ReleaseType = _currentReleaseType;
                 }
             }
+            
+            if (AppMan.App.Settings.My20)
+            {
+                if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Detected"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    AppMan.App.Settings.My20 = false;
+                }
+                else
+                {
+                    CurrentInstallMode = "autodetect";
+                    AppMan.App.InstallMode = CurrentInstallMode;
+                }
+            }
 
             if (LicenseKey?.Length < 10) LicenseKey = "";
             AppMan.App.FireHomeTabEvent();
+            AppMan.App.SaveSettings();
         }
 
         private void DownloadPathAction()

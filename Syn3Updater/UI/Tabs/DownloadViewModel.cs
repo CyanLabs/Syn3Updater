@@ -408,7 +408,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         break;
                 }
             }
-            else if (_action == "logutility" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
+            else if (_action == "logutility" || _action == "logutilitymy20" || _action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
                 CreateAutoInstall();
 
             CancelButtonEnabled = false;
@@ -430,8 +430,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                USBHelper.GenerateLog(Log, ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.UploadLog"), "Syn3 Updater", MessageBoxButton.YesNo,
-                MessageBoxImage.Information) == MessageBoxResult.Yes);
+                if (_action != "logutilitymy20")
+                    USBHelper.GenerateLog(Log, ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.UploadLog"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes);
 
                 if (_action == "main")
                 {
@@ -461,6 +461,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     AppMan.App.UtilityCreateLogStep1Complete = true;
                     AppMan.App.FireUtilityTabEvent();
+                }
+                else if (_action == "logutilitymy20")
+                {
+
+                    ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    USBHelper usbHelper = new USBHelper();
+                    usbHelper.LogParseXmlAction().ConfigureAwait(false);
+                    AppMan.App.UtilityCreateLogStep1Complete = true;
+                    if (AppMan.App.Settings.My20)
+                    {
+                        ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    AppMan.App.FireHomeTabEvent();
                 }
                 else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
                 {
