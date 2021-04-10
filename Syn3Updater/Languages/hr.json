@@ -126,5 +126,11 @@
     "Settings.FullVersion": "verzija:",
     "Settings.Region": "regija:",
     "Settings.Navigation": "Navigacija:",
-    "MessageBox.NoVersionOrRegionSelected": "Niste postavili svoju trenutnu verzija ili regija!"
+    "MessageBox.NoVersionOrRegionSelected": "Niste postavili svoju trenutnu verzija ili regija!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
