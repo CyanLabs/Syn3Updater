@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Phiên bản đồng bộ hóa đầy đủ:",
     "Settings.Region": "Khu vực:",
     "Settings.Navigation": "Dẫn đường:",
-    "MessageBox.NoVersionOrRegionSelected": "Bạn chưa đặt Phiên bản đồng bộ hóa hoặc Khu vực đồng bộ hóa hiện tại của mình!"
+    "MessageBox.NoVersionOrRegionSelected": "Bạn chưa đặt Phiên bản đồng bộ hóa hoặc Khu vực đồng bộ hóa hiện tại của mình!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
