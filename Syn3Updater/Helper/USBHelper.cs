@@ -289,7 +289,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.IvsuSingle + sappname);
                             Api.JsonReleases sversion = JsonHelpers.Deserialize<Api.JsonReleases>(await response.Content.ReadAsStreamAsync());
                             string convertedsversion = sversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-                            if (convertedsversion != AppMan.App.SVersion)
+                            if (AppMan.App.Action == "logutilitymy20")
+                            {
+                                AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
+                                AppMan.App.SVersion = convertedsversion;
+                            }
+                            else if (convertedsversion != AppMan.App.SVersion)
                                 if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
                                     "Syn3 Updater",
                                     MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)

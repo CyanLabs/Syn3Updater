@@ -10,7 +10,6 @@
         public int CurrentVersion { get; set; } = 3319052;
         public bool CurrentNav { get; set; } = false;
         public string DownloadPath { get; set; }
-        public bool ShowAllReleases { get; set; } = false;
         public string LicenseKey { get; set; } = "";
         public bool DisclaimerAccepted { get; set; } = false;
         public string Theme { get; set; }

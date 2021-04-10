@@ -402,17 +402,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.Settings.LicenseKey + "\"}},";
                 }
-                if (AppMan.App.Settings.ShowAllReleases)
-                {
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":["+ license +"{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\",\"testing\",\"archived\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
-                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]", $"filter[key][_in]=public,v2,{AppMan.App.Settings.LicenseKey}");
-                }
-                else
-                {
                     _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":["+ license +"{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
                     _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
                         $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.Settings.LicenseKey}");
-                }
 
                 Stream _stringReleasesJson;
                 try
@@ -533,6 +525,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 //LESS THAN 3.2
                 if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
                 {
+                    if (AppMan.App.Settings.My20)
+                    {
+                        InstallMode = "autoinstall";
+                    }
                     if (!AppMan.App.ModeForced)
                         InstallMode = "reformat";
                 }
@@ -547,11 +543,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         if (!AppMan.App.ModeForced)
                             InstallMode = "autoinstall";
-                    }
+                    } 
+                    else if (AppMan.App.Settings.My20)
+                        InstallMode = "autoinstall";
                     else if(!AppMan.App.ModeForced)
-                    {
                         InstallMode = "reformat";
-                    }
                 }
 
                 //3.4.19274 or above
@@ -564,6 +560,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (!AppMan.App.ModeForced)
                             InstallMode = "autoinstall";
                     }
+                    else if (AppMan.App.Settings.My20)
+                        InstallMode = "autoinstall";
                     else if (!AppMan.App.ModeForced)
                         InstallMode = "downgrade";
                 }
