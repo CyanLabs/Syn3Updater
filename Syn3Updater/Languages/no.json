@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Full synkroniseringsversjon:",
     "Settings.Region": "region:",
     "Settings.Navigation": "Navigasjon:",
-    "MessageBox.NoVersionOrRegionSelected": "Du har ikke angitt den nåværende versjonen eller regionen!"
+    "MessageBox.NoVersionOrRegionSelected": "Du har ikke angitt den nåværende versjonen eller regionen!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
