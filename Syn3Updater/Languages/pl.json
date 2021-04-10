@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Pełna wersja:",
     "Settings.Region": "Region:",
     "Settings.Navigation": "Nawigacja:",
-    "MessageBox.NoVersionOrRegionSelected": "Nie ustawiłeś aktualnej wersji lub regionu!"
+    "MessageBox.NoVersionOrRegionSelected": "Nie ustawiłeś aktualnej wersji lub regionu!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
