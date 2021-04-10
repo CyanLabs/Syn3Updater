@@ -23,10 +23,6 @@ namespace Cyanlabs.Updater.Common
                     await USBHelper.LogPrepareUSBAction(SelectedDrive,DriveLetter,"logutilitymy20");
                     return;
                 }
-                else
-                {
-                    canceldownload = true;
-                }
             }
 
             //Warn is users region is different to new selection
