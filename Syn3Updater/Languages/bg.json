@@ -126,5 +126,11 @@
     "Settings.FullVersion": "Пълна Версия:",
     "Settings.Region": "Регион:",
     "Settings.Navigation": "Навигация:",
-    "MessageBox.NoVersionOrRegionSelected": "Не сте задали сегашната ви Версия или Регион!"
+    "MessageBox.NoVersionOrRegionSelected": "Не сте задали сегашната ви Версия или Регион!",
+    "MessageBox.My20Detected": "",
+    "MessageBox.My20Check": "",
+    "MessageBox.My20Found": "",
+    "MessageBox.My20NotFound": "",
+    "MessageBox.LogUtilityCompleteMy20": "",
+    "String.OnlyMaps": ""
 }
