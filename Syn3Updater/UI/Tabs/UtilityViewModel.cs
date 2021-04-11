@@ -26,8 +26,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     {
         #region Constructors
 
-        //private AsyncCommand _viewAsBuilt;
-        //public AsyncCommand ViewAsBuilt => _viewAsBuilt ??= new AsyncCommand(UploadFile);
+        private AsyncCommand _viewAsBuilt;
+        public AsyncCommand ViewAsBuilt => _viewAsBuilt ??= new AsyncCommand(UploadFile);
 
         private ActionCommand _refreshUSB;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsbAction);
@@ -140,6 +140,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             RefreshUsbAction();
+            _usbHelper = new USBHelper();
         }
 
         private void RefreshUsbAction()
@@ -193,7 +194,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private USBHelper _usbHelper;
         private async Task LogParseXmlAction()
         {
-            _usbHelper = new USBHelper();
             LogXmlDetails = await _usbHelper.LogParseXmlAction();
             ToggleLogXmlDetails = Visibility.Visible;
         }
@@ -276,6 +276,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.UploadLogNoDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+        
+        private async Task UploadFile()
+        {
+            await _usbHelper.UploadFile();
         }
 
         #endregion
