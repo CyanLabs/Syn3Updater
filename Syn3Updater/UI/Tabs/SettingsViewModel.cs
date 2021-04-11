@@ -296,9 +296,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
             CurrentNav = AppMan.App.Settings.CurrentNav;
-
-            DownloadLocation = AppMan.App.DownloadPath;
             My20Mode = AppMan.App.Settings.My20;
+            DownloadLocation = AppMan.App.DownloadPath;
             LicenseKey = AppMan.App.Settings.LicenseKey;
             CurrentLanguage = AppMan.App.Settings.Lang;
         }
@@ -307,6 +306,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             CurrentVersion = AppMan.App.SVersion;
             CurrentTheme = AppMan.App.Settings.Theme;
+            My20Mode = AppMan.App.Settings.My20;
         }
 
         private void ApplySettingsAction()

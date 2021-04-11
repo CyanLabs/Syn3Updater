@@ -79,6 +79,7 @@ namespace Cyanlabs.Syn3Updater
 
         public event EventHandler ShowSettingsTab;
 
+        public event EventHandler ShowNewsTab;
         #endregion
 
         #region Properties & Fields

@@ -43,6 +43,7 @@
 	<ItemGroup>
 		<PackageReference Include="FluentWPF" Version="0.9.0" />
 		<PackageReference Include="FontAwesome5" Version="2.1.0" />
+		<PackageReference Include="HtmlToXamlConverter" Version="1.0.5727.24510" />
 		<PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
 		<PackageReference Include="SharpZipLib" Version="1.3.1" />
 		<PackageReference Include="System.Management" Version="5.0.0" />
@@ -75,6 +76,12 @@
 			<ProductName>.NET Framework 3.5 SP1</ProductName>
 			<Install>false</Install>
 		</BootstrapperPackage>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Page Update="UI\Tabs\About.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
 	</ItemGroup>
 	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
 </Project>

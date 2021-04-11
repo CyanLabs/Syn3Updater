@@ -479,10 +479,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.UtilityCreateLogStep1Complete = true;
                     if (AppMan.App.Settings.My20)
                     {
+                        AppMan.App.Settings.My20 = true;
                         ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
+                        AppMan.App.Settings.My20 = false;
                         ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     AppMan.App.FireHomeTabEvent();

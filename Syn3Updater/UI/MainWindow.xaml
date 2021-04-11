@@ -166,5 +166,11 @@
                      x:Name="SettingsUserControl">
             <tabs:Settings HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </UserControl>
+        
+        <UserControl Grid.Column="1"
+                     Visibility="{Binding CurrentTab, ConverterParameter=news, Converter={StaticResource StringMatchToVisibilityConverter}}"
+                     x:Name="NewsUserControl">
+            <tabs:News HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </UserControl>
     </Grid>
 </Window>

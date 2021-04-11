@@ -169,6 +169,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append(log);
             string complete = data.ToString();
             File.WriteAllText($@"{driveletter}\log.txt", complete);
+            
+            if (upload)
+                UploadLog(complete);
         }
 
         /// <summary>

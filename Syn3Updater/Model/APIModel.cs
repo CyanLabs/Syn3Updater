@@ -28,6 +28,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string AppReleaseSingle = Base + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
         public const string MapReleaseSingle = Base + "items/map_releases?fields=*.*.*&filter[name]=";
         public const string IvsuSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
+        public const string NoticesURL = Base + "items/notices?fields=*&limit=-1&filter[enabled]=true";
 
         public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
         public const string CrashLogPost = "https://api.cyanlabs.net/Syn3Updater/crash-logs/post.php";
@@ -132,6 +133,22 @@ namespace Cyanlabs.Syn3Updater.Model
         public class My20Models
         {
             [JsonProperty("data")] public IList<string> My20Model { get; set; }
+        }
+
+        public class Notices
+        {
+            [JsonProperty("data")] public IList<Notice> Notice { get; set; }
+        }
+
+        public class Notice
+        {
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("date_created")] public string DateCreated { get; set; }
+            [JsonProperty("date_updated")] public string DateUpdated { get; set; }
+            [JsonProperty("notice")] public string NoticeContent { get; set; }
+            [JsonProperty("title")] public string Title { get; set; }
+            [JsonProperty("enabled")] public bool Enabled { get; set; }
+            [JsonProperty("important")] public bool Important { get; set; }
         }
         #endregion
     }
