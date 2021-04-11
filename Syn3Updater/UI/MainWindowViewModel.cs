@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -36,7 +37,8 @@ namespace Cyanlabs.Syn3Updater.UI
                     ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
             }
-
+            
+            _args = Environment.GetCommandLineArgs();
             AppMan.App.LanguageChangedEvent += delegate
             {
                 ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
@@ -67,6 +69,8 @@ namespace Cyanlabs.Syn3Updater.UI
 
         #region Properties & Fields
 
+        private readonly string[] _args;
+        private int _newsvisited = 0;
         private string _currentTab = "home";
         private bool _hamburgerExtended;
         private ObservableCollection<TabItem> _tabItems = new ObservableCollection<TabItem>();
@@ -82,7 +86,12 @@ namespace Cyanlabs.Syn3Updater.UI
             get => _currentTab;
             set
             {
-                if (value != "about" && !AppMan.App.Settings.DisclaimerAccepted)
+                if (AppMan.App.AppUpdated != 2 && _args.Contains("/updated"))
+                {
+                    value = "news";
+                    AppMan.App.AppUpdated++;
+                } 
+                else if (value != "about" && !AppMan.App.Settings.DisclaimerAccepted)
                 {
                     ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";

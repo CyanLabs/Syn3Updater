@@ -68,6 +68,11 @@ namespace Cyanlabs.Syn3Updater
         {
             ShowSettingsTab?.Invoke(this, EventArgs.Empty);
         }
+        
+        public void FireNewsTabEvent()
+        {
+            ShowNewsTab?.Invoke(this, EventArgs.Empty);
+        }
 
         public event EventHandler LanguageChangedEvent;
 
@@ -104,6 +109,8 @@ namespace Cyanlabs.Syn3Updater
             LauncherConfigFile;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced;
+
+        public int AppUpdated = 0;
         #endregion
 
         #region Methods

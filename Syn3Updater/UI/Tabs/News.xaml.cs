@@ -19,11 +19,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             InitializeComponent();
             if (!DesignerProperties.GetIsInDesignMode(this)) (DataContext as NewsViewModel)?.Init();
         }
-
-        private void News_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if ((bool)e.NewValue && !(bool)e.OldValue && (bool)e.NewValue == true) (DataContext as NewsViewModel)?.Reload();
-        }
         
         private void HandlePreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {

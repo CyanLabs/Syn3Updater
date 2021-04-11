@@ -8,7 +8,7 @@
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs" xmlns:conv="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.News"
     mc:Ignorable="d"
-    d:DesignHeight="825" d:DesignWidth="800" FontSize="12" IsVisibleChanged="News_OnIsVisibleChanged"
+    d:DesignHeight="825" d:DesignWidth="800" FontSize="12"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
         <conv:HtmlToFlowDocumentConverter x:Key="htmlToXamlConverter"/>
@@ -21,28 +21,60 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Grid>
+                    <StackPanel Background="DarkGreen" Margin="10,5,10,5">
+                        <TextBlock Foreground="white" Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" TextAlignment="Center" Text="{Binding UpdatedNotice}" Visibility="{Binding UpdatedNoticeVisible}" />
+                    </StackPanel>
+                </Grid>
+                
+                <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    Text="{Binding Language, ConverterParameter=News.ImportantNoticeTitle, Converter={StaticResource LocConverter}}" />
+                            <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
+                                Style="{DynamicResource AccentButtonStyle}"
+                                ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
+                                Background="#00000000" Grid.Column="1" Command="{Binding ReloadNotices}">
+                                <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
+                                             VerticalAlignment="Center" />
+                            </Button>
+                        </StackPanel>
+                        
                         <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="ImportantNotices" Document="{Binding ImportantNotices, Converter={StaticResource htmlToXamlConverter}}"/>
                     </StackPanel>
                 </Grid>
 
                 <Grid>
+                    
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    Text="{Binding Language, ConverterParameter=News.NoticeTitle, Converter={StaticResource LocConverter}}" />
+                            <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
+                                Style="{DynamicResource AccentButtonStyle}"
+                                ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
+                                Background="#00000000" Grid.Column="1" Command="{Binding ReloadNotices}">
+                                <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
+                                             VerticalAlignment="Center" />
+                            </Button>
+                        </StackPanel>
                         <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="OtherNotices" Document="{Binding OtherNotices, Converter={StaticResource htmlToXamlConverter}}"/>
                     </StackPanel>
                 </Grid>
 
                 <Grid>
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
-                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    Text="{Binding Language, ConverterParameter=News.Changelog, Converter={StaticResource LocConverter}}" />
+                            <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
+                                    Style="{DynamicResource AccentButtonStyle}"
+                                    ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
+                                    Background="#00000000" Grid.Column="1" Command="{Binding ReloadChangelog}">
+                                <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
+                                                 VerticalAlignment="Center" />
+                            </Button>
+                        </StackPanel>
                         <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="Changelog" Document="{Binding Changelog, Converter={StaticResource htmlToXamlConverter}}"/>
                     </StackPanel>
                 </Grid>

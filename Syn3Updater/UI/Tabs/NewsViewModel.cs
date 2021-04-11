@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
@@ -12,6 +13,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     internal class NewsViewModel : LanguageAwareBaseViewModel
     {
         #region Properties & Fields
+
+        private ActionCommand _reloadNotices;
+        public ActionCommand ReloadNotices => _reloadNotices ??= new ActionCommand(ReloadNoticesAction);
+        
+        private ActionCommand _reloadChangelog;
+        public ActionCommand ReloadChangelog => _reloadChangelog ??= new ActionCommand(ReloadChangelogAction);
 
         private string _importantNotices;
 
@@ -36,18 +43,47 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _changelog;
             set => SetProperty(ref _changelog, value);
         }
+
+        private string _updatedNotice;
+
+        public string UpdatedNotice
+        {
+            get => _updatedNotice;
+            set => SetProperty(ref _updatedNotice, value);
+        }
+
+        private Visibility _updatedNoticeVisible;
+
+        public Visibility
+            UpdatedNoticeVisible
+        {
+            get => _updatedNoticeVisible;
+            set => SetProperty(ref _updatedNoticeVisible, value);
+        }
         #endregion
 
         #region Constructors
 
         public void Init()
         {
-            Task.Run(GetChangelog);
+            UpdatedNoticeVisible = Visibility.Collapsed;
+            Task.Run(UpdateNoticesAsync);
+            Task.Run(GetChangelog);    
+            if(AppMan.App.AppUpdated != 0)
+            {
+                UpdatedNoticeVisible = Visibility.Visible;
+                UpdatedNotice = $"Syn3 Updater has been updated to {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} version {Assembly.GetEntryAssembly()?.GetName().Version}";
+            }
         }
 
-        public void Reload()
+        public void ReloadNoticesAction()
         {
             Task.Run(UpdateNoticesAsync);
+        }
+
+        public void ReloadChangelogAction()
+        {
+            Task.Run(GetChangelog);
         }
 
         public async Task UpdateNoticesAsync()
@@ -84,23 +120,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.ChangelogURL);
             string output = await response.Content.ReadAsStringAsync();
             Changelog = "<style>h3 { margin:0px; } div { padding-bottom:10px;}</style>" + output.Replace("<br />","");
-            /*foreach (Api.Notice notice in output.Notice)
-            {
-                DateTime utcCreatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateCreated), DateTimeKind.Local);
-                string createdDate = $"Published: {utcCreatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss}";
-
-                if (notice?.DateUpdated != null)
-                {
-                    DateTime utcUpdatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateUpdated), DateTimeKind.Local);
-                    updatedDate = $" (Updated: {utcUpdatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss})";
-                }
-                
-                string html = $"<div><h4><u>{notice.Title}</u></h4>" +  notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
-                if (notice.Important)
-                    ImportantNotices += html;
-                else
-                    OtherNotices += html;
-            }*/
         }
 
         #endregion
