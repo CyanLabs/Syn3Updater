@@ -22,33 +22,35 @@ namespace Cyanlabs.Syn3Updater.Model
     {
         #region Properties & Fields
 
-        private const string Base = "https://syn3updater.cyanlabs.net/";
-        public const string AppReleasesConst = Base + "items/releases?fields=name,notes,regions,version&sort=-name&limit=-1&[published]";
-        public const string MapReleasesConst = Base + "items/map_releases?fields=name,regions&sort=-name&limit=-1&[published]";
-        public const string AppReleaseSingle = Base + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
-        public const string MapReleaseSingle = Base + "items/map_releases?fields=*.*.*&filter[name]=";
-        public const string IvsuSingle = Base + "items/ivsu?limit=1&fields=version&filter[name]=";
-        public const string NoticesURL = Base + "items/notices?fields=*&limit=-1&filter[enabled]=true";
-
+        private const string Syn3UpdaterBase = "https://syn3updater.cyanlabs.net/";
+        public const string APIBase = "https://api.cyanlabs.net/";
+        private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
+        
+        public const string AppReleasesConst = Syn3UpdaterBase + "items/releases?fields=name,notes,regions,version&sort=-name&limit=-1&[published]";
+        public const string MapReleasesConst = Syn3UpdaterBase + "items/map_releases?fields=name,regions&sort=-name&limit=-1&[published]";
+        public const string AppReleaseSingle = Syn3UpdaterBase + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
+        public const string MapReleaseSingle = Syn3UpdaterBase + "items/map_releases?fields=*.*.*&filter[name]=";
+        public const string IvsuSingle = Syn3UpdaterBase + "items/ivsu?limit=1&fields=version&filter[name]=";
+        public const string NoticesURL = Syn3UpdaterBase + "items/notices?fields=*&limit=-1&filter[enabled]=true";
+        
         public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
-        public const string CrashLogPost = "https://api.cyanlabs.net/Syn3Updater/crash-logs/post.php";
-
         public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";
-        public const string LogPost = "https://api.cyanlabs.net/Syn3Updater/logs/post.php";
-
-        public const string HeaderURL = "https://api.cyanlabs.net/syn3updater/useragents";
-        public const string My20URL = "https://api.cyanlabs.net/syn3updater/my20";
-
+        
+        public const string CrashLogPost = APIBase + "Syn3Updater/crash-logs/post.php";
+        public const string LogPost = APIBase + "Syn3Updater/logs/post.php";
+        public const string HeaderURL = APIBase + "syn3updater/useragents";
+        public const string My20URL = APIBase + "syn3updater/my20";
+        public const string ChangelogURL = APIBase + "app/syn3updater/githubchangelog";
+        public const string SpecialPackageBase = APIBase + "syn3updater/get/";
+        
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 
         public static SModel.Ivsu ReformatTool, DowngradeApp, DowngradeTool, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
-
-        private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
-        public const string AsBuiltPost = "https://api.cyanlabs.net/Syn3Updater/apim-asbuilt-decode/";
+        
+        public const string AsBuiltPost = APIBase + "Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
-
-        public const string SpecialPackageBase = "https://api.cyanlabs.net/syn3updater/get/";
+        
         public const string GetDowngradeApp = SpecialPackageBase + "downgradeapp";
         public const string GetDowngradeTool = SpecialPackageBase + "downgradetool";
         public const string GetLogTool34 = SpecialPackageBase + "logtool34";
