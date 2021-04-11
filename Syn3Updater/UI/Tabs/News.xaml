@@ -25,7 +25,7 @@
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    Text="{Binding Language, ConverterParameter=News.ImportantNoticeTitle, Converter={StaticResource LocConverter}}" />
-                        <FlowDocumentScrollViewer Name="ImportantNotices" Document="{Binding ImportantNotices, Converter={StaticResource htmlToXamlConverter}}"/>
+                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="ImportantNotices" Document="{Binding ImportantNotices, Converter={StaticResource htmlToXamlConverter}}"/>
                     </StackPanel>
                 </Grid>
 
@@ -34,7 +34,7 @@
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    Text="{Binding Language, ConverterParameter=News.NoticeTitle, Converter={StaticResource LocConverter}}" />
-                        <FlowDocumentScrollViewer Name="OtherNotices" Document="{Binding OtherNotices, Converter={StaticResource htmlToXamlConverter}}"/>
+                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="OtherNotices" Document="{Binding OtherNotices, Converter={StaticResource htmlToXamlConverter}}"/>
                     </StackPanel>
                 </Grid>
 
@@ -43,7 +43,7 @@
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    Text="{Binding Language, ConverterParameter=News.Changelog, Converter={StaticResource LocConverter}}" />
-                        <TextBlock Margin="10,0,5,0" Text="{Binding Changelog}" TextWrapping="WrapWithOverflow" />
+                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="Changelog" Document="{Binding Changelog, Converter={StaticResource htmlToXamlConverter}}"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
