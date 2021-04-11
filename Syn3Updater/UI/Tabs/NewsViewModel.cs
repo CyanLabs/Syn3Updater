@@ -42,7 +42,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            ImportantNotices = "Loading notices, please wait...";
         }
 
         public void Reload()
@@ -52,10 +51,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task UpdateNoticesAsync()
         {
-            ImportantNotices = "<style>h3 { margin:0px; } div { padding-bottom:10px;}</style>";
+            ImportantNotices = "Loading notices, please wait...";
+            OtherNotices = "Loading notices, please wait...";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.NoticesURL);
             Api.Notices output = JsonConvert.DeserializeObject<Api.Notices>(await response.Content.ReadAsStringAsync());
             string updatedDate = "";
+            ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
+            OtherNotices = "";
             foreach (Api.Notice notice in output.Notice)
             {
                 DateTime utcCreatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateCreated), DateTimeKind.Local);
@@ -67,7 +69,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     updatedDate = $" (Updated: {utcUpdatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss})";
                 }
                 
-                string html = $"<div><h3><u>{notice.Title}</u></h3>" +  notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
+                string html = $"<div><h4><u>{notice.Title}</u></h4>" +  notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
                 if (notice.Important)
                     ImportantNotices += html;
                 else
