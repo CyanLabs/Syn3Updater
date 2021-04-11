@@ -24,7 +24,7 @@ namespace Cyanlabs.Launcher
         #endregion
 
         #region Methods
-        public async Task Execute(LauncherPrefs.ReleaseType releaseType, UpgradingWindow upgrading, string destFolder)
+        public async Task<bool> Execute(LauncherPrefs.ReleaseType releaseType, UpgradingWindow upgrading, string destFolder)
         {
             UpgradingWindow = upgrading;
             UpgradingWindow.Show();
@@ -71,7 +71,7 @@ namespace Cyanlabs.Launcher
             {
                 if (File.Exists("Syn3Updater.exe")) Process.Start("Syn3Updater.exe", "/launcher");
                 Application.Current.Shutdown();
-                return;
+                return false;
             }
 
             string version;
@@ -84,7 +84,7 @@ namespace Cyanlabs.Launcher
                 version = githubrelease.TagName;
                 // Use GitHub release tagname as version and parse in to an integer
             }
-
+            
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
             if (Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
@@ -136,9 +136,10 @@ namespace Cyanlabs.Launcher
                 if (!Directory.Exists(configFolderPath))
                     Directory.CreateDirectory(configFolderPath);
                 File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", JsonConvert.SerializeObject(Core.LauncherPrefs));
-
+                return true;
             }
-           // end of If 'current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing'
+            return false;
+            // end of If 'current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing'
         }
 
         /// <summary>
