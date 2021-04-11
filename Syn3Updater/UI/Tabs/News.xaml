@@ -34,7 +34,7 @@
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    Text="{Binding Language, ConverterParameter=News.NoticeTitle, Converter={StaticResource LocConverter}}" />
-                        <WebBrowser Height="200" Name="OtherNotices" Tag="{Binding OtherNotices}"></WebBrowser>
+                        <FlowDocumentScrollViewer Name="OtherNotices" Document="{Binding OtherNotices, Converter={StaticResource htmlToXamlConverter}}"/>
                     </StackPanel>
                 </Grid>
 

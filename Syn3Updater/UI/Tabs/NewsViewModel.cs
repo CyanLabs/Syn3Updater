@@ -55,17 +55,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ImportantNotices = "<style>h3 { margin:0px; } div { padding-bottom:10px;}</style>";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.NoticesURL);
             Api.Notices output = JsonConvert.DeserializeObject<Api.Notices>(await response.Content.ReadAsStringAsync());
-            string importantnotices = "";
-            string notices = "";
+            string updatedDate = "";
             foreach (Api.Notice notice in output.Notice)
             {
-                DateTime utcDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateUpdated), DateTimeKind.Local);
-                string localTime = utcDate.ToLocalTime().ToString("dddd, dd MMMM yyyy HH:mm:ss");
+                DateTime utcCreatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateCreated), DateTimeKind.Local);
+                string createdDate = $"Published: {utcCreatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss}";
+
+                if (notice?.DateUpdated != null)
+                {
+                    DateTime utcUpdatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateUpdated), DateTimeKind.Local);
+                    updatedDate = $" (Updated: {utcUpdatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss})";
+                }
                 
+                string html = $"<div><h3><u>{notice.Title}</u></h3>" +  notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
                 if (notice.Important)
-                    ImportantNotices += $"<div><h3><u>{notice.Title}</u></h3>" +  notice.NoticeContent + $"<h6>{localTime}</h6></div>";
+                    ImportantNotices += html;
                 else
-                    OtherNotices += $"<div><h3><u>{notice.Title}</u></h3>" +  notice.NoticeContent + $"<h6>{localTime}</h6></div>";
+                    OtherNotices += html;
             }
         }
 
