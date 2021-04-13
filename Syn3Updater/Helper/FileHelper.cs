@@ -82,7 +82,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 await fileStream.WriteAsync(bytes, 0, bytesRead);
                 totalReads += bytesRead;
-                int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
+                int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
                 if (percent != prevPercent)
                 {
                     _percentageChanged.Raise(this, percent);
@@ -151,7 +151,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             {
                                 try
                                 {
-                                    if(File.Exists(filename)) File.Delete(filename);
+                                    if (File.Exists(filename)) File.Delete(filename);
                                 }
                                 catch (Exception)
                                 {
@@ -182,7 +182,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     return false;
                 }
             }
-            
+
             return true;
         }
 

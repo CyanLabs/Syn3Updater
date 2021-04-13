@@ -16,7 +16,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private ActionCommand _reloadNotices;
         public ActionCommand ReloadNotices => _reloadNotices ??= new ActionCommand(ReloadNoticesAction);
-        
+
         private ActionCommand _reloadChangelog;
         public ActionCommand ReloadChangelog => _reloadChangelog ??= new ActionCommand(ReloadChangelogAction);
 
@@ -68,8 +68,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             UpdatedNoticeVisible = Visibility.Collapsed;
             Task.Run(UpdateNoticesAsync);
-            Task.Run(GetChangelog);    
-            if(AppMan.App.AppUpdated != 0)
+            Task.Run(GetChangelog);
+            if (AppMan.App.AppUpdated != 0)
             {
                 UpdatedNoticeVisible = Visibility.Visible;
                 UpdatedNotice = $"Syn3 Updater has been updated to {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} version {Assembly.GetEntryAssembly()?.GetName().Version}";
@@ -105,21 +105,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     DateTime utcUpdatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateUpdated), DateTimeKind.Local);
                     updatedDate = $" (Updated: {utcUpdatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss})";
                 }
-                
-                string html = $"<div><h4><u>{notice.Title}</u></h4>" +  notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
+
+                string html = $"<div><h4><u>{notice.Title}</u></h4>" + notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
                 if (notice.Important)
                     ImportantNotices += html;
                 else
                     OtherNotices += html;
             }
         }
-        
+
         public async Task GetChangelog()
         {
             Changelog = "Loading changelog, please wait...";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.ChangelogURL);
             string output = await response.Content.ReadAsStringAsync();
-            Changelog = "<style>h3 { margin:0px; } div { padding-bottom:10px;}</style>" + output.Replace("<br />","");
+            Changelog = "<style>h3 { margin:0px; } div { padding-bottom:10px;}</style>" + output.Replace("<br />", "");
         }
 
         #endregion

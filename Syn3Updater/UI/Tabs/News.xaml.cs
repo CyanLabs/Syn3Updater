@@ -11,7 +11,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     /// </summary>
     public partial class News
     {
-
         private Task _updateNotices;
 
         public News()
@@ -19,7 +18,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             InitializeComponent();
             if (!DesignerProperties.GetIsInDesignMode(this)) (DataContext as NewsViewModel)?.Init();
         }
-        
+
         private void HandlePreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (!(sender is FlowDocumentScrollViewer) || e.Handled) return;

@@ -131,7 +131,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             PercentageChanged += DownloadPercentageChanged;
 
             DownloadQueueList = new ObservableCollection<string>();
-            foreach (SModel.Ivsu item in AppMan.App.Ivsus) 
+            foreach (SModel.Ivsu item in AppMan.App.Ivsus)
                 DownloadQueueList.Add(item.Url);
 
             _ct = _tokenSource.Token;
@@ -210,7 +210,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Log += "[" + DateTime.Now + "] " + $"Downloading: {item.FileName}" + Environment.NewLine;
                                 AppMan.Logger.Info($"Downloading: {item.FileName}");
                             }
-                            
+
                             if (!await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct))
                             {
                                 CancelAction();
@@ -472,7 +472,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 else if (_action == "logutilitymy20")
                 {
-
                     ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
                     USBHelper usbHelper = new USBHelper();
                     usbHelper.LogParseXmlAction().ConfigureAwait(false);
@@ -598,7 +597,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (t.IsFaulted)
                 {
-                    if (t.Exception != null) 
+                    if (t.Exception != null)
                         Application.Current.Dispatcher.Invoke(() => AppMan.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
                     CancelAction();
                 }
@@ -606,7 +605,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (t.IsCompleted && !t.IsFaulted)
                     CopyComplete();
             }, _tokenSource.Token);
-
         }
 
         private void CreateAutoInstall()
@@ -618,7 +616,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
         }
 
-    
+
 
         private void CreateReformat()
         {

@@ -37,7 +37,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     ThemeIcon = EFontAwesomeIcon.Solid_Sun;
                     break;
             }
-            
+
             _args = Environment.GetCommandLineArgs();
             AppMan.App.LanguageChangedEvent += delegate
             {
@@ -90,7 +90,7 @@ namespace Cyanlabs.Syn3Updater.UI
                 {
                     value = "news";
                     AppMan.App.AppUpdated++;
-                } 
+                }
                 else if (value != "about" && !AppMan.App.Settings.DisclaimerAccepted)
                 {
                     ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);

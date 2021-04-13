@@ -68,7 +68,7 @@ namespace Cyanlabs.Syn3Updater
         {
             ShowSettingsTab?.Invoke(this, EventArgs.Empty);
         }
-        
+
         public void FireNewsTabEvent()
         {
             ShowNewsTab?.Invoke(this, EventArgs.Empty);

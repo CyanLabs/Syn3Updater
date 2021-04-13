@@ -308,7 +308,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentVersion = AppMan.App.SVersion;
             DownloadLocation = AppMan.App.DownloadPath;
             My20Mode = AppMan.App.Settings.My20 ? "Enabled" : "Disabled / Not MY20";
-            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No"; 
+            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
             SelectedMapVersionIndex = -1;
             SelectedReleaseIndex = -1;
             SelectedRegionIndex = -1;
@@ -420,9 +420,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.Settings.LicenseKey + "\"}},";
                 }
-                    _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":["+ license +"{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
-                    _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
-                        $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.Settings.LicenseKey}");
+                _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":[" + license + "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
+                _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
+                    $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.Settings.LicenseKey}");
 
                 Stream _stringReleasesJson;
                 try
@@ -438,9 +438,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     throw;
                     //TODO Exception handling
                 }
-                
+
                 SVersion = new ObservableCollection<string>();
-                
+
                 if (!AppMan.App.Settings.CurrentNav)
                 {
                     SMapVersion.Add(LM.GetValue("String.NonNavAPIM"));
@@ -458,7 +458,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 _jsonReleases = JsonHelpers.Deserialize<Api.JsonReleases>(_stringReleasesJson);
-                
+
                 foreach (Api.Data item in _jsonReleases.Releases)
                 {
                     if (item.Regions.Contains(SelectedRegion.Code))
@@ -498,7 +498,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
                 }
-                
+
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
 
                 HttpResponseMessage response = await AppMan.App.Client.GetAsync(_apiMapReleases);
@@ -511,7 +511,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         SMapVersion.Add(LM.GetValue("String.NoMaps"));
                     }
-                    
+
                     if (AppMan.App.Settings.CurrentNav)
                     {
                         if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion)
@@ -561,10 +561,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         if (!AppMan.App.ModeForced)
                             InstallMode = "autoinstall";
-                    } 
+                    }
                     else if (AppMan.App.Settings.My20)
                         InstallMode = "autoinstall";
-                    else if(!AppMan.App.ModeForced)
+                    else if (!AppMan.App.ModeForced)
                         InstallMode = "reformat";
                 }
 
