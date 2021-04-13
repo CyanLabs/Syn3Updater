@@ -81,7 +81,7 @@ namespace Cyanlabs.Launcher
 
             // Start and wait for the UpdateCheck to complete
             UpdateCheck check = new UpdateCheck();
-            bool updated = await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);       
+            bool updated = await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);
             // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe           
             Process p = new Process
             {

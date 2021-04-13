@@ -169,11 +169,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append(log);
             string complete = data.ToString();
             File.WriteAllText($@"{driveletter}\log.txt", complete);
-            
+
             if (upload)
                 UploadLog(complete);
         }
-        
+
         /// <summary>
         ///     Uploads log to our API server for easy diagnostics
         /// </summary>
@@ -190,7 +190,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
             Process.Start(Api.LogUrl + output.uuid);
         }
-        
+
         //TODO: Fma965: refactor/move this
         public async Task UploadFile()
         {
@@ -205,12 +205,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                     new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                     new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                 });
-                HttpResponseMessage response = await AppMan.App.Client.PostAsync(Api.AsBuiltPost, formContent);               
+                HttpResponseMessage response = await AppMan.App.Client.PostAsync(Api.AsBuiltPost, formContent);
                 var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { filename = "", status = "" });
                 Process.Start(Api.AsBuiltOutput + output.filename);
             }
         }
-        
+
         //TODO: Fma965: refactor/move this
         public struct ApimDetails
         {
@@ -244,7 +244,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
-                    
+
                 string result = AppMan.App.Client.GetStringAsync(Api.My20URL).Result;
                 Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
                 foreach (string my20 in output.My20Model)
@@ -252,7 +252,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     if (apimmodel.Contains(my20))
                         AppMan.App.Settings.My20 = true;
                 }
-                    
+
                 string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                     .Select(x => x.Total)
                     .Single();
@@ -306,7 +306,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         LogXmlDetails += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
                         asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
                     }
-                        
+
                     AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
                     try
                     {
@@ -380,15 +380,15 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             AppMan.App.Ivsus.Add(Api.InterrogatorTool);
             AppMan.App.InstallMode = "autoinstall";
-            
-            if (SanityCheckHelper.CancelDownloadCheck(selectedDrive, false)) 
+
+            if (SanityCheckHelper.CancelDownloadCheck(selectedDrive, false))
                 return;
-            
+
             AppMan.App.IsDownloading = true;
             AppMan.Logger.Info("Starting process (Logging Utility");
             AppMan.App.FireDownloadsTabEvent();
         }
         #endregion
-        
+
     }
 }

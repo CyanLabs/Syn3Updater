@@ -20,7 +20,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new System.ArgumentNullException("Url to download file is empty");
+                throw new System.ArgumentNullException(nameof(url), "Url to download file is empty");
             }
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(url);
             Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());

@@ -20,7 +20,7 @@ namespace Cyanlabs.Updater.Common
             {
                 if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Check"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    await USBHelper.LogPrepareUSBAction(SelectedDrive,DriveLetter,"logutilitymy20");
+                    await USBHelper.LogPrepareUSBAction(SelectedDrive, DriveLetter, "logutilitymy20");
                     return;
                 }
             }

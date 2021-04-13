@@ -185,12 +185,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task LogPrepareUSBAction()
         {
-            await USBHelper.LogPrepareUSBAction(SelectedDrive,DriveLetter);
+            await USBHelper.LogPrepareUSBAction(SelectedDrive, DriveLetter);
         }
 
         private XDocument _node;
 
-        
+
         private USBHelper _usbHelper;
         private async Task LogParseXmlAction()
         {
@@ -264,7 +264,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             Process.Start("https://community.cyanlabs.net/t/tutorial-sync-3-4-non-nav-apim-failure-to-update-to-newer-version-sync-3-4/1984");
         }
-        
+
         private void UploadLogAction()
         {
             if (DriveLetter != "" && File.Exists(DriveLetter + @"\log.txt"))
@@ -277,7 +277,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.UploadLogNoDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        
+
         private async Task UploadFile()
         {
             await _usbHelper.UploadFile();

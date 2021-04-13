@@ -6,9 +6,10 @@
 		<PackageReference Include="NSubstitute" Version="4.2.2" />
 		<PackageReference Include="NUnit" Version="3.13.1" />
 		<PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Syn3Updater\Syn3Updater.csproj" />
+		<None Include="$(SolutionDir)Syn3Updater.Tests\Services\TestAutoInstalls\**" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 </Project>

@@ -1,12 +1,8 @@
 ﻿using Cyanlabs.Syn3Updater;
-using Cyanlabs.Syn3Updater.Model;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Windows;
-using Cyanlabs.Syn3Updater.Helper;
 
 namespace Cyanlabs.Updater.Services
 {
@@ -14,52 +10,54 @@ namespace Cyanlabs.Updater.Services
     {
         public static StringBuilder CreateAutoInstallFile(string _selectedRelease, string _selectedRegion)
         {
-            int baseint = 1, part3int = 1, part2int = 1, part1int = 1;
             var autoinstalllst = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall {(AppMan.App.ModeForced ? "FORCED " : "")}Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}");
-
-            // Sort by filesize, smallest first.
-            AppMan.App.Ivsus = new ObservableCollection<SModel.Ivsu>(from i in AppMan.App.Ivsus orderby i.FileSize select i);
-
-            if (AppMan.App.Ivsus.Any(i => i.Type == "MAP"))
+            //naviextras not handled here 
+            var ivsuList = AppMan.App.Ivsus.Where(item => item.Source != "naviextras").ToList();
+            if (ivsuList.Any(i => i.Type == "MAP"))
             {
-                var autoinstalllstPart1 = new StringBuilder($@"[SYNCGen3.0_3.0.1_PRODUCT]{Environment.NewLine}");
-                var autoinstalllstPart2 = new StringBuilder($@"[SYNCGen3.0_3.0.1]{Environment.NewLine}");
-                var autoinstalllstPart3 = new StringBuilder($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
-                foreach (SModel.Ivsu item in AppMan.App.Ivsus)
+                // Sort by filesize, smallest first.
+                ivsuList = ivsuList.OrderBy(item => item.FileSize).ToList();
+                autoinstalllst.Append($@"[SYNCGen3.0_3.0.1_PRODUCT]{Environment.NewLine}");
+                //split into 3 buckets 
+                for (int i = 0; i < 3; i++)
                 {
-                    if (item.Source == "naviextras") continue;
-                    switch (baseint)
+                    // 4.3 million bytes aka 4.3 GB, the size of one map partition
+                    long binRemain = 4361305600;
+                    for (var counter = 1; ivsuList.Count > 0; counter++)
                     {
-                        case 1:
-                            autoinstalllstPart1.Append($@"Item{part1int} = {item.Type} - {item.FileName}\rOpen{part1int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                            part1int++;
-                            baseint++;
+                        var item = ivsuList[0];
+                        //if adding the next file would made the size go over...
+                        if (item.FileSize > binRemain)
+                        {
                             break;
-                        case 2:
-                            autoinstalllstPart2.Append($@"Item{part2int} = {item.Type} - {item.FileName}\rOpen{part2int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                            part2int++;
-                            baseint++;
-                            break;
-                        case 3:
-                            autoinstalllstPart3.Append($@"Item{part3int} = {item.Type} - {item.FileName}\rOpen{part3int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                            part3int++;
-                            baseint = 1;
-                            break;
+                        }
+                        autoinstalllst.Append($@"Item{counter} = {item.Type} - {item.FileName}\rOpen{counter} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
+                        binRemain -= item.FileSize;
+                        ivsuList.RemoveAt(0);
+                    }
+                    if (i == 0)
+                    {
+                        autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine);
+                        autoinstalllst.Append($@"[SYNCGen3.0_3.0.1]{Environment.NewLine}");
+                    }
+                    if (i == 1)
+                    {
+                        autoinstalllst.Append("Options = AutoInstall, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine);
+                        autoinstalllst.Append($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
+                    }
+                    if (i == 2)
+                    {
+                        autoinstalllst.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine);
                     }
                 }
-                autoinstalllstPart1.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine);
-                autoinstalllstPart2.Append("Options = AutoInstall, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine);
-                autoinstalllstPart3.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine);
-                autoinstalllst.Append(autoinstalllstPart1).Append(autoinstalllstPart2).Append(autoinstalllstPart3);
             }
             else
             {
                 autoinstalllst.Append($@"[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
-                foreach (SModel.Ivsu item in AppMan.App.Ivsus)
+                for (int i = 0; i < ivsuList.Count; i++)
                 {
-                    if (item.Source == "naviextras") continue;
-                    autoinstalllst.Append($@"Item{baseint} = {item.Type} - {item.FileName}\rOpen{baseint} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                    baseint++;
+                    var item = ivsuList[i];
+                    autoinstalllst.Append($@"Item{i+1} = {item.Type} - {item.FileName}\rOpen{i+1} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
                 }
                 autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine);
             }

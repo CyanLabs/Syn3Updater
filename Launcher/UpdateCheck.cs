@@ -84,7 +84,7 @@ namespace Cyanlabs.Launcher
                 version = githubrelease.TagName;
                 // Use GitHub release tagname as version and parse in to an integer
             }
-            
+
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
             if (Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
@@ -125,7 +125,7 @@ namespace Cyanlabs.Launcher
                 {
                     UpgradingWindow.Hide();
                     UpgradingWindow.Close();
-                }));         
+                }));
 
                 // Update settings to match new release version and branch
                 Core.LauncherPrefs.ReleaseInstalled = version;
@@ -176,7 +176,6 @@ namespace Cyanlabs.Launcher
                 }
                 catch
                 {
-
                 }
             }
 

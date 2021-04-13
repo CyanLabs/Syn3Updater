@@ -19,7 +19,7 @@ namespace Cyanlabs.Syn3Updater
             {
                 DispatcherUnhandledException += App_DispatcherUnhandledException;
             }
-            if (SingleInstance.AlreadyRunning())  
+            if (SingleInstance.AlreadyRunning())
                 App.Current.Shutdown(); // Just shutdown the current application,if any instance found.  
             AppMan.App.Initialize();
         }
@@ -34,7 +34,7 @@ namespace Cyanlabs.Syn3Updater
         {
             //  throw new NotImplementedException();
         }
-        
+
         public sealed class SingleInstance
         {
             public static bool AlreadyRunning()
@@ -50,7 +50,7 @@ namespace Cyanlabs.Syn3Updater
                     {
                         if (p.Id != currentProcess.Id) // Check running process   
                         {
-                            if (p.ProcessName.Equals(currentProcess.ProcessName) == true)
+                            if (p.ProcessName.Equals(currentProcess.ProcessName))
                             {
                                 running = true;
                                 IntPtr hFound = p.MainWindowHandle;
@@ -70,12 +70,12 @@ namespace Cyanlabs.Syn3Updater
         }
         #endregion
     }
+    public class User32API
+    {
+        [DllImport("User32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("User32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    }
 }
-public class User32API    
-{
-    [DllImport("User32.dll")]    
-    public static extern bool SetForegroundWindow(IntPtr hWnd);    
-    
-    [DllImport("User32.dll")]    
-    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-}  
