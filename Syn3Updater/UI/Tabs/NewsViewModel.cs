@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
@@ -105,12 +106,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     DateTime utcUpdatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateUpdated), DateTimeKind.Local);
                     updatedDate = $" (Updated: {utcUpdatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss})";
                 }
+                else
+                {
+                    updatedDate = null;
+                }
 
                 string html = $"<div><h4><u>{notice.Title}</u></h4>" + notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
                 if (notice.Important)
-                    ImportantNotices += html;
+                    ImportantNotices = html + ImportantNotices;
                 else
-                    OtherNotices += html;
+                    OtherNotices = html + ImportantNotices;
             }
         }
 
