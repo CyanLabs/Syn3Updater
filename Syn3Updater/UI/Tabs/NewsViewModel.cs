@@ -115,7 +115,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (notice.Important)
                     ImportantNotices = html + ImportantNotices;
                 else
-                    OtherNotices = html + ImportantNotices;
+                    OtherNotices = html + OtherNotices;
             }
         }
 
