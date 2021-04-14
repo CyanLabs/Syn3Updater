@@ -51,7 +51,7 @@
 		<PackageReference Include="SharpZipLib" Version="1.3.1" />
 		<PackageReference Include="System.Management" Version="5.0.0" />
 		<PackageReference Include="ModernWpf.MessageBox" Version="0.5.1" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
 		<PackageReference Include="QRCoder" Version="1.4.1" />
 		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.1.0" />

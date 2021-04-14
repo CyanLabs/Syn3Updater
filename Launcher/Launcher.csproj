@@ -26,7 +26,7 @@
 	<ItemGroup>
 		<PackageReference Include="FluentWPF" Version="0.9.0" />
 		<PackageReference Include="ModernWpf.MessageBox" Version="0.5.1" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="Octokit" Version="0.50.0" />
 		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.220602">
 			<PrivateAssets>all</PrivateAssets>
