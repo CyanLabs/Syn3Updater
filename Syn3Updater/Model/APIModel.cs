@@ -27,7 +27,7 @@ namespace Cyanlabs.Syn3Updater.Model
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
 
         public const string AppReleasesConst = Syn3UpdaterBase + "items/releases?fields=name,notes,regions,version&sort=-name&limit=-1&[published]";
-        public const string MapReleasesConst = Syn3UpdaterBase + "items/map_releases?fields=name,regions&sort=-name&limit=-1&[published]";
+        public const string MapReleasesConst = Syn3UpdaterBase + "items/map_releases?fields=name,regions,esn&sort=-name&limit=-1&[published]";
         public const string AppReleaseSingle = Syn3UpdaterBase + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
         public const string MapReleaseSingle = Syn3UpdaterBase + "items/map_releases?fields=*.*.*&filter[name]=";
         public const string IvsuSingle = Syn3UpdaterBase + "items/ivsu?limit=1&fields=version&filter[name]=";

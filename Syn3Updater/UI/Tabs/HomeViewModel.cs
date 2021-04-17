@@ -415,12 +415,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SelectedMapVersion = null;
                 SelectedRelease = null;
                 SMapVersion.Clear();
-                string license = "";
-                if (AppMan.App.Settings.LicenseKey?.Length > 10)
-                {
-                    license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.Settings.LicenseKey + "\"}},";
-                }
-                _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":[" + license + "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
                 _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
                     $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.Settings.LicenseKey}");
 
@@ -472,6 +466,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task UpdateSelectedRelease()
         {
+            string license = "";
+            if (AppMan.App.Settings.LicenseKey?.Length > 10)
+            {
+                license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.Settings.LicenseKey + "\"}},";
+            }
+            _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":[" + license + "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},[esn]{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
+
             if (SelectedRelease != "")
             {
                 SelectedMapVersion = null;
@@ -479,6 +480,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (SelectedRelease == LM.GetValue("String.OnlyMaps"))
                 {
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
+                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "{\"esn\": {\"_eq\": \"false\"}},");
                 }
                 else
                 {
@@ -497,6 +499,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         }
 
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
+                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
                 }
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
