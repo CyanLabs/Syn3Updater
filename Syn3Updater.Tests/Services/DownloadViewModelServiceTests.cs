@@ -14,6 +14,8 @@ namespace Syn3Updater.Tests.Common.Services
         //private string expectedString = $@"; CyanLabs Syn3Updater 2.x - Autoinstall Mode - Sync 3.3.19052 NA{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}Item1 = APPS - 4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Open1 = SyncMyRide\4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Options = AutoInstall{Environment.NewLine}";
         private string expectedString = $@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall {(AppMan.App.ModeForced ? "FORCED " : "")}Mode - Sync 3.3.19052 NA{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}Item1 = APPS - 4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Open1 = SyncMyRide\4U5T-14G381-AN_1552583626000.TAR.GZ{Environment.NewLine}Options = AutoInstall{Environment.NewLine}";
 
+        private string expectedString2 = $@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall {(AppMan.App.ModeForced ? "FORCED " : "")}Mode - Sync 3.3.19052 NA{Environment.NewLine}{Environment.NewLine}";
+
         //called before each [Test] 
         [SetUp]
         public void SetUp()
@@ -207,7 +209,8 @@ namespace Syn3Updater.Tests.Common.Services
             },
             };
             var testedString = DownloadViewModelService.CreateAutoInstallFile("Sync 3.3.19052", "NA");
-            //Assert.AreEqual(testedString.ToString(), File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "Services/TestAutoInstalls/mapautoinstall.lst")));
-        }   
+            var test = expectedString2 + File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "Services/TestAutoInstalls/mapautoinstall.lst"));
+            Assert.AreEqual(testedString.ToString(), test);
+        } 
     }
 }

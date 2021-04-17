@@ -26,8 +26,8 @@ namespace Cyanlabs.Updater.Services
                     for (var counter = 1; ivsuList.Count > 0; counter++)
                     {
                         var item = ivsuList[0];
-                        //if adding the next file would made the size go over...
-                        if (item.FileSize > binRemain)
+                        //if adding the next file would made the size go over or bucket has more than 10 items...
+                        if (item.FileSize > binRemain || counter >10)
                         {
                             break;
                         }
