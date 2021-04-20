@@ -21,8 +21,8 @@ namespace Cyanlabs.Updater.Services
                 //split into 3 buckets 
                 for (int i = 0; i < 3; i++)
                 {
-                    // 4.3 million bytes aka 4.3 GB, the size of one map partition
-                    long binRemain = 4361305600;
+                    // 4.4 million bytes aka 4.4 GB, the size of one map partition
+                    long binRemain = 4724461607;
                     for (var counter = 1; ivsuList.Count > 0; counter++)
                     {
                         var item = ivsuList[0];
