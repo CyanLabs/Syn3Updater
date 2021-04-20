@@ -61,7 +61,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G424-CD_1616778089000.TAR.GZ" ,
-                FileSize = 1700
+                FileSize = 1734
             },
                      new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -73,7 +73,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CAD_1615428059000.TAR.GZ" ,
-                FileSize = 1048576000
+                FileSize = 1132447895
             },
              new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -85,7 +85,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CBD_1615428261000.TAR.GZ" ,
-                FileSize = 1153433600
+                FileSize = 1185315457
             },
             new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -97,7 +97,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CCD_1615428361000.TAR.GZ" ,
-                FileSize = 1048576000
+                FileSize = 1115467399
             },
               new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -109,7 +109,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CDD_1615428467000.TAR.GZ" ,
-                FileSize = 1310720000
+                FileSize = 1338129466
             },
             new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -121,7 +121,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CFD_1615428639000.TAR.GZ" ,
-                FileSize = 1048576000
+                FileSize = 1113931334
             },
               new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -133,7 +133,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CGD_1615428721000.TAR.GZ" ,
-                FileSize = 1100000000
+                FileSize = 1163376207
             },
                 new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -145,7 +145,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CHD_1615428793000.TAR.GZ"  ,
-                FileSize = 1000000000
+                FileSize = 1037664627
             },
                   new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -157,7 +157,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CJD_1615428865000.TAR.GZ" ,
-                FileSize = 700000000
+                FileSize = 689851818
             },
                     new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -169,7 +169,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CED_1615428554000.TAR.GZ" ,
-                FileSize = 1048576000
+                FileSize = 1122947694
             },
                       new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -181,7 +181,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G421-CAD_1615428059000.TAR.GZ" ,
-                FileSize = 1300000000
+                FileSize = 1377373962
             },
              new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -193,7 +193,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G422-CBH_1615429039000.TAR.GZ" ,
-                FileSize = 800000000
+                FileSize = 809932928
             },
              new Cyanlabs.Syn3Updater.Model.SModel.Ivsu
             {
@@ -205,7 +205,7 @@ namespace Syn3Updater.Tests.Common.Services
                 Url = "Some Url",
                 Md5 = "Some hash",
                 FileName = "4U5T-14G422-CCH_1615429127000.TAR.GZ" ,
-                FileSize = 550000000
+                FileSize = 576248987
             },
             };
             var testedString = DownloadViewModelService.CreateAutoInstallFile("Sync 3.3.19052", "NA");
