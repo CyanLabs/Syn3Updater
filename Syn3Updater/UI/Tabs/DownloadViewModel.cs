@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using Cyanlabs.Updater.Services;
+using Cyanlabs.Syn3Updater.Services;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {

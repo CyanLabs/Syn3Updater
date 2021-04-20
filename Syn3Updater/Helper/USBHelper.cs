@@ -125,6 +125,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"Navigation: {AppMan.App.Settings.CurrentNav}{Environment.NewLine}")
                 .Append($@"Mode: {AppMan.App.InstallMode}{Environment.NewLine}")
                 .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}")
+                .Append($@"My20 Protection Enabled: {AppMan.App.Settings.My20}{Environment.NewLine}")
                 .Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
             if (AppMan.App.DownloadToFolder)
             {

@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using Cyanlabs.Updater.Services;
 using Cyanlabs.Syn3Updater;
 using System;
 using System.Reflection;
