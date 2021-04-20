@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections.ObjectModel;
 using System.IO;
+using Cyanlabs.Syn3Updater.Services;
 
 namespace Syn3Updater.Tests.Common.Services
 {
