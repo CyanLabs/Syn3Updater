@@ -27,7 +27,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// <summary>
             /// bin's inverse index: count_of_bins-1 for the first and 0 for the last one
             /// </summary>
-            internal ss_id  BinIInd;
+            internal ss_id BinIInd;
             /// <summary>number's ID</summary>
             internal numb_id Id;
             /// <summary>number's value</summary>
@@ -53,7 +53,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// </summary>
             /// <param name="val">upper limit</param>
             /// <returns>true if number is not allocated and its value is fitted to the upper limit</returns>
-		    internal bool IsFitted(float val) { return BinIInd==0 && Val<=val; }
+		    internal bool IsFitted(float val) { return BinIInd == 0 && Val <= val; }
         }
 
         class IdNumbComparer : IComparer<IdNumber>
@@ -74,7 +74,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         public sealed class IdNumbers : List<IdNumber> //, ICloneable<IdNumbers>
         {
             /// <summary>
-            /// minimum tolerance: part of minimal numb value defines the start accuracy 
+            /// minimum tolerance: part of minimal numb value defines the start accuracy
             /// with which the free space of the average sum is measured.
             /// </summary>
             /// <remarks>
@@ -91,7 +91,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     Add(new IdNumber(n));
             }
 
-             /// <summary>Copies bin's indexes</summary>
+            /// <summary>Copies bin's indexes</summary>
             internal void CopyIndexes(IdNumbers numbers)
             {
                 for (int i = 0; i < Count; i++)
@@ -105,7 +105,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 get
                 {
-	                return Math.Max((float)this[Count - 1].Val / minTol, 1F);
+                    return Math.Max((float)this[Count - 1].Val / minTol, 1F);
                 }
             }
 
@@ -113,31 +113,31 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// <param name="ssCnt">count of subsets</param>
             /// <returns>average values sum</returns>
 		    internal float AvrSum(ss_id ssCnt)
-		    {
-			    float sum = 0;
-                foreach(IdNumber n in this)    sum += n.Val;
+            {
+                float sum = 0;
+                foreach (IdNumber n in this) sum += n.Val;
                 return sum / ssCnt;
-		    }
+            }
 
             /// <summary>Marks all numbers as unallocated</summary>
             internal void Reset()
             {
-                ForEach(delegate(IdNumber n) { n.BinIInd = 0; });
+                ForEach((IdNumber n) => { n.BinIInd = 0; });
             }
 
             /// <summary>Sorts numbers in descending order</summary>
-            internal void SortByDescent()   { Sort(new IdNumbComparer()); }
+            internal void SortByDescent() { Sort(new IdNumbComparer()); }
         }
 
         /// <summary>Represents partition</summary>
         public sealed class Subset
-	    {
+        {
             /// <summary>subset's ID</summary>
-		    internal ss_id			id;
+		    internal ss_id id;
             /// <summary>sum of subset numbers</summary>
-		    internal ss_sum			sumVal;
+		    internal ss_sum sumVal;
             /// <summary>number IDs container</summary>
-		    internal List<numb_id>	numbIDs;
+		    internal List<numb_id> numbIDs;
 
             internal static int CompareInDescend(Subset s1, Subset s2)
             {
@@ -172,10 +172,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// <summary>Adds number</summary>
             /// <param name="n">number to add</param>
             internal void AddNumb(IdNumber n)
-		    {
-			    sumVal += n.Val;
-			    numbIDs.Add(n.Id);
-		    }
+            {
+                sumVal += n.Val;
+                numbIDs.Add(n.Id);
+            }
 
             /// <summary>Prints subset</summary>
             /// <param name="sumWidth">maximum count of digits in subsets sum value to align sums left (doesn't used)</param>
@@ -185,12 +185,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Console.Write("set {0:d}\tsum {1:d}  numbIDs:", ID, sumVal);
                 if (prNumbCnt > 0 && prNumbCnt < numbIDs.Count)
                 {
-                    for(int i=0; i<prNumbCnt; i++)
+                    for (int i = 0; i < prNumbCnt; i++)
                         Console.Write(" {0:d}", numbIDs[i]);
                     Console.Write("... ({0:d})", numbIDs.Count);
                 }
                 else
-                    foreach(numb_id id in numbIDs)
+                    foreach (numb_id id in numbIDs)
                         Console.Write(String.Format(" {0,2}", id));
                 Console.WriteLine();
             }
@@ -203,13 +203,13 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             /// <summary>Gets number IDs container</summary>
             public List<numb_id> NumbIDs { get { return numbIDs; } }
-	    }
+        }
 
         /// <summary>Represents subsets and their inaccuracy</summary>
         internal class Result
-	    {
+        {
             /// <summary>maximum difference between the subset sums (inaccuracy)</summary>
-            internal ss_sum       SumDiff;
+            internal ss_sum SumDiff;
             /// <summary>subsets</summary>
             internal List<Subset> Bins;
 
@@ -228,7 +228,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             internal ss_id SubsetCount { get { return (ss_id)Bins.Count; } }
 
             /// <summary>Sorts subsets by their sum</summary>
-            /// <param name="ascend">if true then in in ascending order, otherwise in descending order</param>
+            /// <param name="ascend">if true then in ascending order, otherwise in descending order</param>
             internal void Sort(bool ascend)
             {
                 if (ascend) Bins.Sort(Subset.CompareInAscend);
@@ -237,32 +237,32 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             /// <summary>Sorts subsets in descending order and sets subsets ID starting with 1</summary>
             internal void SetIDs()
-		    {
-			    // set subset's ID
-			    ss_id i = 1;		// first subset ID
-                Bins.ForEach(delegate(Subset ss) { ss.id = i++; });
-		    }
+            {
+                // set subset's ID
+                ss_id i = 1;		// first subset ID
+                Bins.ForEach((Subset ss) => { ss.id = i++; });
+            }
 
             /// <summary>Clears instance: removes all subsets number IDs and resets the sum of the number values
             /// </summary>
             internal void Clear()
-		    {
+            {
                 SumDiff = largestSum;
-                Bins.ForEach(delegate(Subset ss) { ss.Clear(); });
-		    }
+                Bins.ForEach((Subset ss) => { ss.Clear(); });
+            }
 
             /// <summary>Outfits this result</summary>
             /// <param name="numbs">numbers to be distributed</param>
             /// <param name="ind">index of the first subset: 1 for SGreedy() or 0 for DSTree()</param>
             /// <param name="diff">difference between the subset sums</param>
             internal void Fill(IdNumbers numbs, byte ind, ss_sum diff)
-		    {
-			    ss_id ssCnt = (ss_id)(SubsetCount - ind);	// count of subsets minus first index
-			    Clear();
+            {
+                ss_id ssCnt = (ss_id)(SubsetCount - ind);   // count of subsets minus first index
+                Clear();
                 foreach (IdNumber n in numbs)
                     Bins[ssCnt - n.BinIInd].AddNumb(n);
-			    SumDiff = diff;
-		    }
+                SumDiff = diff;
+            }
 
             /// <summary>Sets the minimum/maximum subset sums and their difference for this instance
             /// </summary>
@@ -270,8 +270,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// <param name="maxSum">maximum subset sum to be retrieved</param>
             /// <returns>true if sum difference is updated</returns>
             internal bool SetSumDiff(ref ss_sum minSum, ref ss_sum maxSum)
-		    {
-			    minSum = maxSum = Bins[0].sumVal;
+            {
+                minSum = maxSum = Bins[0].sumVal;
                 //for(int i=1; i<Bins.Count; i++)
                 //    if (Bins[i].sumVal > maxSum) maxSum = Bins[i].sumVal;
                 //    else if (Bins[i].sumVal < minSum) minSum = Bins[i].sumVal;
@@ -279,12 +279,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                     if (ss.sumVal > maxSum) maxSum = ss.sumVal;
                     else if (ss.sumVal < minSum) minSum = ss.sumVal;
                 ss_sum newSumDiff = maxSum - minSum;
-			    if(newSumDiff < SumDiff) {
-				    SumDiff = newSumDiff;
-				    return true;
-			    }
-			    return false;
-		    }
+                if (newSumDiff < SumDiff)
+                {
+                    SumDiff = newSumDiff;
+                    return true;
+                }
+                return false;
+            }
 
             /// <summary>Prints an instance</summary>
             /// <param name="prNumbCnt">maximum count of printed number IDs or 0 if all</param>
@@ -292,27 +293,27 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (Bins.Count == 0) return;
                 byte width = DigitsCnt(Bins[0].sumVal);	// first sum is the biggest
-                foreach(Subset ss in Bins)
+                foreach (Subset ss in Bins)
                     ss.Print(width, prNumbCnt);
             }
 
             /// <summary>Gets count of digist in a value</summary>
             /// <param name="val">value</param>
             /// <returns>count of digist</returns>
-		    internal static byte DigitsCnt (ss_sum val)
-		    {
+		    internal static byte DigitsCnt(ss_sum val)
+            {
                 byte res = 0;
                 for (; val > 0; val /= 10, res++) ;
-			    return res;
-		    }
+                return res;
+            }
 
             //// <summary>Sorts subsets in descending order</summary>
             //internal void SortByDescent() { Bins.Sort(new SubsetComparer()); }
-	    }
+        }
 
         /// <summary>Encapsulates partition methods</summary>
         internal class Partition
-	    {
+        {
             /// <summary>the minimum DSTree() invokes limit</summary>
 		    const uint minCallLimit = 1000000;
             /// <summary>flag of DSTree() completion by limit</summary>
@@ -321,17 +322,17 @@ namespace Cyanlabs.Syn3Updater.Helper
             const byte perfFlag = 0x2;
 
             /// <summary>current DSTree() invokes limit</summary>
-		    UInt64  callLimit;
+		    UInt64 callLimit;
             /// <summary>counter of DSTree() invokes</summary>
-		    uint  callCnt;
+		    uint callCnt;
             /// <summary>input numbers</summary>
-		    IdNumbers   numbs;
+		    IdNumbers numbs;
             /// <summary>numbers with the best unsaved maximum sum difference: used in DSTree()</summary>
-            IdNumbers   standbyNumbs;
+            IdNumbers standbyNumbs;
             /// <summary>current result</summary>
-            Result  currResult;
+            Result currResult;
             /// <summary>final result</summary>
-            Result  finalResult;
+            Result finalResult;
             /// <summary>current minimum sum among subsets</summary>
             ss_sum minSum;
             /// <summary>current maximum sum among subsets</summary>
@@ -363,39 +364,40 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// <returns>true if the more narrow range is achieved</returns>
 		    bool SetRange(Result res)
             {
-			    ss_sum resMinSum = 0, resMaxSum = 0;
+                ss_sum resMinSum = 0, resMaxSum = 0;
 
-			    if( res.SetSumDiff(ref resMinSum, ref resMaxSum) &&	res.SumDiff < sumDiff) {
-				    sumDiff = res.SumDiff;
-				    minSum = resMinSum;
-				    maxSum = resMaxSum;
-				    return true;
-			    }
-			    return false;
-		    }
+                if (res.SetSumDiff(ref resMinSum, ref resMaxSum) && res.SumDiff < sumDiff)
+                {
+                    sumDiff = res.SumDiff;
+                    minSum = resMinSum;
+                    maxSum = resMaxSum;
+                    return true;
+                }
+                return false;
+            }
 
             /// <summary>Performs 'Unconditional Greedy' partition</summary>
             /// <param name="ssCnt">count of subsets</param>
 		    void UGreedy(ss_id ssCnt)
-		    {
+            {
                 int i = 0, shift = 1;
 
                 foreach (IdNumber n in numbs)
                 {
                     finalResult.Bins[i].AddNumb(n);
                     i += shift;
-                    if (i / ssCnt > 0)  { i--; shift = -1; }	// last subset, flip to reverse round order
-                    else if (i < 0)     { i++; shift = 1; }		// first subset, flip to direct  round order
+                    if (i / ssCnt > 0) { i--; shift = -1; }	// last subset, flip to reverse round order
+                    else if (i < 0) { i++; shift = 1; }		// first subset, flip to direct  round order
                 }
                 SetRange(finalResult);		// set minSum, maxSum, sumDiff
-                finalResult.SetIDs();		// set subsets ID
-		    }
+                finalResult.SetIDs();       // set subsets ID
+            }
 
             /// <summary>Performs 'Greedy' partition</summary>
             /// <param name="ssCnt">count of subsets</param>
             void Greedy(ss_id ssCnt)
-		    {
-			    ss_id i, k;		// subsets cyclic index, index of subset with minimum sum
+            {
+                ss_id i, k;		// subsets cyclic index, index of subset with minimum sum
 
                 foreach (IdNumber n in numbs)
                 {
@@ -413,8 +415,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     finalResult.Fill(numbs, 0, currResult.SumDiff);		// outfit final result
                     finalResult.SetIDs();
-			    }
-		    }
+                }
+            }
 
             /// <summary>Wrapper to 'Greedy' partition</summary>
             /// <param name="ssCnt">count of subsets</param>
@@ -424,14 +426,14 @@ namespace Cyanlabs.Syn3Updater.Helper
                 currResult = new Result(numbs.Count, ssCnt);
                 Greedy(ssCnt);
             }
-            
+
             /// <summary>Performs 'Sequential stuffing Greedy' partition</summary>
             /// <param name="ssCnt">count of subsets</param>
             void SGreedy(ss_id ssCnt)
-		    {
-			    int freeCnt;		// number of unallocated numbs
-			    int i, k = 1;		// bin index, delta multiplicator
-			    float avrUp;		// raised average sum
+            {
+                int freeCnt;        // number of unallocated numbs
+                int i, k = 1;       // bin index, delta multiplicator
+                float avrUp;		// raised average sum
                 float up = numbs.GetMinUp;	// delta above average sum
 
                 do  // loop through the numbs until unfitted numbs count becomes less then half of bins
@@ -439,7 +441,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     freeCnt = numbs.Count;
                     numbs.Reset();
                     currResult.Clear();
-				    avrUp = avrSum + up * k++;
+                    avrUp = avrSum + up * k++;
 
                     for (i = 0; i < currResult.Bins.Count; i++)
                         foreach (IdNumber n in numbs)
@@ -449,65 +451,68 @@ namespace Cyanlabs.Syn3Updater.Helper
                                 n.BinIInd = (ss_id)(ssCnt - i);
                                 freeCnt--;
                             }
-			    }
+                }
                 // this heuristic contition provided satisfactory inaccuracy in a single pass in most of cases
                 while (freeCnt > ssCnt / 2);
 
                 // distribute remaining unallocated numbs by Greed protocol
-			    // Checking for freeCnt==0 can be omitted, since as n happens very rarely
+                // Checking for freeCnt==0 can be omitted, since as n happens very rarely
                 Greedy(ssCnt);
-		    }
+            }
 
             /// <summary>Performs 'Dynamic Search Tree' ('perfect') partition</summary>
             /// <param name="currItInd">numb's index from which the cycle continues</param>
             /// <param name="invInd">current inverse index of subset</param>
 		    void DSTree(int currItInd, ss_id invInd)
-		    {
-			    if(complete != 0)	return;
-                if (++callCnt == callLimit)     RaiseComplFlag(limFlag);
-                Subset ss = currResult.Bins[currResult.Bins.Count - 1 - invInd];	// curent bin
+            {
+                if (complete != 0) return;
+                if (++callCnt == callLimit) RaiseComplFlag(limFlag);
+                Subset ss = currResult.Bins[currResult.Bins.Count - 1 - invInd];    // curent bin
 
-			    if(invInd != 0) {		// not last bin
+                if (invInd != 0)
+                {		// not last bin
                     IdNumber n;
                     for (int i = currItInd; i < numbs.Count; i++)
                     {
                         n = numbs[i];
-					    if(n.BinIInd == 0 && n.Val + ss.sumVal < maxSum) {
+                        if (n.BinIInd == 0 && n.Val + ss.sumVal < maxSum)
+                        {
                             ss.sumVal += n.Val;
                             n.BinIInd = invInd;
-                            if (i + 1 < numbs.Count)			// checkup just to avoid blank recursive invoke
-							    DSTree(i+1, invInd);			    // try to fit next numb to the same bin
-						    if(ss.sumVal > minSum)			    // bin is full
-							    DSTree(0, (ss_id)(invInd-1));	// try to fit unallocated numbs to the next bin
+                            if (i + 1 < numbs.Count)            // checkup just to avoid blank recursive invoke
+                                DSTree(i + 1, invInd);              // try to fit next numb to the same bin
+                            if (ss.sumVal > minSum)             // bin is full
+                                DSTree(0, (ss_id)(invInd - 1));	// try to fit unallocated numbs to the next bin
                             ss.sumVal -= n.Val;                // clear the traces of current numb processing
                             n.BinIInd = 0;
-					    }
+                        }
                     }
-			    }
-			    else {				// last bin
+                }
+                else
+                {				// last bin
                     // accumulate sum for the last bin
                     foreach (IdNumber n in numbs)
-					    if(n.BinIInd == 0)		// zero invIndex means that number belongs to the last bin
-						    ss.sumVal += n.Val;
+                        if (n.BinIInd == 0)     // zero invIndex means that number belongs to the last bin
+                            ss.sumVal += n.Val;
                     if (SetRange(currResult))   // is inaccuracy better than the previous one?
                     {
                         standbyNumbs.CopyIndexes(numbs);	// keep current numbers as the standby one
                         lastSumDiff = standbySumDiff = sumDiff;	// for the next standby result selection
                         if (IsResultPerfect) RaiseComplFlag(perfFlag);
                     }
-				    else if (currResult.SumDiff < standbySumDiff)  // should we keep current result as standby?
+                    else if (currResult.SumDiff < standbySumDiff)  // should we keep current result as standby?
                     {
                         standbyNumbs.CopyIndexes(numbs);	// keep current numbers as the standby one
                         standbySumDiff = currResult.SumDiff;
-					}
-				    ss.sumVal = 0;				// clear last bin sum
-			    }
-		    }
+                    }
+                    ss.sumVal = 0;              // clear last bin sum
+                }
+            }
 
             /// <summary>Performs iterative 'Dynamic Search Tree' partition.</summary>
             /// <param name="ssCnt">count of subsets</param>
             void ISTree(ss_id ssCnt)
-		    {
+            {
                 // initial range expansion around average 
                 numb_val up = avrSum < numbs[0].Val ?
                     (numbs[0].Val - System.Convert.ToUInt32(avrSum) + 2) : 1;
@@ -532,13 +537,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                         break;
                     }
                 }
-                while (lastSumDiff != currResult.SumDiff);	// until previous and current inaccuracy are different
-                // use last fitted result
-		        {
+                while (lastSumDiff != currResult.SumDiff);  // until previous and current inaccuracy are different
+                                                            // use last fitted result
+                {
                     SetRange(finalResult);
                     finalResult.Fill(standbyNumbs, 1, standbySumDiff);
-		        }
-		    }
+                }
+            }
             /// <summary>Partition method delegate</summary>
             /// <param name="ssCnt">count od subsets</param>
             delegate void PartitionMethodDlg(ss_id ssCnt);
@@ -561,10 +566,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// <param name="nmbs">identified values to be distributed</param>
             /// <param name="result">final result</param>
             /// <param name="avr">average value sum</param>
-            /// <param name="limMult">DSTree method call's limit multiplier; 
+            /// <param name="limMult">DSTree method call's limit multiplier;
             /// if 0 then omit DSTree method invoking</param>
             public Partition(IdNumbers nmbs, Result result, float avr, byte limMult)
-		    {
+            {
                 numbs = nmbs;
                 finalResult = result;
                 avrSum = avr;
@@ -582,7 +587,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 for (i = 0; i < cnt; i++)
                     if (DoPartition(i, ssCnt)) return;
             }
-	    };
+        };
 
         /// <summary>largest possible sum</summary>
         const ss_sum largestSum = UInt64.MaxValue;
@@ -594,19 +599,19 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <summary>Initializes partition by identified numbers.</summary>
         /// <param name="numbs">identified numbers to be distributed</param>
         /// <param name="ssCnt">count of subsets</param>
-        /// <param name="limMult">DSTree method call's limit multiplier; 
+        /// <param name="limMult">DSTree method call's limit multiplier;
         /// if 0 then omit DSTree method invoking (fast, but not 'perfect)</param>
         void Init(IdNumbers numbs, ss_id ssCnt, byte limMult)
-	    {
+        {
             result = new Result(numbs.Count, ssCnt);
             if (ssCnt == 0) return;
             effPartition.Partition Partition = new Partition(numbs, result, avr = numbs.AvrSum(ssCnt), limMult);
-	    }
+        }
 
         /// <summary>Constructs numbers partition by identified numbers,
         ///  with sums sorted in descending order.</summary>
         /// <param name="numbs">identified numbers to be distributed</param>
-        /// <param name="ssCnt">count of subsets; 
+        /// <param name="ssCnt">count of subsets;
         /// if 0 then creates an empty partition with undefined (maximum type's value) inaccuracy</param>
         /// <param name="limMult">DSTree method call's limit multiplier -
         /// it increases the limit of 1 million recursive invokes by limMult times;
@@ -616,11 +621,11 @@ namespace Cyanlabs.Syn3Updater.Helper
             Init(numbs, ssCnt, limMult);
         }
 
-        /// <summary>Constructs numbers partition by numbers, 
+        /// <summary>Constructs numbers partition by numbers,
         ///  with sums sorted in descending order.</summary>
         /// <param name="vals">numbers to be distributed;
         /// their ID are assigned according to their ordinal numbers in array</param>
-        /// <param name="ssCnt">count of subsets; 
+        /// <param name="ssCnt">count of subsets;
         /// if 0 then creates an empty partition with undefined (maximum type's value) inaccuracy</param>
         /// <param name="limMult">DSTree method call's limit multiplier -
         /// it increases the limit of 1 million recursive invokes by limMult times;
@@ -630,7 +635,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             numb_id i = 1;
             IdNumbers numbs = new IdNumbers(vals.Count);
 
-            foreach(numb_val val in vals)
+            foreach (numb_val val in vals)
                 numbs.Add(new IdNumber(i++, val));
             Init(numbs, ssCnt, limMult);
         }
@@ -649,7 +654,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <summary>Gets average summary value among subsets.</summary>
         public float AvrSum { get { return avr; } }
 
-        /// <summary>Gets inaccuracy: the difference between maximum and minimum 
+        /// <summary>Gets inaccuracy: the difference between maximum and minimum
         /// summary value among subsets.
         /// </summary>
         public ss_sum Inacc { get { return result.SumDiff; } }
@@ -659,10 +664,10 @@ namespace Cyanlabs.Syn3Updater.Helper
         public float RelInacc { get { return 100F * Inacc / avr; } }
 
         /// <summary>Sorts subsets by their sum.</summary>
-        /// <param name="ascend">if true then in in ascending order, otherwise in descending order</param>
+        /// <param name="ascend">if true then in ascending order, otherwise in descending order</param>
         public void Sort(bool ascend = true) { if (Inacc > 0) result.Sort(ascend); }
 
-       /// <summary>Outputs subsets to console.</summary>
+        /// <summary>Outputs subsets to console.</summary>
         /// <param name="prSumDiff">if true then prints sum diference (in absolute and relative)</param>
         /// <param name="prNumbCnt">maximum number of printed number IDs or 0 if ptint all</param>
         public void Print(bool prSumDiff = true, int prNumbCnt = 0)

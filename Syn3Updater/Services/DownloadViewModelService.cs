@@ -8,8 +8,6 @@ using Cyanlabs.Syn3Updater.Model;
 
 namespace Cyanlabs.Syn3Updater.Services
 {
-    using ss_id = System.UInt16;
-    using numb_id = Int32;
     public static class DownloadViewModelService
     {
         public static StringBuilder CreateAutoInstallFile(string _selectedRelease, string _selectedRegion)
@@ -18,47 +16,46 @@ namespace Cyanlabs.Syn3Updater.Services
             //naviextras not handled here 
             var ivsuList = AppMan.App.Ivsus.Where(item => item.Source != "naviextras").ToList();
 
-            //split into 3 buckets 
             if (ivsuList.Any(i => i.Type == "MAP"))
             {
-                int baseint = 1, part3int = 1, part2int = 1, part1int = 2;
-                
-                var autoinstalllstPart1 = new StringBuilder($@"[SYNCGen3.0_3.0.1_PRODUCT]{Environment.NewLine}");
-                var autoinstalllstPart2 = new StringBuilder($@"[SYNCGen3.0_3.0.1]{Environment.NewLine}");
-                var autoinstalllstPart3 = new StringBuilder($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
-                
-                var mapLicense = ivsuList.FirstOrDefault(i => i.Type == "MAP_LICENSE");
-                autoinstalllstPart1.Append($@"Item1 = {mapLicense.Type} - {mapLicense.FileName}\rOpen1 = SyncMyRide\{mapLicense.FileName}\r").Replace(@"\r", Environment.NewLine);
+                autoinstalllst.Append($@"[SYNCGen3.0_3.0.1_PRODUCT]{Environment.NewLine}");
+                var mapLicense = ivsuList.Find(i => i.Type == "MAP_LICENSE");
+                autoinstalllst.Append($@"Item1 = {mapLicense.Type} - {mapLicense.FileName}\rOpen1 = SyncMyRide\{mapLicense.FileName}\r").Replace(@"\r", Environment.NewLine);
                 ivsuList.Remove(mapLicense);
 
-                List<UInt32> vals = ivsuList.Select(ivsu => (uint) ivsu.FileSize).ToList();
-                effPartition p = new effPartition(vals, 3);
-                for (ss_id i = 0; i < p.SubsetCount; i++)
+                List<uint> vals = ivsuList.ConvertAll(ivsu => (uint)ivsu.FileSize);
+                //splits the ivsus into 3 evenly distibuted buckets 
+                var buckets = new effPartition(vals, 3);
+                for (ushort i = 0; i < buckets.SubsetCount; i++)
                 {
-                    foreach (int iId in p[i].NumbIDs)
+                    for(int j =0; j< buckets[i].NumbIDs.Count; j++ )
                     {
-                        SModel.Ivsu item = ivsuList[iId - 1];
-                        switch (i)
-                        {
-                            case 0:
-                                autoinstalllstPart1.Append($@"Item{part1int} = {item.Type} - {item.FileName}\rOpen{part1int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                                part1int++;
-                                break;
-                            case 1:
-                                autoinstalllstPart2.Append($@"Item{part2int} = {item.Type} - {item.FileName}\rOpen{part2int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                                part2int++;
-                                break;
-                            case 2:
-                                autoinstalllstPart3.Append($@"Item{part3int} = {item.Type} - {item.FileName}\rOpen{part3int} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
-                                part3int++;
-                                break;
+                        var subIndex = (int)buckets[i].numbIDs[j];
+                        //indexes for "Items" start at 1
+                        var partIndex = j+1;
+                        //indexes returned by the partition code start at 1 
+                        SModel.Ivsu item = ivsuList[subIndex - 1];
+                        if (i == 0) {
+                            //since we added the MAP_LICENCE package above 
+                            partIndex++;
                         }
+                        autoinstalllst.Append($@"Item{partIndex} = {item.Type} - {item.FileName}\rOpen{partIndex} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
+                    }
+                    if (i == 0)
+                    {
+                        autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine)
+                            .Append($@"[SYNCGen3.0_3.0.1]{Environment.NewLine}");
+                    }
+                    if (i == 1)
+                    {
+                        autoinstalllst.Append("Options = AutoInstall, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine)
+                            .Append($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
+                    }
+                    if (i == 2)
+                    {
+                        autoinstalllst.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine);
                     }
                 }
-                autoinstalllstPart1.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine);
-                autoinstalllstPart2.Append("Options = AutoInstall, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine);
-                autoinstalllstPart3.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine);
-                autoinstalllst.Append(autoinstalllstPart1).Append(autoinstalllstPart2).Append(autoinstalllstPart3);
             }
             else
             {
@@ -66,7 +63,7 @@ namespace Cyanlabs.Syn3Updater.Services
                 for (int i = 0; i < ivsuList.Count; i++)
                 {
                     var item = ivsuList[i];
-                    autoinstalllst.Append($@"Item{i+1} = {item.Type} - {item.FileName}\rOpen{i+1} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
+                    autoinstalllst.Append($@"Item{i + 1} = {item.Type} - {item.FileName}\rOpen{i + 1} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
                 }
                 autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine);
             }
