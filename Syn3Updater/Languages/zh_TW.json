@@ -45,7 +45,6 @@
     "Settings.Language": "語言",
     "Settings.AdvancedOptions": "高級選項",
     "Settings.InstallMode": "安裝模式",
-    "Settings.ShowAllReleases": "顯示所有的發行版本",
     "Settings.PaidOptions": "付錢的選項",
     "Settings.LicenseKeyInfo": "輸入License Key來獲取你已購買的客製套件的使用權限",
     "Settings.LicenseKey": "License Key",
@@ -128,7 +127,7 @@
     "Settings.Navigation": "導航:",
     "MessageBox.NoVersionOrRegionSelected": "你尚未設定你的版本或區域!",
     "MessageBox.My20Detected": "Syn3 Updater偵測到您強制安裝的模式但先前偵測到MY20或更新的版本！ 經此建立的USB在MY20或更新的APIM上你將會讓他變磚！\n\n按下啊’Yes‘, 您將會取消內建在Syn3 Updater內的所有MY20保護機制\n\n您確定要更改這個安裝模式嗎？",
-    "MessageBox.My20Check": "警告： 錯誤的答案會讓你的APIM變磚！\n\n你的車是2020或更新的？\n\n假設按下Yes, Syn3 Updater會指導您執行正式的interrogator tool 來確認您是否有MY20 APIM與否\n\n假設是2019或更舊的，按 No來如計畫進行",
+    "MessageBox.My20Check": "警告： 錯誤的答案會讓你的APIM變磚！\n\n你的車是2020或更新的？\n\n假設按下Yes, Syn3 Updater會指導您執行正式的interrogator tool 來確認您是否有MY20 APIM與否\n\n假設是2019或更舊的，按 No來依計畫進行",
     "MessageBox.My20Found": "Syn3 Updater已確認你的APIM是MY20(2020生產）或是更新，現在Syn3 Updater將強制使用autoinstall方式來避免您的APIM可能變磚",
     "MessageBox.My20NotFound": "Syn3 Updater已確認你的APIM不是MY20, 使用Syn3 Updater的各式功能是安全的",
     "MessageBox.LogUtilityCompleteMy20": "製備Interrogator(Logging) USB成功！\n\n將USB從電腦取下, 插入您的車上, 確認車子有啟動, 等待一下, 等待出現他說 Installation Complete或APIM重啟動\n\n一旦完成, 將USB插入您的電腦, 按下的Ok並選擇您USB內SyncMyRide裡面XML檔案",
@@ -136,5 +135,5 @@
     "Settings.My20Mode": "選定MY20防護",
     "News.ImportantNoticeTitle": "重要提示",
     "News.NoticeTitle": "其他提示",
-    "News.Changelog": "Changlog"
+    "News.Changelog": "變更紀錄"
 }
