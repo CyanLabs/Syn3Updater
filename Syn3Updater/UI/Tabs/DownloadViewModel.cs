@@ -357,7 +357,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 webException.GetFullMessage(), "Syn3 Updater",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Exclamation));
-                            AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
+                            //Ignoring HttpRequestExceptions due to log spam from server disconnects etc.
+                            //AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
                             CancelAction();
                         }
                         catch (IOException ioException)

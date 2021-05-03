@@ -178,7 +178,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                         webException.GetFullMessage(), "Syn3 Updater",
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation));
-                    AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
+                    //Ignoring HttpRequestExceptions due to log spam from server disconnects etc.
+                    //AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
                     return false;
                 }
             }
