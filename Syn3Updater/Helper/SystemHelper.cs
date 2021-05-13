@@ -97,6 +97,13 @@ namespace Cyanlabs.Syn3Updater.Helper
             return $"{result} ({Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ReleaseId", "")})";
         }
 
+        public static void WriteRegistryHandler()
+        {
+            Registry.CurrentUser.CreateSubKey(@"Software\Classes\syn3updater\Shell\Open\Command");
+            Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("", "URL:syn3updater protocol");
+            Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("URL Protocol", "");
+            Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater\Shell\Open\Command", true)?.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Launcher.exe\" %1");
+        }
         #endregion
     }
 }

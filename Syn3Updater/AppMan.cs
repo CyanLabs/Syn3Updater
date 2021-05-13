@@ -153,6 +153,7 @@ namespace Cyanlabs.Syn3Updater
 
         public void Initialize()
         {
+            SystemHelper.WriteRegistryHandler();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
             string[] args = Environment.GetCommandLineArgs();
@@ -171,9 +172,9 @@ namespace Cyanlabs.Syn3Updater
             }
             
             foreach (string value in args)
-                if (value.Contains("/action="))
+                if (value.Contains("syn3updater:"))
                 {
-                    byte[] base64EncodedBytes = System.Convert.FromBase64String(value.Replace("/action=", ""));
+                    byte[] base64EncodedBytes = System.Convert.FromBase64String(value.Replace("syn3updater:", ""));
                     Magnet = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
                 }
             

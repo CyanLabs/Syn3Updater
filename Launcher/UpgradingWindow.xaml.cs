@@ -86,7 +86,7 @@ namespace Cyanlabs.Launcher
             
             string base64 = "";
             foreach (string value in Environment.GetCommandLineArgs())
-                if (value.Contains("/action=")) base64 = value.Replace("/action=", "");
+                if (value.Contains("syn3updater:")) base64 = value;
 
             Process p = new Process
             {
@@ -95,7 +95,7 @@ namespace Cyanlabs.Launcher
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = BaseFolder+"\\Syn3Updater.exe",
                     WorkingDirectory = BaseFolder ?? string.Empty,
-                    Arguments = "/launcher" + (updated ? " /updated" : "") + (!string.IsNullOrEmpty(base64) ? " /action=" + base64 : ""),
+                    Arguments = "/launcher" + (updated ? " /updated" : "") + (!string.IsNullOrEmpty(base64) ? " " + base64 : ""),
                     UseShellExecute = false
                 }
             };

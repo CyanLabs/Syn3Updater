@@ -335,12 +335,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     .Select (part  => part.Split('='))
                     .Where (part => part.Length == 2)
                     .ToDictionary (sp => sp[0], sp => sp[1]);
+                
+                foreach (KeyValuePair<string, string> value in _magnetActions)
+                {
+                    MessageBox.Show(value.Key +" "+ value.Value);
+                }
             }
 
-            foreach (KeyValuePair<string, string> value in _magnetActions)
-            {
-                MessageBox.Show(value.Key +" "+ value.Value);
-            }
             SelectedRegionIndex = -1;
             AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SRegions = new ObservableCollection<SModel.SRegion>
