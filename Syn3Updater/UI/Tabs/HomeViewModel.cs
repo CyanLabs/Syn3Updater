@@ -298,7 +298,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _driveDetailsVisible, value);
         }
 
-        Dictionary<string, string> _magnetActions;
+        Dictionary<string, string> _magnetActions = new Dictionary<string, string>();
         #endregion
 
         #region Methods
@@ -343,7 +343,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
             };
             SVersionsEnabled = false;
-            SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
+            if (_magnetActions?.Count != 0)
+            {
+                SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
+            }
+            else
+            {
+                SelectedRegionIndex = -1;
+            }
         }
 
         private static void RegionInfoAction()
