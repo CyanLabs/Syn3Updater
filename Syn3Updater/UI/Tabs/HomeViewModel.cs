@@ -312,9 +312,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadLocation = AppMan.App.DownloadPath;
             My20Mode = AppMan.App.Settings.My20 ? "Enabled" : "Disabled / Not MY20";
             InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
-            SelectedMapVersionIndex = -1;
-            SelectedReleaseIndex = -1;
-            SelectedRegionIndex = -1;
             StartEnabled = false;
             IvsuList = new ObservableCollection<SModel.Ivsu>();
             InstallMode = AppMan.App.InstallMode;
@@ -335,14 +332,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     .Select (part  => part.Split('='))
                     .Where (part => part.Length == 2)
                     .ToDictionary (sp => sp[0], sp => sp[1]);
-                
-                foreach (KeyValuePair<string, string> value in _magnetActions)
-                {
-                    MessageBox.Show(value.Key +" "+ value.Value);
-                }
             }
-
-            SelectedRegionIndex = -1;
             AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SRegions = new ObservableCollection<SModel.SRegion>
             {
@@ -353,6 +343,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
             };
             SVersionsEnabled = false;
+            SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
         }
 
         private static void RegionInfoAction()
@@ -428,10 +419,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             NotesVisibility = Visibility.Hidden;
             if (SelectedRegion.Code != "")
             {
-                IvsuList.Clear();
+                IvsuList?.Clear();
                 SelectedMapVersion = null;
                 SelectedRelease = null;
-                SMapVersion.Clear();
+                SMapVersion?.Clear();
                 _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
                     $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.Settings.LicenseKey}");
 
@@ -454,13 +445,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (!AppMan.App.Settings.CurrentNav)
                 {
-                    SMapVersion.Add(LM.GetValue("String.NonNavAPIM"));
+                    SMapVersion?.Add(LM.GetValue("String.NonNavAPIM"));
                 }
                 else
                 {
                     if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion)
                     {
-                        SMapVersion.Add(LM.GetValue("String.KeepExistingMaps"));
+                        SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
                         if (AppMan.App.Settings.CurrentNav)
                         {
                             SVersion.Add(LM.GetValue("String.OnlyMaps"));
@@ -493,7 +484,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (SelectedRelease != "")
             {
                 SelectedMapVersion = null;
-                IvsuList.Clear();
+                IvsuList?.Clear();
                 if (SelectedRelease == LM.GetValue("String.OnlyMaps"))
                 {
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
@@ -526,7 +517,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (AppMan.App.Settings.CurrentNav)
                 {
-                    SMapVersion.Clear();
+                    SMapVersion?.Clear();
                     if (SelectedRelease != LM.GetValue("String.OnlyMaps"))
                     {
                         SMapVersion.Add(LM.GetValue("String.NoMaps"));
@@ -558,7 +549,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (!String.IsNullOrWhiteSpace(SelectedMapVersion))
             {
-                IvsuList.Clear();
+                IvsuList?.Clear();
 
                 //LESS THAN 3.2
                 if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)

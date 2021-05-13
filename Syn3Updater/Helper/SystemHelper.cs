@@ -104,6 +104,11 @@ namespace Cyanlabs.Syn3Updater.Helper
             Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("URL Protocol", "");
             Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater\Shell\Open\Command", true)?.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Launcher.exe\" %1");
         }
+        
+        public static void DeleteRegistryHandler()
+        {
+            Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\syn3updater");
+        }
         #endregion
     }
 }
