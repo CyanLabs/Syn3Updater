@@ -106,7 +106,8 @@ namespace Cyanlabs.Syn3Updater
             ConfigFile,
             ConfigFolderPath,
             Header,
-            LauncherConfigFile;
+            LauncherConfigFile,
+            Magnet;
 
         public bool DownloadOnly, SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced;
 
@@ -154,8 +155,8 @@ namespace Cyanlabs.Syn3Updater
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
-
-            if (!Environment.GetCommandLineArgs().Contains("/launcher"))
+            string[] args = Environment.GetCommandLineArgs();
+            if (!args.Contains("/launcher"))
             {
                 try
                 {
@@ -168,7 +169,14 @@ namespace Cyanlabs.Syn3Updater
                     Logger.Debug(e.GetFullMessage());
                 }
             }
-
+            
+            foreach (string value in args)
+                if (value.Contains("/action="))
+                {
+                    byte[] base64EncodedBytes = System.Convert.FromBase64String(value.Replace("/action=", ""));
+                    Magnet = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+                }
+            
             ConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             ConfigFile = ConfigFolderPath + "\\settings.json";
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);

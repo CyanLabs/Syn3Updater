@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -296,6 +298,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _driveDetailsVisible, value);
         }
 
+        Dictionary<string, string> _magnetActions;
         #endregion
 
         #region Methods
@@ -322,9 +325,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path?.Length == 0 ? Visibility.Hidden : Visibility.Visible;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
         }
-
+        
         public void Init()
         {
+            if (!string.IsNullOrEmpty(AppMan.App.Magnet))
+            {
+                _magnetActions = AppMan.App.Magnet
+                    .Split(';')
+                    .Select (part  => part.Split('='))
+                    .Where (part => part.Length == 2)
+                    .ToDictionary (sp => sp[0], sp => sp[1]);
+            }
+
+            foreach (KeyValuePair<string, string> value in _magnetActions)
+            {
+                MessageBox.Show(value.Key +" "+ value.Value);
+            }
             SelectedRegionIndex = -1;
             AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SRegions = new ObservableCollection<SModel.SRegion>
