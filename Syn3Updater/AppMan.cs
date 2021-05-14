@@ -170,14 +170,12 @@ namespace Cyanlabs.Syn3Updater
                     Logger.Debug(e.GetFullMessage());
                 }
             }
-            
+
             foreach (string value in args)
-                if (value.Contains("syn3updater:"))
-                {
-                    byte[] base64EncodedBytes = System.Convert.FromBase64String(value.Replace("syn3updater:", ""));
-                    Magnet = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-                }
-            
+            {
+                if (value.Contains("syn3updater:")) Magnet = value.Replace("syn3updater:", "");
+            }
+
             ConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             ConfigFile = ConfigFolderPath + "\\settings.json";
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
