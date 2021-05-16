@@ -425,6 +425,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task UpdateSelectedRegion()
         {
             NotesVisibility = Visibility.Hidden;
+            SVersion?.Clear();
             if (SelectedRegion.Code != "")
             {
                 IvsuList?.Clear();
@@ -484,6 +485,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task UpdateSelectedRelease()
         {
+            SMapVersion?.Clear();
             string license = "";
             if (AppMan.App.Settings.LicenseKey?.Length > 10)
             {
