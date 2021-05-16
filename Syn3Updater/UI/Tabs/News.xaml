@@ -26,7 +26,7 @@
                     </StackPanel>
                 </Grid>
                 
-                <Grid>
+                <Grid Visibility="{Binding ImportantNoticesGrid}">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
@@ -44,7 +44,7 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid>
+                <Grid Visibility="{Binding OtherNoticesGrid}">
                     
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <StackPanel Orientation="Horizontal">
