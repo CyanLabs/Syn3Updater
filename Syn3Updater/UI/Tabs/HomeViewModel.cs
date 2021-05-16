@@ -451,20 +451,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     //TODO Exception handling
                 }
                 
-                if (!AppMan.App.Settings.CurrentNav)
+                if (AppMan.App.Settings.CurrentNav && AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion)
                 {
-                    SMapVersion?.Add(LM.GetValue("String.NonNavAPIM"));
-                }
-                else
-                {
-                    if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion)
-                    {
-                        SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
-                        if (AppMan.App.Settings.CurrentNav)
-                        {
-                            SVersion?.Add(LM.GetValue("String.OnlyMaps"));
-                        }
-                    }
+                    SVersion?.Add(LM.GetValue("String.OnlyMaps"));
                 }
 
                 _jsonReleases = JsonHelpers.Deserialize<Api.JsonReleases>(stringReleasesJson);
@@ -488,6 +477,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task UpdateSelectedRelease()
         {
             SMapVersion?.Clear();
+            if (!AppMan.App.Settings.CurrentNav)
+            {
+                SMapVersion?.Add(LM.GetValue("String.NonNavAPIM"));
+            }
+            else if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion && _selectedRelease != LM.GetValue("String.OnlyMaps"))
+            {
+                SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
+            }
+            
             string license = "";
             if (AppMan.App.Settings.LicenseKey?.Length > 10)
             {
@@ -531,24 +529,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (AppMan.App.Settings.CurrentNav)
                 {
-                    if (SelectedRelease != LM.GetValue("String.OnlyMaps"))
-                    {
-                        SMapVersion?.Add(LM.GetValue("String.NoMaps"));
-                    }
-
-                    if (AppMan.App.Settings.CurrentNav)
-                    {
-                        if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion)
-                            if (SelectedRelease != LM.GetValue("String.OnlyMaps"))
-                            {
-                                SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
-                            }
-                    }
-                    else
-                    {
-                        SMapVersion?.Add(LM.GetValue("String.NonNavAPIM"));
-                    }
-
                     _jsonMapReleases = JsonHelpers.Deserialize<Api.JsonReleases>(stringMapReleasesJson);
                     foreach (Api.Data item in _jsonMapReleases.Releases) SMapVersion?.Add(item.Name);
                 }
