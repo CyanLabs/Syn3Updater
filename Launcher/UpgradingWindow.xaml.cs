@@ -84,9 +84,9 @@ namespace Cyanlabs.Launcher
             bool updated = await check.Execute(Core.LauncherPrefs.ReleaseBranch, this, BaseFolder);
             // Update complete, either no update needed or new update downloaded and extracted, run Syn3Updater.exe    
             
-            string base64 = "";
+            string magnet = "";
             foreach (string value in Environment.GetCommandLineArgs())
-                if (value.Contains("syn3updater:")) base64 = value;
+                if (value.Contains("syn3updater://")) magnet = value;
 
             Process p = new Process
             {
@@ -95,7 +95,7 @@ namespace Cyanlabs.Launcher
                     WindowStyle = ProcessWindowStyle.Hidden,
                     FileName = BaseFolder+"\\Syn3Updater.exe",
                     WorkingDirectory = BaseFolder ?? string.Empty,
-                    Arguments = "/launcher" + (updated ? " /updated" : "") + (!string.IsNullOrEmpty(base64) ? " " + base64 : ""),
+                    Arguments = "/launcher" + (updated ? " /updated" : "") + (!string.IsNullOrEmpty(magnet) ? " " + magnet : ""),
                     UseShellExecute = false
                 }
             };

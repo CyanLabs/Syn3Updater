@@ -173,7 +173,7 @@ namespace Cyanlabs.Syn3Updater
 
             foreach (string value in args)
             {
-                if (value.Contains("syn3updater:")) Magnet = value.Replace("syn3updater:", "");
+                if (value.Contains("syn3updater://")) Magnet = value.Replace("syn3updater://", "").TrimEnd('/');
             }
 
             ConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
