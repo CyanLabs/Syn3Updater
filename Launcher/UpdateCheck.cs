@@ -45,7 +45,7 @@ namespace Cyanlabs.Launcher
                 switch (releaseType)
                 {
                     // Continuous Intergration, 
-                    case LauncherPrefs.ReleaseType.Ci:
+                    case LauncherPrefs.ReleaseType.Alpha:
                         // Gets latest build via API at Cyanlabs.net
                         WebClient wc = new WebClient();
                         ciRelease = JsonConvert.DeserializeObject<CIRelease>(wc.DownloadString(new Uri("https://api.cyanlabs.net/ci/Syn3Updater/latest")));
@@ -59,7 +59,7 @@ namespace Cyanlabs.Launcher
                         break;
 
                     // Release
-                    case LauncherPrefs.ReleaseType.Release:
+                    case LauncherPrefs.ReleaseType.Stable:
                         // Get all GitHub releases for Syn3Updater that aren't marked as 'prerelease' and sets the value of 'latest' to the first (newest) retrieved
                         githubrelease = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
                         break;
@@ -75,7 +75,7 @@ namespace Cyanlabs.Launcher
             }
 
             string version;
-            if (releaseType == LauncherPrefs.ReleaseType.Ci)
+            if (releaseType == LauncherPrefs.ReleaseType.Alpha)
             {
                 version = ciRelease.Number;
             }
@@ -100,7 +100,7 @@ namespace Cyanlabs.Launcher
 
                 // Do the actual file download of the first Asset in the chosen GitHub Release or the CI download link with the previously created WebClient
                 await wc.DownloadFileTaskAsync(
-                     releaseType == LauncherPrefs.ReleaseType.Ci
+                     releaseType == LauncherPrefs.ReleaseType.Alpha
                          ? new Uri(ciRelease.Download)
                          : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
 

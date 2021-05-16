@@ -7,9 +7,9 @@
     {
         public enum ReleaseType
         {
-            Release,
+            Stable,
             Beta,
-            Ci
+            Alpha
         }
 
         public ReleaseType ReleaseBranch { get; set; }
