@@ -350,9 +350,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             else
             {
                 SelectedRegionIndex = -1;
+                SelectedReleaseIndex = -1;
+                SelectedMapVersionIndex = -1;
             }
-            SelectedReleaseIndex = -1;
-            SelectedMapVersionIndex = -1;
         }
 
         private static void RegionInfoAction()
