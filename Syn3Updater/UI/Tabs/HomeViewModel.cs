@@ -14,6 +14,7 @@ using System.Windows.Markup;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Syn3Updater.Services;
 using Cyanlabs.Updater.Common;
 using Ookii.Dialogs.Wpf;
 
@@ -223,11 +224,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _currentRegion;
             set
             {
-                if (value != null)
-                {
-                    SetProperty(ref _currentRegion, value);
-                    AppMan.App.Settings.CurrentRegion = value;
-                }
+                if (value == null) return;
+                SetProperty(ref _currentRegion, value);
+                AppMan.App.Settings.CurrentRegion = value;
             }
         }
 
@@ -298,7 +297,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _driveDetailsVisible, value);
         }
 
-        Dictionary<string, string> _magnetActions = new Dictionary<string, string>();
+        private Dictionary<string, string> _magnetActions = new();
         #endregion
 
         #region Methods
@@ -352,6 +351,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SelectedRegionIndex = -1;
             }
+            SelectedReleaseIndex = -1;
+            SelectedMapVersionIndex = -1;
         }
 
         private static void RegionInfoAction()

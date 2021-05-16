@@ -91,7 +91,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
         }
 
-        private static HttpClient Client;
+        private static HttpClient _client;
 
         /// <summary>
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
@@ -103,10 +103,10 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>bool with True if successful or False if not</returns>
         public async Task<bool> DownloadFile(string path, string filename, CancellationToken ct)
         {
-            Client = new HttpClient();
-            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
+            _client = new HttpClient();
+            _client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
 
-            using (HttpResponseMessage response = await Client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+            using (HttpResponseMessage response = await _client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
             {
                 try
                 {

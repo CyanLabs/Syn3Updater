@@ -10,9 +10,9 @@ namespace Cyanlabs.Syn3Updater.Services
 {
     public static class DownloadViewModelService
     {
-        public static StringBuilder CreateAutoInstallFile(string _selectedRelease, string _selectedRegion)
+        public static StringBuilder CreateAutoInstallFile(string selectedRelease, string selectedRegion)
         {
-            var autoinstalllst = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall {(AppMan.App.ModeForced ? "FORCED " : "")}Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}");
+            var autoinstalllst = new StringBuilder($@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall {(AppMan.App.ModeForced ? "FORCED " : "")}Mode - {selectedRelease} {selectedRegion}{Environment.NewLine}{Environment.NewLine}");
             //naviextras not handled here 
             var ivsuList = AppMan.App.Ivsus.Where(item => item.Source != "naviextras").ToList();
 

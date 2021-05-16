@@ -1,32 +1,31 @@
-﻿using Cyanlabs.Syn3Updater;
-using Cyanlabs.Syn3Updater.Helper;
-using Cyanlabs.Syn3Updater.Model;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
+using Cyanlabs.Syn3Updater.Model;
 
-namespace Cyanlabs.Updater.Common
+namespace Cyanlabs.Syn3Updater.Services
 {
     public static class HomeViewModelService
     {
-        public async static Task Download(string InstallMode, ObservableCollection<SModel.Ivsu> IvsuList,
-            SModel.SRegion SelectedRegion, string SelectedRelease, string SelectedMapVersion, string DriveLetter, USBHelper.Drive SelectedDrive)
+        public static async Task Download(string installMode, ObservableCollection<SModel.Ivsu> ivsuList,
+            SModel.SRegion selectedRegion, string selectedRelease, string selectedMapVersion, string driveLetter, USBHelper.Drive selectedDrive)
         {
-            await SetIvsuList(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter);
+            await SetIvsuList(installMode, ivsuList, selectedRegion, selectedRelease, selectedMapVersion, driveLetter);
 
             bool canceldownload = false;
             //Install Mode is reformat or downgrade My20 warning
-            if (InstallMode == "reformat" || InstallMode == "downgrade")
+            if (installMode == "reformat" || installMode == "downgrade")
             {
                 if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Check"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    await USBHelper.LogPrepareUSBAction(SelectedDrive, DriveLetter, "logutilitymy20");
+                    await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
                     return;
                 }
             }
 
             //Warn is users region is different to new selection
-            if (SelectedRegion.Code != AppMan.App.Settings.CurrentRegion)
+            if (selectedRegion.Code != AppMan.App.Settings.CurrentRegion)
             {
                 if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                     MessageBoxResult.Yes)
@@ -36,32 +35,32 @@ namespace Cyanlabs.Updater.Common
             }
 
             //Cancel no apps package selected
-            if (!AppMan.App.AppsSelected && (InstallMode == "reformat" || InstallMode == "downgrade"))
+            if (!AppMan.App.AppsSelected && (installMode == "reformat" || installMode == "downgrade"))
             {
                 ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 canceldownload = true;
             }
 
-            if (!canceldownload && !SanityCheckHelper.CancelDownloadCheck(SelectedDrive))
+            if (!canceldownload && !SanityCheckHelper.CancelDownloadCheck(selectedDrive))
             {
                 if (!AppMan.App.DownloadOnly)
                 {
-                    AppMan.App.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
-                    AppMan.App.DriveLetter = DriveLetter;
+                    AppMan.App.DriveNumber = selectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+                    AppMan.App.DriveLetter = driveLetter;
                 }
                 AppMan.App.IsDownloading = true;
-                AppMan.Logger.Info($"Starting process ({SelectedRelease} - {SelectedRegion.Code} - {SelectedMapVersion})");
+                AppMan.Logger.Info($"Starting process ({selectedRelease} - {selectedRegion.Code} - {selectedMapVersion})");
                 AppMan.App.FireDownloadsTabEvent();
             }
         }
 
-        public async static Task SetIvsuList(string InstallMode, ObservableCollection<SModel.Ivsu> IvsuList, SModel.SRegion SelectedRegion, string SelectedRelease, string SelectedMapVersion, string DriveLetter)
+        public async static Task SetIvsuList(string installMode, ObservableCollection<SModel.Ivsu> ivsuList, SModel.SRegion selectedRegion, string selectedRelease, string selectedMapVersion, string driveLetter)
         {
             AppMan.Logger.Info(
-                $"USB Drive selected - Name: {AppMan.App.DriveName} - FileSystem: {AppMan.App.DriveFileSystem} - PartitionType: {AppMan.App.DrivePartitionType} - Letter: {DriveLetter}");
+                $"USB Drive selected - Name: {AppMan.App.DriveName} - FileSystem: {AppMan.App.DriveFileSystem} - PartitionType: {AppMan.App.DrivePartitionType} - Letter: {driveLetter}");
             AppMan.App.Ivsus.Clear();
 
-            if (InstallMode == "downgrade")
+            if (installMode == "downgrade")
             {
                 Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
                 AppMan.App.Ivsus.Add(Api.DowngradeApp);
@@ -70,15 +69,15 @@ namespace Cyanlabs.Updater.Common
                 AppMan.App.Ivsus.Add(Api.DowngradeTool);
             }
 
-            if (InstallMode == "reformat" || InstallMode == "downgrade")
+            if (installMode == "reformat" || installMode == "downgrade")
             {
                 Api.ReformatTool = await ApiHelper.GetSpecialIvsu(Api.GetReformat);
                 AppMan.App.Ivsus.Add(Api.ReformatTool);
             }
 
             AppMan.App.DownloadOnly = false;
-            AppMan.App.DriveLetter = DriveLetter;
-            foreach (SModel.Ivsu item in IvsuList)
+            AppMan.App.DriveLetter = driveLetter;
+            foreach (SModel.Ivsu item in ivsuList)
             {
                 if (item.Selected)
                 {
@@ -89,9 +88,9 @@ namespace Cyanlabs.Updater.Common
                 }
             }
 
-            AppMan.App.SelectedRegion = SelectedRegion.Code;
-            AppMan.App.SelectedRelease = SelectedRelease;
-            AppMan.App.SelectedMapVersion = SelectedMapVersion;
+            AppMan.App.SelectedRegion = selectedRegion.Code;
+            AppMan.App.SelectedRelease = selectedRelease;
+            AppMan.App.SelectedMapVersion = selectedMapVersion;
         }
     }
 }

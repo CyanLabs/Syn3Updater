@@ -17,10 +17,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void Home_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.OldValue == false && (bool)e.NewValue)
-            {
-                (DataContext as HomeViewModel)?.ReloadSettings();
-            }
+            if ((bool)e.NewValue && !(bool)e.OldValue) (DataContext as HomeViewModel)?.ReloadSettings();
         }
     }
 }

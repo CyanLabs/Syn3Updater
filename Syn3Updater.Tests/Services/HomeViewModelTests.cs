@@ -4,6 +4,7 @@ using Cyanlabs.Updater.Common;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.Helper;
 using System.Threading.Tasks;
+using Cyanlabs.Syn3Updater.Services;
 
 namespace Syn3Updater.Tests.Common.Services
 {
