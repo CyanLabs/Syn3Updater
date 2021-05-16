@@ -427,6 +427,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             NotesVisibility = Visibility.Hidden;
             SVersion?.Clear();
+            SMapVersion?.Clear();
             if (SelectedRegion.Code != "")
             {
                 IvsuList?.Clear();
@@ -498,7 +499,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SelectedMapVersion = null;
                 IvsuList?.Clear();
-                if (SelectedRelease == LM.GetValue("String.OnlyMaps"))
+                if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20)
                 {
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
                     _apiMapReleases = _apiMapReleases.Replace("[esn]", "{\"esn\": {\"_eq\": \"false\"}},");
@@ -589,7 +590,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         SelectedMapVersion == LM.GetValue("String.KeepExistingMaps"))
                     {
                         if (!AppMan.App.ModeForced)
+                        {
                             InstallMode = "autoinstall";
+                        }
+                            
                     }
                     else if (AppMan.App.Settings.My20)
                         InstallMode = "autoinstall";
@@ -681,6 +685,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task StartAction()
         {
+            if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20)
+            {
+                if (ModernWpf.MessageBox.Show("WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'", "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                    MessageBoxResult.No)
+                {
+                    Process.Start("https://community.cyanlabs.net/t/placeholder-my20-discussion/3203");
+                    return;
+                }
+            }
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
             StartEnabled = false;
         }

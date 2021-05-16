@@ -421,7 +421,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 CreateAutoInstall();
 
             CancelButtonEnabled = false;
-            string text = String.Empty;
+            string text;
             if (AppMan.App.DownloadToFolder)
             {
                 text = "ALL FILES DOWNLOADED AND COPIED TO THE SELECTED FOLDER SUCCESSFULLY!";
