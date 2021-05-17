@@ -10,6 +10,7 @@ using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
+using HttpRequestException = System.Net.Http.HttpRequestException;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -160,6 +161,24 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                                 Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
                                     ioException.GetFullMessage(), "Syn3 Updater",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation));
+                                //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                                return false;
+                            }
+                            catch (HttpRequestException httpRequestException)
+                            {
+                                try
+                                {
+                                    if (File.Exists(filename)) File.Delete(filename);
+                                }
+                                catch (Exception)
+                                {
+                                    // ignored
+                                }
+
+                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
+                                    httpRequestException.GetFullMessage(), "Syn3 Updater",
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation));
                                 //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
