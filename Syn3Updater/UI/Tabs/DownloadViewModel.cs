@@ -142,8 +142,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
            {
                if (t.IsFaulted)
                {
-                   if (t.Exception != null) Application.Current.Dispatcher.Invoke(() => AppMan.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
-
+                   bool userError = false;
+                   if (t.Exception != null)
+                   {
+                       foreach (Exception exception in t.Exception.InnerExceptions)
+                       {
+                           if (exception.GetType().IsAssignableFrom(typeof(System.IO.IOException))) userError = true;
+                           break;
+                       }
+                       if (t.Exception != null && !userError) 
+                           Application.Current.Dispatcher.Invoke(() => AppMan.Logger.CrashWindow(t.Exception.InnerExceptions.FirstOrDefault()));
+                   }
                    CancelAction();
                }
 
@@ -290,10 +299,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
             }
         }
-
-#pragma warning disable 1998
+        
         private async Task DoCopy()
-#pragma warning restore 1998
         {
             foreach (SModel.Ivsu extraitem in AppMan.App.ExtraIvsus)
             {
