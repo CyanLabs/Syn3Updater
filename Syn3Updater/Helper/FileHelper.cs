@@ -106,9 +106,9 @@ namespace Cyanlabs.Syn3Updater.Helper
             _client = new HttpClient();
             _client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
 
-            using (HttpResponseMessage response = await _client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+            try
             {
-                try
+                using (HttpResponseMessage response = await _client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
                 {
                     long total = response.Content.Headers.ContentLength ?? -1L;
                     bool canReportProgress = total != -1;
@@ -157,11 +157,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                                 {
                                     // ignored
                                 }
+
                                 Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
                                     ioException.GetFullMessage(), "Syn3 Updater",
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation));
-                                AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                                //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                                 return false;
                             }
                             finally
@@ -172,18 +173,17 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                     }
                 }
-                catch (HttpRequestException webException)
-                {
-                    Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                        webException.GetFullMessage(), "Syn3 Updater",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation));
-                    //Ignoring HttpRequestExceptions due to log spam from server disconnects etc.
-                    //AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
-                    return false;
-                }
             }
-
+            catch (HttpRequestException webException)
+            {
+                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
+                    webException.GetFullMessage(), "Syn3 Updater",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation));
+                //Ignoring HttpRequestExceptions due to log spam from server disconnects etc.
+                //AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
+                return false;
+            }
             return true;
         }
 
