@@ -99,10 +99,17 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         public static void WriteRegistryHandler()
         {
-            Registry.CurrentUser.CreateSubKey(@"Software\Classes\syn3updater\Shell\Open\Command");
-            Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("", "URL:syn3updater protocol");
-            Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("URL Protocol", "");
-            Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater\Shell\Open\Command", true)?.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Launcher.exe\" %1");
+            try
+            {
+                Registry.CurrentUser.CreateSubKey(@"Software\Classes\syn3updater\Shell\Open\Command");
+                Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("", "URL:syn3updater protocol");
+                Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("URL Protocol", "");
+                Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater\Shell\Open\Command", true)?.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Launcher.exe\" %1");
+            }
+            catch
+            {
+                // ignored
+            }
         }
         
         public static void DeleteRegistryHandler()
