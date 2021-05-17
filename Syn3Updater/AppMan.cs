@@ -289,16 +289,23 @@ namespace Cyanlabs.Syn3Updater
 
         public void Randomize()
         {
-            List<string> header = new List<string>();
-            var rand = new Random();
-            string result = Client.GetStringAsync(Api.HeaderURL).Result;
-            Api.Headers UAs = JsonConvert.DeserializeObject<Api.Headers>(result);
+            try
+            {
+                Random rand = new();
+                string result = Client.GetStringAsync(Api.HeaderURL).Result;
+                Api.Headers UAs = JsonConvert.DeserializeObject<Api.Headers>(result);
 
-            foreach (Api.Header ua in UAs.Header)
-                header.Add(ua.Ua.Replace("[PLACEHOLDER]", rand.Next(ua.Min, ua.Max).ToString()));
+                List<string> header = UAs.Header.Select(ua => ua.Ua.Replace("[PLACEHOLDER]", rand.Next(ua.Min, ua.Max).ToString())).ToList();
 
-            int index = rand.Next(header.Count);
-            Header = header[index];
+                int index = rand.Next(header.Count);
+                Header = header[index];
+            }
+            catch (Exception e)
+            {
+                Logger.Debug($"Unable to access CyanLabs API, defaulting UserAgent");
+                Header = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/86.0";
+            }
+
         }
 
         public void RestartApp()
