@@ -253,13 +253,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                     if (apimmodel.Contains(my20))
                         AppMan.App.Settings.My20 = true;
                 }
-
                 string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                     .Select(x => x.Total)
                     .Single();
                 _apimDetails.PartNumber = apimmodel;
-                double apimsizeint;
-                if (Double.TryParse(apimsize?.Remove(apimsize.Length - 1), out apimsizeint))
+                if (Double.TryParse(apimsize?.Remove(apimsize.Length - 1),NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
                 {
                     if (apimsizeint >= 0 && apimsizeint <= 8)
                     {
