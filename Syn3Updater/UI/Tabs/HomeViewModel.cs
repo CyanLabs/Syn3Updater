@@ -304,7 +304,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
-            NotesVisibility = Visibility.Hidden;
             CurrentNav = AppMan.App.Settings.CurrentNav ? "Yes" : "No";
             CurrentRegion = AppMan.App.Settings.CurrentRegion;
             CurrentVersion = AppMan.App.SVersion;
@@ -313,13 +312,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
             StartEnabled = false;
             InstallMode = AppMan.App.InstallMode;
-            RefreshUsb();
             DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path?.Length == 0 ? Visibility.Hidden : Visibility.Visible;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
+            UpdateInstallMode();
         }
         
         public void Init()
         {
+            NotesVisibility = Visibility.Hidden;
             if (!string.IsNullOrEmpty(AppMan.App.Magnet))
             {
                 _magnetActions = AppMan.App.Magnet
@@ -331,11 +331,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SRegions = new ObservableCollection<SModel.SRegion>
             {
-                new SModel.SRegion {Code = "EU", Name = "Europe"},
-                new SModel.SRegion {Code = "NA", Name = "United States, Canada & Mexico"},
-                new SModel.SRegion {Code = "CN", Name = "China"},
-                new SModel.SRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
-                new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
+                new() {Code = "EU", Name = "Europe"},
+                new() {Code = "NA", Name = "United States, Canada & Mexico"},
+                new() {Code = "CN", Name = "China"},
+                new() {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
+                new() {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
             };
             SVersion = new ObservableCollection<string>();
             SMapVersion = new ObservableCollection<string>();
@@ -353,6 +353,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SelectedReleaseIndex = -1;
                 SelectedMapVersionIndex = -1;
             }
+            RefreshUsb();
         }
 
         private static void RegionInfoAction()
@@ -550,55 +551,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 IvsuList?.Clear();
 
-                //LESS THAN 3.2
-                if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
-                {
-                    if (AppMan.App.Settings.My20)
-                    {
-                        InstallMode = "autoinstall";
-                    }
-                    if (!AppMan.App.ModeForced)
-                        InstallMode = "reformat";
-                }
-
-                //Above 3.2 and  Below 3.4.19274
-                else if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion &&
-                         AppMan.App.Settings.CurrentVersion < Api.BlacklistedVersion)
-                {
-                    //Update Nav?
-                    if (SelectedMapVersion == LM.GetValue("String.NoMaps") || SelectedMapVersion == LM.GetValue("String.NonNavAPIM") ||
-                        SelectedMapVersion == LM.GetValue("String.KeepExistingMaps"))
-                    {
-                        if (!AppMan.App.ModeForced)
-                        {
-                            InstallMode = "autoinstall";
-                        }
-                            
-                    }
-                    else if (AppMan.App.Settings.My20)
-                        InstallMode = "autoinstall";
-                    else if (!AppMan.App.ModeForced)
-                        InstallMode = "reformat";
-                }
-
-                //3.4.19274 or above
-                else if (AppMan.App.Settings.CurrentVersion >= Api.BlacklistedVersion)
-                {
-                    //Update Nav?
-                    if (SelectedMapVersion == LM.GetValue("String.NoMaps") || SelectedMapVersion == LM.GetValue("String.NonNavAPIM") ||
-                        SelectedMapVersion == LM.GetValue("String.KeepExistingMaps"))
-                    {
-                        if (!AppMan.App.ModeForced)
-                            InstallMode = "autoinstall";
-                    }
-                    else if (AppMan.App.Settings.My20)
-                        InstallMode = "autoinstall";
-                    else if (!AppMan.App.ModeForced)
-                        InstallMode = "downgrade";
-                }
-
-                AppMan.App.Action = "main";
-                AppMan.App.InstallMode = InstallMode;
+                UpdateInstallMode();
 
                 HttpResponseMessage response;
 
@@ -658,7 +611,62 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Source = item.MapIvsu.Source
                             });
                         }
+            }
+        }
 
+        public void UpdateInstallMode()
+        {
+            if (!string.IsNullOrWhiteSpace(SelectedMapVersion) && !string.IsNullOrWhiteSpace(SelectedRelease) && !string.IsNullOrWhiteSpace(SelectedRegion.Code))
+            {
+                //LESS THAN 3.2
+                if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
+                {
+                    if (AppMan.App.Settings.My20)
+                    {
+                        InstallMode = "autoinstall";
+                    }
+                    if (!AppMan.App.ModeForced)
+                        InstallMode = "reformat";
+                }
+
+                //Above 3.2 and  Below 3.4.19274
+                else if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion &&
+                         AppMan.App.Settings.CurrentVersion < Api.BlacklistedVersion)
+                {
+                    //Update Nav?
+                    if (SelectedMapVersion == LM.GetValue("String.NoMaps") || SelectedMapVersion == LM.GetValue("String.NonNavAPIM") ||
+                        SelectedMapVersion == LM.GetValue("String.KeepExistingMaps"))
+                    {
+                        if (!AppMan.App.ModeForced)
+                        {
+                            InstallMode = "autoinstall";
+                        }
+                            
+                    }
+                    else if (AppMan.App.Settings.My20)
+                        InstallMode = "autoinstall";
+                    else if (!AppMan.App.ModeForced)
+                        InstallMode = "reformat";
+                }
+
+                //3.4.19274 or above
+                else if (AppMan.App.Settings.CurrentVersion >= Api.BlacklistedVersion)
+                {
+                    //Update Nav?
+                    if (SelectedMapVersion == LM.GetValue("String.NoMaps") || SelectedMapVersion == LM.GetValue("String.NonNavAPIM") ||
+                        SelectedMapVersion == LM.GetValue("String.KeepExistingMaps"))
+                    {
+                        if (!AppMan.App.ModeForced)
+                            InstallMode = "autoinstall";
+                    }
+                    else if (AppMan.App.Settings.My20)
+                        InstallMode = "autoinstall";
+                    else if (!AppMan.App.ModeForced)
+                        InstallMode = "downgrade";
+                }
+
+                AppMan.App.Action = "main";
+                AppMan.App.InstallMode = InstallMode;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             }
         }
