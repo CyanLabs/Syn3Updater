@@ -257,29 +257,32 @@ namespace Cyanlabs.Syn3Updater.Helper
                 string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                     .Select(x => x.Total)
                     .Single();
-                double apimsizeint = Convert.ToDouble(apimsize?.Remove(apimsize.Length - 1));
                 _apimDetails.PartNumber = apimmodel;
-                if (apimsizeint >= 0 && apimsizeint <= 8)
+                double apimsizeint;
+                if (Double.TryParse(apimsize?.Remove(apimsize.Length - 1), out apimsizeint))
                 {
-                    _apimDetails.Nav = false;
-                    _apimDetails.Size = 8;
+                    if (apimsizeint >= 0 && apimsizeint <= 8)
+                    {
+                        _apimDetails.Nav = false;
+                        _apimDetails.Size = 8;
+                    }
+                    else if (apimsizeint >= 9 && apimsizeint <= 16)
+                    {
+                        _apimDetails.Nav = false;
+                        _apimDetails.Size = 16;
+                    }
+                    else if (apimsizeint >= 17 && apimsizeint <= 32)
+                    {
+                        _apimDetails.Nav = true;
+                        _apimDetails.Size = 32;
+                    }
+                    else if (apimsizeint >= 33 && apimsizeint <= 64)
+                    {
+                        _apimDetails.Nav = true;
+                        _apimDetails.Size = 64;
+                    }
                 }
-                else if (apimsizeint >= 9 && apimsizeint <= 16)
-                {
-                    _apimDetails.Nav = false;
-                    _apimDetails.Size = 16;
-                }
-                else if (apimsizeint >= 17 && apimsizeint <= 32)
-                {
-                    _apimDetails.Nav = true;
-                    _apimDetails.Size = 32;
-                }
-                else if (apimsizeint >= 33 && apimsizeint <= 64)
-                {
-                    _apimDetails.Nav = true;
-                    _apimDetails.Size = 64;
-                }
-
+                
                 if (_apimDetails.Nav)
                     LogXmlDetails += $"{LM.GetValue("Utility.APIMType")} Navigation {Environment.NewLine}";
                 else
