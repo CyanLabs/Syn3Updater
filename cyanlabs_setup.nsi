@@ -65,11 +65,10 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\*.*"
-  File "bin\Release\Launcher.exe"
-  File "bin\Release\Newtonsoft.Json.dll"
-  File "bin\Release\FluentWPF.dll"
-  File "bin\Release\Octokit.dll"
-  
+  File "bin\Release\net472\Launcher.exe"
+  File "bin\Release\net472\Newtonsoft.Json.dll"
+  File "bin\Release\net472\FluentWPF.dll"
+  File "bin\Release\net472\Octokit.dll"
 SectionEnd
 
 Section -Post
@@ -79,6 +78,9 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  WriteRegStr HKCR "syn3updater" "" "Syn3 Updater Link"
+  WriteRegStr HKCR "syn3updater" "URL Protocol" ""
+  WriteRegStr HKCR "syn3updater\\shell\\open\\command" "" "$INSTDIR\Launcher.exe %1" 
   SectionEnd
 
 ; Removal of application files and reg keys.
@@ -86,6 +88,7 @@ Section Uninstall
   SetShellVarContext all
   RMDir /r "$INSTDIR"
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
+  DeleteRegKey HKCR "syn3updater"
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
   RMDir /r "$SMPROGRAMS\${PRODUCT_NAME}"
   RMDir /r "$APPDATA\CyanLabs\${PRODUCT_NAME}"
