@@ -200,6 +200,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.Settings.My20 = value;
                     CurrentInstallMode = "autodetect";
                 }
+                InstallModesEnabled = !AppMan.App.Settings.My20;
             }
         }
 
@@ -210,12 +211,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _advancedModeToggle;
             set
             {
-                if (_My20Mode && value)
-                {
-                    if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Detected"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                        SetProperty(ref _advancedModeToggle, true);
-                }
-                else if (value)
+                if (value)
                 {
                     if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.AdvancedSettings"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                         SetProperty(ref _advancedModeToggle, true);
@@ -224,6 +220,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _advancedModeToggle, false);
                 }
+                InstallModesEnabled = !AppMan.App.Settings.My20;
+            }
+        }
+        
+        private bool _installModesEnabled;
+
+        public bool InstallModesEnabled
+        {
+            get => _installModesEnabled;
+            set
+            {
+                SetProperty(ref _installModesEnabled, value);
             }
         }
 

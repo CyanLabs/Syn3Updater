@@ -241,7 +241,7 @@
                                    Text="{Binding Language, ConverterParameter=Settings.InstallMode, Converter={StaticResource LocConverter}}" />
                         <ComboBox Grid.Row="3" MinWidth="170" VerticalAlignment="Center" SelectedIndex="0"
                                   Grid.Column="1" Text="Navigation" ItemsSource="{Binding InstallModes}"
-                                  SelectedValue="{Binding CurrentInstallMode}" VerticalContentAlignment="Center" IsEnabled="{Binding AdvancedModeToggle}" />
+                                  SelectedValue="{Binding CurrentInstallMode}" VerticalContentAlignment="Center" IsEnabled="{Binding InstallModesEnabled}" />
                     </Grid>
                 </Grid>
                 
