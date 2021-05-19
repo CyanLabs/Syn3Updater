@@ -135,5 +135,10 @@
     "Settings.My20Mode": "Toggle MY20 Protection:",
     "News.ImportantNoticeTitle": "Important Notices",
     "News.NoticeTitle": "Other Notices",
-    "News.Changelog": "Changelog"
+    "News.Changelog": "Changelog",
+    "Main.Logs": "Logs",
+    "Logs.Path": "Log Path:",
+    "Logs.ViewLog": "View",
+    "Logs.Delete": "Delete Selected Logs",
+    "Logs.OpenFolder": "Open Log folder"
 }

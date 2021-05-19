@@ -51,6 +51,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     //TODO Implement Profiles and News in the future
                     //new TabItem("0xF163","Profiles","profiles"),
                     new TabItem(EFontAwesomeIcon.Solid_Newspaper,"News","news"),
+                    new TabItem(EFontAwesomeIcon.Solid_FileAlt, "Logs", "logs"),
                 };
 
                 foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))

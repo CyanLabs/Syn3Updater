@@ -109,7 +109,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         }
 
         /// <summary>
-        ///     Generates a log.txt file on the root of the USB Drive
+        ///     Generates a log.txt file on the root of the USB Drive and a log-date.txt file in LogPath
         /// </summary>
         /// <param name="log">Additional log to append, usually the log textbox</param>
         /// <param name="upload">Set to true to upload log file <see cref="UploadLog"/>, else false to only save it to USB drive</param>
@@ -170,7 +170,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append(log);
             string complete = data.ToString();
             File.WriteAllText($@"{driveletter}\log.txt", complete);
-
+            string currentDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+            File.WriteAllText($@"{AppMan.App.Settings.LogPath}log-{currentDate}.txt", complete);
             if (upload)
                 UploadLog(complete);
         }

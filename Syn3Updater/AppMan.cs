@@ -179,7 +179,6 @@ namespace Cyanlabs.Syn3Updater
             ConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             ConfigFile = ConfigFolderPath + "\\settings.json";
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
-
             if (File.Exists(ConfigFile))
             {
                 try
@@ -198,6 +197,12 @@ namespace Cyanlabs.Syn3Updater
                 Settings = new JsonSettings();
             }
 
+            if (string.IsNullOrEmpty(Settings.LogPath))
+            {
+                Settings.LogPath = ConfigFolderPath + "\\Logs\\";
+                if (!Directory.Exists(Settings.LogPath)) Directory.CreateDirectory(Settings.LogPath);
+            }
+            
             if (File.Exists(ConfigFolderPath + "\\launcherPrefs.json"))
             {
                 try
@@ -280,7 +285,7 @@ namespace Cyanlabs.Syn3Updater
             }
 
             Randomize();
-
+            App.SaveSettings();
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
             if (!_mainWindow.IsVisible) _mainWindow.Show();
@@ -330,7 +335,7 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug("Writing log to disk before shutdown");
             try
             {
-                File.WriteAllText(ConfigFolderPath + "\\log.txt", JsonConvert.SerializeObject(Logger.Log));
+                File.WriteAllText(ConfigFolderPath + "\\applog.txt", JsonConvert.SerializeObject(Logger.Log));
             }
             catch (UnauthorizedAccessException e)
             {

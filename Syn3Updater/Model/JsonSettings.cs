@@ -14,5 +14,6 @@
         public bool DisclaimerAccepted { get; set; } = false;
         public string Theme { get; set; }
         public bool My20 { get; set; } = false;
+        public string LogPath { get; set; }
     }
 }
