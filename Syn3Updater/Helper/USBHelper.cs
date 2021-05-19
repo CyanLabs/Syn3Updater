@@ -229,9 +229,14 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             string LogXmlDetails = "";
             VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Interrogator Log XML Files|*.xml" };
-            if (!dialog.ShowDialog().GetValueOrDefault()) return LogXmlDetails;
+            if (!dialog.ShowDialog().GetValueOrDefault())
+            {
+                AppMan.App.Cancelled = true;
+                return LogXmlDetails;
+            }
             try
             {
+                AppMan.App.Cancelled = false;
                 XmlDocument doc = new XmlDocument();
                 //TODO: swtich to Async once code moves to dotnet 5+ 
                 doc.Load(dialog.FileName);

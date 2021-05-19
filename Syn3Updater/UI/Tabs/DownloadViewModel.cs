@@ -484,15 +484,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     USBHelper usbHelper = new USBHelper();
                     usbHelper.LogParseXmlAction().ConfigureAwait(false);
                     AppMan.App.UtilityCreateLogStep1Complete = true;
-                    if (AppMan.App.Settings.My20)
+                    if (!AppMan.App.Cancelled)
                     {
-                        AppMan.App.Settings.My20 = true;
-                        ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (AppMan.App.Settings.My20)
+                        {
+                            AppMan.App.Settings.My20 = true;
+                            ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            AppMan.App.Settings.My20 = false;
+                            ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
                     }
                     else
                     {
-                        AppMan.App.Settings.My20 = false;
-                        ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
+                        ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20CheckCancelled"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     AppMan.App.FireHomeTabEvent();
                 }
