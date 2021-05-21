@@ -245,6 +245,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _currentNav;
             set => SetProperty(ref _currentNav, value);
         }
+        
+        private string _currentProfile;
+
+        public string CurrentProfile
+        {
+            get => _currentProfile;
+            set => SetProperty(ref _currentProfile, value);
+        }
 
         private string _downloadLocation;
 
@@ -312,6 +320,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
             StartEnabled = false;
             InstallMode = AppMan.App.InstallMode;
+            CurrentProfile = AppMan.App.MainSettings.Profile;
             DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path?.Length == 0 ? Visibility.Hidden : Visibility.Visible;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
             UpdateInstallMode();
@@ -435,7 +444,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SelectedMapVersion = null;
                 SelectedRelease = null;
                 _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
-                    $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.Settings.LicenseKey}");
+                    $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.MainSettings.LicenseKey}");
 
                 Stream stringReleasesJson;
                 try
@@ -488,9 +497,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             
             string license = "";
-            if (AppMan.App.Settings.LicenseKey?.Length > 10)
+            if (AppMan.App.MainSettings.LicenseKey?.Length > 10)
             {
-                license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.Settings.LicenseKey + "\"}},";
+                license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.MainSettings.LicenseKey + "\"}},";
             }
             _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":[" + license + "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},[esn]{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
 

@@ -28,7 +28,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _disclaimerAccepted, value);
-                AppMan.App.Settings.DisclaimerAccepted = value;
+                AppMan.App.MainSettings.DisclaimerAccepted = value;
                 if (value) AppMan.App.FireSettingsTabEvent();
             }
         }
@@ -47,12 +47,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            DisclaimerAccepted = AppMan.App.Settings.DisclaimerAccepted;
+            DisclaimerAccepted = AppMan.App.MainSettings.DisclaimerAccepted;
         }
 
         public void Reload()
         {
-            EnglishEndorsement = AppMan.App.Settings.Lang.Contains("en-") ? Visibility.Hidden : Visibility.Visible;
+            EnglishEndorsement = AppMan.App.MainSettings.Lang.Contains("en-") ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void WebsiteAction()

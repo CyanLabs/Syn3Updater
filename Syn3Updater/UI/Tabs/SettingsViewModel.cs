@@ -122,7 +122,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _downloadLocation, value);
                     AppMan.App.DownloadPath = value;
-                    AppMan.App.Settings.DownloadPath = value;
+                    AppMan.App.MainSettings.DownloadPath = value;
                 }
             }
         }
@@ -137,7 +137,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _logLocation, value);
-                    AppMan.App.Settings.LogPath = value;
+                    AppMan.App.MainSettings.LogPath = value;
                 }
             }
         }
@@ -166,7 +166,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentTheme, value);
-                    AppMan.App.Settings.Theme = value;
+                    AppMan.App.MainSettings.Theme = value;
                     if (value == "Dark")
                     {
                         ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
@@ -245,7 +245,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _licenseKey, value);
-                    AppMan.App.Settings.LicenseKey = value;
+                    AppMan.App.MainSettings.LicenseKey = value;
                 }
             }
         }
@@ -261,7 +261,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentLanguage, value);
-                    AppMan.App.Settings.Lang = value;
+                    AppMan.App.MainSettings.Lang = value;
                     AppMan.App.FireLanguageChangedEvent();
                 }
             }
@@ -297,8 +297,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             AppMan.App.FireHomeTabEvent();
-            //TODO Fix need for temp string
-            string currentRegionTemp = AppMan.App.Settings.CurrentRegion;
+
             SRegions = new ObservableCollection<SModel.SRegion>
             {
                 new SModel.SRegion {Code = "EU", Name = "Europe"},
@@ -307,21 +306,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 new SModel.SRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
                 new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean and Central America"}
             };
-            CurrentRegion = currentRegionTemp;
 
-            //TODO Fix need for temp string
-            string currentInstallModeTemp = AppMan.App.InstallMode;
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect", "autoinstall", "reformat", "downgrade"
             };
-            CurrentInstallMode = currentInstallModeTemp;
-
+            
             Themes = new ObservableCollection<string>
             {
                 "Dark", "Light"
             };
-            CurrentTheme = AppMan.App.Settings.Theme;
+            CurrentTheme = AppMan.App.MainSettings.Theme;
 
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
             {
@@ -329,20 +324,25 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 LauncherPrefs.ReleaseType.Beta,
                 LauncherPrefs.ReleaseType.Alpha
             };
-
-            ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
-            CurrentNav = AppMan.App.Settings.CurrentNav;
-            My20Mode = AppMan.App.Settings.My20;
+            
+            LogLocation = AppMan.App.MainSettings.LogPath;
+            LicenseKey = AppMan.App.MainSettings.LicenseKey;
+            CurrentLanguage = AppMan.App.MainSettings.Lang;
             DownloadLocation = AppMan.App.DownloadPath;
-            LogLocation = AppMan.App.Settings.LogPath;
-            LicenseKey = AppMan.App.Settings.LicenseKey;
-            CurrentLanguage = AppMan.App.Settings.Lang;
+            
+            ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
         }
 
         public void ReloadSettings()
         {
+            //TODO Fix need for temp strings
+            string currentRegionTemp = AppMan.App.Settings.CurrentRegion;
+            CurrentRegion = currentRegionTemp;
+            string currentInstallModeTemp = AppMan.App.InstallMode;
+            CurrentInstallMode = currentInstallModeTemp;
+            
+            CurrentNav = AppMan.App.Settings.CurrentNav;
             CurrentVersion = AppMan.App.SVersion;
-            CurrentTheme = AppMan.App.Settings.Theme;
             My20Mode = AppMan.App.Settings.My20;
         }
 
@@ -378,7 +378,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task SelectPathAction(string type)
         {
-            string oldPath = type == "downloads" ? AppMan.App.Settings.DownloadPath : AppMan.App.Settings.LogPath;
+            string oldPath = type == "downloads" ? AppMan.App.MainSettings.DownloadPath : AppMan.App.MainSettings.LogPath;
             
             VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
             if (dialog.ShowDialog().GetValueOrDefault())

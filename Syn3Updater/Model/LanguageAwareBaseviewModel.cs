@@ -14,7 +14,7 @@
                 if (AppMan.App != null)
                     AppMan.App.LanguageChangedEvent += (sender, args) =>
                     {
-                        if (AppMan.App.Settings.Lang != null) Language = AppMan.App.Settings.Lang;
+                        if (AppMan.App.MainSettings.Lang != null) Language = AppMan.App.MainSettings.Lang;
                     };
             }
             catch

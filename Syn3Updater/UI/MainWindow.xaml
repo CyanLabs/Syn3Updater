@@ -11,7 +11,7 @@
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     x:Class="Cyanlabs.Syn3Updater.UI.MainWindow"
     mc:Ignorable="d"
-    Title="Syn3 Updater"
+    Title="{Binding AppTitle}"
     Height="640"
     Width="800"
     MinHeight="640"
@@ -171,6 +171,12 @@
                      Visibility="{Binding CurrentTab, ConverterParameter=logs, Converter={StaticResource StringMatchToVisibilityConverter}}"
                      x:Name="LogsUserControl">
             <tabs:Logs HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </UserControl>
+        
+        <UserControl Grid.Column="1"
+                     Visibility="{Binding CurrentTab, ConverterParameter=profiles, Converter={StaticResource StringMatchToVisibilityConverter}}"
+                     x:Name="ProfilesUserControl">
+            <tabs:Profiles HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </UserControl>
                 
         <UserControl Grid.Column="1"

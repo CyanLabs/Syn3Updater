@@ -129,13 +129,13 @@ namespace Cyanlabs.Syn3Updater.Model
             {
                 string lang = string.Empty; // "EN-US";
 
-                if (AppMan.App.Settings.Lang != null) lang = AppMan.App.Settings.Lang;
+                if (AppMan.App.MainSettings.Lang != null) lang = AppMan.App.MainSettings.Lang;
 
                 if (string.IsNullOrWhiteSpace(lang))
                 {
                     lang = CultureInfo.CurrentCulture.Name;
 
-                    AppMan.App.Settings.Lang = lang;
+                    AppMan.App.MainSettings.Lang = lang;
                 }
 
                 LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());

@@ -171,7 +171,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             string complete = data.ToString();
             File.WriteAllText($@"{driveletter}\log.txt", complete);
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-            File.WriteAllText($@"{AppMan.App.Settings.LogPath}log-{currentDate}.txt", complete);
+            File.WriteAllText($@"{AppMan.App.MainSettings.LogPath}log-{currentDate}.txt", complete);
             if (upload)
                 UploadLog(complete);
         }

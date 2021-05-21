@@ -11,14 +11,10 @@
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" FontSize="12"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" Name="LogsTab" IsVisibleChanged="Logs_OnIsVisibleChanged" >
-    <UserControl.Resources>
-        <Style TargetType="{x:Type ui:MaskedTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
-    </UserControl.Resources>
     <UserControl.DataContext>
         <tabs:LogsViewModel />
     </UserControl.DataContext>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid>
+    <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="9*" />
                 <ColumnDefinition Width="16*" />
@@ -111,5 +107,4 @@
                 </Grid>
             </StackPanel>
         </Grid>
-    </ScrollViewer>
 </UserControl>

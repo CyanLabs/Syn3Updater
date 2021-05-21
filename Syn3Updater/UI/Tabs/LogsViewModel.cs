@@ -71,7 +71,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Reload()
         {
-            LogLocation = AppMan.App.Settings.LogPath;
+            LogLocation = AppMan.App.MainSettings.LogPath;
             Task.Run(ReloadLogs);
         }
         
@@ -79,9 +79,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             try
             {
-                DateTime date = File.GetLastWriteTime(AppMan.App.Settings.LogPath + path);
+                DateTime date = File.GetLastWriteTime(AppMan.App.MainSettings.LogPath + path);
                 LogTitle = date.ToString(CultureInfo.CurrentCulture);
-                LogDetails = File.ReadAllText(AppMan.App.Settings.LogPath + path);
+                LogDetails = File.ReadAllText(AppMan.App.MainSettings.LogPath + path);
             }
             catch (Exception e)
             {
@@ -96,7 +96,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (!log.Selected) continue;
                 try
                 {
-                    File.Delete(AppMan.App.Settings.LogPath + log.FileName);
+                    File.Delete(AppMan.App.MainSettings.LogPath + log.FileName);
                 }
                 catch
                 {
@@ -110,9 +110,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             LogDetails = null;
             LogFiles = new ObservableCollection<LogModel.Log>();
-            if (!string.IsNullOrEmpty(AppMan.App.Settings.LogPath))
+            if (!string.IsNullOrEmpty(AppMan.App.MainSettings.LogPath))
             {
-                DirectoryInfo dir = new(AppMan.App.Settings.LogPath);
+                DirectoryInfo dir = new(AppMan.App.MainSettings.LogPath);
                 foreach (FileInfo file in dir.GetFiles("*.txt"))
                 {
                     LogFiles.Add(new LogModel.Log {Selected=false, FileName=file.Name, Date=file.LastWriteTime, Profile = "Default"});
@@ -124,7 +124,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             try
             {
-                Process.Start(AppMan.App.Settings.LogPath);
+                Process.Start(AppMan.App.MainSettings.LogPath);
             }
             catch (Exception e)
             {

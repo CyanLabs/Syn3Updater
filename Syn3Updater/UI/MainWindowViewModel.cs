@@ -18,8 +18,7 @@ namespace Cyanlabs.Syn3Updater.UI
 
         public MainWindowViewModel()
         {
-            AppTitle = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version}";
-            switch (AppMan.App.Settings.Theme)
+            switch (AppMan.App.MainSettings.Theme)
             {
                 case "Dark":
                     ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
@@ -49,7 +48,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"),
                     //new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
                     //TODO Implement Profiles in the future
-                    //new TabItem("0xF163","Profiles","profiles"),
+                    new TabItem(EFontAwesomeIcon.Solid_CarAlt,"Profiles","profiles"),
                     new TabItem(EFontAwesomeIcon.Solid_FileAlt, "Logs", "logs"),
                     new TabItem(EFontAwesomeIcon.Solid_Newspaper,"News","news"),
                 };
@@ -92,7 +91,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     value = "news";
                     AppMan.App.AppUpdated++;
                 }
-                else if (value != "about" && !AppMan.App.Settings.DisclaimerAccepted)
+                else if (value != "about" && !AppMan.App.MainSettings.DisclaimerAccepted)
                 {
                     ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
@@ -118,6 +117,8 @@ namespace Cyanlabs.Syn3Updater.UI
                 SetProperty(ref _currentTab, value);
                 foreach (TabItem tabItem in TabItems)
                     tabItem.IsCurrent = string.Equals(tabItem.Key, value, System.StringComparison.OrdinalIgnoreCase);
+                
+                AppTitle = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")} {AppMan.App.MainSettings.Profile}";
             }
         }
 
@@ -167,19 +168,18 @@ namespace Cyanlabs.Syn3Updater.UI
             }
         }
 
-        private string _appTitle;
-
-        public string AppTitle
-        {
-            get => _appTitle;
-            set => SetProperty(ref _appTitle, value);
-        }
-
         private EFontAwesomeIcon _themeIcon;
         public EFontAwesomeIcon ThemeIcon
         {
             get => _themeIcon;
             set => SetProperty(ref _themeIcon, value);
+        }
+
+        private string _appTitle;
+        public string AppTitle
+        {
+            get => _appTitle;
+            set => SetProperty(ref _appTitle, value);
         }
 
         #endregion

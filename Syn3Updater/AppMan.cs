@@ -28,7 +28,7 @@ namespace Cyanlabs.Syn3Updater
         private AppMan()
         {
             LauncherPrefs = new LauncherPrefs();
-            Settings = new JsonSettings();
+            MainSettings = new JsonMainSettings();
         }
 
         public static readonly SimpleLogger Logger = new SimpleLogger();
@@ -36,6 +36,7 @@ namespace Cyanlabs.Syn3Updater
         public ObservableCollection<SModel.Ivsu> ExtraIvsus = new ObservableCollection<SModel.Ivsu>();
         public static AppMan App { get; } = new AppMan();
         public LauncherPrefs LauncherPrefs { get; set; }
+        public JsonMainSettings MainSettings { get; set; }
         public JsonSettings Settings { get; set; }
 
         public readonly HttpClient Client = new HttpClient();
@@ -104,7 +105,9 @@ namespace Cyanlabs.Syn3Updater
             SVersion,
             Action,
             ConfigFile,
+            ProfileFile,
             ConfigFolderPath,
+            ProfileConfigFolderPath,
             Header,
             LauncherConfigFile,
             Magnet;
@@ -116,10 +119,56 @@ namespace Cyanlabs.Syn3Updater
 
         #region Methods
 
+        public void LoadProfile()
+        {
+            if (string.IsNullOrEmpty(MainSettings.Profile)) MainSettings.Profile = "default";
+            ProfileFile = ProfileConfigFolderPath + $"{MainSettings.Profile}.json";
+            if (File.Exists(ProfileFile))
+            {
+                try
+                {
+                    Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ProfileFile));
+                }
+                catch (JsonReaderException)
+                {
+                    File.Delete(ProfileFile);
+                    Settings = new JsonSettings();
+                }
+                Logger.Debug($"Loaded Profile: {MainSettings.Profile}");
+            }
+            else
+            {
+                Logger.Debug("No Profile Settings file found, initializing JSON settings");
+                Settings = new JsonSettings();
+                Settings.CurrentNav = MainSettings.CurrentNav;
+                Settings.CurrentRegion = MainSettings.CurrentRegion;
+                Settings.CurrentVersion = MainSettings.CurrentVersion;
+                Settings.My20 = MainSettings.My20;
+                SaveSettings();
+            }
+            
+            string version = App.Settings.CurrentVersion.ToString() ;
+            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
+            try
+            {
+                if (version.Length == 7)
+                    SVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
+                else
+                    SVersion = $"0{decimalSeparator}0{decimalSeparator}00000";
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Logger.Debug(e.GetFullMessage());
+            }
+        }
+
         public void SaveSettings()
         {
-            string json = JsonConvert.SerializeObject(Settings, Formatting.Indented);
-            File.WriteAllText(ConfigFile, json);
+            string mainJson = JsonConvert.SerializeObject(MainSettings, Formatting.Indented);
+            File.WriteAllText(ConfigFile, mainJson);
+            string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
+            File.WriteAllText(ProfileFile, profileJson);
         }
 
         public void ResetSettings()
@@ -127,6 +176,7 @@ namespace Cyanlabs.Syn3Updater
             try
             {
                 if (File.Exists(ConfigFile)) File.Delete(ConfigFile);
+                if (File.Exists(ProfileFile)) File.Delete(ProfileFile);
                 if (File.Exists(LauncherConfigFile)) File.Delete(LauncherConfigFile);
             }
             catch (Exception e)
@@ -177,30 +227,36 @@ namespace Cyanlabs.Syn3Updater
             }
 
             ConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+            ProfileConfigFolderPath = ConfigFolderPath + "\\Profiles\\";
             ConfigFile = ConfigFolderPath + "\\settings.json";
+            
             if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
+            if (!Directory.Exists(ProfileConfigFolderPath)) Directory.CreateDirectory(ProfileConfigFolderPath);
+            
             if (File.Exists(ConfigFile))
             {
                 try
                 {
-                    Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ConfigFile));
+                    MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(ConfigFile));
                 }
                 catch (JsonReaderException)
                 {
                     File.Delete(ConfigFile);
-                    Settings = new JsonSettings();
+                    MainSettings = new JsonMainSettings();
                 }
             }
             else
             {
-                Logger.Debug("No settings file found, initializing JSON settings");
-                Settings = new JsonSettings();
+                Logger.Debug("No Main Settings file found, initializing JSON settings");
+                MainSettings = new JsonMainSettings();
             }
 
-            if (string.IsNullOrEmpty(Settings.LogPath))
+            LoadProfile();
+
+            if (string.IsNullOrEmpty(MainSettings.LogPath))
             {
-                Settings.LogPath = ConfigFolderPath + "\\Logs\\";
-                if (!Directory.Exists(Settings.LogPath)) Directory.CreateDirectory(Settings.LogPath);
+                MainSettings.LogPath = ConfigFolderPath + "\\Logs\\";
+                if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
             }
             
             if (File.Exists(ConfigFolderPath + "\\launcherPrefs.json"))
@@ -225,24 +281,24 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug("Determining language to use for the application");
             List<LanguageModel> langs = LM.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
-            if (string.IsNullOrWhiteSpace(Settings.Lang))
+            if (string.IsNullOrWhiteSpace(MainSettings.Lang))
             {
                 Logger.Debug($"Language is not set, inferring language from system culture. Lang={ci.TwoLetterISOLanguageName}");
-                Settings.Lang = ci.TwoLetterISOLanguageName;
+                MainSettings.Lang = ci.TwoLetterISOLanguageName;
             }
 
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Settings.Lang);
-            Logger.Debug($"Language is set to {Settings.Lang}");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(MainSettings.Lang);
+            Logger.Debug($"Language is set to {MainSettings.Lang}");
 
-            if (string.IsNullOrWhiteSpace(Settings.DownloadPath))
+            if (string.IsNullOrWhiteSpace(MainSettings.DownloadPath))
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location is not set, defaulting to {downloads}\\Syn3Updater\\");
-                Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
             }
 
             Logger.Debug("Determining download path to use for the application");
-            DownloadPath = App.Settings.DownloadPath;
+            DownloadPath = App.MainSettings.DownloadPath;
 
             try
             {
@@ -258,30 +314,15 @@ namespace Cyanlabs.Syn3Updater
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
-                Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = App.Settings.DownloadPath;
+                MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                DownloadPath = App.MainSettings.DownloadPath;
             }
             catch (IOException)
             {
                 string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                 Logger.Debug($"Download location was invalid, defaulting to {downloads}\\Syn3Updater\\");
-                Settings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                DownloadPath = App.Settings.DownloadPath;
-            }
-
-            string version = App.Settings.CurrentVersion.ToString();
-            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
-            try
-            {
-                if (version.Length == 7)
-                    SVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
-                else
-                    SVersion = $"0{decimalSeparator}0{decimalSeparator}00000";
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                Logger.Debug(e.GetFullMessage());
+                MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                DownloadPath = App.MainSettings.DownloadPath;
             }
 
             Randomize();

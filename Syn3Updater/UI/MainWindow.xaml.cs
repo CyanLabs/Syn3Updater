@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Cyanlabs.Syn3Updater.Model;
 
 namespace Cyanlabs.Syn3Updater.UI
 {
@@ -17,7 +18,6 @@ namespace Cyanlabs.Syn3Updater.UI
         public MainWindow()
         {
             InitializeComponent();
-            Title = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled})";
             AppMan.Logger.Debug("MainWindow Initialized");
             if (!CryptoConfig.AllowOnlyFipsAlgorithms) return;
             ModernWpf.MessageBox.Show(
