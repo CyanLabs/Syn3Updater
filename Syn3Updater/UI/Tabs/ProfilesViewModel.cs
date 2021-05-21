@@ -78,7 +78,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task DeleteProfileAction(string name)
         {
-            if (name != "default" && name != AppMan.App.MainSettings.Profile)
+            if (name != AppMan.App.MainSettings.Profile)
             {
                 try
                 {

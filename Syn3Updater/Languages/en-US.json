@@ -153,5 +153,5 @@
     "Profiles.NewProfile": "Profile Name:",
     "Profiles.CreateAndSet": "Create and Set Profile",
     "Home.Profile": "Profile:",
-    "MessageBox.InvalidProfile": "You can not delete the currently active profile, please select another profile and then delete this profile\nYou also can not delete the default profile"
+    "MessageBox.InvalidProfile": "You can not delete the currently active profile, please select another profile and then delete this profile\n"
 }
