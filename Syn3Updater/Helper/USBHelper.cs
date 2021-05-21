@@ -184,6 +184,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             Dictionary<string, string> values = new Dictionary<string, string>
             {
+                {"computername", Environment.MachineName},
                 {"contents", log}
             };
             HttpClient client = new HttpClient();

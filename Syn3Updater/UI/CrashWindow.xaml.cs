@@ -31,8 +31,8 @@ namespace Cyanlabs.Syn3Updater.UI
         {
             try
             {
-                CrashContainer crashContainer = new CrashContainer();
-                StackTrace st = new StackTrace(exception, true);
+                CrashContainer crashContainer = new();
+                StackTrace st = new(exception, true);
                 StackFrame frame = st.GetFrame(st.FrameCount - 1);
 
                 crashContainer.ErrorName = exception.GetType().ToString();
@@ -40,9 +40,10 @@ namespace Cyanlabs.Syn3Updater.UI
                     crashContainer.ErrorLocation = $"{frame.GetFileName()}/{frame.GetMethod().Name}/{frame.GetFileLineNumber()}";
                 crashContainer.Logs = AppMan.Logger.Log;
 
-                HttpClient client = new HttpClient();
-                Dictionary<string, string> values = new Dictionary<string, string>
+                HttpClient client = new();
+                Dictionary<string, string> values = new()
                 {
+                    {"computername",Environment.MachineName},
                     {"detail", JsonConvert.SerializeObject(crashContainer)},
                     {"version", Assembly.GetEntryAssembly()?.GetName().Version.ToString()},
                     {"error", crashContainer.ErrorName},
@@ -51,7 +52,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     {"branch", AppMan.App.LauncherPrefs.ReleaseTypeInstalled.ToString()},
                 };
 
-                FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+                FormUrlEncodedContent content = new(values);
                 HttpResponseMessage response = client.PostAsync(Api.CrashLogPost, content).GetAwaiter().GetResult();
                 return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
@@ -81,7 +82,7 @@ namespace Cyanlabs.Syn3Updater.UI
         {
             public string ErrorName { get; set; }
             public string ErrorLocation { get; set; }
-            public List<SimpleLogger.LogEntry> Logs { get; set; } = new List<SimpleLogger.LogEntry>();
+            public List<SimpleLogger.LogEntry> Logs { get; set; } = new();
         }
     }
 }
