@@ -106,7 +106,8 @@ namespace Cyanlabs.Syn3Updater
             Action,
             ConfigFile,
             ProfileFile,
-            ConfigFolderPath,
+            CommonConfigFolderPath,
+            UserConfigFolderPath,
             ProfileConfigFolderPath,
             Header,
             LauncherConfigFile,
@@ -188,11 +189,11 @@ namespace Cyanlabs.Syn3Updater
         public void UpdateLauncherSettings()
         {
             string json = JsonConvert.SerializeObject(LauncherPrefs);
-            LauncherConfigFile = ConfigFolderPath + "\\launcherPrefs.json";
-            if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
+            LauncherConfigFile = CommonConfigFolderPath + "\\launcherPrefs.json";
+            if (!Directory.Exists(CommonConfigFolderPath)) Directory.CreateDirectory(CommonConfigFolderPath);
             try
             {
-                File.WriteAllText(ConfigFolderPath + "\\launcherPrefs.json", json);
+                File.WriteAllText(CommonConfigFolderPath + "\\launcherPrefs.json", json);
             }
             catch (IOException e)
             {
@@ -226,15 +227,30 @@ namespace Cyanlabs.Syn3Updater
                 if (value.Contains("syn3updater://")) Magnet = value.Replace("syn3updater://", "").TrimEnd('/');
             }
 
-            ConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
-            ProfileConfigFolderPath = ConfigFolderPath + "\\Profiles\\";
-            ConfigFile = ConfigFolderPath + "\\settings.json";
+            CommonConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+            UserConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater";
+            ProfileConfigFolderPath = UserConfigFolderPath + "\\Profiles\\";
+            ConfigFile = UserConfigFolderPath + "\\settings.json";
             
-            if (!Directory.Exists(ConfigFolderPath)) Directory.CreateDirectory(ConfigFolderPath);
+            if (!Directory.Exists(CommonConfigFolderPath)) Directory.CreateDirectory(CommonConfigFolderPath);
+            if (!Directory.Exists(UserConfigFolderPath)) Directory.CreateDirectory(UserConfigFolderPath);
             if (!Directory.Exists(ProfileConfigFolderPath)) Directory.CreateDirectory(ProfileConfigFolderPath);
             
             if (File.Exists(ConfigFile))
             {
+                try
+                {
+                    MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(ConfigFile));
+                }
+                catch (JsonReaderException)
+                {
+                    File.Delete(ConfigFile);
+                    MainSettings = new JsonMainSettings();
+                }
+            }
+            else if (File.Exists(CommonConfigFolderPath + "\\settings.json"))
+            {
+                File.Move(CommonConfigFolderPath + "\\settings.json",ConfigFile);
                 try
                 {
                     MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(ConfigFile));
@@ -255,19 +271,19 @@ namespace Cyanlabs.Syn3Updater
 
             if (string.IsNullOrEmpty(MainSettings.LogPath))
             {
-                MainSettings.LogPath = ConfigFolderPath + "\\Logs\\";
+                MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
                 if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
             }
             
-            if (File.Exists(ConfigFolderPath + "\\launcherPrefs.json"))
+            if (File.Exists(CommonConfigFolderPath + "\\launcherPrefs.json"))
             {
                 try
                 {
-                    LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(ConfigFolderPath + "\\launcherPrefs.json"));
+                    LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(CommonConfigFolderPath + "\\launcherPrefs.json"));
                 }
                 catch (JsonReaderException)
                 {
-                    File.Delete(ConfigFolderPath + "\\launcherPrefs.json");
+                    File.Delete(CommonConfigFolderPath + "\\launcherPrefs.json");
                     LauncherPrefs = new LauncherPrefs();
                 }
             }
@@ -376,7 +392,7 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug("Writing log to disk before shutdown");
             try
             {
-                File.WriteAllText(ConfigFolderPath + "\\applog.txt", JsonConvert.SerializeObject(Logger.Log));
+                File.WriteAllText(UserConfigFolderPath + "\\applog.txt", JsonConvert.SerializeObject(Logger.Log));
             }
             catch (UnauthorizedAccessException e)
             {

@@ -60,16 +60,16 @@ namespace Cyanlabs.Launcher
                 }
 
             // Attempt to load existing settings if found, if not use defaults
-            string configFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
-            if (File.Exists(configFolderPath + "\\launcherPrefs.json"))
+            string commonConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+            if (File.Exists(commonConfigFolderPath + "\\launcherPrefs.json"))
             {
                 try
                 {
-                    Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(configFolderPath + "\\launcherPrefs.json"));
+                    Core.LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(commonConfigFolderPath + "\\launcherPrefs.json"));
                 }
                 catch (JsonReaderException)
                 {
-                    File.Delete(configFolderPath + "\\launcherPrefs.json");
+                    File.Delete(commonConfigFolderPath + "\\launcherPrefs.json");
                     Application.Current.Shutdown();
                     Process.Start(BaseFolder + "\\Syn3Updater.exe", "/launcher");
                 }
