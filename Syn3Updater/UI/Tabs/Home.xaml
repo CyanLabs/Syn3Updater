@@ -14,6 +14,7 @@
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
+        <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <tabs:HomeViewModel />
@@ -95,7 +96,7 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate >
                                     <StackPanel Orientation="Horizontal">
-                                        <fa5:FontAwesome Icon="Solid_Folder" FontSize="18" Foreground="White" Margin="0,0,10,0" VerticalAlignment="Center" Visibility="{Binding Fake, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Icon="Solid_Folder" FontSize="18" Foreground="White" Margin="1,0,10,0" VerticalAlignment="Center" Visibility="{Binding Fake, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <fa5:FontAwesome Icon="Brands_Usb" FontSize="18" Foreground="White" Margin="0,0,10,0" VerticalAlignment="Center" Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                                         <StackPanel Orientation="Vertical">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -166,6 +167,7 @@
 
                     <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,0,0">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="30" />
@@ -175,14 +177,16 @@
                             <RowDefinition Height="40" />
                             <RowDefinition Height="40" />
                         </Grid.RowDefinitions>
+                        <fa5:FontAwesome Icon="Solid_Globe" FontSize="18" Foreground="White" Margin="0" VerticalAlignment="Center" Grid.Row="0"
+                                         Grid.Column="0"/>
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="0"
-                                   Grid.Column="0"
+                                   Grid.Column="1"
                                    Text="{Binding Language, ConverterParameter=Home.Region, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="246px" ItemsSource="{Binding SRegions}"
+                        <ComboBox VerticalAlignment="Center" MinWidth="200px" ItemsSource="{Binding SRegions}"
                                   DisplayMemberPath="Name" SelectedValuePath="Code"
-                                  SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="1" 
+                                  SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="2" 
                                   SelectedIndex="{Binding SelectedRegionIndex}" />
-                        <Button Cursor="Hand" Grid.Row="0" Grid.Column="2" BorderThickness="0" Background="#00000000"
+                        <Button Cursor="Hand" Grid.Row="0" Grid.Column="3" BorderThickness="0" Background="#00000000"
                                 Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" VerticalAlignment="Center"
                                 HorizontalAlignment="Center" Command="{Binding RegionInfo}"
                                 Style="{DynamicResource AccentButtonStyle}">
@@ -190,22 +194,26 @@
                                              VerticalAlignment="Center" Margin="0,0,0,0" />
                         </Button>
 
+                        <fa5:FontAwesome Icon="Solid_CodeBranch" FontSize="18" Foreground="White" Margin="0" VerticalAlignment="Center" Grid.Row="1"
+                                         Grid.Column="0"/>
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"
-                                   Grid.Column="0"
+                                   Grid.Column="1"
                                    Text="{Binding Language, ConverterParameter=Home.Version, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="246px"
+                        <ComboBox VerticalAlignment="Center" MinWidth="200px"
                                   SelectedIndex="{Binding SelectedReleaseIndex}"
                                   IsEnabled="{Binding SVersionsEnabled}" ItemsSource="{Binding SVersion}"
-                                  SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="1"
+                                  SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="2"
                                   Grid.ColumnSpan="2" />
 
+                        <fa5:FontAwesome Icon="Solid_Map" FontSize="18" Foreground="White" Margin="0" VerticalAlignment="Center" Grid.Row="2"
+                                         Grid.Column="0"/>
                         <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                   Grid.Row="2" Grid.Column="0"
+                                   Grid.Row="2" Grid.Column="1"
                                    Text="{Binding Language, ConverterParameter=Home.MapVersion, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="246px"
+                        <ComboBox VerticalAlignment="Center" MinWidth="200px"
                                   SelectedIndex="{Binding SelectedMapVersionIndex}"
                                   IsEnabled="{Binding SMapVersionsEnabled}" ItemsSource="{Binding SMapVersion}"
-                                  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
                                   SelectedItem="{Binding SelectedMapVersion}" />
                     </Grid>
                 </Grid>
@@ -222,9 +230,15 @@
                             <DataTemplate>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,2.5,0,2.5">
-                                        <controls:ToggleSwitch VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                               Margin="5,0" IsOn="{Binding Selected}" OnContent=""
-                                                               OffContent="" Width="40" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_BoxOpen" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=APPS, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_Microphone" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=VOICE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_Headset" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=VOICE_NAV, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_Map" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=MAP, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_Scroll" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=MAP_LICENSE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_Music" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=GRACENOTES, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_Images" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=ENH_DAB, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Width="40" Icon="Solid_Toolbox" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=TOOL, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+
                                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
                                                    TextAlignment="Center" Margin="5,0" MinWidth="100"
                                                    Text="{Binding Type}" />
@@ -235,10 +249,14 @@
                                                    TextAlignment="Center" Margin="5,0" MinWidth="200"
                                                    Text="{Binding Version}" />
                                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                   TextAlignment="Center" Margin="5,0" Width="140" FontSize="11"
+                                                   TextAlignment="Center" Margin="5,0" Width="120" FontSize="11"
                                                    TextWrapping="WrapWithOverflow" Text="{Binding Notes}" />
+                                        <controls:ToggleSwitch VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                               Margin="5,0" IsOn="{Binding Selected}" OnContent=""
+                                                               OffContent="" Width="40" />
                                         <TextBlock Visibility="Collapsed" Text="{Binding Url}" />
                                         <TextBlock Visibility="Collapsed" Text="{Binding Md5}" />
+                                        
                                     </StackPanel>
 
                                 </StackPanel>
