@@ -30,7 +30,18 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
 
             // Optional Format
-            if (!string.IsNullOrWhiteSpace(selectedDrive.Path))
+            if (string.IsNullOrWhiteSpace(selectedDrive.Path))
+            {
+                if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter),
+                    "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    AppMan.App.SkipFormat = false;
+                else
+                {
+                    AppMan.Logger.Info("Selected folder will not be cleared before being used");
+                    AppMan.App.SkipFormat = true;
+                }
+            }
+            else
             {
                 if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
                     "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
@@ -55,7 +66,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 AppMan.Logger.Info("Using 'Select a Directory' instead of a USB Drive");
                 AppMan.App.DownloadToFolder = true;
 
-                if (Directory.EnumerateFiles(driveLetter).Any())
+                if (Directory.EnumerateFiles(driveLetter).Any() && !AppMan.App.SkipFormat)
                 {
                     if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater",
                         MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)

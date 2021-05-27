@@ -549,41 +549,46 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 Log += "[" + DateTime.Now + "] Preparing USB drive" + Environment.NewLine;
                 AppMan.Logger.Info("Preparing USB drive");
             }
-
-            if (AppMan.App.DownloadToFolder)
+            
+            if (!AppMan.App.SkipFormat)
             {
-                foreach (string file in Directory.GetFiles(AppMan.App.DriveLetter))
-                    File.Delete(file);
-                foreach (string dir in Directory.GetDirectories(AppMan.App.DriveLetter))
-                    Directory.Delete(dir, true);
-            }
-            else if (!AppMan.App.SkipFormat)
-            {
-                Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
-                AppMan.Logger.Info("Formatting USB drive");
-                using (Process p = new Process())
+                if (AppMan.App.DownloadToFolder)
                 {
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.StartInfo.FileName = "diskpart.exe";
-                    p.StartInfo.CreateNoWindow = true;
-
-                    Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
-                    AppMan.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
-
-                    p.Start();
-                    p.StandardInput.WriteLine($"SELECT DISK={AppMan.App.DriveNumber}");
-                    p.StandardInput.WriteLine("CLEAN");
-                    p.StandardInput.WriteLine("CONVERT MBR");
-                    p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
-                    p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
-                    p.StandardInput.WriteLine($"ASSIGN LETTER={AppMan.App.DriveLetter.Replace(":", "")}");
-                    p.StandardInput.WriteLine("EXIT");
-
-                    p.WaitForExit();
+                    Log += "[" + DateTime.Now + "] Clearing Selected Folder" + Environment.NewLine;
+                    foreach (string file in Directory.GetFiles(AppMan.App.DriveLetter))
+                        File.Delete(file);
+                    foreach (string dir in Directory.GetDirectories(AppMan.App.DriveLetter))
+                        Directory.Delete(dir, true);
                 }
+                else
+                {
+                    Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
+                    AppMan.Logger.Info("Formatting USB drive");
+                    using (Process p = new Process())
+                    {
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.RedirectStandardInput = true;
+                        p.StartInfo.FileName = "diskpart.exe";
+                        p.StartInfo.CreateNoWindow = true;
 
-                Thread.Sleep(5000);
+                        Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
+                        AppMan.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
+
+                        p.Start();
+                        p.StandardInput.WriteLine($"SELECT DISK={AppMan.App.DriveNumber}");
+                        p.StandardInput.WriteLine("CLEAN");
+                        p.StandardInput.WriteLine("CONVERT MBR");
+                        p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
+                        p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
+                        p.StandardInput.WriteLine($"ASSIGN LETTER={AppMan.App.DriveLetter.Replace(":", "")}");
+                        p.StandardInput.WriteLine("EXIT");
+
+                        p.WaitForExit();
+                    }
+
+                    Thread.Sleep(5000);
+                }
+                
             }
 
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)

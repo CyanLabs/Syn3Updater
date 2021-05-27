@@ -272,8 +272,8 @@ namespace Cyanlabs.Syn3Updater
             if (string.IsNullOrEmpty(MainSettings.LogPath))
             {
                 MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
-                if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
             }
+            if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
             
             if (File.Exists(CommonConfigFolderPath + "\\launcherPrefs.json"))
             {

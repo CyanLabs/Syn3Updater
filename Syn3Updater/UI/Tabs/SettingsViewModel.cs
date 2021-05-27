@@ -395,13 +395,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             {
                                 foreach (var file in Directory.GetFiles(oldPath, "*.TAR.GZ"))
                                     FileSystem.MoveFile(file, Path.Combine(dialog.SelectedPath, Path.GetFileName(file)), UIOption.AllDialogs);
-                                DownloadLocation = dialog.SelectedPath + "\\";
                             }
                             else
                             {
                                 foreach (var file in Directory.GetFiles(oldPath, "*.txt"))
                                     FileSystem.MoveFile(file, Path.Combine(dialog.SelectedPath, Path.GetFileName(file)), UIOption.AllDialogs);
-                                LogLocation = dialog.SelectedPath + "\\";
                             }
                         }
                         catch (OperationCanceledException)
@@ -409,6 +407,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             //TODO Catch better
                         }
                     }
+
+                if (type == "downloads")
+                {
+                    DownloadLocation = dialog.SelectedPath + "\\";
+                }
+                else
+                {
+                    LogLocation = dialog.SelectedPath + "\\";
+                }
             }
         }
         #endregion
