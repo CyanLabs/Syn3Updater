@@ -79,7 +79,6 @@ namespace Syn3Updater.Tests.Common.Services
 
             Assert.AreEqual(AppMan.App.Ivsus.Count, 4);
             Assert.AreEqual(AppMan.App.DriveLetter, null);
-            Assert.AreEqual(AppMan.App.DownloadOnly, false);
             Assert.AreEqual(AppMan.App.SelectedRegion, merica.Code);
             Assert.AreEqual(AppMan.App.SelectedRelease, "Sync 3.4.19101");
             Assert.AreEqual(AppMan.App.SelectedMapVersion, "Non Nav APIM");
