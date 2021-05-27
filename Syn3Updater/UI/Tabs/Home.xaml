@@ -94,21 +94,25 @@
                                   SelectedItem="{Binding SelectedDrive}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate >
-                                    <StackPanel Orientation="Vertical">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
-                                            <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
-                                            <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName}"/>
-                                        </StackPanel>
-                                        
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-                                            <TextBlock Margin="0,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFreeSpace, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
-                                            <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12"/>
-                                            <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveSize, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
-                                            <TextBlock Margin="2,0" Text="{Binding Size}" FontSize="12"/>
-                                            <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
-                                            <TextBlock Margin="2,0" Text="{Binding FileSystem}" FontSize="12"/>
-                                            <TextBlock Margin="2,0" Text="{Binding PartitionType, StringFormat='({0})'}" FontSize="12"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa5:FontAwesome Icon="Solid_Folder" FontSize="18" Foreground="White" Margin="0,0,10,0" VerticalAlignment="Center" Visibility="{Binding Fake, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <fa5:FontAwesome Icon="Brands_Usb" FontSize="18" Foreground="White" Margin="0,0,10,0" VerticalAlignment="Center" Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
+                                                <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
+                                                <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName}"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Orientation="Horizontal" Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                                                <TextBlock Margin="0,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFreeSpace, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                                <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12"/>
+                                                <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveSize, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                                <TextBlock Margin="2,0" Text="{Binding Size}" FontSize="12"/>
+                                                <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                                <TextBlock Margin="2,0" Text="{Binding FileSystem}" FontSize="12"/>
+                                                <TextBlock Margin="2,0" Text="{Binding PartitionType, StringFormat='({0})'}" FontSize="12"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
                                 </DataTemplate>
