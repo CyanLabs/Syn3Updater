@@ -24,21 +24,21 @@ namespace Cyanlabs.Syn3Updater.Converter
         #endregion
     }
 
-    //public class InvertedBoolToVisibilityConverter : IValueConverter
-    //{
-    //    #region Methods
+    public class InvertedBoolToVisibilityConverter : IValueConverter
+    {
+        #region Methods
 
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        return value as bool? != true ? Visibility.Visible :
-    //            string.Equals(parameter?.ToString(), "false", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden : Visibility.Collapsed;
-    //    }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value as bool? != true ? Visibility.Visible :
+                string.Equals(parameter?.ToString(), "false", StringComparison.OrdinalIgnoreCase) ? Visibility.Hidden : Visibility.Collapsed;
+        }
 
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        return value as Visibility? != Visibility.Visible;
-    //    }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value as Visibility? != Visibility.Visible;
+        }
 
-    //    #endregion
-    //}
+        #endregion
+    }
 }

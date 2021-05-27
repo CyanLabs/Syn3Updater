@@ -5,12 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:controls="http://schemas.modernwpf.com/2019"
+    xmlns:converter="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Home"
     mc:Ignorable="d"
     d:DesignHeight="640" d:DesignWidth="750" IsVisibleChanged="Home_OnIsVisibleChanged" FontSize="12"
-    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+    Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" x:Name="HomeTab">
     <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <tabs:HomeViewModel />
@@ -87,8 +90,30 @@
                             <ColumnDefinition Width="40" />
                         </Grid.ColumnDefinitions>
                         <ComboBox MinWidth="315" VerticalAlignment="Center" Margin="10,0,0,0" SelectedIndex="-1"
-                                  ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name"
-                                  SelectedItem="{Binding SelectedDrive}" />
+                                  ItemsSource="{Binding DriveList}" SelectedValuePath="Path"
+                                  SelectedItem="{Binding SelectedDrive}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
+                                            <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName}"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                                            <TextBlock Margin="0,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFreeSpace, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12"/>
+                                            <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveSize, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding Size}" FontSize="12"/>
+                                            <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding FileSystem}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding PartitionType, StringFormat='({0})'}" FontSize="12"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
                                 Style="{DynamicResource AccentButtonStyle}"
                                 ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"

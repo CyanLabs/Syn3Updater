@@ -164,23 +164,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void UpdateDriveInfo()
         {
-            USBHelper.DriveInfo driveInfo = USBHelper.UpdateDriveInfo(SelectedDrive);
-
             // Update app level vars
-            AppMan.App.DriveFileSystem = driveInfo.FileSystem;
-            AppMan.App.DrivePartitionType = driveInfo.PartitionType;
+            AppMan.App.DriveFileSystem = SelectedDrive?.FileSystem;
+            AppMan.App.DrivePartitionType = SelectedDrive?.PartitionType;
             AppMan.App.DriveName = SelectedDrive?.Name;
-            AppMan.App.SkipFormat = driveInfo.SkipFormat;
+            AppMan.App.SkipFormat = SelectedDrive.SkipFormat;
 
             // Update local level vars
-            DriveLetter = driveInfo.Letter;
-            DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
-            DriveName = driveInfo.Name;
+            DriveLetter = SelectedDrive?.Letter;
+            DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;
+            DriveName = SelectedDrive?.Name;
 
             ReloadTab();
             if (SelectedDrive?.Path != "")
                 AppMan.Logger.Info(
-                    $"USB Drive selected - Name: {driveInfo.Name} - FileSystem: {driveInfo.FileSystem} - PartitionType: {driveInfo.PartitionType} - Letter: {driveInfo.Letter}");
+                    $"USB Drive selected - Name: {SelectedDrive?.Name} - FileSystem: {SelectedDrive?.FileSystem} - PartitionType: {SelectedDrive?.PartitionType} - Letter: {SelectedDrive?.Letter}");
         }
 
         private async Task LogPrepareUSBAction()

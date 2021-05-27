@@ -29,19 +29,19 @@ namespace Cyanlabs.Syn3Updater.Helper
     {
         #region Properties & Fields
 
-        public struct DriveInfo
-        {
-            public string Letter;
-            public string Name;
-            public string FileSystem;
-            public string PartitionType;
-            public bool SkipFormat;
-        }
-
         public class Drive
         {
             public string Path { get; set; }
             public string Name { get; set; }
+            public string Size { get; set; }
+            public string Letter{ get; set; }
+            public string FileSystem{ get; set; }
+            public string PartitionType{ get; set; }
+            public string FreeSpace { get; set; }
+            public bool SkipFormat{ get; set; }
+            public string VolumeName { get; set; }
+            public string Model { get; set; }
+            public bool Fake { get; set; }
         }
 
         #endregion
@@ -56,53 +56,52 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             ObservableCollection<Drive> driveList = new();
             ManagementObjectSearcher driveQuery = new("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
-            foreach (ManagementBaseObject o in driveQuery.Get())
+            foreach (ManagementBaseObject n in driveQuery.Get())
             {
-                ManagementObject d = (ManagementObject)o;
-                string diskName = Convert.ToString(d.Properties["Caption"].Value);
+                ManagementObject d = (ManagementObject)n;
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
-                if (friendlySize != "0B")
-                    // Add to array of drives
-                    driveList.Add(new Drive { Path = d.Path.RelativePath, Name = $"{diskName} {friendlySize}" });
+                
+                if (friendlySize == "0B") continue;
+                
+                Drive drive = new();
+                string partitionQueryText = $@"associators of {{{d.Path.RelativePath}}} where AssocClass = Win32_DiskDriveToDiskPartition";
+                ManagementObjectSearcher partitionQuery = new(partitionQueryText);
+                foreach (ManagementBaseObject o in partitionQuery.Get())
+                {
+                    ManagementObject p = (ManagementObject)o;
+                    string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
+                    ManagementObjectSearcher logicalDriveQuery = new(logicalDriveQueryText);
+                    foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
+                    {
+                        ManagementObject ld = (ManagementObject)managementBaseObject;
+                        drive.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
+                        drive.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
+                        drive.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
+                        drive.Name = d.Properties["Caption"].Value.ToString();
+                        if (string.IsNullOrWhiteSpace(ld.Properties["VolumeName"].Value.ToString()))
+                            drive.VolumeName = "";
+                        else
+                            drive.VolumeName = "(" + ld.Properties["VolumeName"].Value + ")";
+                        drive.Path = d.Path.RelativePath;
+                        drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.Properties["FreeSpace"].Value));
+                        drive.Model =  d.Properties["Model"].Value.ToString();
+                        drive.Size = friendlySize;
+                        drive.Fake = false;
+                        if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")
+                            drive.SkipFormat = true;
+                    }
+                }
+                    
+                // Add to array of drives
+                driveList.Add(drive);
+
+
             }
             if (fakeusb)
-                driveList.Add(new Drive { Path = "", Name = LM.GetValue("Home.NoUSBDir") });
+                driveList.Add(new Drive { Path = "", Name = LM.GetValue("Home.NoUSBDir") , Fake = true});
 
             // Return a list of drives
             return driveList;
-        }
-
-        /// <summary>
-        ///     Get detailed information of selectedDrive
-        /// </summary>
-        /// <param name="selectedDrive"></param>
-        /// <returns>Details of the selectedDrive as type DriveInfo</returns>
-        public static DriveInfo UpdateDriveInfo(Drive selectedDrive)
-        {
-            DriveInfo driveInfo = new();
-            if (selectedDrive == null || selectedDrive.Name == LM.GetValue("Home.NoUSBDir") || selectedDrive.Path?.Length == 0) return driveInfo;
-
-            string partitionQueryText = $@"associators of {{{selectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
-            ManagementObjectSearcher partitionQuery = new(partitionQueryText);
-            foreach (ManagementBaseObject o in partitionQuery.Get())
-            {
-                ManagementObject p = (ManagementObject)o;
-                string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
-                ManagementObjectSearcher logicalDriveQuery = new(logicalDriveQueryText);
-                foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
-                {
-                    ManagementObject ld = (ManagementObject)managementBaseObject;
-                    driveInfo.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
-                    driveInfo.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
-                    driveInfo.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
-                    driveInfo.Name = ld.Properties["VolumeName"].Value.ToString();
-
-                    if (driveInfo.FileSystem == "exFAT" && driveInfo.PartitionType == "MBR" && driveInfo.Name == "CYANLABS")
-                        driveInfo.SkipFormat = true;
-                }
-            }
-
-            return driveInfo;
         }
 
         /// <summary>
@@ -168,7 +167,6 @@ namespace Cyanlabs.Syn3Updater.Helper
             string complete = data.ToString();
             File.WriteAllText($@"{driveletter}\log.txt", complete);
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-            if (!Directory.Exists(AppMan.App.MainSettings.LogPath)) Directory.CreateDirectory(AppMan.App.MainSettings.LogPath);
             File.WriteAllText($@"{AppMan.App.MainSettings.LogPath}log-{currentDate}.txt", complete);
             if (upload)
                 UploadLog(complete);

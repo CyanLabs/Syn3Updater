@@ -7,7 +7,7 @@
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Utility"
     mc:Ignorable="d"
-    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Utility_OnIsVisibleChanged" FontSize="12"
+    d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Utility_OnIsVisibleChanged" FontSize="12" x:Name="UtilityTab"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
     </UserControl.Resources>
@@ -73,9 +73,31 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
-                    <ComboBox Margin="10,0,0,0" MinWidth="315" VerticalAlignment="Center" SelectedIndex="-1"
-                              ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name"
-                              SelectedItem="{Binding SelectedDrive}" />
+                    <ComboBox MinWidth="315" VerticalAlignment="Center" Margin="10,0,0,0" SelectedIndex="-1"
+                              ItemsSource="{Binding DriveList}" SelectedValuePath="Path"
+                              SelectedItem="{Binding SelectedDrive}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate >
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
+                                            <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName}"/>
+                                        </StackPanel>
+                                        
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="0,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFreeSpace, ElementName=UtilityTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12"/>
+                                            <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveSize, ElementName=UtilityTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding Size}" FontSize="12"/>
+                                            <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFileSystem, ElementName=UtilityTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding FileSystem}" FontSize="12"/>
+                                            <TextBlock Margin="2,0" Text="{Binding PartitionType, StringFormat='({0})'}" FontSize="12"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     <Button VerticalContentAlignment="Center" Cursor="Hand" Grid.Column="1" BorderThickness="0"
                             ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                             Background="#00000000" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"

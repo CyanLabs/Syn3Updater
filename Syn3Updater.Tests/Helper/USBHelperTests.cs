@@ -16,20 +16,6 @@ namespace Syn3Updater.Tests.Helper
             Assert.Fail("Create or modify test");
         }
 
-        [Test]
-        public static void CanCallUpdateDriveInfo()
-        {
-            var selectedDrive = new USBHelper.Drive { Path = "TestValue924467263", Name = "TestValue1764848851" };
-            var result = USBHelper.UpdateDriveInfo(selectedDrive);
-            Assert.Fail("Create or modify test");
-        }
-
-        [Test]
-        public static void CannotCallUpdateDriveInfoWithNullSelectedDrive()
-        {
-            Assert.Throws<ArgumentNullException>(() => USBHelper.UpdateDriveInfo(default));
-        }
-
 
         // TODO: make test smarter 
         [Test]

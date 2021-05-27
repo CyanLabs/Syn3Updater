@@ -430,19 +430,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else
             {
-                USBHelper.DriveInfo driveInfo = USBHelper.UpdateDriveInfo(SelectedDrive);
-
                 // Update app level vars
-                AppMan.App.DriveFileSystem = driveInfo.FileSystem;
-                AppMan.App.DrivePartitionType = driveInfo.PartitionType;
+                AppMan.App.DriveFileSystem = SelectedDrive?.FileSystem;
+                AppMan.App.DrivePartitionType = SelectedDrive?.PartitionType;
                 AppMan.App.DriveName = SelectedDrive?.Name;
-                AppMan.App.SkipFormat = driveInfo.SkipFormat;
+                AppMan.App.SkipFormat = SelectedDrive.SkipFormat;
 
                 // Update local level vars
-                DriveLetter = driveInfo.Letter;
-                DriveFileSystem = driveInfo.PartitionType + " " + driveInfo.FileSystem;
-                DriveName = driveInfo.Name;
-                DriveDetailsVisible = driveInfo.Name == null ? Visibility.Hidden : Visibility.Visible;
+                DriveLetter = SelectedDrive?.Letter;
+                DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;
+                DriveName = SelectedDrive?.Name;
+                DriveDetailsVisible = SelectedDrive?.Name == null ? Visibility.Hidden : Visibility.Visible;
             }
         }
 
