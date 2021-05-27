@@ -43,11 +43,8 @@ namespace Cyanlabs.Syn3Updater.Services
 
             if (!canceldownload && !SanityCheckHelper.CancelDownloadCheck(selectedDrive))
             {
-                if (!AppMan.App.DownloadOnly)
-                {
-                    AppMan.App.DriveNumber = selectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
-                    AppMan.App.DriveLetter = driveLetter;
-                }
+                AppMan.App.DriveNumber = selectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+                AppMan.App.DriveLetter = driveLetter;
                 AppMan.App.IsDownloading = true;
                 AppMan.Logger.Info($"Starting process ({selectedRelease} - {selectedRegion.Code} - {selectedMapVersion})");
                 AppMan.App.FireDownloadsTabEvent();
@@ -74,8 +71,7 @@ namespace Cyanlabs.Syn3Updater.Services
                 Api.ReformatTool = await ApiHelper.GetSpecialIvsu(Api.GetReformat);
                 AppMan.App.Ivsus.Add(Api.ReformatTool);
             }
-
-            AppMan.App.DownloadOnly = false;
+            
             AppMan.App.DriveLetter = driveLetter;
             foreach (SModel.Ivsu item in ivsuList)
             {

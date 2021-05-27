@@ -86,7 +86,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="40" />
                         </Grid.ColumnDefinitions>
-                        <ComboBox MinWidth="315" VerticalAlignment="Center" Margin="10,0,0,0" SelectedIndex="0"
+                        <ComboBox MinWidth="315" VerticalAlignment="Center" Margin="10,0,0,0" SelectedIndex="-1"
                                   ItemsSource="{Binding DriveList}" SelectedValuePath="Path" DisplayMemberPath="Name"
                                   SelectedItem="{Binding SelectedDrive}" />
                         <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"

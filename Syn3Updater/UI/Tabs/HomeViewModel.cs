@@ -319,7 +319,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             My20Mode = AppMan.App.Settings.My20 ? "Enabled" : "Disabled / Not MY20";
             InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
             StartEnabled = false;
-            InstallMode = AppMan.App.InstallMode;
+            InstallMode = AppMan.App.Settings.InstallMode;
             CurrentProfile = AppMan.App.MainSettings.Profile;
             DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path?.Length == 0 ? Visibility.Hidden : Visibility.Visible;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
@@ -400,6 +400,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (dialog.ShowDialog().GetValueOrDefault())
                 {
                     string destination = dialog.SelectedPath;
+                    DriveInfo driveInfo = new(destination);
+                    if (driveInfo.DriveType != DriveType.Fixed)
+                    {
+                        if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.RemovableDriveFolder"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Warning) ==
+                            MessageBoxResult.Cancel)
+                        {
+                            return;
+                        }
+                    }
                     if (AppMan.App.DownloadPath.Contains(destination))
                     {
                         ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelDownloadIsFolder"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -413,6 +422,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         AppMan.App.DriveName = SelectedDrive?.Name;
                         DriveDetailsVisible = Visibility.Visible;
                     }
+                }
+                else
+                {
+                    RefreshUsb();
                 }
             }
             else
@@ -594,7 +607,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                 {
                     InstallMode = "autoinstall";
-                    AppMan.App.InstallMode = InstallMode;
+                    AppMan.App.Settings.InstallMode = InstallMode;
                 }
 
                 response = await AppMan.App.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion);
@@ -675,7 +688,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 AppMan.App.Action = "main";
-                AppMan.App.InstallMode = InstallMode;
+                AppMan.App.Settings.InstallMode = InstallMode;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             }
         }

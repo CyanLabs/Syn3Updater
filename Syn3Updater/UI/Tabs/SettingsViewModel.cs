@@ -45,7 +45,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public ObservableCollection<string> InstallModes
         {
             get => _installModes;
-            set => SetProperty(ref _installModes, value);
+            set { SetProperty(ref _installModes, value); }
         }
 
         private ObservableCollection<LauncherPrefs.ReleaseType> _releaseTypes;
@@ -150,7 +150,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 if (value == null) return;
-                AppMan.App.InstallMode = value;
+                AppMan.App.Settings.InstallMode = value;
                 SetProperty(ref _currentInstallMode, value);
                 AppMan.App.ModeForced = value != "autodetect";
             }
@@ -188,16 +188,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _My20Mode;
             set
             {
-                if (_My20Mode == true && value == false)
+                if (_My20Mode && !value)
                 {
                     if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Detected"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                         SetProperty(ref _My20Mode, false);
                     AppMan.App.Settings.My20 = false;
                 }
-                else
+                else if (!_My20Mode && value)
                 {
-                    SetProperty(ref _My20Mode, value);
-                    AppMan.App.Settings.My20 = value;
+                    SetProperty(ref _My20Mode, true);
+                    AppMan.App.Settings.My20 = true;
                     CurrentInstallMode = "autodetect";
                 }
                 InstallModesEnabled = !AppMan.App.Settings.My20;
@@ -338,7 +338,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             //TODO Fix need for temp strings
             string currentRegionTemp = AppMan.App.Settings.CurrentRegion;
             CurrentRegion = currentRegionTemp;
-            string currentInstallModeTemp = AppMan.App.InstallMode;
+            string currentInstallModeTemp = AppMan.App.Settings.InstallMode;
             CurrentInstallMode = currentInstallModeTemp;
             
             CurrentNav = AppMan.App.Settings.CurrentNav;

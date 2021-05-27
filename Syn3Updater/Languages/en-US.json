@@ -20,7 +20,6 @@
     "Home.Notes": "Notes:",
     "Home.SelectPackages": "Select Packages",
     "Home.InstallMode": "Install Mode:",
-    "Home.NoUSB": "Download Only (NO USB)",
     "Home.StartButton": "Start",
     "About.AboutTitle": "About Syn3 Updater",
     "About.ForumButton": "CYANLABS FORUM",
@@ -64,7 +63,6 @@
     "MessageBox.DownloadInProgress": "Another operation is already running, please wait for the existing operation to finish before continuing.",
     "MessageBox.CopyVerificationFailed": "Failed to successfully validate the copied file after 3 attempts, ensure USB drive and port are functioning correctly and/or try another USB drive. Aborting process!",
     "MessageBox.DownloadVerificationFailed": "Failed to successfully validate the downloaded file after 3 attempts, Check your internet connection and try again. Aborting process!",
-    "MessageBox.DownloadOnlyComplete": "All files downloaded and validated successfully, no copying has been done!",
     "MessageBox.OptionalFormatUSB": "This USB drive has already been used by Syn3 Updater.\n\n{0}\nDrive Letter: {1}\n\nTo use existing files on the USB drive click No\nTo format the USB drive click Yes\n\nDo you want to format the selected USB drive?",
     "MessageBox.FailedToValidate3": "Failed to validate {0} 3 times, ABORTING PROCESS!",
     "MessageBox.WebException": "Failed to connect to the download server, {0}",
@@ -153,5 +151,6 @@
     "Profiles.NewProfile": "Profile Name:",
     "Profiles.CreateAndSet": "Create and Set Profile",
     "Home.Profile": "Profile:",
-    "MessageBox.InvalidProfile": "You can not delete the currently active profile, please select another profile and then delete this profile\n"
+    "MessageBox.InvalidProfile": "You can not delete the currently active profile, please select another profile and then delete this profile\n",
+    "MessageBox.RemovableDriveFolder": "The folder you have selected is located on a non fixed drive, you should consider selecting the USB itself rather than selecting a folder on the USB drive\n\nIf you wish to continue anyway click 'OK'"
 }

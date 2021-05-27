@@ -118,7 +118,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
 
-            InstallMode = AppMan.App.InstallMode;
+            InstallMode = AppMan.App.Settings.InstallMode;
             InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No"; _action = AppMan.App.Action;
 
             text = $"Install Mode: {InstallMode}";
@@ -164,7 +164,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task DoDownload()
         {
             _count = 0;
-            TotalPercentageMax = 100 * AppMan.App.Ivsus.Count * (AppMan.App.DownloadOnly ? 2 : 4);
+            TotalPercentageMax = 100 * AppMan.App.Ivsus.Count * 4;
 
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
             {
@@ -281,22 +281,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (!_ct.IsCancellationRequested)
             {
-                if (AppMan.App.DownloadOnly)
-                {
-                    string text = "Process completed successfully (download only)";
-                    Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                    AppMan.Logger.Info(text);
-
-                    DownloadInfo = LM.GetValue("String.Completed");
-                    Application.Current.Dispatcher.Invoke(() =>
-                        ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.DownloadOnlyComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information));
-                    AppMan.App.IsDownloading = false;
-                    CancelAction();
-                }
-                else
-                {
-                    await PrepareUsbAsync();
-                }
+                await PrepareUsbAsync();
             }
         }
         
@@ -572,36 +557,33 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 foreach (string dir in Directory.GetDirectories(AppMan.App.DriveLetter))
                     Directory.Delete(dir, true);
             }
-            else
+            else if (!AppMan.App.SkipFormat)
             {
-                if (!AppMan.App.SkipFormat && !AppMan.App.DownloadOnly)
+                Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
+                AppMan.Logger.Info("Formatting USB drive");
+                using (Process p = new Process())
                 {
-                    Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
-                    AppMan.Logger.Info("Formatting USB drive");
-                    using (Process p = new Process())
-                    {
-                        p.StartInfo.UseShellExecute = false;
-                        p.StartInfo.RedirectStandardInput = true;
-                        p.StartInfo.FileName = "diskpart.exe";
-                        p.StartInfo.CreateNoWindow = true;
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.RedirectStandardInput = true;
+                    p.StartInfo.FileName = "diskpart.exe";
+                    p.StartInfo.CreateNoWindow = true;
 
-                        Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
-                        AppMan.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
+                    Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
+                    AppMan.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
 
-                        p.Start();
-                        p.StandardInput.WriteLine($"SELECT DISK={AppMan.App.DriveNumber}");
-                        p.StandardInput.WriteLine("CLEAN");
-                        p.StandardInput.WriteLine("CONVERT MBR");
-                        p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
-                        p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
-                        p.StandardInput.WriteLine($"ASSIGN LETTER={AppMan.App.DriveLetter.Replace(":", "")}");
-                        p.StandardInput.WriteLine("EXIT");
+                    p.Start();
+                    p.StandardInput.WriteLine($"SELECT DISK={AppMan.App.DriveNumber}");
+                    p.StandardInput.WriteLine("CLEAN");
+                    p.StandardInput.WriteLine("CONVERT MBR");
+                    p.StandardInput.WriteLine("CREATE PARTITION PRIMARY");
+                    p.StandardInput.WriteLine("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
+                    p.StandardInput.WriteLine($"ASSIGN LETTER={AppMan.App.DriveLetter.Replace(":", "")}");
+                    p.StandardInput.WriteLine("EXIT");
 
-                        p.WaitForExit();
-                    }
-
-                    Thread.Sleep(5000);
+                    p.WaitForExit();
                 }
+
+                Thread.Sleep(5000);
             }
 
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)

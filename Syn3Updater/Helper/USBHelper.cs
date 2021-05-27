@@ -54,11 +54,8 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>ObservableCollection of all USB Drives as type Drive</returns>
         public static ObservableCollection<Drive> RefreshDevices(bool fakeusb)
         {
-            ObservableCollection<Drive> driveList = new ObservableCollection<Drive>
-            {
-                fakeusb ? new Drive { Path = "", Name = LM.GetValue("Home.NoUSB") } : new Drive { Path = "", Name = "" }
-            };
-            ManagementObjectSearcher driveQuery = new ManagementObjectSearcher("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
+            ObservableCollection<Drive> driveList = new();
+            ManagementObjectSearcher driveQuery = new("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject o in driveQuery.Get())
             {
                 ManagementObject d = (ManagementObject)o;
@@ -82,16 +79,16 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>Details of the selectedDrive as type DriveInfo</returns>
         public static DriveInfo UpdateDriveInfo(Drive selectedDrive)
         {
-            DriveInfo driveInfo = new DriveInfo();
-            if (selectedDrive == null || selectedDrive.Name == LM.GetValue("Home.NoUSB") || selectedDrive.Name == LM.GetValue("Home.NoUSBDir") || selectedDrive.Path?.Length == 0) return driveInfo;
+            DriveInfo driveInfo = new();
+            if (selectedDrive == null || selectedDrive.Name == LM.GetValue("Home.NoUSBDir") || selectedDrive.Path?.Length == 0) return driveInfo;
 
             string partitionQueryText = $@"associators of {{{selectedDrive.Path}}} where AssocClass = Win32_DiskDriveToDiskPartition";
-            ManagementObjectSearcher partitionQuery = new ManagementObjectSearcher(partitionQueryText);
+            ManagementObjectSearcher partitionQuery = new(partitionQueryText);
             foreach (ManagementBaseObject o in partitionQuery.Get())
             {
                 ManagementObject p = (ManagementObject)o;
                 string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
-                ManagementObjectSearcher logicalDriveQuery = new ManagementObjectSearcher(logicalDriveQueryText);
+                ManagementObjectSearcher logicalDriveQuery = new(logicalDriveQueryText);
                 foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                 {
                     ManagementObject ld = (ManagementObject)managementBaseObject;
@@ -115,7 +112,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="upload">Set to true to upload log file <see cref="UploadLog"/>, else false to only save it to USB drive</param>
         public static void GenerateLog(string log, bool upload)
         {
-            StringBuilder data = new StringBuilder($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
+            StringBuilder data = new($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
             data.Append(@"Branch: ").Append(AppMan.App.LauncherPrefs.ReleaseTypeInstalled).Append(Environment.NewLine)
                 .Append(@"Operating System: ").Append(SystemHelper.GetOsFriendlyName()).Append(Environment.NewLine)
                 .Append(Environment.NewLine)
@@ -123,7 +120,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"Version: {AppMan.App.SVersion}{Environment.NewLine}")
                 .Append($@"Region: {AppMan.App.Settings.CurrentRegion}{Environment.NewLine}")
                 .Append($@"Navigation: {AppMan.App.Settings.CurrentNav}{Environment.NewLine}")
-                .Append($@"Mode: {AppMan.App.InstallMode}{Environment.NewLine}")
+                .Append($@"Mode: {AppMan.App.Settings.InstallMode}{Environment.NewLine}")
                 .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}")
                 .Append($@"My20 Protection Enabled: {AppMan.App.Settings.My20}{Environment.NewLine}")
                 .Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
@@ -158,7 +155,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (Directory.Exists($@"{driveletter}\SyncMyRide"))
             {
                 data.Append(Environment.NewLine);
-                DirectoryInfo di = new DirectoryInfo($@"{driveletter}\SyncMyRide");
+                DirectoryInfo di = new($@"{driveletter}\SyncMyRide");
                 FileInfo[] allFiles = di.GetFiles("*", SearchOption.AllDirectories);
                 data.Append($"FILES ({allFiles.Length}){Environment.NewLine}");
                 foreach (FileInfo file in allFiles)
@@ -182,12 +179,12 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="log">Contents of log file</param>
         public static void UploadLog(string log)
         {
-            Dictionary<string, string> values = new Dictionary<string, string>
+            Dictionary<string, string> values = new()
             {
                 {"computername", Environment.MachineName},
                 {"contents", log}
             };
-            HttpClient client = new HttpClient();
+            HttpClient client = new();
             HttpResponseMessage response = client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values)).GetAwaiter().GetResult();
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
@@ -200,7 +197,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (_node != null && ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
                 MessageBoxResult.OK)
             {
-                FormUrlEncodedContent formContent = new FormUrlEncodedContent(new[]
+                FormUrlEncodedContent formContent = new(new[]
                 {
                     new KeyValuePair<string, string>("xml", _node.ToString()),
                     new KeyValuePair<string, string>("apim", _apimDetails.PartNumber),
@@ -238,7 +235,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             try
             {
                 AppMan.App.Cancelled = false;
-                XmlDocument doc = new XmlDocument();
+                XmlDocument doc = new();
                 //TODO: swtich to Async once code moves to dotnet 5+ 
                 doc.Load(dialog.FileName);
                 string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
@@ -307,7 +304,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     foreach (Interrogator.D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
                         LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
 
-                    List<AsBuilt.DID> asBuiltValues = new List<AsBuilt.DID>();
+                    List<AsBuilt.DID> asBuiltValues = new();
 
                     LogXmlDetails += $"{Environment.NewLine}{Environment.NewLine}APIM AsBuilt";
                     foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
@@ -341,7 +338,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         //likely no internet connection ignore
                     }
 
-                    AsBuilt.DirectConfiguration asbult = new AsBuilt.DirectConfiguration
+                    AsBuilt.DirectConfiguration asbult = new()
                     {
                         VEHICLE = new AsBuilt.VEHICLE
                         {
@@ -372,7 +369,6 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             //Reset ApplicationManager variables
             AppMan.App.Ivsus.Clear();
-            AppMan.App.DownloadOnly = false;
             AppMan.App.DriveLetter = driveLetter;
             AppMan.App.Action = action;
             AppMan.App.SelectedRelease = "Interrogator Log Utility";
@@ -388,9 +384,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
 
             AppMan.App.Ivsus.Add(Api.InterrogatorTool);
-            AppMan.App.InstallMode = "autoinstall";
+            AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(selectedDrive, false))
+            if (SanityCheckHelper.CancelDownloadCheck(selectedDrive))
                 return;
 
             AppMan.App.IsDownloading = true;

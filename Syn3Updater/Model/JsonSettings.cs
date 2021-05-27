@@ -26,5 +26,6 @@
         public int CurrentVersion { get; set; } = 3319052;
         public bool CurrentNav { get; set; } = false;
         public bool My20 { get; set; } = false;
+        public string InstallMode { get; set; } = "autodetect";
     }
 }
