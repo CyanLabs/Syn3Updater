@@ -15,6 +15,7 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
         <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
+        <converter:InvertedStringMatchToVisibilityConverter x:Key="InvertedStringMatchToVisibilityConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <tabs:HomeViewModel />
@@ -39,6 +40,7 @@
                     <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
                         <StackPanel Orientation="Horizontal">
+                            <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                             <TextBlock FontWeight="Bold" Margin="10,0,5,10"
                                        Text="{Binding Language, ConverterParameter=Home.Version, Converter={StaticResource LocConverter}}" />
                             <TextBlock Margin="0,0,10,10" Text="{Binding CurrentVersion}" />
@@ -63,8 +65,8 @@
 
                 <Grid Background="#40000000" Margin="10,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
@@ -90,7 +92,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="40" />
                         </Grid.ColumnDefinitions>
-                        <ComboBox MinWidth="315" VerticalAlignment="Center" Margin="10,0,0,0" SelectedIndex="-1"
+                        <ComboBox MinWidth="295" VerticalAlignment="Center" Margin="10,0,0,0" SelectedIndex="-1" HorizontalAlignment="Stretch"
                                   ItemsSource="{Binding DriveList}" SelectedValuePath="Path"
                                   SelectedItem="{Binding SelectedDrive}">
                             <ComboBox.ItemTemplate>
@@ -104,8 +106,8 @@
                                                 <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
                                                 <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName}"/>
                                             </StackPanel>
-                                            
-                                            <StackPanel Orientation="Horizontal" Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+
+                                            <StackPanel Orientation="Horizontal" Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
                                                 <TextBlock Margin="0,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveFreeSpace, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
                                                 <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12"/>
                                                 <TextBlock Margin="5,0,2,0" Text="{Binding Language, ConverterParameter=Home.DriveSize, ElementName=HomeTab, Converter={StaticResource LocConverter}}" FontSize="12"/>
@@ -119,19 +121,18 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
-                                Style="{DynamicResource AccentButtonStyle}"
+                        <Button Margin="2,-1,0,0" BorderThickness="0" Cursor="Hand"
+                                Style="{DynamicResource AccentButtonStyle}" Background="Gray"
                                 ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
-                                Background="#00000000" Grid.Column="1" Command="{Binding RefreshUSB}">
+                                Grid.Column="1" Command="{Binding RefreshUSB}">
                             <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
                                              VerticalAlignment="Center" />
                         </Button>
                     </Grid>
                     <StackPanel Margin="5,5,5,10" Grid.Row="2" Grid.Column="0">
-                        <StackPanel Orientation="Horizontal" Margin="0">
+                        <StackPanel Orientation="Horizontal" Margin="0" Visibility="{Binding DriveLetter, Converter={StaticResource InvertedStringMatchToVisibilityConverter}}">
                             <TextBlock FontWeight="Bold" Margin="10,0,0,0"
-                                       Text="{Binding Language, ConverterParameter=Home.DriveName, Converter={StaticResource LocConverter}}"
-                                       Visibility="{Binding DriveDetailsVisible}" />
+                                       Text="{Binding Language, ConverterParameter=Home.DriveName, Converter={StaticResource LocConverter}}" />
                             <TextBlock Margin="5,0,5,0" Text="{Binding DriveLetter}" />
                             <TextBlock Text="{Binding DriveName}" />
                             <TextBlock Margin="5,0,5,0" Text="{Binding DriveFileSystem}" />
@@ -143,7 +144,18 @@
                 <Grid Background="#40000000" Margin="10,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="*" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NotesVisibility}" Value="False">
+                                            <Setter Property="Width" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -153,24 +165,24 @@
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Home.NewVersion, Converter={StaticResource LocConverter}}" />
-                    <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Visibility="{Binding NotesVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                         <TextBlock Margin="20,15,20,0" FontWeight="Bold"
                                    Text="{Binding Language, ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />
                         <TextBox Style="{StaticResource TextBoxRevealStyle}"
                                  Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                  Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
                                  BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Notes}"
-                                 Height="110" Visibility="{Binding NotesVisibility}" Margin="20,10,10,0"
+                                 Height="110" Margin="20,10,10,0"
                                  IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow"
                                  TextAlignment="Left" />
                     </StackPanel>
 
-                    <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,0,0">
+                    <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,10,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="40" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -182,24 +194,26 @@
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="0"
                                    Grid.Column="1"
                                    Text="{Binding Language, ConverterParameter=Home.Region, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="200px" ItemsSource="{Binding SRegions}"
+                        <ComboBox VerticalAlignment="Center"  Grid.Row="0" Grid.Column="2" ItemsSource="{Binding SRegions}" HorizontalAlignment="Stretch"
                                   DisplayMemberPath="Name" SelectedValuePath="Code"
-                                  SelectedItem="{Binding SelectedRegion}" Grid.Row="0" Grid.Column="2" 
+                                  SelectedItem="{Binding SelectedRegion}" 
                                   SelectedIndex="{Binding SelectedRegionIndex}" />
-                        <Button Cursor="Hand" Grid.Row="0" Grid.Column="3" BorderThickness="0" Background="#00000000"
-                                Margin="0" FontFamily="Segoe MDL2 Assets" FontSize="26" VerticalAlignment="Center"
+                            <Button Cursor="Hand" Grid.Row="0" Grid.Column="3" BorderThickness="1" Background="Gray"
+                                Margin="8,0.5,0,0" FontFamily="Segoe MDL2 Assets" FontSize="26" VerticalAlignment="Center"
                                 HorizontalAlignment="Center" Command="{Binding RegionInfo}"
                                 Style="{DynamicResource AccentButtonStyle}">
-                            <fa5:FontAwesome Icon="Solid_Question" FontSize="18" Foreground="White"
+                                <fa5:FontAwesome Icon="Solid_Question" FontSize="18" Foreground="White"
                                              VerticalAlignment="Center" Margin="0,0,0,0" />
-                        </Button>
+                            </Button>
+                        
+                        
 
                         <fa5:FontAwesome Icon="Solid_CodeBranch" FontSize="18" Foreground="White" Margin="0" VerticalAlignment="Center" Grid.Row="1"
                                          Grid.Column="0"/>
                         <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"
                                    Grid.Column="1"
                                    Text="{Binding Language, ConverterParameter=Home.Version, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="200px"
+                        <ComboBox VerticalAlignment="Center" HorizontalAlignment="Stretch"
                                   SelectedIndex="{Binding SelectedReleaseIndex}"
                                   IsEnabled="{Binding SVersionsEnabled}" ItemsSource="{Binding SVersion}"
                                   SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="2"
@@ -210,7 +224,7 @@
                         <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
                                    Grid.Row="2" Grid.Column="1"
                                    Text="{Binding Language, ConverterParameter=Home.MapVersion, Converter={StaticResource LocConverter}}" />
-                        <ComboBox VerticalAlignment="Center" MinWidth="200px"
+                        <ComboBox VerticalAlignment="Center" HorizontalAlignment="Stretch"
                                   SelectedIndex="{Binding SelectedMapVersionIndex}"
                                   IsEnabled="{Binding SMapVersionsEnabled}" ItemsSource="{Binding SMapVersion}"
                                   Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
@@ -222,44 +236,41 @@
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Home.SelectPackages, Converter={StaticResource LocConverter}}" />
-                    <controls:ListView Margin="5,0" Height="130" Focusable="False" ItemsSource="{Binding IvsuList}"
-                                       HorizontalAlignment="Left"
-                                       Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
-
+                    <controls:ListView Margin="5,0" Height="150" Focusable="False" ItemsSource="{Binding IvsuList}" HorizontalContentAlignment="Stretch" Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+                        <controls:ListView.ItemContainerStyle>
+                            <Style TargetType="controls:ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </controls:ListView.ItemContainerStyle>
                         <controls:ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,2.5,0,2.5">
-                                        <fa5:FontAwesome Width="40" Icon="Solid_BoxOpen" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=APPS, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                                        <fa5:FontAwesome Width="40" Icon="Solid_Microphone" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=VOICE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                                        <fa5:FontAwesome Width="40" Icon="Solid_Headset" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=VOICE_NAV, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                                        <fa5:FontAwesome Width="40" Icon="Solid_Map" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=MAP, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                                        <fa5:FontAwesome Width="40" Icon="Solid_Scroll" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=MAP_LICENSE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                                        <fa5:FontAwesome Width="40" Icon="Solid_Music" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=GRACENOTES, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                                        <fa5:FontAwesome Width="40" Icon="Solid_Images" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=ENH_DAB, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                                        <fa5:FontAwesome Width="40" Icon="Solid_Toolbox" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=TOOL, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_BoxOpen" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=APPS, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_Microphone" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=VOICE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_Headset" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=VOICE_NAV, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_Map" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=MAP, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_Scroll" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=MAP_LICENSE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_Music" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=GRACENOTES, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_Images" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=ENH_DAB, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                                    <fa5:FontAwesome Grid.Column="0" Icon="Solid_Toolbox" FontSize="18" Foreground="White" VerticalAlignment="Center" Visibility="{Binding Type, ConverterParameter=TOOL, Converter={StaticResource StringMatchToVisibilityConverter}}" />
 
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                   TextAlignment="Center" Margin="5,0" MinWidth="100"
-                                                   Text="{Binding Type}" />
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                   TextAlignment="Center" Margin="5,0" MinWidth="150"
-                                                   Text="{Binding Name}" />
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                   TextAlignment="Center" Margin="5,0" MinWidth="200"
-                                                   Text="{Binding Version}" />
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                   TextAlignment="Center" Margin="5,0" Width="120" FontSize="11"
-                                                   TextWrapping="WrapWithOverflow" Text="{Binding Notes}" />
-                                        <controls:ToggleSwitch VerticalAlignment="Center" HorizontalAlignment="Left"
-                                                               Margin="5,0" IsOn="{Binding Selected}" OnContent=""
-                                                               OffContent="" Width="40" />
-                                        <TextBlock Visibility="Collapsed" Text="{Binding Url}" />
-                                        <TextBlock Visibility="Collapsed" Text="{Binding Md5}" />
-                                        
-                                    </StackPanel>
-
-                                </StackPanel>
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Text="{Binding Type}" />
+                                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="5,0" Text="{Binding Name}" />
+                                    <TextBlock Grid.Column="3" VerticalAlignment="Center" Margin="5,0" Text="{Binding Version}" />
+                                    <controls:ToggleSwitch Grid.Column="5" VerticalAlignment="Center" Margin="5,0" IsOn="{Binding Selected}" OnContent="" OffContent="" Width="40" HorizontalAlignment="Right" />
+                                    <TextBlock Visibility="Collapsed" Text="{Binding Url}" />
+                                    <TextBlock Visibility="Collapsed" Text="{Binding Md5}" />
+                                </Grid>
                             </DataTemplate>
                         </controls:ListView.ItemTemplate>
                     </controls:ListView>

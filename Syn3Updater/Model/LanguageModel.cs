@@ -147,7 +147,7 @@ namespace Cyanlabs.Syn3Updater.Model
                 if (l == null)
                 {
                     //Have to hardcode path for design time :(
-                    string fn = $"E:\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.json";
+                    string fn = $"C:\\Users\\Scott\\Documents\\GitHub\\Syn3Updater\\Syn3Updater\\Languages\\{lang}.json";
 
                     if (File.Exists(fn))
                     {

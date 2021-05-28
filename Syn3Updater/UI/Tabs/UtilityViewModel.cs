@@ -75,6 +75,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _driveName, value);
         }
 
+        private string _driveSize;
+
+        public string DriveSize
+        {
+            get => _driveSize;
+            set => SetProperty(ref _driveSize, value);
+        }
+
+        private string _driveFreeSpace;
+
+        public string DriveFreeSpace
+        {
+            get => _driveFreeSpace;
+            set => SetProperty(ref _driveFreeSpace, value);
+        }
+
+
         private string _driveFileSystem;
 
         public string DriveFileSystem
@@ -91,9 +108,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _logXmlDetails, value);
         }
 
-        private Visibility _toggleLogXmlDetails;
+        private bool _toggleLogXmlDetails;
 
-        public Visibility ToggleLogXmlDetails
+        public bool ToggleLogXmlDetails
         {
             get => _toggleLogXmlDetails;
             set => SetProperty(ref _toggleLogXmlDetails, value);
@@ -133,7 +150,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void ReloadTab()
         {
-            ToggleLogXmlDetails = Visibility.Hidden;
+            ToggleLogXmlDetails = false;
             UtiltyButtonStatus = !string.IsNullOrWhiteSpace(SelectedDrive?.Path);
         }
 
@@ -174,7 +191,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DriveLetter = SelectedDrive?.Letter;
             DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;
             DriveName = SelectedDrive?.Name;
-
+            DriveSize = SelectedDrive?.Size;
+            DriveFreeSpace = SelectedDrive?.FreeSpace;
             ReloadTab();
             if (SelectedDrive?.Path != "")
                 AppMan.Logger.Info(
@@ -193,7 +211,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task LogParseXmlAction()
         {
             LogXmlDetails = await _usbHelper.LogParseXmlAction();
-            if(!string.IsNullOrEmpty(LogXmlDetails)) ToggleLogXmlDetails = Visibility.Visible;
+            if(!string.IsNullOrEmpty(LogXmlDetails)) ToggleLogXmlDetails = true;
         }
 
         private async Task GracenotesRemovalAction()

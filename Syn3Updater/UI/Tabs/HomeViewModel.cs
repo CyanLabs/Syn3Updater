@@ -201,9 +201,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _notes, value);
         }
 
-        private Visibility _notesVisibility;
+        private bool _notesVisibility;
 
-        public Visibility NotesVisibility
+        public bool NotesVisibility
         {
             get => _notesVisibility;
             set => SetProperty(ref _notesVisibility, value);
@@ -328,7 +328,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         
         public void Init()
         {
-            NotesVisibility = Visibility.Hidden;
+            NotesVisibility = false;
             if (!string.IsNullOrEmpty(AppMan.App.Magnet))
             {
                 _magnetActions = AppMan.App.Magnet
@@ -446,7 +446,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task UpdateSelectedRegion()
         {
-            NotesVisibility = Visibility.Hidden;
+            NotesVisibility = false;
             SVersion?.Clear();
             SMapVersion?.Clear();
             if (SelectedRegion.Code != "")
@@ -531,11 +531,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             _stringCompatibility = item.Version.Substring(0, 3);
                             if (item.Notes == null)
                             {
-                                NotesVisibility = Visibility.Hidden;
+                                NotesVisibility = false;
                                 continue;
                             }
 
-                            NotesVisibility = Visibility.Visible;
+                            NotesVisibility = true;
                             Notes = item.Notes.Replace("\n", Environment.NewLine);
                         }
 
