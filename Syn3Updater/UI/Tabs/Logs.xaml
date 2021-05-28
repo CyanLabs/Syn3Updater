@@ -15,96 +15,94 @@
         <tabs:LogsViewModel />
     </UserControl.DataContext>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Background="#40000000" Opacity="1" Margin="10,5,10,5" Grid.Row="0">
+            <Grid.Resources>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="Margin" Value="5,0" />
+                </Style>
+            </Grid.Resources>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+            <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                        Text="{Binding Language, ConverterParameter=Main.Logs, Converter={StaticResource LocConverter}}" />
+            <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
+                        MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Margin="10,0,5,10"
+                                Text="{Binding Language, ConverterParameter=Logs.Path, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="0,0,10,10" Text="{Binding LogLocation}" />
+                </StackPanel>
+            </WrapPanel>
+        </Grid>
+
+        <Grid Background="#40000000" Margin="10,5" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="9*" />
-                <ColumnDefinition Width="16*" />
+                <ColumnDefinition Width="260" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Vertical" Grid.ColumnSpan="2">
-                <Grid Background="#40000000" Opacity="1" Margin="10,5,10,5">
-                    <Grid.Resources>
-                        <Style TargetType="{x:Type ComboBox}">
-                            <Setter Property="Margin" Value="5,0" />
-                        </Style>
-                    </Grid.Resources>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                    <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
-                               Text="{Binding Language, ConverterParameter=Main.Logs, Converter={StaticResource LocConverter}}" />
-                    <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
-                               MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontWeight="Bold" Margin="10,0,5,10"
-                                       Text="{Binding Language, ConverterParameter=Logs.Path, Converter={StaticResource LocConverter}}" />
-                            <TextBlock Margin="0,0,10,10" Text="{Binding LogLocation}" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+            <TextBlock Margin="20,15,20,0" FontWeight="Bold" Grid.Row="0" Grid.Column="2"
+                            Text="{Binding LogTitle}" TextAlignment="Center"  />
+            <TextBox MinHeight="420" Padding="0px" FontSize="11" Style="{StaticResource TextBoxRevealStyle}" Foreground="{DynamicResource SystemBaseHighColorBrush}" Grid.Row="1" Grid.Column="2"
+                        Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
+                        BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding LogDetails}"
+                        Margin="5,0,5,5" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
+                        TextWrapping="WrapWithOverflow" TextAlignment="Left" />
+            <controls:ListView Margin="5,0" MinHeight="420" Focusable="True" HorizontalContentAlignment="Stretch" ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedLog}" Grid.Row="1" Grid.RowSpan="2"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+                <controls:ListView.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                </controls:ListView.ItemContainerStyle>
+                <controls:ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2.5,0,2.5">
+                                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Left" Width="165"
+                                            Margin="0" IsChecked="{Binding Selected}" Content="{Binding Date}"/>
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                                            TextAlignment="Center" Margin="5,0"
+                                            Text="{Binding Profile}" Visibility="Collapsed" />
+                                <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand" 
+                                        Command="{Binding Path=DataContext.OpenLogFile, ElementName=LogsTab}" CommandParameter="{Binding FileName}"
+                                        Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5" Width="50"
+                                        Content="{Binding Language, ConverterParameter=Logs.ViewLog, ElementName=LogsTab, Converter={StaticResource LocConverter}}" />
+                            </StackPanel>
                         </StackPanel>
-                    </WrapPanel>
-                </Grid>
+                    </DataTemplate>
+                </controls:ListView.ItemTemplate>
+            </controls:ListView>
+        </Grid>
 
-                <Grid Background="#40000000" Margin="10,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="260" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                    <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
-                        <TextBlock Margin="20,15,20,0" FontWeight="Bold"
-                                   Text="{Binding LogTitle}" TextAlignment="Center"  />
-                        <TextBox Height="420" Padding="0px" FontSize="11" Style="{StaticResource TextBoxRevealStyle}" Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                             Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
-                             BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding LogDetails}"
-                             Margin="5,0,5,5" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
-                             TextWrapping="WrapWithOverflow" TextAlignment="Left" />
-                    </StackPanel>
-                    <controls:ListView Margin="5,0" Height="420" Focusable="True" HorizontalContentAlignment="Stretch" ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedLog}" Grid.Row="1" Grid.RowSpan="2"
-                                       Grid.Column="0"
-                                       HorizontalAlignment="Left"
-                                       Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
-                        <controls:ListView.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            </Style>
-                        </controls:ListView.ItemContainerStyle>
-                        <controls:ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,2.5,0,2.5">
-                                        <CheckBox VerticalAlignment="Center" HorizontalAlignment="Left" Width="165"
-                                                  Margin="0" IsChecked="{Binding Selected}" Content="{Binding Date}"/>
-                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                   TextAlignment="Center" Margin="5,0"
-                                                   Text="{Binding Profile}" Visibility="Collapsed" />
-                                        <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand" 
-                                                Command="{Binding Path=DataContext.OpenLogFile, ElementName=LogsTab}" CommandParameter="{Binding FileName}"
-                                                Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5" Width="50"
-                                                Content="{Binding Language, ConverterParameter=Logs.ViewLog, ElementName=LogsTab, Converter={StaticResource LocConverter}}" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </controls:ListView.ItemTemplate>
-                    </controls:ListView>
-                </Grid>
-
-                <Grid Margin="0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
+        <Grid Margin="0,5" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
                             Command="{Binding DeleteLogFiles}" Margin="12,0,0,0" HorizontalAlignment="Left" Padding="5"
                             Width="150" Content="{Binding Language, ConverterParameter=Logs.Delete, Converter={StaticResource LocConverter}}" Background="#FFD70000" />
-                    <Button Grid.Column="2" Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
+            <Button Grid.Column="2" Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
                             Command="{Binding OpenLogDirectory}" Margin="0,0,12,0" HorizontalAlignment="Right" Padding="5"
                             Width="150" Content="{Binding Language, ConverterParameter=Logs.OpenFolder, Converter={StaticResource LocConverter}}"/>
-                </Grid>
-            </StackPanel>
         </Grid>
+    </Grid>
 </UserControl>

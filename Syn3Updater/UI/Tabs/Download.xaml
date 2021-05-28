@@ -14,63 +14,75 @@
     <UserControl.DataContext>
         <tabs:DownloadViewModel />
     </UserControl.DataContext>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid>
-            <StackPanel Orientation="Vertical">
-                <Grid Background="#40000000" Margin="10,5,10,5">
-                    <StackPanel Margin="5">
-                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Height="Auto"  Background="#40000000" Margin="10,5,10,5" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+            <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" Grid.Row="0"
                                    Text="{Binding Language, ConverterParameter=Download.Queue, Converter={StaticResource LocConverter}}" />
-                        <ListBox Height="160" ItemsSource="{Binding DownloadQueueList}"
+            <ListBox MinHeight="160" ItemsSource="{Binding DownloadQueueList}" Grid.Row="1"
                                  Background="{StaticResource SystemBaseLowColorBrush}" />
-                        <Grid Margin="0,5,0,5">
-                            <TextBlock FontSize="12" Margin="5" Text="{Binding DownloadInfo}" />
-                            <TextBlock FontSize="12" HorizontalAlignment="Right" TextAlignment="Right" Margin="5"
-                                       Text="{Binding DownloadPercentage}" />
-                        </Grid>
+            <Grid Margin="0,5,0,5" Grid.Row="2">
+                <TextBlock FontSize="12" Margin="5" Text="{Binding DownloadInfo}" />
+                <TextBlock FontSize="12" HorizontalAlignment="Right" TextAlignment="Right" Margin="5" Text="{Binding DownloadPercentage}" />
+            </Grid>
 
-                        <ProgressBar Value="{Binding CurrentProgress}" Margin="10,0" />
-                        <TextBlock HorizontalAlignment="Center" Margin="0,10"
-                                   Text="{Binding Language, ConverterParameter=Download.TotalDownload, Converter={StaticResource LocConverter}}" />
-                        <ProgressBar Value="{Binding TotalPercentage}" Maximum="{Binding TotalPercentageMax}"
-                                     Margin="10,0" />
+            <ProgressBar Value="{Binding CurrentProgress}" Margin="10,0" Grid.Row="3"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,10"
+                                   Text="{Binding Language, ConverterParameter=Download.TotalDownload, Converter={StaticResource LocConverter}}" Grid.Row="4" />
+            <ProgressBar Value="{Binding TotalPercentage}" Maximum="{Binding TotalPercentageMax}"
+                                     Margin="10,0" Grid.Row="5" />
 
-                        <Grid Margin="0,5,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center"
+            <Grid Margin="0,5,0,0" Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center"
                                            Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
-                                <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center"
+                    <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center"
                                            Text="{Binding InstallMode}" />
-                                <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="Forced: " />
-                                <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />
-                            </StackPanel>
-                            <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
+                    <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="Forced: " />
+                    <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />
+                </StackPanel>
+                <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
                                     IsEnabled="{Binding CancelButtonEnabled}"
                                     Style="{DynamicResource AccentButtonStyle}" Margin="5" HorizontalAlignment="Right"
                                     Padding="5" Width="100"
                                     Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}" />
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-                <Grid Background="#40000000" Margin="10,5,10,5">
-                    <StackPanel Margin="5">
-                        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5,0,0,5"
+            </Grid>
+        </Grid>
+
+        <Grid Background="#40000000" Margin="10,5,10,5" Grid.Row="1">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="5,0,0,5" Grid.Row="0"
                                    Text="{Binding Language, ConverterParameter=Download.Log, Converter={StaticResource LocConverter}}" />
-                        <TextBox Height="190" Style="{StaticResource TextBoxRevealStyle}" ui:TextBoxAttachedProperties.AutoScrollToEnd="True"
+                <TextBox MinHeight="190" Style="{StaticResource TextBoxRevealStyle}" ui:TextBoxAttachedProperties.AutoScrollToEnd="True"
                                  Foreground="{DynamicResource SystemBaseHighColorBrush}"
                                  Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
                                  BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Log}"
                                  FontSize="12" Margin="5,0,5,5" IsReadOnly="True" VerticalScrollBarVisibility="Auto" 
-                                 TextWrapping="WrapWithOverflow" TextAlignment="Left" />
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
+                                 TextWrapping="WrapWithOverflow" TextAlignment="Left" Grid.Row="1" />
+            </Grid>
         </Grid>
-    </ScrollViewer>
+    </Grid>
 </UserControl>

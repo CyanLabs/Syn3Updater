@@ -15,12 +15,11 @@
         <tabs:ProfilesViewModel />
     </UserControl.DataContext>
     <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="9*" />
-                <ColumnDefinition Width="16*" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Vertical" Grid.ColumnSpan="2">
-            <Grid Background="#40000000" Opacity="1" Margin="10,5,10,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Background="#40000000" Opacity="1" Margin="10,5,10,5" Grid.Row="0">
                 <Grid.Resources>
                     <Style TargetType="{x:Type ComboBox}">
                         <Setter Property="Margin" Value="5,0" />
@@ -44,53 +43,57 @@
                 </WrapPanel>
             </Grid>
 
-            <Grid Background="#40000000" Margin="10,5">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
-                    <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
+        <Grid Background="#40000000" Margin="10,5" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
+                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                Text="{Binding Language, ConverterParameter=Profiles.NewProfile, Converter={StaticResource LocConverter}}" />
-                    <TextBox Width="170" 
+                <TextBox Width="200" 
                                  Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"
                                  VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0"
                                  AcceptsReturn="True" />
-                    <Button Style="{DynamicResource AccentButtonStyle}" Height="30" Cursor="Hand"
+                <Button Style="{DynamicResource AccentButtonStyle}" Height="30" Cursor="Hand"
                         Command="{Binding CreateProfile}" Margin="0,0,12,0" HorizontalAlignment="Right" Padding="5"
                         Width="150"
                         Content="{Binding Language, ConverterParameter=Profiles.CreateAndSet, Converter={StaticResource LocConverter}}" />
-                </StackPanel>
-                <controls:ListView Margin="5,0" MinHeight="470" MinWidth="720" Focusable="True" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ProfileList}" SelectedItem="{Binding SelectedProfile}" Grid.Row="2"
+            </StackPanel>
+            <controls:ListView Margin="5,0" MinHeight="470" Focusable="True" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ProfileList}" SelectedItem="{Binding SelectedProfile}" Grid.Row="2"
                                        Grid.Column="0"
-                                       HorizontalAlignment="Left"
                                        Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
-                    <controls:ListView.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                        </Style>
-                    </controls:ListView.ItemContainerStyle>
-                    <controls:ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,2.5,0,2.5">
-                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
-                                               TextAlignment="Left" Margin="5,0" MinWidth="510"
+                <controls:ListView.ItemContainerStyle>
+                    <Style TargetType="controls:ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </controls:ListView.ItemContainerStyle>
+                <controls:ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                               TextAlignment="Left" Margin="5,0"
                                                Text="{Binding Name}" />
-                                    <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand" 
+                            <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" Height="35" Cursor="Hand" 
                                                 Command="{Binding Path=DataContext.SelectProfile, ElementName=ProfilesTab}" CommandParameter="{Binding Name}"
-                                                Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5" Width="75"
+                                                Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5"
                                                 Content="{Binding Language, ConverterParameter=Profiles.SelectProfile, ElementName=ProfilesTab, Converter={StaticResource LocConverter}}" />
-                                    <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand" 
+                            <Button Grid.Column="2" Style="{DynamicResource AccentButtonStyle}" Height="35" Cursor="Hand" 
                                             Command="{Binding Path=DataContext.DeleteProfile, ElementName=ProfilesTab}" CommandParameter="{Binding Name}"
-                                            Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5" Width="75"
+                                            Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5"
                                             Content="{Binding Language, ConverterParameter=Profiles.DeleteProfile, ElementName=ProfilesTab, Converter={StaticResource LocConverter}}" Background="#FFD70000" />
-                                </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
-                    </controls:ListView.ItemTemplate>
-                </controls:ListView>
-            </Grid>
-        </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </controls:ListView.ItemTemplate>
+            </controls:ListView>
         </Grid>
+    </Grid>
 </UserControl>
