@@ -27,7 +27,7 @@
             <Grid Background="#40000000" Margin="10,5,10,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -242,8 +242,7 @@
             </Grid>
 
             <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
-                        Command="{Binding ApplySettings}" Margin="0,0,12,0" HorizontalAlignment="Right" Padding="5"
-                        Width="150"
+                        Command="{Binding ApplySettings}" Margin="0,0,12,0" HorizontalAlignment="Right" Padding="15,5"
                         Content="{Binding Language, ConverterParameter=Settings.Apply, Converter={StaticResource LocConverter}}" />
         </StackPanel>
     </Grid>

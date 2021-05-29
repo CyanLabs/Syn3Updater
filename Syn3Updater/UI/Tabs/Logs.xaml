@@ -98,11 +98,11 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
-                            Command="{Binding DeleteLogFiles}" Margin="12,0,0,0" HorizontalAlignment="Left" Padding="5"
-                            Width="150" Content="{Binding Language, ConverterParameter=Logs.Delete, Converter={StaticResource LocConverter}}" Background="#FFD70000" />
+                            Command="{Binding DeleteLogFiles}" Margin="12,0,0,0" HorizontalAlignment="Left"  Padding="15,5"
+                            Content="{Binding Language, ConverterParameter=Logs.Delete, Converter={StaticResource LocConverter}}" Background="#FFD70000" />
             <Button Grid.Column="2" Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
-                            Command="{Binding OpenLogDirectory}" Margin="0,0,12,0" HorizontalAlignment="Right" Padding="5"
-                            Width="150" Content="{Binding Language, ConverterParameter=Logs.OpenFolder, Converter={StaticResource LocConverter}}"/>
+                            Command="{Binding OpenLogDirectory}" Margin="0,0,12,0" HorizontalAlignment="Right"  Padding="15,5"
+                            Content="{Binding Language, ConverterParameter=Logs.OpenFolder, Converter={StaticResource LocConverter}}"/>
         </Grid>
     </Grid>
 </UserControl>

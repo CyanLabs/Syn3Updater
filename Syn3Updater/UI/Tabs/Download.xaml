@@ -62,7 +62,7 @@
                 <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
                                     IsEnabled="{Binding CancelButtonEnabled}"
                                     Style="{DynamicResource AccentButtonStyle}" Margin="5" HorizontalAlignment="Right"
-                                    Padding="5" Width="100"
+                                     Padding="15,5"
                                     Content="{Binding Language, ConverterParameter=Download.CancelButton, Converter={StaticResource LocConverter}}" />
             </Grid>
         </Grid>

@@ -36,7 +36,7 @@
                                    TextWrapping="WrapWithOverflow" />
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Cursor="Hand" Margin="5" Padding="5" Width="150" Command="{Binding WebsiteButton}"
+                        <Button Cursor="Hand" Margin="5" Padding="15,5"  Command="{Binding WebsiteButton}"
                                     Style="{DynamicResource AccentButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <fa5:FontAwesome Icon="Solid_GlobeAmericas" FontSize="24"
@@ -44,7 +44,7 @@
                                 <TextBlock Text="CYANLABS" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
-                        <Button Cursor="Hand" Margin="5" Padding="5" Width="180" Command="{Binding ForumButton}"
+                        <Button Cursor="Hand" Margin="5" Padding="15,5" Command="{Binding ForumButton}"
                                     Style="{DynamicResource AccentButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <fa5:FontAwesome Icon="Brands_Discourse" FontSize="24" Margin="0,0,10,0"
@@ -54,8 +54,8 @@
                                         VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
-                        <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="5" Foreground="White"
-                                    Width="140" Command="{Binding DonateButton}"
+                        <Button Cursor="Hand" Margin="5" FontFamily="Segoe UI" Padding="15,5" Foreground="White"
+                                    Command="{Binding DonateButton}"
                                     Style="{DynamicResource AccentButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <fa5:FontAwesome Icon="Brands_Paypal" FontSize="24" VerticalAlignment="Center"
@@ -82,7 +82,7 @@
                                    Text="{Binding Language, ConverterParameter=About.Documentation, Converter={StaticResource LocConverter}}"
                                    TextWrapping="WrapWithOverflow" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Cursor="Hand" Margin="5" Padding="5" Width="160"
+                        <Button Cursor="Hand" Margin="5" Padding="15,5"
                                     Style="{DynamicResource AccentButtonStyle}" Command="{Binding FHubButton}">
                             <StackPanel Orientation="Horizontal">
                                 <fa5:FontAwesome Icon="Solid_Car" FontSize="24" Margin="0,0,10,0" />
@@ -91,7 +91,7 @@
                                         VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
-                        <Button Cursor="Hand" Margin="0,5,5,5" Padding="5" Width="250"
+                        <Button Cursor="Hand" Margin="0,5,5,5"  Padding="15,5"
                                     Command="{Binding DocButton}" Style="{DynamicResource AccentButtonStyle}">
                             <StackPanel Orientation="Horizontal">
                                 <fa5:FontAwesome Icon="Solid_Book" FontSize="24" Margin="0,0,10,0" />

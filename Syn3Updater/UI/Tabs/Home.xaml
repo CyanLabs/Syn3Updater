@@ -299,7 +299,7 @@
 
             </StackPanel>
             <Button IsEnabled="{Binding StartEnabled}" Grid.Column="1" Margin="5" HorizontalAlignment="Right"
-                            Padding="7" Width="100" Style="{DynamicResource AccentButtonStyle}"
+                            Padding="15,5" Width="100" Style="{DynamicResource AccentButtonStyle}"
                             Content="{Binding Language, ConverterParameter=Home.StartButton, Converter={StaticResource LocConverter}}"
                             Command="{Binding StartButton}" Cursor="Hand" />
         </Grid>
