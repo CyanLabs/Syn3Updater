@@ -105,7 +105,6 @@
     "MessageBox.AsBuiltVinWarning": "WARNING: This will submit your vehicles VIN along to our automatic online decoding service, by submitting your VIN this will help increase the accuracy of our database. \n\nIf you do not wish to submit your VIN click Cancel.",
     "Utility.UploadLog": "Upload Log",
     "MessageBox.UploadLog": "To assist in troubleshooting any potential issues we would recommend uploading your Syn3Updater log to our database, this log file contains details on what options were selected as well as your computer name to link all logs to one identity.\n\nIf you choose not to upload this log you can do so at a later date from the \"Utility\" tab and clicking the \"Upload Log\" button.\n\nDo you want to upload your log now?",
-    "MessageBox.UploadLogNoDrive": "The USB Drive you have selected does not contain a log.txt file",
     "Settings.ReleaseType": "Release Branch:",
     "MessageBox.ChangeApplicationReleaseBranch": "Changing branch will restart Syn3 Updater and automatically download the relevant build.\n\nChanging from Ci to Beta/Release may result in unhandled exceptions and require you to reset your settings!\n\nRefer to the documentation for further information\n\nAre you sure you want to change the 'Release Branch' of Syn3 Updater?",
     "Home.NoUSBDir": "Select A Directory",

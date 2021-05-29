@@ -89,6 +89,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                         drive.Fake = false;
                         if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")
                             drive.SkipFormat = true;
+                        else
+                            drive.SkipFormat = false;
                     }
                 }
                     
@@ -222,14 +224,16 @@ namespace Cyanlabs.Syn3Updater.Helper
         private ApimDetails _apimDetails;
         private XDocument _node;
 
-        public async Task<string> LogParseXmlAction()
+        public async Task<string[]> LogParseXmlAction()
         {
             string LogXmlDetails = "";
+            string LogXmlDetails2 = "";
+            string LogXmlDetails3 = "";
             VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Interrogator Log XML Files|*.xml" };
             if (!dialog.ShowDialog().GetValueOrDefault())
             {
                 AppMan.App.Cancelled = true;
-                return LogXmlDetails;
+                return new string[] { "" };
             }
             try
             {
@@ -295,20 +299,20 @@ namespace Cyanlabs.Syn3Updater.Helper
                     .Select(x => x.Available).Single();
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMFree")} {apimfree} {Environment.NewLine}";
 
-                LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime + Environment.NewLine;
+                LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
 
-                LogXmlDetails += $"{Environment.NewLine}Partition Type = Free / Total";
+                LogXmlDetails2 += $"Partition Type = Free / Total{Environment.NewLine}";
                 if (interrogatorLog != null)
                 {
                     foreach (Interrogator.D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
-                        LogXmlDetails += $"{Environment.NewLine}{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}";
+                        LogXmlDetails2 += $"{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}{Environment.NewLine}";
 
                     List<AsBuilt.DID> asBuiltValues = new();
 
-                    LogXmlDetails += $"{Environment.NewLine}{Environment.NewLine}APIM AsBuilt";
+                    LogXmlDetails3 += $"APIM AsBuilt";
                     foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
                     {
-                        LogXmlDetails += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
+                        LogXmlDetails3 += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
                         asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
                     }
 
@@ -361,7 +365,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            return LogXmlDetails;
+            return new string[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };
         }
 
         public static async Task LogPrepareUSBAction(USBHelper.Drive selectedDrive, string driveLetter, string action = "logutility")

@@ -100,12 +100,28 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _driveFileSystem, value);
         }
 
-        private string _logXmlDetails;
+        private string _logXmlDetails1;
 
-        public string LogXmlDetails
+        public string LogXmlDetails1
         {
-            get => _logXmlDetails;
-            set => SetProperty(ref _logXmlDetails, value);
+            get => _logXmlDetails1;
+            set => SetProperty(ref _logXmlDetails1, value);
+        }
+
+        private string _logXmlDetails2;
+
+        public string LogXmlDetails2
+        {
+            get => _logXmlDetails2;
+            set => SetProperty(ref _logXmlDetails2, value);
+        }
+
+        private string _logXmlDetails3;
+
+        public string LogXmlDetails3
+        {
+            get => _logXmlDetails3;
+            set => SetProperty(ref _logXmlDetails3, value);
         }
 
         private bool _toggleLogXmlDetails;
@@ -181,22 +197,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void UpdateDriveInfo()
         {
-            // Update app level vars
-            AppMan.App.DriveFileSystem = SelectedDrive?.FileSystem;
-            AppMan.App.DrivePartitionType = SelectedDrive?.PartitionType;
-            AppMan.App.DriveName = SelectedDrive?.Name;
-            AppMan.App.SkipFormat = SelectedDrive.SkipFormat;
+            if (SelectedDrive?.Name != null)
+            {
+                // Update app level vars
+                AppMan.App.DriveFileSystem = SelectedDrive?.FileSystem;
+                AppMan.App.DrivePartitionType = SelectedDrive?.PartitionType;
+                AppMan.App.DriveName = SelectedDrive?.Name;
+                AppMan.App.SkipFormat = SelectedDrive.SkipFormat;
 
-            // Update local level vars
+                // Update local level vars
+                DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;
+                DriveName = SelectedDrive?.Name;
+                DriveSize = SelectedDrive?.Size;
+                DriveFreeSpace = SelectedDrive?.FreeSpace;
+                ReloadTab();
+                AppMan.Logger.Info($"USB Drive selected - Name: {SelectedDrive?.Name} - FileSystem: {SelectedDrive?.FileSystem} - PartitionType: {SelectedDrive?.PartitionType} - Letter: {SelectedDrive?.Letter}");
+            }
             DriveLetter = SelectedDrive?.Letter;
-            DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;
-            DriveName = SelectedDrive?.Name;
-            DriveSize = SelectedDrive?.Size;
-            DriveFreeSpace = SelectedDrive?.FreeSpace;
-            ReloadTab();
-            if (SelectedDrive?.Path != "")
-                AppMan.Logger.Info(
-                    $"USB Drive selected - Name: {SelectedDrive?.Name} - FileSystem: {SelectedDrive?.FileSystem} - PartitionType: {SelectedDrive?.PartitionType} - Letter: {SelectedDrive?.Letter}");
         }
 
         private async Task LogPrepareUSBAction()
@@ -210,8 +227,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private USBHelper _usbHelper;
         private async Task LogParseXmlAction()
         {
-            LogXmlDetails = await _usbHelper.LogParseXmlAction();
-            if(!string.IsNullOrEmpty(LogXmlDetails)) ToggleLogXmlDetails = true;
+            string[] LogDetails = await _usbHelper.LogParseXmlAction();
+            if (LogDetails.Length >= 3)
+            {
+                LogXmlDetails1 = LogDetails[0];
+                LogXmlDetails2 = LogDetails[1];
+                LogXmlDetails3 = LogDetails[2];
+                ToggleLogXmlDetails = true;
+            }
         }
 
         private async Task GracenotesRemovalAction()
@@ -280,14 +303,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void UploadLogAction()
         {
-            if (DriveLetter != "" && File.Exists(DriveLetter + @"\log.txt"))
+            if (!string.IsNullOrEmpty(DriveLetter) && File.Exists(DriveLetter + @"\log.txt"))
             {
                 string logfile = File.ReadAllText(DriveLetter + @"\log.txt");
                 USBHelper.UploadLog(logfile);
             }
             else
             {
-                ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.UploadLogNoDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Syn3 Updater Log Files|*.txt" };
+                if (dialog.ShowDialog().GetValueOrDefault())
+                {
+                    string logfile = File.ReadAllText(dialog.FileName);
+                    USBHelper.UploadLog(logfile);
+                }
             }
         }
 

@@ -297,14 +297,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _startEnabled, value);
         }
 
-        private Visibility _driveDetailsVisible;
-
-        public Visibility DriveDetailsVisible
-        {
-            get => _driveDetailsVisible;
-            set => SetProperty(ref _driveDetailsVisible, value);
-        }
-
         private Dictionary<string, string> _magnetActions = new();
         #endregion
 
@@ -321,7 +313,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             StartEnabled = false;
             InstallMode = AppMan.App.Settings.InstallMode;
             CurrentProfile = AppMan.App.MainSettings.Profile;
-            DriveDetailsVisible = SelectedDrive == null || SelectedDrive.Path?.Length == 0 ? Visibility.Hidden : Visibility.Visible;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
             UpdateInstallMode();
         }
@@ -420,7 +411,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         DriveFileSystem = "";
                         DriveName = "";
                         AppMan.App.DriveName = SelectedDrive?.Name;
-                        DriveDetailsVisible = Visibility.Visible;
                     }
                 }
                 else
@@ -428,7 +418,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     RefreshUsb();
                 }
             }
-            else
+            else if (SelectedDrive?.Name != null)
             {
                 // Update app level vars
                 AppMan.App.DriveFileSystem = SelectedDrive?.FileSystem;
@@ -437,11 +427,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.SkipFormat = SelectedDrive.SkipFormat;
 
                 // Update local level vars
-                DriveLetter = SelectedDrive?.Letter;
                 DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;
                 DriveName = SelectedDrive?.Name;
-                DriveDetailsVisible = SelectedDrive?.Name == null ? Visibility.Hidden : Visibility.Visible;
             }
+            DriveLetter = SelectedDrive?.Letter;
         }
 
         private async Task UpdateSelectedRegion()
