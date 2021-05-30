@@ -144,5 +144,7 @@
     "String.Attempt": "Attempt",
     "String.Copying": "Copying",
     "String.Validating": "Validating",
-    "String.CheckingExistingFile": "Checking Existing File"
+    "String.CheckingExistingFile": "Checking Existing File",
+    "Home.InstallModeForced": "Forced",
+    "Home.MY20Protection": "MY20 Protection"
 }

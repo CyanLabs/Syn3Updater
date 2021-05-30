@@ -48,16 +48,17 @@
 
             <Grid Margin="0,5,0,0" Grid.Row="6">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center"
-                                           Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center"
-                                           Text="{Binding InstallMode}" />
-                    <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="Forced: " />
+                    <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallMode}" />
+                    <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallModeForced, StringFormat='{}{0}: ',  Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />
+                    <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.MY20Protection, StringFormat='{}{0}: ',  Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding My20Mode}" />
                 </StackPanel>
                 <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
                                     IsEnabled="{Binding CancelButtonEnabled}"

@@ -34,7 +34,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         #region Properties & Fields
 
         private int _currentProgress, _totalPercentage, _totalPercentageMax, _count;
-        private string _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _selectedMapVersion, _progressBarSuffix, _installMode, _action;
+        private string _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _selectedMapVersion, _progressBarSuffix, _installMode, _action, _my20Mode;
         private bool _cancelButtonEnabled;
         private Task _downloadTask;
         private FileHelper _fileHelper;
@@ -103,6 +103,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _log;
             set => SetProperty(ref _log, value);
         }
+        
+        public string My20Mode
+        {
+            get => _my20Mode;
+            set => SetProperty(ref _my20Mode, value);
+        }
 
         #endregion
 
@@ -119,9 +125,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
 
             InstallMode = AppMan.App.Settings.InstallMode;
+            My20Mode = AppMan.App.Settings.My20 ? "Enabled" : "Disabled / Not MY20";
             InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No"; _action = AppMan.App.Action;
 
-            text = $"Install Mode: {InstallMode}";
+            text = $"Install Mode: {InstallMode} Forced: {InstallModeForced}";
+            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
+            AppMan.Logger.Info(text);
+            
+            text = $"MY20 Protection: {My20Mode}";
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             AppMan.Logger.Info(text);
 
@@ -298,7 +309,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.Logger.Info("Process cancelled by user");
                     return;
                 }
-                if (item.Source == "naviextras")
+                if (item.Source == @"naviextras")
                 {
                     _count++;
                     continue;
@@ -307,7 +318,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     true, true))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
-
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                     AppMan.Logger.Info(text);
 
