@@ -297,15 +297,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.ToString())) 
-            {
+            if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.ToString()))
                 CurrentLanguage = CultureInfo.CurrentCulture.ToString();
-            }
+            else if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
+                CurrentLanguage = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
             else if (AppMan.App.MainSettings.Lang != null)
-            {
                 CurrentLanguage = AppMan.App.MainSettings.Lang;
-            }
-            
+
             AppMan.App.FireHomeTabEvent();
 
             SRegions = new ObservableCollection<SModel.SRegion>
