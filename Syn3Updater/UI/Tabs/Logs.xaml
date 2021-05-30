@@ -38,7 +38,7 @@
                         MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontWeight="Bold" Margin="10,0,5,10"
-                                Text="{Binding Language, ConverterParameter=Logs.Path, Converter={StaticResource LocConverter}}" />
+                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Logs.Path, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="0,0,10,10" Text="{Binding LogLocation}" />
                 </StackPanel>
             </WrapPanel>

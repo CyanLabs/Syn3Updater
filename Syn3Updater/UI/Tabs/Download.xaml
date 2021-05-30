@@ -53,7 +53,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="5" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallMode}" />
                     <TextBlock Margin="20 0 0 0" FontSize="16" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallModeForced, StringFormat='{}{0}: ',  Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="0" FontSize="16" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />

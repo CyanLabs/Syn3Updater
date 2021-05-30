@@ -37,7 +37,7 @@
                                MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontWeight="Bold" Margin="10,0,5,10"
-                                       Text="{Binding Language, ConverterParameter=Profiles.CurrentProfile, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Profiles.CurrentProfile, Converter={StaticResource LocConverter}}" />
                         <TextBlock Margin="0,0,10,10" Text="{Binding CurrentProfile}" />
                     </StackPanel>
                 </WrapPanel>
@@ -50,7 +50,7 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0">
                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"
-                               Text="{Binding Language, ConverterParameter=Profiles.NewProfile, Converter={StaticResource LocConverter}}" />
+                               Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Profiles.NewProfile, Converter={StaticResource LocConverter}}" />
                 <TextBox Width="200" 
                                  Text="{Binding ProfileName, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"
                                  VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0"

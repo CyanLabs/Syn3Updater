@@ -251,7 +251,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 LogXmlDetails += $"{LM.GetValue("Home.Version")} {sappname}{Environment.NewLine}";
 
                 string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
-                LogXmlDetails += $"{LM.GetValue("Utility.APIMModel")} {apimmodel}{Environment.NewLine}";
+                LogXmlDetails += $"{LM.GetValue("Utility.APIMModel")}: {apimmodel}{Environment.NewLine}";
 
                 string result = AppMan.App.Client.GetStringAsync(Api.My20URL).Result;
                 Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
@@ -289,15 +289,15 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 
                 if (_apimDetails.Nav)
-                    LogXmlDetails += $"{LM.GetValue("Utility.APIMType")} Navigation {Environment.NewLine}";
+                    LogXmlDetails += $"{LM.GetValue("Utility.APIMType")}: Navigation {Environment.NewLine}";
                 else
-                    LogXmlDetails += $"{LM.GetValue("Utility.APIMType")} Non-Navigation {Environment.NewLine}";
+                    LogXmlDetails += $"{LM.GetValue("Utility.APIMType")}: Non-Navigation {Environment.NewLine}";
 
-                LogXmlDetails += $"{LM.GetValue("Utility.APIMSize")} {_apimDetails.Size}GB {Environment.NewLine}";
+                LogXmlDetails += $"{LM.GetValue("Utility.APIMSize")}: {_apimDetails.Size}GB {Environment.NewLine}";
 
                 string apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                     .Select(x => x.Available).Single();
-                LogXmlDetails += $"{LM.GetValue("Utility.APIMFree")} {apimfree} {Environment.NewLine}";
+                LogXmlDetails += $"{LM.GetValue("Utility.APIMFree")}: {apimfree} {Environment.NewLine}";
 
                 LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
 
