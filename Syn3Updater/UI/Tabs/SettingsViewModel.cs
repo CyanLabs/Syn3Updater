@@ -316,7 +316,25 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 "Dark", "Light"
             };
-            CurrentTheme = AppMan.App.MainSettings.Theme;
+            if (!string.IsNullOrEmpty(AppMan.App.MainSettings.Theme))
+            {
+                CurrentTheme = AppMan.App.MainSettings.Theme;
+            }
+            else
+            {
+                try
+                {
+                    object v = Microsoft.Win32.Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", "1");
+                    if (v != null && v.ToString() == "0")
+                        CurrentTheme = "Dark";
+                    else
+                        CurrentTheme = "Light";
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
 
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
             {
