@@ -429,8 +429,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 // Update local level vars
                 DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;
                 DriveName = SelectedDrive?.Name;
+                DriveLetter = SelectedDrive?.Letter;
             }
-            DriveLetter = SelectedDrive?.Letter;
+            
         }
 
         private async Task UpdateSelectedRegion()
