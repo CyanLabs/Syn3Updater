@@ -55,27 +55,27 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             EnglishEndorsement = AppMan.App.MainSettings.Lang.Contains("en-") ? Visibility.Hidden : Visibility.Visible;
         }
 
-        private void WebsiteAction()
+        private static void WebsiteAction()
         {
             Process.Start("https://cyanlabs.net");
         }
 
-        private void ForumAction()
+        private static void ForumAction()
         {
             Process.Start("https://community.cyanlabs.net");
         }
 
-        private void DonateAction()
+        private static void DonateAction()
         {
             Process.Start("https://www.paypal.com/paypalme/cyanlabs");
         }
 
-        private void DocAction()
+        private static void DocAction()
         {
             Process.Start("https://cyanlabs.net/applications/syn3-updater/");
         }
 
-        private void FHubAction()
+        private static void FHubAction()
         {
             Process.Start("https://cyanlabs.net/fhub");
         }
