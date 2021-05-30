@@ -263,6 +263,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     SetProperty(ref _currentLanguage, value);
                     AppMan.App.MainSettings.Lang = value;
                     AppMan.App.FireLanguageChangedEvent();
+                    OnPropertyChanged("CurrentLanguage");
                 }
             }
         }
@@ -296,6 +297,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
+            if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.ToString())) 
+            {
+                CurrentLanguage = CultureInfo.CurrentCulture.ToString();
+            }
+            else if (AppMan.App.MainSettings.Lang != null)
+            {
+                CurrentLanguage = AppMan.App.MainSettings.Lang;
+            }
+            
             AppMan.App.FireHomeTabEvent();
 
             SRegions = new ObservableCollection<SModel.SRegion>
@@ -345,7 +355,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             
             LogLocation = AppMan.App.MainSettings.LogPath;
             LicenseKey = AppMan.App.MainSettings.LicenseKey;
-            CurrentLanguage = AppMan.App.MainSettings.Lang;
             DownloadLocation = AppMan.App.DownloadPath;
             
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
