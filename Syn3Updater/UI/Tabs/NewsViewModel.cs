@@ -142,8 +142,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             Changelog = "Loading changelog, please wait...";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.ChangelogURL);
-            string output = await response.Content.ReadAsStringAsync();
-            Changelog = "<style>h3 { margin:0px; } div { padding-bottom:10px;}</style>" + output.Replace("</div><br />", null);
+            Api.Changelogs output = JsonConvert.DeserializeObject<Api.Changelogs>(await response.Content.ReadAsStringAsync());
+            Changelog = "<style>h4 { margin:0px; } div { padding-bottom:0px;}</style>";
+            foreach (Api.Changelog changelog in output.Changelog)
+            {
+                string html = $"<div><h4><u>v{changelog.Version} - {changelog.Date}</u></h4>" + changelog.ReleaseNotes.Replace(Environment.NewLine,"<br>") + $"</div>";
+                Changelog += html;
+            }
         }
 
         #endregion

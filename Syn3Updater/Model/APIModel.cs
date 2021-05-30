@@ -40,7 +40,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string LogPost = APIBase + "Syn3Updater/logs/post.php";
         public const string HeaderURL = APIBase + "syn3updater/useragents";
         public const string My20URL = APIBase + "syn3updater/my20";
-        public const string ChangelogURL = APIBase + "app/syn3updater/githubchangelog";
+        public const string ChangelogURL = APIBase + "app/syn3updater/githubchangelog/json";
         public const string SpecialPackageBase = APIBase + "syn3updater/get/";
 
         public const int BlacklistedVersion = 3419274;
@@ -151,6 +151,18 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("title")] public string Title { get; set; }
             [JsonProperty("enabled")] public bool Enabled { get; set; }
             [JsonProperty("important")] public bool Important { get; set; }
+        }
+
+        public class Changelogs
+        {
+            [JsonProperty("data")] public IList<Changelog> Changelog { get; set; }
+        }
+
+        public class Changelog
+        {
+            [JsonProperty("version")] public string Version { get; set; }
+            [JsonProperty("date")] public string Date { get; set; }
+            [JsonProperty("changelog")] public string ReleaseNotes { get; set; }
         }
         #endregion
     }
