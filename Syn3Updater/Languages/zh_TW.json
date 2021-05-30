@@ -131,7 +131,7 @@
     "Profiles.DeleteProfile": "刪除",
     "Profiles.SelectProfile": "選擇",
     "Profiles.Rename": "改名",
-    "Profiles.CurrentProfile": "現在的Profile:",
+    "Profiles.CurrentProfile": "現在的Profile",
     "Profiles.NewProfile": "Profile名字",
     "Profiles.CreateAndSet": "創建與設定Profile",
     "Home.Profile": "Profile",
