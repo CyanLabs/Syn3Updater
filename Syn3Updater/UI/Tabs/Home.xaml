@@ -42,8 +42,7 @@
             <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
             <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Home.CurrentConfiguration, Converter={StaticResource LocConverter}}" />
-            <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
-                               MaxWidth="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Width}">
+            <WrapPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock FontWeight="Bold" Margin="10,0,5,10"
