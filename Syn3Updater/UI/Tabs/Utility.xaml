@@ -49,7 +49,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
-                    <RowDefinition Height="35" />
+                    <RowDefinition Height="36" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
