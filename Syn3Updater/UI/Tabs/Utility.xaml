@@ -23,8 +23,8 @@
         <StackPanel Orientation="Vertical">
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0">
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
