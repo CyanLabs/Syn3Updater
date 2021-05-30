@@ -134,7 +134,7 @@
     "Profiles.CurrentProfile": "Current Profile",
     "Profiles.NewProfile": "Profile Name",
     "Profiles.CreateAndSet": "Create and Set Profile",
-    "Home.Profile": "Profile:",
+    "Home.Profile": "Profile",
     "MessageBox.InvalidProfile": "You can not delete the currently active profile, please select another profile and then delete this profile\n",
     "MessageBox.RemovableDriveFolder": "The folder you have selected is located on a non fixed drive, you should consider selecting the USB itself rather than selecting a folder on the USB drive\n\nIf you wish to continue anyway click 'OK'",
     "MessageBox.OptionalFormat": "{0} already contains files.\n\nDo you want to empty {0}?",
