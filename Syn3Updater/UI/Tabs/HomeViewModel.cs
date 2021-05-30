@@ -304,12 +304,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
-            CurrentNav = AppMan.App.Settings.CurrentNav ? "Yes" : "No";
+            CurrentNav = AppMan.App.Settings.CurrentNav ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
             CurrentRegion = AppMan.App.Settings.CurrentRegion;
             CurrentVersion = AppMan.App.SVersion;
             DownloadLocation = AppMan.App.DownloadPath;
-            My20Mode = AppMan.App.Settings.My20 ? "Enabled" : "Disabled / Not MY20";
-            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
+            My20Mode = AppMan.App.Settings.My20 ? LM.GetValue("String.Enabled") : LM.GetValue("String.Disabled");
+            InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes"): LM.GetValue("String.No");
             StartEnabled = false;
             InstallMode = AppMan.App.Settings.InstallMode;
             CurrentProfile = AppMan.App.MainSettings.Profile;

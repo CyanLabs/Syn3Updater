@@ -125,8 +125,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
 
             InstallMode = AppMan.App.Settings.InstallMode;
-            My20Mode = AppMan.App.Settings.My20 ? "Enabled" : "Disabled / Not MY20";
-            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No"; _action = AppMan.App.Action;
+            My20Mode = AppMan.App.Settings.My20 ? LM.GetValue("String.Enabled") : LM.GetValue("String.Disabled");
+            InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes"): LM.GetValue("String.No"); 
+            _action = AppMan.App.Action;
 
             text = $"Install Mode: {InstallMode} Forced: {InstallModeForced}";
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";

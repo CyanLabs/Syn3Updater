@@ -146,5 +146,9 @@
     "String.Validating": "Validating",
     "String.CheckingExistingFile": "Checking Existing File",
     "Home.InstallModeForced": "Forced",
-    "Home.MY20Protection": "MY20 Protection"
+    "Home.MY20Protection": "MY20 Protection",
+    "String.Enabled": "Enabled",
+    "String.Disabled": "Disabled / Not MY20",
+    "String.Yes": "Yes",
+    "String.No": "No"
 }
