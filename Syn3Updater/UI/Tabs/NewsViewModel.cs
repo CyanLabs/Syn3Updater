@@ -146,7 +146,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Changelog = "<style>h4 { margin:0px; } div { padding-bottom:0px;}</style>";
             foreach (Api.Changelog changelog in output.Changelog)
             {
-                string html = $"<div><h4><u>v{changelog.Version} - {changelog.Date}</u></h4>" + changelog.ReleaseNotes.Replace(Environment.NewLine,"<br>") + $"</div>";
+                string changelognotes = string.IsNullOrWhiteSpace(changelog.ReleaseNotes) ? "No Changelog Available" : changelog.ReleaseNotes.Replace(Environment.NewLine,"<br>");
+                string html = $"<div><h4><u>v{changelog.Version} - {changelog.Date}</u></h4>" + changelognotes + $"</div>";
                 Changelog += html;
             }
         }

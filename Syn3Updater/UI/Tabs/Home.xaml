@@ -290,7 +290,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" HorizontalAlignment="Left">
                 <TextBlock Margin="10 0 0 0" FontSize="14" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallMode, StringFormat='{}{0}: ', Converter={StaticResource LocConverter}}" />
-                <TextBlock Margin="5" FontSize="14" VerticalAlignment="Center" Text="{Binding InstallMode}" />
+                <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" Text="{Binding InstallMode}" />
                 <TextBlock Margin="10 0 0 0" FontSize="14" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.InstallModeForced, StringFormat='{}{0}: ',  Converter={StaticResource LocConverter}}" />
                 <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />
                 <TextBlock Margin="10 0 0 0" FontSize="14" VerticalAlignment="Center" Text="{Binding Language, ConverterParameter=Home.MY20Protection, StringFormat='{}{0}: ',  Converter={StaticResource LocConverter}}" />
