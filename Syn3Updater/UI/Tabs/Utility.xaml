@@ -214,7 +214,7 @@
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Utility.GracenotesRemovalTitle, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left"
+                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
                                Text="{Binding Language, ConverterParameter=Utility.GracenotesRemovalDesc, Converter={StaticResource LocConverter}}" />
                 </StackPanel>
                 <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right"
@@ -232,7 +232,7 @@
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Utility.VoiceShrinkerTitle, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left"
+                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
                                Text="{Binding Language, ConverterParameter=Utility.VoiceShrinkerDesc, Converter={StaticResource LocConverter}}" />
                 </StackPanel>
                 <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right"
