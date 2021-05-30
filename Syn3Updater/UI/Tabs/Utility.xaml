@@ -30,7 +30,7 @@
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Utility.TroubleshootTitle, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="10,5" TextWrapping="Wrap" MaxWidth="600" HorizontalAlignment="Left"
+                    <TextBlock Margin="10,5" TextWrapping="Wrap" HorizontalAlignment="Left"
                                Text="{Binding Language, ConverterParameter=Utility.TroubleshootDesc, Converter={StaticResource LocConverter}}" />
                 </StackPanel>
                 <Button Grid.Column="1" HorizontalAlignment="Right" Cursor="Hand"
