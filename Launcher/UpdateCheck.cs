@@ -114,6 +114,9 @@ namespace Cyanlabs.Launcher
                     File.Delete(archivePath);
                 File.Move(destFolder + "\\Launcher.exe", archivePath);
 
+                if(Directory.Exists(destFolder + "\\Languages"))
+                    Directory.Delete(destFolder + "\\Languages");
+                
                 Vm.Message = "Extracting...";
                 ZipFile.ExtractToDirectory(zipPath, destFolder + "\\temp");
                 DirectoryCopy(destFolder + "\\temp", destFolder, true);
