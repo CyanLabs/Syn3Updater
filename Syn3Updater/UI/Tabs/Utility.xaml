@@ -59,7 +59,7 @@
                 <Grid Grid.Row="1" Grid.Column="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <ComboBox MinWidth="295" VerticalAlignment="Center" Margin="10,0,0,0" SelectedIndex="-1" HorizontalAlignment="Stretch"
                                   ItemsSource="{Binding DriveList}" SelectedValuePath="Path"
@@ -207,8 +207,8 @@
 
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0">
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
@@ -225,8 +225,8 @@
 
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0">
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
@@ -243,14 +243,14 @@
 
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0">
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Utility.DowngradeTitle, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" MaxWidth="600" HorizontalAlignment="Left"
+                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
                                Text="{Binding Language, ConverterParameter=Utility.DowngradeDesc, Converter={StaticResource LocConverter}}" />
                 </StackPanel>
                 <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right"
