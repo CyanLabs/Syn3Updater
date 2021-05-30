@@ -200,7 +200,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.Settings.My20 = true;
                     CurrentInstallMode = "autodetect";
                 }
-                InstallModesEnabled = !AppMan.App.Settings.My20;
+                InstallModesEnabled = (!AppMan.App.Settings.My20 && AdvancedModeToggle);
             }
         }
 
@@ -220,7 +220,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     SetProperty(ref _advancedModeToggle, false);
                 }
-                InstallModesEnabled = !AppMan.App.Settings.My20;
+                InstallModesEnabled = (!AppMan.App.Settings.My20 && AdvancedModeToggle);
             }
         }
         
