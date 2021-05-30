@@ -235,7 +235,7 @@
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right"
                                    Grid.Column="0"
                                    Text="{Binding Language, ConverterParameter=Settings.InstallMode, Converter={StaticResource LocConverter}}" />
-                    <ComboBox Grid.Row="3" MinWidth="170" VerticalAlignment="Center" SelectedIndex="0"
+                    <ComboBox Grid.Row="3" VerticalAlignment="Center" SelectedIndex="0"
                                   Grid.Column="1" Text="Navigation" ItemsSource="{Binding InstallModes}"
                                   SelectedValue="{Binding CurrentInstallMode}" VerticalContentAlignment="Center" IsEnabled="{Binding InstallModesEnabled}" HorizontalAlignment="Stretch" Margin="0,0,10,0"/>
                 </Grid>
