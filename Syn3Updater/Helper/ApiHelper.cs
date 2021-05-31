@@ -1,6 +1,7 @@
-﻿using System.IO;
+﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 
@@ -16,15 +17,25 @@ namespace Cyanlabs.Syn3Updater.Helper
         ///     Get special IVSU package such as Downgrade or Reformat from our API and passes it to ConvertIvsu
         /// </summary>
         /// <param name="url">URL of a valid 'SpecialPackage'</param>
-        public async static Task<SModel.Ivsu> GetSpecialIvsu(string url)
+        public static async Task<SModel.Ivsu> GetSpecialIvsu(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                throw new System.ArgumentNullException(nameof(url), "Url to download file is empty");
+                throw new ArgumentNullException(nameof(url), "Url to download file is empty");
             }
-            HttpResponseMessage response = await AppMan.App.Client.GetAsync(url);
-            Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());
-            return ConvertIvsu(ivsu);
+
+            try
+            {
+                HttpResponseMessage  response = await AppMan.App.Client.GetAsync(url);
+                Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());
+                return ConvertIvsu(ivsu);
+            }
+            catch (HttpRequestException e)
+            {
+                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                AppMan.Logger.Info("ERROR: fetching SpecialPackage - " + e.GetFullMessage());
+                return null;
+            }
         }
 
         /// <summary>

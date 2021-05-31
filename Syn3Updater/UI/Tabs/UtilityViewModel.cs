@@ -249,7 +249,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.Ivsus.Add(Api.GracenotesRemoval);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive)) return;
+            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.GracenotesRemoval == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;
@@ -269,7 +269,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.Ivsus.Add(Api.SmallVoicePackage);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive)) return;
+            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.SmallVoicePackage == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;
@@ -288,7 +288,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.Ivsus.Add(Api.DowngradeApp);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive)) return;
+            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive)|| Api.DowngradeApp == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;

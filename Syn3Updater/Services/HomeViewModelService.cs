@@ -27,7 +27,7 @@ namespace Cyanlabs.Syn3Updater.Services
             //Warn is users region is different to new selection
             if (selectedRegion.Code != AppMan.App.Settings.CurrentRegion)
             {
-                if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                if (await ModernWpf.MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                     MessageBoxResult.Yes)
                 {
                     canceldownload = true;
@@ -37,7 +37,7 @@ namespace Cyanlabs.Syn3Updater.Services
             //Cancel no apps package selected
             if (!AppMan.App.AppsSelected && (installMode == "reformat" || installMode == "downgrade"))
             {
-                ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await ModernWpf.MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 canceldownload = true;
             }
 
@@ -51,7 +51,7 @@ namespace Cyanlabs.Syn3Updater.Services
             }
         }
 
-        public async static Task SetIvsuList(string installMode, ObservableCollection<SModel.Ivsu> ivsuList, SModel.SRegion selectedRegion, string selectedRelease, string selectedMapVersion, string driveLetter)
+        public static async Task SetIvsuList(string installMode, ObservableCollection<SModel.Ivsu> ivsuList, SModel.SRegion selectedRegion, string selectedRelease, string selectedMapVersion, string driveLetter)
         {
             AppMan.Logger.Info(
                 $"USB Drive selected - Name: {AppMan.App.DriveName} - FileSystem: {AppMan.App.DriveFileSystem} - PartitionType: {AppMan.App.DrivePartitionType} - Letter: {driveLetter}");

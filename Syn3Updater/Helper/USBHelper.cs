@@ -389,7 +389,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             AppMan.App.Ivsus.Add(Api.InterrogatorTool);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(selectedDrive))
+            if (SanityCheckHelper.CancelDownloadCheck(selectedDrive) || Api.InterrogatorTool == null)
                 return;
 
             AppMan.App.IsDownloading = true;
