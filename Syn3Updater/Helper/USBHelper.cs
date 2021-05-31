@@ -377,14 +377,22 @@ namespace Cyanlabs.Syn3Updater.Helper
             AppMan.App.SelectedRelease = "Interrogator Log Utility";
 
             string currentversion = AppMan.App.SVersion;
-            if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}4"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-            else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}2") || currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}3"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
-            else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}"))
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-            else
-                Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
+            try
+            {
+                if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}4"))
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+                else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}2") || currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}3"))
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
+                else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}"))
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+                else
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
+            }
+            catch (TaskCanceledException e)
+            {
+                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
 
             AppMan.App.Ivsus.Add(Api.InterrogatorTool);
             AppMan.App.Settings.InstallMode = "autoinstall";

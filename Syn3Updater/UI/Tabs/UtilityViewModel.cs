@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
-using System.Xml;
-using System.Xml.Linq;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using Cyanlabs.Updater.Common;
-using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -52,8 +42,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private ActionCommand _uploadLog;
         public ActionCommand UploadLog => _uploadLog ??= new ActionCommand(UploadLogAction);
-
-        private static readonly HttpClient Client = new HttpClient();
 
         #endregion
 
@@ -181,7 +169,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(false);
-                if (tmpDriveList.Count > 0) DriveList = tmpDriveList;
+                if (tmpDriveList != null && tmpDriveList.Count > 0) DriveList = tmpDriveList;
             }
             catch (XamlParseException e)
             {
@@ -189,6 +177,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
+            {
+                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
+            }
+            catch (NullReferenceException e)
             {
                 ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
@@ -220,19 +213,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             await USBHelper.LogPrepareUSBAction(SelectedDrive, DriveLetter);
         }
-
-        private XDocument _node;
-
-
+        
         private USBHelper _usbHelper;
         private async Task LogParseXmlAction()
         {
-            string[] LogDetails = await _usbHelper.LogParseXmlAction();
-            if (LogDetails.Length >= 3)
+            string[] logDetails = await _usbHelper.LogParseXmlAction();
+            if (logDetails.Length >= 3)
             {
-                LogXmlDetails1 = LogDetails[0];
-                LogXmlDetails2 = LogDetails[1];
-                LogXmlDetails3 = LogDetails[2];
+                LogXmlDetails1 = logDetails[0];
+                LogXmlDetails2 = logDetails[1];
+                LogXmlDetails3 = logDetails[2];
                 ToggleLogXmlDetails = true;
             }
         }
@@ -245,7 +235,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.Action = "gracenotesremoval";
             AppMan.App.SelectedRelease = "Gracenotes Removal";
             //don't call ConfigureAwait(false) here either 
-            Api.GracenotesRemoval = await ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
+            try
+            {
+                Api.GracenotesRemoval = await ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
+
+            }
+            catch (TaskCanceledException e)
+            {
+                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
             AppMan.App.Ivsus.Add(Api.GracenotesRemoval);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
@@ -266,7 +265,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.SelectedRelease = "Voice Package Shrinker";
 
             Api.SmallVoicePackage = await ApiHelper.GetSpecialIvsu(Api.GetSmallVoice);
-            AppMan.App.Ivsus.Add(Api.SmallVoicePackage);
+            try
+            { 
+                AppMan.App.Ivsus.Add(Api.SmallVoicePackage);
+            }
+            catch (TaskCanceledException e)
+            {
+                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
             AppMan.App.Settings.InstallMode = "autoinstall";
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.SmallVoicePackage == null) return;
@@ -285,9 +292,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.Action = "downgrade";
             AppMan.App.SelectedRelease = "Enforced Downgrade";
             Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
-            AppMan.App.Ivsus.Add(Api.DowngradeApp);
+            try
+            { 
+                AppMan.App.Ivsus.Add(Api.DowngradeApp);
+            }
+            catch (TaskCanceledException e)
+            {
+                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
             AppMan.App.Settings.InstallMode = "autoinstall";
-
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive)|| Api.DowngradeApp == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
@@ -296,7 +310,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.FireDownloadsTabEvent();
         }
 
-        private void TroubleshootingDetailsAction()
+        private static void TroubleshootingDetailsAction()
         {
             Process.Start("https://community.cyanlabs.net/t/tutorial-sync-3-4-non-nav-apim-failure-to-update-to-newer-version-sync-3-4/1984");
         }

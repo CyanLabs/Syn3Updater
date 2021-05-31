@@ -368,7 +368,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(true);
-                if (tmpDriveList.Count > 0) DriveList = tmpDriveList;
+                if (tmpDriveList != null && tmpDriveList.Count > 0) DriveList = tmpDriveList;
             }
             catch (XamlParseException e)
             {
@@ -376,6 +376,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
+            {
+                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
+            }
+            catch (NullReferenceException e)
             {
                 ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
