@@ -153,10 +153,7 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
             {
-                if (version.Length == 7)
-                    SVersion = $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}";
-                else
-                    SVersion = $"0{decimalSeparator}0{decimalSeparator}00000";
+                SVersion = version.Length == 7 ? $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}" : $"0{decimalSeparator}0{decimalSeparator}00000";
             }
             catch (IndexOutOfRangeException e)
             {
@@ -235,7 +232,7 @@ namespace Cyanlabs.Syn3Updater
             if (!Directory.Exists(CommonConfigFolderPath)) Directory.CreateDirectory(CommonConfigFolderPath);
             if (!Directory.Exists(UserConfigFolderPath)) Directory.CreateDirectory(UserConfigFolderPath);
             if (!Directory.Exists(ProfileConfigFolderPath)) Directory.CreateDirectory(ProfileConfigFolderPath);
-            
+
             if (File.Exists(ConfigFile))
             {
                 try
@@ -273,7 +270,16 @@ namespace Cyanlabs.Syn3Updater
             {
                 MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
             }
-            if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
+            try
+            {
+                if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Logger.Debug("Unable to set desired log path, defaulting path");
+                MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
+            }
+            
             
             if (File.Exists(CommonConfigFolderPath + "\\launcherPrefs.json"))
             {
