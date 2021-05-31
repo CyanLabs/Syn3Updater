@@ -163,10 +163,25 @@ namespace Cyanlabs.Syn3Updater
 
         public void SaveSettings()
         {
-            string mainJson = JsonConvert.SerializeObject(MainSettings, Formatting.Indented);
-            File.WriteAllText(ConfigFile, mainJson);
-            string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
-            File.WriteAllText(ProfileFile, profileJson);
+            try
+            {
+                string mainJson = JsonConvert.SerializeObject(MainSettings, Formatting.Indented);
+                File.WriteAllText(ConfigFile, mainJson);
+            }
+            catch (IOException e)
+            {
+                Logger.Debug($"Unable to save main settings, another process is accessing {ConfigFile}");
+            }
+            
+            try
+            {
+                string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
+                File.WriteAllText(ProfileFile, profileJson);
+            }
+            catch (IOException e)
+            {
+                Logger.Debug($"Unable to save profile settings, another process is accessing {ProfileFile}");
+            }
         }
 
         public void ResetSettings()
