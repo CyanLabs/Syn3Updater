@@ -231,7 +231,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 AppMan.Logger.Info($"Downloading (Attempt #{i}): {item.FileName}");
                             }
 
-                            if (!await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct))
+                            if (!await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct,AppMan.App.Settings.ConcurrentDownloads))
                             {
                                 CancelAction();
                                 break;
