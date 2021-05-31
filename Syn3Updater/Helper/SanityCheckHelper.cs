@@ -65,7 +65,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 AppMan.Logger.Info("Using 'Select a Directory' instead of a USB Drive");
                 AppMan.App.DownloadToFolder = true;
-
+                if (string.IsNullOrEmpty(driveLetter)) return true;
+                
                 if (Directory.EnumerateFiles(driveLetter).Any() && !AppMan.App.SkipFormat)
                 {
                     if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater",
