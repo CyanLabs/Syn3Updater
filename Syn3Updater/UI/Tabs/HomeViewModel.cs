@@ -520,23 +520,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 else
                 {
-                    foreach (Api.Data item in _jsonReleases.Releases)
-                        if (item.Name == SelectedRelease)
-                        {
-                            _stringCompatibility = item.Version.Substring(0, 3);
-                            if (item.Notes == null)
-                            {
-                                NotesVisibility = false;
-                                continue;
-                            }
-
-                            NotesVisibility = true;
-                            Notes = item.Notes.Replace("\n", Environment.NewLine);
-                        }
-
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
                     _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
                 }
+                
+                foreach (Api.Data item in _jsonReleases.Releases)
+                    if (item.Name == SelectedRelease)
+                    {
+                        _stringCompatibility = item.Version.Substring(0, 3);
+                        if (item.Notes == null)
+                        {
+                            NotesVisibility = false;
+                            continue;
+                        }
+
+                        NotesVisibility = true;
+                        Notes = item.Notes.Replace("\n", Environment.NewLine);
+                    }
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
 
