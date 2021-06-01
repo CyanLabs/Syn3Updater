@@ -513,16 +513,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SelectedMapVersion = null;
                 IvsuList?.Clear();
-                if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20)
-                {
-                    _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
-                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "{\"esn\": {\"_eq\": \"false\"}},");
-                }
-                else
-                {
-                    _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
-                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
-                }
                 
                 foreach (Api.Data item in _jsonReleases.Releases)
                     if (item.Name == SelectedRelease)
@@ -538,6 +528,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Notes = item.Notes.Replace("\n", Environment.NewLine);
                     }
 
+                if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20)
+                {
+                    _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
+                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "{\"esn\": {\"_eq\": \"false\"}},");
+                }
+                else
+                {
+                    _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
+                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
+                }
+                
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
 
                 HttpResponseMessage response = await AppMan.App.Client.GetAsync(_apiMapReleases);
