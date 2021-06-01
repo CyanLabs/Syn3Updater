@@ -513,6 +513,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SelectedMapVersion = null;
                 IvsuList?.Clear();
+                
+                foreach (Api.Data item in _jsonReleases.Releases)
+                    if (item.Name == SelectedRelease)
+                    {
+                        _stringCompatibility = item.Version.Substring(0, 3);
+                        if (item.Notes == null)
+                        {
+                            NotesVisibility = false;
+                            continue;
+                        }
+
+                        NotesVisibility = true;
+                        Notes = item.Notes.Replace("\n", Environment.NewLine);
+                    }
+
                 if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20)
                 {
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
@@ -520,24 +535,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 else
                 {
-                    foreach (Api.Data item in _jsonReleases.Releases)
-                        if (item.Name == SelectedRelease)
-                        {
-                            _stringCompatibility = item.Version.Substring(0, 3);
-                            if (item.Notes == null)
-                            {
-                                NotesVisibility = false;
-                                continue;
-                            }
-
-                            NotesVisibility = true;
-                            Notes = item.Notes.Replace("\n", Environment.NewLine);
-                        }
-
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
                     _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
                 }
-
+                
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
 
                 HttpResponseMessage response = await AppMan.App.Client.GetAsync(_apiMapReleases);
