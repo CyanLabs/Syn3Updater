@@ -150,5 +150,6 @@
     "String.Enabled": "Enabled",
     "String.Disabled": "Disabled / Not MY20",
     "String.Yes": "Yes",
-    "String.No": "No"
+    "String.No": "No",
+    "Settings.DownloadConnections": "Download Connections"
 }

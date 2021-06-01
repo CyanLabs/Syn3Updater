@@ -232,7 +232,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Log += "[" + DateTime.Now + "] " + $"Downloading (Attempt #{i}): {item.FileName}" + Environment.NewLine;
                                 AppMan.Logger.Info($"Downloading (Attempt #{i}): {item.FileName}");
                             }
-                            if (!_fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct,AppMan.App.Settings.ConcurrentDownloads))
+                            if (!_fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct,AppMan.App.Settings.DownloadConnections))
                             {
                                 CancelAction();
                                 break;
@@ -553,7 +553,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                     _parts.TryAdd(e.Part, e.Value);
 
-                double downloadPercentage = Convert.ToInt32(_parts.Sum(part => part.Value) * 1d / (AppMan.App.Settings.ConcurrentDownloads * 1d));
+                double downloadPercentage = Convert.ToInt32(_parts.Sum(part => part.Value) * 1d / (AppMan.App.Settings.DownloadConnections * 1d));
                 int value = Convert.ToInt32(downloadPercentage);
                 CurrentProgress = value;
                 DownloadPercentage = $"{CurrentProgress}% {_progressBarSuffix}";
