@@ -232,7 +232,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Log += "[" + DateTime.Now + "] " + $"Downloading (Attempt #{i}): {item.FileName}" + Environment.NewLine;
                                 AppMan.Logger.Info($"Downloading (Attempt #{i}): {item.FileName}");
                             }
-                            if (!_fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct,AppMan.App.Settings.DownloadConnections))
+                            if (!await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct,AppMan.App.Settings.DownloadConnections))
                             {
                                 CancelAction();
                                 break;
