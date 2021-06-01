@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -56,8 +60,8 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
             int bufferSize = 1024 * 512;
-            using FileStream inStream = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize, fileOptions);
-            using FileStream fileStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, bufferSize, fileOptions);
+            using FileStream inStream = new(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize, fileOptions);
+            using FileStream fileStream = new(destination, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, bufferSize, fileOptions);
             int bytesRead;
             int totalReads = 0;
             long totalBytes = inStream.Length;
@@ -93,6 +97,21 @@ namespace Cyanlabs.Syn3Updater.Helper
         }
 
         private static HttpClient _client;
+        
+        public class Range  
+        {  
+            public long Start { get; set; }  
+            public long End { get; set; }  
+        }  
+        
+        public class DownloadResult  
+        {  
+            public long Size { get; set; }  
+            public String FilePath { get; set; }  
+            public TimeSpan TimeTaken { get; set; }  
+            public int ParallelDownloads { get; set; }  
+        }
+
 
         /// <summary>
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
@@ -102,108 +121,154 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="filename">Destination filename</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>bool with True if successful or False if not</returns>
-        public async Task<bool> DownloadFile(string path, string filename, CancellationToken ct)
+        public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
         {
-            _client = new HttpClient();
-            _client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
-
-            try
+            #region Get file size
+            WebRequest webRequest = HttpWebRequest.Create(fileUrl);
+            webRequest.Method = "HEAD";
+            long responseLength;
+            using (WebResponse webResponse = webRequest.GetResponse())
             {
-                using (HttpResponseMessage response = await _client.GetAsync(path, HttpCompletionOption.ResponseHeadersRead, ct))
+                responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
+                //result.Size = responseLength;
+            }
+            #endregion
+
+            if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
+
+            using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
+            {
+                ConcurrentDictionary<long, string> tempFilesDictionary = new();
+
+                #region Calculate ranges
+
+                List<Range> readRanges = new();
+                for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
                 {
-                    long total = response.Content.Headers.ContentLength ?? -1L;
-                    bool canReportProgress = total != -1;
-
-                    using (Stream stream = await response.Content.ReadAsStreamAsync())
+                    var range = new Range()
                     {
-                        long totalRead = 0L;
-                        byte[] buffer = new byte[4096];
-                        bool moreToRead = true;
-                        const int chunkSize = 4096;
-                        using (FileStream fileStream = File.Create(filename, chunkSize))
+                        Start = chunk * (responseLength / numberOfParallelDownloads),
+                        End = ((chunk + 1) * (responseLength / numberOfParallelDownloads)) - 1
+                    };
+                    readRanges.Add(range);
+                }
+
+
+                readRanges.Add(new Range()
+                {
+                    Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
+                    End = responseLength - 1
+                });
+
+                #endregion
+
+                DateTime startTime = DateTime.Now;
+
+                #region Parallel download
+
+                int index = 0;
+                
+                
+                List<Task> tasks = new();
+                var results = new List<KeyValuePair<long,string>>();
+                
+                foreach (Range readRange in readRanges)
+                {
+                    Task task = Task.Run(async () =>
+                    {
+                        KeyValuePair<long, string> result = await DownloadFilePart(fileUrl,readRange,ct);
+                        results.Add(result);
+                        
+                    }, ct);
+                    
+                    
+
+                    tasks.Add(task);
+                }
+                
+                Task.WaitAll(tasks.ToArray(),ct);
+                
+                foreach (var result in results)
+                {
+                    tempFilesDictionary.TryAdd(result.Key, result.Value);
+                }
+                
+                //result.ParallelDownloads = tasks.Count;
+                #endregion
+                
+                //result.TimeTaken = DateTime.Now.Subtract(startTime);
+
+                #region Merge to single file
+
+                foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
+                {
+                    if (numberOfParallelDownloads == 1)
+                    {
+                        destinationStream.Close();
+                        destinationStream.Dispose();
+                        if (File.Exists(destinationFilePath))
                         {
-                            try
-                            {
-                                do
-                                {
-                                    if (ct.IsCancellationRequested) return false;
-                                    int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
-                                    if (read == 0)
-                                    {
-                                        moreToRead = false;
-                                        fileStream.Close();
-                                        fileStream.Dispose();
-                                    }
-                                    else
-                                    {
-                                        byte[] data = new byte[read];
-                                        buffer.ToList().CopyTo(0, data, 0, read);
-                                        await fileStream.WriteAsync(buffer, 0, read, ct);
-                                        totalRead += read;
-
-                                        if (!canReportProgress) continue;
-                                        double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
-                                        int value = Convert.ToInt32(downloadPercentage);
-                                        _percentageChanged.Raise(this, value);
-                                    }
-                                } while (moreToRead);
-                            }
-                            catch (IOException ioException)
-                            {
-                                try
-                                {
-                                    if (File.Exists(filename)) File.Delete(filename);
-                                }
-                                catch (Exception)
-                                {
-                                    // ignored
-                                }
-
-                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                                    ioException.GetFullMessage(), "Syn3 Updater",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Exclamation));
-                                //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
-                                return false;
-                            }
-                            catch (HttpRequestException httpRequestException)
-                            {
-                                try
-                                {
-                                    if (File.Exists(filename)) File.Delete(filename);
-                                }
-                                catch (Exception)
-                                {
-                                    // ignored
-                                }
-
-                                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                                    httpRequestException.GetFullMessage(), "Syn3 Updater",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Exclamation));
-                                //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
-                                return false;
-                            }
-                            finally
-                            {
-                                fileStream.Close();
-                                fileStream.Dispose();
-                            }
+                            File.Delete(destinationFilePath);
                         }
+
+                        File.Copy(tempFile.Value, destinationFilePath);
                     }
+                    else
+                    {
+                        byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
+                        destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
+                    }
+                    File.Delete(tempFile.Value);
+                }
+
+                #endregion
+
+                //GC.Collect();
+
+                return true;
+            }
+        }
+
+
+        public async Task<KeyValuePair<long, string>> DownloadFilePart(string fileUrl, Range readRange, CancellationToken ct, int concurrent = 0)
+        {
+            HttpClient client = new();
+            client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
+            client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
+            string tempFilePath = Path.GetTempFileName();
+            using (Stream stream = await client.GetStreamAsync(fileUrl))
+            {
+                long totalRead = 0L;
+                byte[] buffer = new byte[4096];
+                bool moreToRead = true;
+                const int chunkSize = 4096;
+                using (FileStream output = File.Create(tempFilePath, chunkSize))
+                {
+                    do
+                    {
+                        //if (ct.IsCancellationRequested) return;
+                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+                        if (read == 0)
+                        {
+                            moreToRead = false;
+                            output.Close();
+                            output.Dispose();
+                        }
+                        else
+                        {
+                            byte[] data = new byte[read];
+                            buffer.ToList().CopyTo(0, data, 0, read);
+                            await output.WriteAsync(buffer, 0, read, ct);
+                            totalRead += read;
+                            
+                            double downloadPercentage = totalRead * 1d / (readRange.End * 1d) * 100;
+                            int value = Convert.ToInt32(downloadPercentage);
+                            _percentageChanged.Raise(this, value);
+                        }
+                    } while (moreToRead);
+                    return new KeyValuePair<long,string>(readRange.Start, tempFilePath);
                 }
             }
-            catch (HttpRequestException webException)
-            {
-                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                    webException.GetFullMessage(), "Syn3 Updater",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation));
-                //Ignoring HttpRequestExceptions due to log spam from server disconnects etc.
-                //AppMan.Logger.Info("ERROR: " + webException.GetFullMessage());
-                return false;
-            }
-            return true;
         }
 
         /// <summary>
@@ -219,7 +284,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>outputResult with Message and Result properties</returns>
         public async Task<OutputResult> ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
         {
-            OutputResult outputResult = new OutputResult();
+            OutputResult outputResult = new();
             string filename = Path.GetFileName(localfile);
 
             if (!File.Exists(localfile))
@@ -246,11 +311,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    using (HttpClient httpClient = new HttpClient())
+                    using (HttpClient httpClient = new())
                     {
                         httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
                         long newfilesize = -1;
-                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(source));
+                        HttpRequestMessage request = new(HttpMethod.Head, new Uri(source));
 
                         var len = ((await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)).Content.Headers.ContentLength);
 
@@ -351,7 +416,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>outputResult with Message and Result properties</returns>
         public OutputResult ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
         {
-            OutputResult outputResult = new OutputResult { Message = "" };
+            OutputResult outputResult = new() { Message = "" };
             if (item.Source != "naviextras")
             {
                 outputResult.Result = true;
@@ -389,7 +454,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         type = "MAP";
                     }
-                    FileInfo fi = new FileInfo(newpath);
+                    FileInfo fi = new(newpath);
                     long size = fi.Length;
                     AppMan.App.ExtraIvsus.Add(new SModel.Ivsu
                     {

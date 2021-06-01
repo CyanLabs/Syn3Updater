@@ -98,6 +98,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
             }
         }
+        
+        private string _concurrentDownloads;
+
+        public string ConcurrentDownloads
+        {
+            get => _concurrentDownloads;
+            set
+            {
+                if (value != null && value.Any(char.IsDigit))
+                {
+                    SetProperty(ref _concurrentDownloads, value);
+                    AppMan.App.Settings.ConcurrentDownloads = int.Parse(value);
+                }
+            }
+        }
 
         private bool _currentNav;
 
@@ -368,6 +383,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             
             CurrentNav = AppMan.App.Settings.CurrentNav;
             CurrentVersion = AppMan.App.SVersion;
+            ConcurrentDownloads = AppMan.App.Settings.ConcurrentDownloads.ToString();
             My20Mode = AppMan.App.Settings.My20;
         }
 

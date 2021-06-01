@@ -116,6 +116,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="40" />
                     <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
                 <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                 <TextBlock Grid.Row="0" Margin="5,0,0,5" Grid.ColumnSpan="3"
@@ -147,7 +148,14 @@
                     <fa5:FontAwesome Icon="Regular_FolderOpen" FontSize="18" Foreground="White"
                                          VerticalAlignment="Center" Margin="0,0,0,0" />
                 </Button>
-
+                
+                <TextBlock Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3"
+                           Grid.Column="1"
+                           Text="Concurrent Downloads:" />
+                <ui:MaskedTextBox MinWidth="70" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,0,5,0" AcceptsReturn="True" FontSize="12"
+                                  Text="{Binding ConcurrentDownloads, UpdateSourceTrigger=PropertyChanged}"
+                                      Mask="#" MaxLength="9" VerticalContentAlignment="Center"
+                                      VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch" />
 
             </Grid>
 
