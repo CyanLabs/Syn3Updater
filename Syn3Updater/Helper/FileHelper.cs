@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -90,7 +91,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
                 if (percent != prevPercent)
                 {
-                    _percentageChanged.Raise(this, percent);
+                    _percentageChanged.Raise(this, percent,0);
                     prevPercent = percent;
                 }
             }
@@ -117,11 +118,13 @@ namespace Cyanlabs.Syn3Updater.Helper
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
         ///     <see href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">See more</see>
         /// </summary>
-        /// <param name="path">Source URL</param>
         /// <param name="filename">Destination filename</param>
+        /// <param name="fileUrl">Source URL</param>
+        /// <param name="destinationFilePath"></param>
         /// <param name="ct">CancellationToken</param>
+        /// <param name="numberOfParallelDownloads"></param>
         /// <returns>bool with True if successful or False if not</returns>
-        public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
+        public bool DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
         {
             #region Get file size
             WebRequest webRequest = HttpWebRequest.Create(fileUrl);
@@ -135,7 +138,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             #endregion
 
             if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-
+            foreach(string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + $"-part*"))
+            {
+                File.Delete(file);
+            }
             using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
             {
                 ConcurrentDictionary<long, string> tempFilesDictionary = new();
@@ -166,28 +172,26 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 #region Parallel download
 
-                int index = 0;
-                
+                int i = 1;
                 
                 List<Task> tasks = new();
-                var results = new List<KeyValuePair<long,string>>();
-                
+                List<KeyValuePair<long, string>> results = new();
+
                 foreach (Range readRange in readRanges)
                 {
+                    int i1 = i;
                     Task task = Task.Run(async () =>
                     {
-                        KeyValuePair<long, string> result = await DownloadFilePart(fileUrl,readRange,ct);
-                        results.Add(result);
-                        
+                        KeyValuePair<long, string> result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
+                            results.Add(result);
                     }, ct);
-                    
-                    
-
+                    i++;
                     tasks.Add(task);
+                    
                 }
-                
-                Task.WaitAll(tasks.ToArray(),ct);
-                
+
+                Task.WaitAll(tasks.ToArray(), ct);
+
                 foreach (var result in results)
                 {
                     tempFilesDictionary.TryAdd(result.Key, result.Value);
@@ -220,7 +224,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                     File.Delete(tempFile.Value);
                 }
-
                 #endregion
 
                 //GC.Collect();
@@ -230,14 +233,16 @@ namespace Cyanlabs.Syn3Updater.Helper
         }
 
 
-        public async Task<KeyValuePair<long, string>> DownloadFilePart(string fileUrl, Range readRange, CancellationToken ct, int concurrent = 0)
+        public async Task<KeyValuePair<long, string>> DownloadFilePart(string fileUrl, string destinationFilePath ,Range readRange, int concurrent, CancellationToken ct)
         {
             HttpClient client = new();
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
             client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
-            string tempFilePath = Path.GetTempFileName();
+            string tempFilePath = destinationFilePath + $"-part{concurrent}";
+            if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
             using (Stream stream = await client.GetStreamAsync(fileUrl))
             {
+                long total = readRange.End - readRange.Start;
                 long totalRead = 0L;
                 byte[] buffer = new byte[4096];
                 bool moreToRead = true;
@@ -246,7 +251,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     do
                     {
-                        //if (ct.IsCancellationRequested) return;
                         int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
                         if (read == 0)
                         {
@@ -260,10 +264,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                             buffer.ToList().CopyTo(0, data, 0, read);
                             await output.WriteAsync(buffer, 0, read, ct);
                             totalRead += read;
-                            
-                            double downloadPercentage = totalRead * 1d / (readRange.End * 1d) * 100;
+                            double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
                             int value = Convert.ToInt32(downloadPercentage);
-                            _percentageChanged.Raise(this, value);
+                            _percentageChanged.Raise(this, value, concurrent);
                         }
                     } while (moreToRead);
                     return new KeyValuePair<long,string>(readRange.Start, tempFilePath);
@@ -386,7 +389,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         totalBytesRead += bytesRead;
                         hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                         long read = totalBytesRead;
-                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100));
+                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100),0);
                     } while (bytesRead != 0);
 
                     hasher.TransformFinalBlock(buffer, 0, 0);

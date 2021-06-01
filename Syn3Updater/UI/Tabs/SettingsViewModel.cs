@@ -99,17 +99,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
         
-        private string _concurrentDownloads;
+        private string _downloadConnections;
 
-        public string ConcurrentDownloads
+        public string DownloadConnections
         {
-            get => _concurrentDownloads;
+            get => _downloadConnections;
             set
             {
                 if (value != null && value.Any(char.IsDigit))
                 {
-                    SetProperty(ref _concurrentDownloads, value);
-                    AppMan.App.Settings.ConcurrentDownloads = int.Parse(value);
+                    SetProperty(ref _downloadConnections, value);
+                    AppMan.App.Settings.DownloadConnections = int.Parse(value);
                 }
             }
         }
@@ -383,7 +383,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             
             CurrentNav = AppMan.App.Settings.CurrentNav;
             CurrentVersion = AppMan.App.SVersion;
-            ConcurrentDownloads = AppMan.App.Settings.ConcurrentDownloads.ToString();
+            DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
             My20Mode = AppMan.App.Settings.My20;
         }
 

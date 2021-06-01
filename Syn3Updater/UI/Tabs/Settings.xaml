@@ -151,9 +151,9 @@
                 
                 <TextBlock Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3"
                            Grid.Column="1"
-                           Text="Concurrent Downloads:" />
+                           Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.DownloadConnections, Converter={StaticResource LocConverter}}" />
                 <ui:MaskedTextBox MinWidth="70" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,0,5,0" AcceptsReturn="True" FontSize="12"
-                                  Text="{Binding ConcurrentDownloads, UpdateSourceTrigger=PropertyChanged}"
+                                  Text="{Binding DownloadConnections, UpdateSourceTrigger=PropertyChanged}"
                                       Mask="#" MaxLength="9" VerticalContentAlignment="Center"
                                       VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch" />
 

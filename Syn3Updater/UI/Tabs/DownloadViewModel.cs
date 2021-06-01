@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -230,8 +232,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Log += "[" + DateTime.Now + "] " + $"Downloading (Attempt #{i}): {item.FileName}" + Environment.NewLine;
                                 AppMan.Logger.Info($"Downloading (Attempt #{i}): {item.FileName}");
                             }
-
-                            if (!await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct,AppMan.App.Settings.ConcurrentDownloads))
+                            if (!_fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct,AppMan.App.Settings.DownloadConnections))
                             {
                                 CancelAction();
                                 break;
@@ -282,7 +283,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(item.Url));
                 _count++;
-                PercentageChanged.Raise(this, 100);
+                PercentageChanged.Raise(this, 100,0);
             }
 
             Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
@@ -395,7 +396,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(AppMan.App.DownloadPath + item.FileName));
                 _count++;
-                PercentageChanged.Raise(this, 100);
+                PercentageChanged.Raise(this, 100,0);
             }
         }
 
@@ -535,11 +536,29 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             _tokenSource = new CancellationTokenSource();
         }
 
+        ConcurrentDictionary<int,int> _parts = new();
+        private int[] _sum;
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
         {
-            DownloadPercentage = $"{e.Value}% {_progressBarSuffix}";
-            CurrentProgress = e.Value;
-            TotalPercentage = _count == 0 ? e.Value : (_count * 100) + e.Value;
+            if (e.Part == 0)
+            {
+                DownloadPercentage = $"{e.Value}% {_progressBarSuffix}";
+                CurrentProgress = e.Value;
+                TotalPercentage = _count == 0 ? e.Value : (_count * 100) + e.Value;
+            }
+            else
+            {
+                if (_parts.TryGetValue(e.Part, out int _))
+                    _parts[e.Part] = e.Value;
+                else
+                    _parts.TryAdd(e.Part, e.Value);
+
+                double downloadPercentage = Convert.ToInt32(_parts.Sum(part => part.Value) * 1d / (AppMan.App.Settings.DownloadConnections * 1d));
+                int value = Convert.ToInt32(downloadPercentage);
+                CurrentProgress = value;
+                DownloadPercentage = $"{CurrentProgress}% {_progressBarSuffix}";
+                TotalPercentage = _count == 0 ? CurrentProgress : (_count * 100) + CurrentProgress;
+            }
         }
 
         private async Task PrepareUsbAsync()
