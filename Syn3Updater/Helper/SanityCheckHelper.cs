@@ -33,14 +33,21 @@ namespace Cyanlabs.Syn3Updater.Helper
             // Optional Format
             if (string.IsNullOrWhiteSpace(selectedDrive.Path))
             {
-                if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter),
-                    "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (Directory.EnumerateFileSystemEntries(driveLetter, "*", SearchOption.AllDirectories).Any())
                 {
-                    AppMan.App.SkipFormat = false;
+                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter),
+                        "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        AppMan.App.SkipFormat = false;
+                    }
+                    else
+                    {
+                        AppMan.Logger.Info("Selected folder will not be cleared before being used");
+                        AppMan.App.SkipFormat = true;
+                    }
                 }
                 else
                 {
-                    AppMan.Logger.Info("Selected folder will not be cleared before being used");
                     AppMan.App.SkipFormat = true;
                 }
             }

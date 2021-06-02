@@ -574,10 +574,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (AppMan.App.DownloadToFolder)
                 {
                     Log += "[" + DateTime.Now + "] Clearing Selected Folder" + Environment.NewLine;
-                    foreach (string file in Directory.GetFiles(AppMan.App.DriveLetter))
-                        File.Delete(file);
-                    foreach (string dir in Directory.GetDirectories(AppMan.App.DriveLetter))
-                        Directory.Delete(dir, true);
+                    try
+                    {
+                        foreach (string file in Directory.GetFiles(AppMan.App.DriveLetter))
+                            File.Delete(file);
+                        foreach (string dir in Directory.GetDirectories(AppMan.App.DriveLetter))
+                            Directory.Delete(dir, true);
+                    }
+                    catch (IOException)
+                    {
+                        Log += "[" + DateTime.Now + "] Unable to clear folder, continuing anyway" + Environment.NewLine;
+                        AppMan.Logger.Info("Unable to clear folder, continuing anyway");
+                    }
                 }
                 else
                 {
