@@ -129,7 +129,6 @@ namespace Cyanlabs.Syn3Updater.Helper
         public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
         {
             #region Get file size
-
             HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(fileUrl);
             webRequest.UserAgent = AppMan.App.Header;
             webRequest.Method = "HEAD";
@@ -137,9 +136,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             using (WebResponse webResponse = webRequest.GetResponse())
             {
                 responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
-                //result.Size = responseLength;
             }
-
             #endregion
 
             if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
@@ -149,7 +146,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                 ConcurrentDictionary<long, string> tempFilesDictionary = new();
 
                 #region Calculate ranges
-
                 List<Range> readRanges = new();
                 for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
                 {
@@ -160,17 +156,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                     };
                     readRanges.Add(range);
                 }
-
-
+                
                 readRanges.Add(new Range
                 {
                     Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
                     End = responseLength - 1
                 });
-
                 #endregion
-
-                DateTime startTime = DateTime.Now;
 
                 #region Parallel download
 
@@ -182,24 +174,25 @@ namespace Cyanlabs.Syn3Updater.Helper
                 foreach (Range readRange in readRanges)
                 {
                     int i1 = i;
-                    Task task = Task.Run(async () =>
+                    Task t = Task.Run(async () =>
                     {
                         KeyValuePair<long, string> result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
                         results.Add(result);
+                        
                     }, ct);
                     i++;
-                    tasks.Add(task);
+                    tasks.Add(t);
                 }
 
                 Task.WaitAll(tasks.ToArray(), ct);
-
-                foreach (KeyValuePair<long, string> result in results) tempFilesDictionary.TryAdd(result.Key, result.Value);
-
-                //result.ParallelDownloads = tasks.Count;
-
+                
+                foreach (KeyValuePair<long, string> result in results)
+                {
+                    if (result.Value == null || result.Value == "fail")
+                        return false;
+                    tempFilesDictionary.TryAdd(result.Key, result.Value);
+                }
                 #endregion
-
-                //result.TimeTaken = DateTime.Now.Subtract(startTime);
 
                 #region Merge to single file
 
@@ -237,7 +230,6 @@ namespace Cyanlabs.Syn3Updater.Helper
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
             client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
             client.DefaultRequestHeaders.ConnectionClose = true;
-            
             string tempFilePath = destinationFilePath + $"-part{concurrent}";
             if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
             using (Stream stream = await client.GetStreamAsync(fileUrl))
@@ -249,27 +241,70 @@ namespace Cyanlabs.Syn3Updater.Helper
                 const int chunkSize = 4096;
                 using (FileStream output = File.Create(tempFilePath, chunkSize))
                 {
-                    do
+                    try
                     {
-                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
-                        if (read == 0)
+                        do
                         {
-                            moreToRead = false;
-                            output.Close();
-                            output.Dispose();
-                        }
-                        else
+                            int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+                            if (read == 0)
+                            {
+                                moreToRead = false;
+                                output.Close();
+                                output.Dispose();
+                            }
+                            else
+                            {
+                                byte[] data = new byte[read];
+                                buffer.ToList().CopyTo(0, data, 0, read);
+                                await output.WriteAsync(buffer, 0, read, ct);
+                                totalRead += read;
+                                double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
+                                int value = Convert.ToInt32(downloadPercentage);
+                                _percentageChanged.Raise(this, value, concurrent);
+                            }
+                        } while (moreToRead);
+                    }
+                    catch (IOException ioException)
+                    {
+                        try
                         {
-                            byte[] data = new byte[read];
-                            buffer.ToList().CopyTo(0, data, 0, read);
-                            await output.WriteAsync(buffer, 0, read, ct);
-                            totalRead += read;
-                            double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
-                            int value = Convert.ToInt32(downloadPercentage);
-                            _percentageChanged.Raise(this, value, concurrent);
+                            if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
                         }
-                    } while (moreToRead);
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
 
+                        Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
+                            ioException.GetFullMessage(), "Syn3 Updater",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation));
+                        //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                        return new KeyValuePair<long, string>(readRange.Start,"fail");
+                    }
+                    catch (HttpRequestException httpRequestException)
+                    {
+                        try
+                        {
+                            if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
+                        }
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
+
+                        Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
+                            httpRequestException.GetFullMessage(), "Syn3 Updater",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation));
+                        //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                        return new KeyValuePair<long, string>(readRange.Start,"fail");
+                    }
+                    finally
+                    {
+                        output.Close();
+                        output.Dispose();
+                    }
                     return new KeyValuePair<long, string>(readRange.Start, tempFilePath);
                 }
             }
