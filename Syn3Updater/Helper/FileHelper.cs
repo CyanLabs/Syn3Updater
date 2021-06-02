@@ -127,7 +127,8 @@ namespace Cyanlabs.Syn3Updater.Helper
         public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
         {
             #region Get file size
-            WebRequest webRequest = HttpWebRequest.Create(fileUrl);
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(fileUrl);
+            webRequest.UserAgent = AppMan.App.Header;
             webRequest.Method = "HEAD";
             long responseLength;
             using (WebResponse webResponse = webRequest.GetResponse())
