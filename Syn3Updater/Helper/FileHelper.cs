@@ -57,44 +57,64 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="source">Source file</param>
         /// <param name="destination">Destination file</param>
         /// <param name="ct">CancellationToken</param>
-        public async Task CopyFileAsync(string source, string destination, CancellationToken ct)
+        public async Task<bool> CopyFileAsync(string source, string destination, CancellationToken ct)
         {
-            FileOptions fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
-            int bufferSize = 1024 * 512;
-            using FileStream inStream = new(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize, fileOptions);
-            using FileStream fileStream = new(destination, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, bufferSize, fileOptions);
-            int bytesRead;
-            int totalReads = 0;
-            long totalBytes = inStream.Length;
-            byte[] bytes = new byte[bufferSize];
-            int prevPercent = 0;
-
-            while ((bytesRead = await inStream.ReadAsync(bytes, 0, bufferSize)) > 0)
+            try
             {
-                if (ct.IsCancellationRequested)
+                FileOptions fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
+                int bufferSize = 1024 * 512;
+                using FileStream inStream = new(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize, fileOptions);
+                using FileStream fileStream = new(destination, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, bufferSize, fileOptions);
+                int bytesRead;
+                int totalReads = 0;
+                long totalBytes = inStream.Length;
+                byte[] bytes = new byte[bufferSize];
+                int prevPercent = 0;
+
+                while ((bytesRead = await inStream.ReadAsync(bytes, 0, bufferSize, ct)) > 0)
                 {
-                    fileStream.Close();
-                    fileStream.Dispose();
-                    try
+                    if (ct.IsCancellationRequested)
                     {
-                        File.Delete(destination);
-                    }
-                    catch (IOException)
-                    {
+                        fileStream.Close();
+                        fileStream.Dispose();
+                        try
+                        {
+                            File.Delete(destination);
+                        }
+                        catch (IOException)
+                        {
+                        }
+
+                        return false;
                     }
 
-                    return;
-                }
-
-                await fileStream.WriteAsync(bytes, 0, bytesRead);
-                totalReads += bytesRead;
-                int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
-                if (percent != prevPercent)
-                {
+                    await fileStream.WriteAsync(bytes, 0, bytesRead, ct);
+                    totalReads += bytesRead;
+                    int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
+                    if (percent == prevPercent) continue;
                     _percentageChanged.Raise(this, percent, 0);
                     prevPercent = percent;
                 }
             }
+            catch (HttpRequestException webException)
+            {
+                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
+                    webException.GetFullMessage() + Environment.NewLine + Environment.NewLine + LM.GetValue("MessageBox.ConnectionClosedByRemoteHost"), "Syn3 Updater",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation));
+                return false;
+            }
+            catch (IOException ioException)
+            {
+                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
+                    ioException.GetFullMessage(), "Syn3 Updater",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation));
+                AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
+                return false;
+            }
+
+            return true;
         }
 
         public class Range
@@ -103,14 +123,14 @@ namespace Cyanlabs.Syn3Updater.Helper
             public long End { get; set; }
         }
 
-        public class DownloadResult
+        public class DownloadPartResult
         {
-            public long Size { get; set; }
+            public long RangeStart { get; set; }
             public string FilePath { get; set; }
-            public TimeSpan TimeTaken { get; set; }
-            public int ParallelDownloads { get; set; }
+            public Exception Ex  { get; set; }
         }
 
+        
 
         /// <summary>
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
@@ -140,7 +160,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             #endregion
 
             if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-            foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*")) File.Delete(file);
+            
+            foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*")) 
+                File.Delete(file);
+            
             using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
             {
                 ConcurrentDictionary<long, string> tempFilesDictionary = new();
@@ -169,14 +192,14 @@ namespace Cyanlabs.Syn3Updater.Helper
                 int i = 1;
 
                 List<Task> tasks = new();
-                List<KeyValuePair<long, string>> results = new();
+                List<DownloadPartResult> results = new();
 
                 foreach (Range readRange in readRanges)
                 {
                     int i1 = i;
                     Task t = Task.Run(async () =>
                     {
-                        KeyValuePair<long, string> result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
+                        DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
                         results.Add(result);
                         
                     }, ct);
@@ -186,11 +209,17 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 Task.WaitAll(tasks.ToArray(), ct);
                 
-                foreach (KeyValuePair<long, string> result in results)
+                foreach (DownloadPartResult result in results)
                 {
-                    if (result.Value == null || result.Value == "fail")
+                    if (result.Ex != null)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
+                            result.Ex.Message, "Syn3 Updater",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation));
                         return false;
-                    tempFilesDictionary.TryAdd(result.Key, result.Value);
+                    }
+                    tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
                 }
                 #endregion
 
@@ -223,13 +252,15 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
         }
         
-
-        public async Task<KeyValuePair<long, string>> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
+        
+        public async Task<DownloadPartResult> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
         {
+           
             HttpClient client = new();
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
             client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
-            client.DefaultRequestHeaders.ConnectionClose = true;
+            if (!fileUrl.Contains("dropbox"))
+                client.DefaultRequestHeaders.ConnectionClose = true;
             string tempFilePath = destinationFilePath + $"-part{concurrent}";
             if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
             using (Stream stream = await client.GetStreamAsync(fileUrl))
@@ -275,12 +306,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             // ignored
                         }
 
-                        Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                            ioException.GetFullMessage(), "Syn3 Updater",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation));
-                        //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
-                        return new KeyValuePair<long, string>(readRange.Start,"fail");
+                        return new DownloadPartResult{FilePath = "", RangeStart = readRange.Start, Ex = ioException};
                     }
                     catch (HttpRequestException httpRequestException)
                     {
@@ -292,20 +318,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                         {
                             // ignored
                         }
-
-                        Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(
-                            httpRequestException.GetFullMessage(), "Syn3 Updater",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation));
-                        //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
-                        return new KeyValuePair<long, string>(readRange.Start,"fail");
+                        
+                        return new DownloadPartResult{FilePath = "", RangeStart = readRange.Start, Ex = httpRequestException};
                     }
                     finally
                     {
+                        
                         output.Close();
                         output.Dispose();
                     }
-                    return new KeyValuePair<long, string>(readRange.Start, tempFilePath);
+                    return new DownloadPartResult{FilePath = tempFilePath, RangeStart = readRange.Start, Ex = null};
                 }
             }
         }

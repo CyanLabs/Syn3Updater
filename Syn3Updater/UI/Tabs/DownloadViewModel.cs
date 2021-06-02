@@ -184,6 +184,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
             {
+                //debugging
+                //item.Url = item.Url.Replace("https://ivsubinaries.azureedge.net/", "http://127.0.0.1/").Replace("https://ivsu.binaries.ford.com/", "http://127.0.0.1/");
                 if (_ct.IsCancellationRequested)
                 {
                     Log += $"[{DateTime.Now}] Process cancelled by user{Environment.NewLine}";
@@ -212,7 +214,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         }
                     }
 
-                    _count++;
+                    _count += 2;
                 }
                 else
                 {
@@ -236,7 +238,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 AppMan.Logger.Info($"Downloading (Attempt #{i}): {item.FileName}");
                             }
 
-                            if (!await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct, AppMan.App.Settings.DownloadConnections))
+                            if (await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct, AppMan.App.Settings.DownloadConnections))
+                            {
+                                _count++;
+                            }
+                            else
                             {
                                 CancelAction();
                                 break;
@@ -244,6 +250,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                             if (await ValidateFile(item.Url, AppMan.App.DownloadPath + item.FileName, item.Md5, false))
                             {
+                                _count++;
                                 text = $"Downloaded: {item.FileName}";
                                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                                 AppMan.Logger.Info(text);
@@ -261,8 +268,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                         AppMan.Logger.Info(outputResult.Message);
                                     }
                                 }
-
-                                _count++;
                                 break;
                             }
 
@@ -285,12 +290,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         break;
                     }
                 }
-
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(item.Url));
-                _count++;
-                PercentageChanged.Raise(this, 100, 0);
             }
-
             Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
         }
 
@@ -324,7 +325,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                     AppMan.Logger.Info(text);
 
-                    _count++;
+                    _count += 2;
                 }
                 else
                 {
@@ -347,28 +348,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             AppMan.Logger.Info($"Copying (Attempt #{i}): {item.FileName}");
                         }
 
-                        try
+
+                        if (await _fileHelper.CopyFileAsync(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", _ct))
                         {
-                            await _fileHelper.CopyFileAsync(AppMan.App.DownloadPath + item.FileName,
-                                $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", _ct);
+                            _count ++;
                         }
-                        catch (HttpRequestException webException)
+                        else
                         {
-                            Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
-                                webException.GetFullMessage(), "Syn3 Updater",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Exclamation));
                             CancelAction();
+                            break;
                         }
-                        catch (IOException ioException)
-                        {
-                            Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
-                                ioException.GetFullMessage(), "Syn3 Updater",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Exclamation));
-                            AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
-                            CancelAction();
-                        }
+                        
 
                         if (await ValidateFile(AppMan.App.DownloadPath + item.FileName,
                             $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
@@ -396,7 +386,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Remove(AppMan.App.DownloadPath + item.FileName));
-                _count++;
                 PercentageChanged.Raise(this, 100, 0);
             }
         }
@@ -547,10 +536,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
         {
             if (e.Part == 0)
-            {
-                DownloadPercentage = $"{e.Value}% {_progressBarSuffix}";
+            { 
                 CurrentProgress = e.Value;
-                TotalPercentage = _count == 0 ? e.Value : _count * 100 + e.Value;
+                DownloadPercentage = $"{e.Value}% {_progressBarSuffix}";
+                TotalPercentage = _count * 100 + e.Value;
             }
             else
             {
@@ -563,7 +552,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 int value = Convert.ToInt32(downloadPercentage);
                 CurrentProgress = value;
                 DownloadPercentage = $"{CurrentProgress}% {_progressBarSuffix}";
-                TotalPercentage = _count == 0 ? CurrentProgress : _count * 100 + CurrentProgress;
+                TotalPercentage = _count * 100 + CurrentProgress;
             }
         }
 
