@@ -46,15 +46,18 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             else
             {
-                if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
-                    "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (selectedDrive?.FileSystem == "exFAT" && selectedDrive?.PartitionType == "MBR" && selectedDrive?.VolumeName == "CYANLABS")
                 {
-                    AppMan.App.SkipFormat = false;
-                }
-                else
-                {
-                    AppMan.Logger.Info("USB Drive not formatted, using existing filesystem and files");
-                    AppMan.App.SkipFormat = true;
+                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
+                        "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    {
+                        AppMan.App.SkipFormat = false;
+                    }
+                    else
+                    {
+                        AppMan.Logger.Info("USB Drive not formatted, using existing filesystem and files");
+                        AppMan.App.SkipFormat = true;
+                    }
                 }
             }
 

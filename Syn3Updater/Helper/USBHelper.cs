@@ -83,7 +83,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         if (string.IsNullOrWhiteSpace(ld.Properties["VolumeName"].Value.ToString()))
                             drive.VolumeName = "";
                         else
-                            drive.VolumeName = "(" + ld.Properties["VolumeName"].Value + ")";
+                            drive.VolumeName = ld.Properties["VolumeName"].Value.ToString();
                         drive.Path = d.Path.RelativePath;
                         drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.Properties["FreeSpace"].Value));
                         drive.Model = d.Properties["Model"].Value.ToString();
