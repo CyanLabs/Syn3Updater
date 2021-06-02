@@ -361,6 +361,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             try
             {
+                DriveLetter = null;
                 ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(true);
                 if (tmpDriveList != null && tmpDriveList.Count > 0) DriveList = tmpDriveList;
             }
