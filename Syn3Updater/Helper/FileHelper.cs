@@ -229,13 +229,15 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return true;
             }
         }
-
+        
 
         public async Task<KeyValuePair<long, string>> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
         {
             HttpClient client = new();
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
             client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
+            client.DefaultRequestHeaders.ConnectionClose = true;
+            
             string tempFilePath = destinationFilePath + $"-part{concurrent}";
             if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
             using (Stream stream = await client.GetStreamAsync(fileUrl))
