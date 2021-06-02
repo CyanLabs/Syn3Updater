@@ -116,7 +116,6 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="40" />
                     <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
                 <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                 <TextBlock Grid.Row="0" Margin="5,0,0,5" Grid.ColumnSpan="3"
@@ -148,14 +147,6 @@
                     <fa5:FontAwesome Icon="Regular_FolderOpen" FontSize="18" Foreground="White"
                                          VerticalAlignment="Center" Margin="0,0,0,0" />
                 </Button>
-                
-                <TextBlock Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3"
-                           Grid.Column="1"
-                           Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.DownloadConnections, Converter={StaticResource LocConverter}}" />
-                <ui:MaskedTextBox MinWidth="70" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,0,5,0" AcceptsReturn="True" FontSize="12"
-                                  Text="{Binding DownloadConnections, UpdateSourceTrigger=PropertyChanged}"
-                                      Mask="#" MaxLength="9" VerticalContentAlignment="Center"
-                                      VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch" />
 
             </Grid>
 
@@ -175,6 +166,7 @@
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Grid.Row="0" Margin="5,0,0,5" Grid.ColumnSpan="2"
@@ -184,27 +176,37 @@
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.Language, Converter={StaticResource LocConverter}}" />
-                    <ComboBox VerticalAlignment="Center" MinWidth="170" ItemsSource="{Binding Languages}"
+                    <ComboBox VerticalAlignment="Center" ItemsSource="{Binding Languages}"
                               SelectedValuePath="Code" DisplayMemberPath="Name" VerticalContentAlignment="Center"
                               SelectedValue="{Binding CurrentLanguage}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,10,0"/>
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2" 
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.Theme, Converter={StaticResource LocConverter}}" />
-                    <ComboBox VerticalAlignment="Center" MinWidth="170" ItemsSource="{Binding Themes}" Grid.Column="1"
+                    <ComboBox VerticalAlignment="Center" ItemsSource="{Binding Themes}" Grid.Column="1"
                               VerticalContentAlignment="Center" SelectedValue="{Binding CurrentTheme}" Grid.Row="2" HorizontalAlignment="Stretch" Margin="0,0,10,0"/>
 
-                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="3"
+                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right"
+                           Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.DownloadConnections, Converter={StaticResource LocConverter}}" />
+
+                    <ui:MaskedTextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,0,10,0" AcceptsReturn="True" FontSize="12"
+                                  Text="{Binding DownloadConnections, UpdateSourceTrigger=PropertyChanged}"
+                                      Mask="#" MaxLength="9" VerticalContentAlignment="Center"
+                                      VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch" />
+                    
+                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="4"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.LicenseKey, Converter={StaticResource LocConverter}}" />
-                    <TextBox Grid.Row="3" Grid.Column="1"  MinWidth="170" 
+                    <TextBox Grid.Row="4" Grid.Column="1"
                                  Text="{Binding LicenseKey, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"
                                  VerticalContentAlignment="Center" VerticalAlignment="Center" AcceptsReturn="True" Margin="0,0,10,0"/>
 
-                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="4" HorizontalAlignment="Right"
+                    <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="5" HorizontalAlignment="Right"
                                    Grid.Column="0"
                                    Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.ReleaseType, Converter={StaticResource LocConverter}}" />
-                    <ComboBox Grid.Row="4" MinWidth="170" VerticalAlignment="Center" SelectedIndex="0"
+                    <ComboBox Grid.Row="5" VerticalAlignment="Center" SelectedIndex="0"
                                   Grid.Column="1" Text="Navigation" ItemsSource="{Binding ReleaseTypes}"
                                   SelectedValue="{Binding ReleaseType}" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Margin="0,0,10,0"/>
+
+                    
 
                 </Grid>
 
