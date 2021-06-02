@@ -544,13 +544,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 UpdateInstallMode();
 
                 HttpResponseMessage response;
-
+                
+                string appReleaseSingle = AppMan.App.Settings.CurrentNav
+                    ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
+                    : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
+                
                 if (SelectedRelease != LM.GetValue("String.OnlyMaps"))
                 {
-                    string appReleaseSingle = AppMan.App.Settings.CurrentNav
-                        ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
-                        : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
-
                     response = await AppMan.App.Client.GetAsync(appReleaseSingle);
                     Stream stringDownloadJson = await response.Content.ReadAsStreamAsync();
                     Api.JsonReleases jsonIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(stringDownloadJson);
