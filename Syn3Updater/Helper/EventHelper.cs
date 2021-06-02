@@ -16,7 +16,8 @@ namespace Cyanlabs.Syn3Updater.Helper
         }
 
         public T Value { get; }
-        public int Part{ get; private set; }
+        public int Part { get; }
+
         #endregion
     }
 
@@ -26,7 +27,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         public static void Raise<T>(this EventHandler<EventArgs<T>> handler, object sender, T value, int part)
         {
-            handler?.Invoke(sender, new EventArgs<T>(value,part));
+            handler?.Invoke(sender, new EventArgs<T>(value, part));
         }
 
         #endregion

@@ -19,6 +19,7 @@ using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using Formatting = Newtonsoft.Json.Formatting;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -34,11 +35,11 @@ namespace Cyanlabs.Syn3Updater.Helper
             public string Path { get; set; }
             public string Name { get; set; }
             public string Size { get; set; }
-            public string Letter{ get; set; }
-            public string FileSystem{ get; set; }
-            public string PartitionType{ get; set; }
+            public string Letter { get; set; }
+            public string FileSystem { get; set; }
+            public string PartitionType { get; set; }
             public string FreeSpace { get; set; }
-            public bool SkipFormat{ get; set; }
+            public bool SkipFormat { get; set; }
             public string VolumeName { get; set; }
             public string Model { get; set; }
             public bool Fake { get; set; }
@@ -47,6 +48,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         #endregion
 
         #region Methods
+
         /// <summary>
         ///     Refreshes device list using WMI queries
         /// </summary>
@@ -58,22 +60,22 @@ namespace Cyanlabs.Syn3Updater.Helper
             ManagementObjectSearcher driveQuery = new("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject n in driveQuery.Get())
             {
-                ManagementObject d = (ManagementObject)n;
+                ManagementObject d = (ManagementObject) n;
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
-                
+
                 if (friendlySize == "0B") continue;
-                
+
                 Drive drive = new();
                 string partitionQueryText = $@"associators of {{{d.Path.RelativePath}}} where AssocClass = Win32_DiskDriveToDiskPartition";
                 ManagementObjectSearcher partitionQuery = new(partitionQueryText);
                 foreach (ManagementBaseObject o in partitionQuery.Get())
                 {
-                    ManagementObject p = (ManagementObject)o;
+                    ManagementObject p = (ManagementObject) o;
                     string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
                     ManagementObjectSearcher logicalDriveQuery = new(logicalDriveQueryText);
                     foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                     {
-                        ManagementObject ld = (ManagementObject)managementBaseObject;
+                        ManagementObject ld = (ManagementObject) managementBaseObject;
                         drive.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
                         drive.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
                         drive.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
@@ -84,7 +86,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             drive.VolumeName = "(" + ld.Properties["VolumeName"].Value + ")";
                         drive.Path = d.Path.RelativePath;
                         drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.Properties["FreeSpace"].Value));
-                        drive.Model =  d.Properties["Model"].Value.ToString();
+                        drive.Model = d.Properties["Model"].Value.ToString();
                         drive.Size = friendlySize;
                         drive.Fake = false;
                         if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")
@@ -93,14 +95,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                             drive.SkipFormat = false;
                     }
                 }
-                    
+
                 // Add to array of drives
                 driveList.Add(drive);
-
-
             }
+
             if (fakeusb)
-                driveList.Add(new Drive { Path = "", Name = LM.GetValue("Home.NoUSBDir") , Fake = true});
+                driveList.Add(new Drive {Path = "", Name = LM.GetValue("Home.NoUSBDir"), Fake = true});
 
             // Return a list of drives
             return driveList;
@@ -110,7 +111,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         ///     Generates a log.txt file on the root of the USB Drive and a log-date.txt file in LogPath
         /// </summary>
         /// <param name="log">Additional log to append, usually the log textbox</param>
-        /// <param name="upload">Set to true to upload log file <see cref="UploadLog"/>, else false to only save it to USB drive</param>
+        /// <param name="upload">Set to true to upload log file <see cref="UploadLog" />, else false to only save it to USB drive</param>
         public static void GenerateLog(string log, bool upload)
         {
             StringBuilder data = new($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
@@ -126,32 +127,24 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"My20 Protection Enabled: {AppMan.App.Settings.My20}{Environment.NewLine}")
                 .Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
             if (AppMan.App.DownloadToFolder)
-            {
                 data.Append("Mode: Directory").Append(Environment.NewLine)
                     .Append(@"Path: ").Append(AppMan.App.DriveLetter).Append(Environment.NewLine);
-            }
             else
-            {
                 data.Append("Mode: Drive").Append(Environment.NewLine)
                     .Append("Model: ").Append(AppMan.App.DriveName).Append(Environment.NewLine)
                     .Append("FileSystem: ").Append(AppMan.App.DriveFileSystem).Append(Environment.NewLine)
                     .Append("Partition Type: ").Append(AppMan.App.DrivePartitionType).Append(Environment.NewLine);
-            }
 
             string driveletter = AppMan.App.DriveLetter;
             if (File.Exists($@"{driveletter}\reformat.lst"))
-            {
                 data.Append(Environment.NewLine)
                     .Append("REFORMAT.LST").Append(Environment.NewLine)
                     .Append(File.ReadAllText($@"{driveletter}\reformat.lst")).Append(Environment.NewLine);
-            }
 
             if (File.Exists($@"{driveletter}\autoinstall.lst"))
-            {
                 data.Append(Environment.NewLine)
                     .Append("AUTOINSTALL.LST").Append(Environment.NewLine)
                     .Append(File.ReadAllText($@"{driveletter}\autoinstall.lst")).Append(Environment.NewLine);
-            }
 
             if (Directory.Exists($@"{driveletter}\SyncMyRide"))
             {
@@ -188,14 +181,14 @@ namespace Cyanlabs.Syn3Updater.Helper
             HttpClient client = new();
             HttpResponseMessage response = client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values)).GetAwaiter().GetResult();
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
+            var output = JsonConvert.DeserializeAnonymousType(responseString, new {uuid = "", status = ""});
             Process.Start(Api.LogUrl + output.uuid);
         }
 
         //TODO: Fma965: refactor/move this
         public async Task UploadFile()
         {
-            if (_node != null && ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
+            if (_node != null && MessageBox.Show(LM.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
                 MessageBoxResult.OK)
             {
                 FormUrlEncodedContent formContent = new(new[]
@@ -207,7 +200,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                 });
                 HttpResponseMessage response = await AppMan.App.Client.PostAsync(Api.AsBuiltPost, formContent);
-                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { filename = "", status = "" });
+                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new {filename = "", status = ""});
                 Process.Start(Api.AsBuiltOutput + output.filename);
             }
         }
@@ -229,12 +222,13 @@ namespace Cyanlabs.Syn3Updater.Helper
             string LogXmlDetails = "";
             string LogXmlDetails2 = "";
             string LogXmlDetails3 = "";
-            VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Interrogator Log XML Files|*.xml" };
+            VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
             if (!dialog.ShowDialog().GetValueOrDefault())
             {
                 AppMan.App.Cancelled = true;
-                return new string[] { "" };
+                return new[] {""};
             }
+
             try
             {
                 AppMan.App.Cancelled = false;
@@ -256,15 +250,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                 string result = AppMan.App.Client.GetStringAsync(Api.My20URL).Result;
                 Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
                 foreach (string my20 in output.My20Model)
-                {
                     if (apimmodel.Contains(my20))
                         AppMan.App.Settings.My20 = true;
-                }
                 string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                     .Select(x => x.Total)
                     .Single();
                 _apimDetails.PartNumber = apimmodel;
-                if (Double.TryParse(apimsize?.Remove(apimsize.Length - 1),NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
+                if (double.TryParse(apimsize?.Remove(apimsize.Length - 1), NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
                 {
                     if (apimsizeint >= 0 && apimsizeint <= 8)
                     {
@@ -287,7 +279,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         _apimDetails.Size = 64;
                     }
                 }
-                
+
                 if (_apimDetails.Nav)
                     LogXmlDetails += $"{LM.GetValue("Utility.APIMType")}: Navigation {Environment.NewLine}";
                 else
@@ -309,11 +301,11 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                     List<AsBuilt.DID> asBuiltValues = new();
 
-                    LogXmlDetails3 += $"APIM AsBuilt";
+                    LogXmlDetails3 += "APIM AsBuilt";
                     foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
                     {
                         LogXmlDetails3 += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
-                        asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
+                        asBuiltValues.Add(new AsBuilt.DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
                     }
 
                     AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
@@ -328,13 +320,15 @@ namespace Cyanlabs.Syn3Updater.Helper
                             AppMan.App.SVersion = convertedsversion;
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
-                            if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
+                        {
+                            if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
                                 "Syn3 Updater",
                                 MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                             {
                                 AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
                             }
+                        }
                     }
                     catch (Exception)
                     {
@@ -359,16 +353,17 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (NullReferenceException)
             {
-                ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(LM.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (XmlException)
             {
-                ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(LM.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            return new string[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };
+
+            return new[] {LogXmlDetails, LogXmlDetails2, LogXmlDetails3};
         }
 
-        public static async Task LogPrepareUSBAction(USBHelper.Drive selectedDrive, string driveLetter, string action = "logutility")
+        public static async Task LogPrepareUSBAction(Drive selectedDrive, string driveLetter, string action = "logutility")
         {
             //Reset ApplicationManager variables
             AppMan.App.Ivsus.Clear();
@@ -381,7 +376,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}4"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-                else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}2") || currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}3"))
+                else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}2") ||
+                         currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}3"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
                 else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
@@ -390,7 +386,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (TaskCanceledException e)
             {
-                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
 
@@ -404,7 +400,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             AppMan.Logger.Info("Starting process (Logging Utility");
             AppMan.App.FireDownloadsTabEvent();
         }
-        #endregion
 
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -13,26 +14,24 @@ namespace Cyanlabs.Syn3Updater.Helper
     public static class ApiHelper
     {
         #region Methods
+
         /// <summary>
         ///     Get special IVSU package such as Downgrade or Reformat from our API and passes it to ConvertIvsu
         /// </summary>
         /// <param name="url">URL of a valid 'SpecialPackage'</param>
         public static async Task<SModel.Ivsu> GetSpecialIvsu(string url)
         {
-            if (string.IsNullOrWhiteSpace(url))
-            {
-                throw new ArgumentNullException(nameof(url), "Url to download file is empty");
-            }
+            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(nameof(url), "Url to download file is empty");
 
             try
             {
-                HttpResponseMessage  response = await AppMan.App.Client.GetAsync(url);
+                HttpResponseMessage response = await AppMan.App.Client.GetAsync(url);
                 Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());
                 return ConvertIvsu(ivsu);
             }
             catch (HttpRequestException e)
             {
-                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: fetching SpecialPackage - " + e.GetFullMessage());
                 return null;
             }
@@ -45,7 +44,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>ivsu as type SModel.Ivsu</returns>
         public static SModel.Ivsu ConvertIvsu(Api.Ivsu ivsu)
         {
-            return new SModel.Ivsu
+            return new()
             {
                 Type = ivsu.Type,
                 Name = ivsu.Name,
@@ -58,7 +57,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 FileSize = ivsu.FileSize
             };
         }
-        #endregion
 
+        #endregion
     }
 }

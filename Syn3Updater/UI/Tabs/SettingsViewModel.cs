@@ -10,11 +10,13 @@ using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using Cyanlabs.Updater.Common;
 using Microsoft.VisualBasic.FileIO;
+using Microsoft.Win32;
 using ModernWpf;
 using Ookii.Dialogs.Wpf;
-using Cyanlabs.Updater.Common;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
+using MessageBox = ModernWpf.MessageBox;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
@@ -45,7 +47,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public ObservableCollection<string> InstallModes
         {
             get => _installModes;
-            set { SetProperty(ref _installModes, value); }
+            set => SetProperty(ref _installModes, value);
         }
 
         private ObservableCollection<LauncherPrefs.ReleaseType> _releaseTypes;
@@ -65,7 +67,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         }
 
         public ObservableCollection<LanguageOption> Languages { get; set; } =
-            new ObservableCollection<LanguageOption>(LM.Languages.Select(x => new LanguageOption { Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji }));
+            new(LM.Languages.Select(x => new LanguageOption {Name = x.EnglishName, Code = x.Code, Emoji = x.Emoji}));
 
         private string _currentRegion;
 
@@ -98,7 +100,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
             }
         }
-        
+
         private string _downloadConnections;
 
         public string DownloadConnections
@@ -141,7 +143,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
             }
         }
-        
+
         private string _logLocation;
 
         public string LogLocation
@@ -205,7 +207,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (_My20Mode && !value)
                 {
-                    if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Detected"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    if (MessageBox.Show(LM.GetValue("MessageBox.My20Detected"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                         SetProperty(ref _My20Mode, false);
                     AppMan.App.Settings.My20 = false;
                 }
@@ -215,7 +217,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.Settings.My20 = true;
                     CurrentInstallMode = "autodetect";
                 }
-                InstallModesEnabled = (!AppMan.App.Settings.My20 && AdvancedModeToggle);
+
+                InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
             }
         }
 
@@ -228,26 +231,24 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (value)
                 {
-                    if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.AdvancedSettings"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    if (MessageBox.Show(LM.GetValue("MessageBox.AdvancedSettings"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                         SetProperty(ref _advancedModeToggle, true);
-                } 
+                }
                 else
                 {
                     SetProperty(ref _advancedModeToggle, false);
                 }
-                InstallModesEnabled = (!AppMan.App.Settings.My20 && AdvancedModeToggle);
+
+                InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
             }
         }
-        
+
         private bool _installModesEnabled;
 
         public bool InstallModesEnabled
         {
             get => _installModesEnabled;
-            set
-            {
-                SetProperty(ref _installModesEnabled, value);
-            }
+            set => SetProperty(ref _installModesEnabled, value);
         }
 
         private string _licenseKey;
@@ -278,7 +279,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     SetProperty(ref _currentLanguage, value);
                     AppMan.App.MainSettings.Lang = value;
                     AppMan.App.FireLanguageChangedEvent();
-                    OnPropertyChanged("CurrentLanguage");
+                    OnPropertyChanged();
                 }
             }
         }
@@ -323,31 +324,28 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             SRegions = new ObservableCollection<SModel.SRegion>
             {
-                new SModel.SRegion {Code = "EU", Name = "Europe"},
-                new SModel.SRegion {Code = "NA", Name = "United States, Canada & Mexico"},
-                new SModel.SRegion {Code = "CN", Name = "China"},
-                new SModel.SRegion {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
-                new SModel.SRegion {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean and Central America"}
+                new() {Code = "EU", Name = "Europe"},
+                new() {Code = "NA", Name = "United States, Canada & Mexico"},
+                new() {Code = "CN", Name = "China"},
+                new() {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
+                new() {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean and Central America"}
             };
 
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect", "autoinstall", "reformat", "downgrade"
             };
-            
+
             Themes = new ObservableCollection<string>
             {
                 "Dark", "Light"
             };
             if (!string.IsNullOrEmpty(AppMan.App.MainSettings.Theme))
-            {
                 CurrentTheme = AppMan.App.MainSettings.Theme;
-            }
             else
-            {
                 try
                 {
-                    object v = Microsoft.Win32.Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", "1");
+                    object v = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", "1");
                     if (v != null && v.ToString() == "0")
                         CurrentTheme = "Dark";
                     else
@@ -357,7 +355,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     // ignored
                 }
-            }
 
             ReleaseTypes = new ObservableCollection<LauncherPrefs.ReleaseType>
             {
@@ -365,11 +362,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 LauncherPrefs.ReleaseType.Beta,
                 LauncherPrefs.ReleaseType.Alpha
             };
-            
+
             LogLocation = AppMan.App.MainSettings.LogPath;
             LicenseKey = AppMan.App.MainSettings.LicenseKey;
             DownloadLocation = AppMan.App.DownloadPath;
-            
+
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
         }
 
@@ -380,7 +377,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentRegion = currentRegionTemp;
             string currentInstallModeTemp = AppMan.App.Settings.InstallMode;
             CurrentInstallMode = currentInstallModeTemp;
-            
+
             CurrentNav = AppMan.App.Settings.CurrentNav;
             CurrentVersion = AppMan.App.SVersion;
             DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
@@ -391,7 +388,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
+                if (MessageBox.Show(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     _currentReleaseType = ReleaseType;
@@ -403,7 +400,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     catch (Win32Exception e)
                     {
                         AppMan.Logger.Debug(e.GetFullMessage());
-                        ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -420,45 +417,36 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task SelectPathAction(string type)
         {
             string oldPath = type == "downloads" ? AppMan.App.MainSettings.DownloadPath : AppMan.App.MainSettings.LogPath;
-            
-            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+
+            VistaFolderBrowserDialog dialog = new();
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
-                    if (ModernWpf.MessageBox.Show(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
+                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
                             Environment.NewLine + oldPath + Environment.NewLine,
                             Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
                         MessageBoxResult.Yes)
-                    {
                         try
                         {
                             if (type == "downloads")
-                            {
-                                foreach (var file in Directory.GetFiles(oldPath, "*.TAR.GZ"))
+                                foreach (string file in Directory.GetFiles(oldPath, "*.TAR.GZ"))
                                     FileSystem.MoveFile(file, Path.Combine(dialog.SelectedPath, Path.GetFileName(file)), UIOption.AllDialogs);
-                            }
                             else
-                            {
-                                foreach (var file in Directory.GetFiles(oldPath, "*.txt"))
+                                foreach (string file in Directory.GetFiles(oldPath, "*.txt"))
                                     FileSystem.MoveFile(file, Path.Combine(dialog.SelectedPath, Path.GetFileName(file)), UIOption.AllDialogs);
-                            }
                         }
                         catch (OperationCanceledException)
                         {
                             //TODO Catch better
                         }
-                    }
 
                 if (type == "downloads")
-                {
                     DownloadLocation = dialog.SelectedPath + "\\";
-                }
                 else
-                {
                     LogLocation = dialog.SelectedPath + "\\";
-                }
             }
         }
+
         #endregion
     }
 }

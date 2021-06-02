@@ -31,17 +31,23 @@ namespace Cyanlabs.Syn3Updater.Model
         public class PNode
         {
             [JsonProperty("@isFlashed")] public bool IsFlashed { get; set; }
-            [JsonProperty("@specificationCategory")] public string SpecificationCategory { get; set; }
+
+            [JsonProperty("@specificationCategory")]
+            public string SpecificationCategory { get; set; }
+
             [JsonProperty("d2p1:Address")] public string D2P1Address { get; set; }
             [JsonProperty("d2p1:ECUAcronym")] public D2P1EcuAcronym D2P1EcuAcronym { get; set; }
             [JsonProperty("d2p1:ODLNetwork")] public D2P1OdlNetwork D2P1OdlNetwork { get; set; }
-            [JsonProperty("d2p1:AdditionalAttributes")] public D2P1AdditionalAttributes D2P1AdditionalAttributes { get; set; }
+
+            [JsonProperty("d2p1:AdditionalAttributes")]
+            public D2P1AdditionalAttributes D2P1AdditionalAttributes { get; set; }
         }
 
         public class D2P1AdditionalAttributes
         {
             [JsonProperty("@logGeneratedDateTime")]
             public DateTimeOffset LogGeneratedDateTime { get; set; }
+
             [JsonProperty("@RAM")] public long Ram { get; set; }
             [JsonProperty("@vmcuVersion")] public string VmcuVersion { get; set; }
             [JsonProperty("d2p1:PartitionHealth")] public D2P1PartitionHealth[] D2P1PartitionHealth { get; set; }
@@ -77,18 +83,27 @@ namespace Cyanlabs.Syn3Updater.Model
         {
             [JsonProperty("@didFormat", NullValueHandling = NullValueHandling.Ignore)]
             public string DidFormat { get; set; }
+
             [JsonProperty("@didType")] public string DidType { get; set; }
             [JsonProperty("@didValue")] public string DidValue { get; set; }
-            [JsonProperty("@responseLength", NullValueHandling = NullValueHandling.Ignore)] public long? ResponseLength { get; set; }
+
+            [JsonProperty("@responseLength", NullValueHandling = NullValueHandling.Ignore)]
+            public long? ResponseLength { get; set; }
+
             [JsonProperty("d2p1:Response")] public string D2P1Response { get; set; }
             [JsonProperty("d2p1:IsConfig")] public bool D2P1IsConfig { get; set; }
         }
 
         public class D2P1OdlNetwork
         {
-            [JsonProperty("@d2p1:NetworkDataRate")] public long D2P1NetworkDataRate { get; set; }
+            [JsonProperty("@d2p1:NetworkDataRate")]
+            public long D2P1NetworkDataRate { get; set; }
+
             [JsonProperty("@d2p1:NetworkName")] public string D2P1NetworkName { get; set; }
-            [JsonProperty("@d2p1:NetworkProtocol")] public string D2P1NetworkProtocol { get; set; }
+
+            [JsonProperty("@d2p1:NetworkProtocol")]
+            public string D2P1NetworkProtocol { get; set; }
+
             [JsonProperty("@d2p1:DLCName")] public string D2P1DlcName { get; set; }
             [JsonProperty("@d2p1:Pins")] public string D2P1Pins { get; set; }
         }

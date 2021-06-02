@@ -20,7 +20,7 @@ namespace Cyanlabs.Syn3Updater
                 DispatcherUnhandledException += App_DispatcherUnhandledException;
             }
             if (SingleInstance.AlreadyRunning())
-                App.Current.Shutdown(); // Just shutdown the current application,if any instance found.  
+                Current.Shutdown(); // Just shutdown the current application,if any instance found.  
             AppMan.App.Initialize();
         }
 
@@ -46,10 +46,8 @@ namespace Cyanlabs.Syn3Updater
                     Process currentProcess = Process.GetCurrentProcess();
 
                     // Check with other process already running   
-                    foreach (var p in Process.GetProcesses())
-                    {
+                    foreach (Process p in Process.GetProcesses())
                         if (p.Id != currentProcess.Id) // Check running process   
-                        {
                             if (p.ProcessName.Equals(currentProcess.ProcessName))
                             {
                                 running = true;
@@ -58,18 +56,19 @@ namespace Cyanlabs.Syn3Updater
                                 User32API.SetForegroundWindow(hFound); // Activate the window, if process is already running  
                                 break;
                             }
-                        }
-                    }
                 }
                 catch
                 {
                     // ignored
                 }
+
                 return running;
             }
         }
+
         #endregion
     }
+
     public class User32API
     {
         [DllImport("User32.dll")]

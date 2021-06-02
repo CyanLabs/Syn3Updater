@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -21,10 +20,9 @@ namespace Cyanlabs.Syn3Updater.Model
             Code = Path.GetFileName(path).Replace(".json", "");
             EnglishName = new CultureInfo(Code, false).DisplayName;
             NativeName = new CultureInfo(Code, false).NativeName;
-            var dict = JObject.Parse(contents);
+            JObject dict = JObject.Parse(contents);
             Items = new List<LanguageItem>();
-            foreach (var s in dict)
-            {
+            foreach (KeyValuePair<string, JToken?> s in dict)
                 if (s.Value?.ToString() != "")
                     Items.Add(new LanguageItem
                     {
@@ -32,8 +30,7 @@ namespace Cyanlabs.Syn3Updater.Model
                         Value = s.Value?.ToString()
                     });
                 else
-                    Debug.WriteLine(s.Key + ":" + s.Value?.ToString());
-            }
+                    Debug.WriteLine(s.Key + ":" + s.Value);
         }
 
         #endregion
@@ -85,7 +82,7 @@ namespace Cyanlabs.Syn3Updater.Model
 
         #region Properties & Fields
 
-        public static List<LanguageModel> Languages { get; set; } = new List<LanguageModel>();
+        public static List<LanguageModel> Languages { get; set; } = new();
 
         #endregion
 

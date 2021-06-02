@@ -16,8 +16,9 @@ using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.UI;
-using Newtonsoft.Json;
 using Cyanlabs.Updater.Common;
+using Newtonsoft.Json;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater
 {
@@ -31,15 +32,15 @@ namespace Cyanlabs.Syn3Updater
             MainSettings = new JsonMainSettings();
         }
 
-        public static readonly SimpleLogger Logger = new SimpleLogger();
-        public ObservableCollection<SModel.Ivsu> Ivsus = new ObservableCollection<SModel.Ivsu>();
-        public ObservableCollection<SModel.Ivsu> ExtraIvsus = new ObservableCollection<SModel.Ivsu>();
-        public static AppMan App { get; } = new AppMan();
+        public static readonly SimpleLogger Logger = new();
+        public ObservableCollection<SModel.Ivsu> Ivsus = new();
+        public ObservableCollection<SModel.Ivsu> ExtraIvsus = new();
+        public static AppMan App { get; } = new();
         public LauncherPrefs LauncherPrefs { get; set; }
         public JsonMainSettings MainSettings { get; set; }
         public JsonSettings Settings { get; set; }
 
-        public readonly HttpClient Client = new HttpClient();
+        public readonly HttpClient Client = new();
 
         #endregion
 
@@ -86,6 +87,7 @@ namespace Cyanlabs.Syn3Updater
         public event EventHandler ShowSettingsTab;
 
         public event EventHandler ShowNewsTab;
+
         #endregion
 
         #region Properties & Fields
@@ -116,6 +118,7 @@ namespace Cyanlabs.Syn3Updater
         public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled;
 
         public int AppUpdated = 0;
+
         #endregion
 
         #region Methods
@@ -135,6 +138,7 @@ namespace Cyanlabs.Syn3Updater
                     File.Delete(ProfileFile);
                     Settings = new JsonSettings();
                 }
+
                 Logger.Debug($"Loaded Profile: {MainSettings.Profile}");
             }
             else
@@ -147,13 +151,15 @@ namespace Cyanlabs.Syn3Updater
                 Settings.My20 = MainSettings.My20;
                 SaveSettings();
             }
-            
-            string version = App.Settings.CurrentVersion.ToString() ;
+
+            string version = App.Settings.CurrentVersion.ToString();
             string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
             {
-                SVersion = version.Length == 7 ? $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}" : $"0{decimalSeparator}0{decimalSeparator}00000";
+                SVersion = version.Length == 7
+                    ? $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}"
+                    : $"0{decimalSeparator}0{decimalSeparator}00000";
             }
             catch (IndexOutOfRangeException e)
             {
@@ -172,7 +178,7 @@ namespace Cyanlabs.Syn3Updater
             {
                 Logger.Debug($"Unable to save main settings, another process is accessing {ConfigFile}");
             }
-            
+
             try
             {
                 string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
@@ -210,7 +216,7 @@ namespace Cyanlabs.Syn3Updater
             catch (IOException e)
             {
                 Logger.Debug(e.GetFullMessage());
-                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -221,7 +227,6 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
             string[] args = Environment.GetCommandLineArgs();
             if (!args.Contains("/launcher"))
-            {
                 try
                 {
                     Process.Start("Launcher.exe");
@@ -232,18 +237,16 @@ namespace Cyanlabs.Syn3Updater
                     Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
                     Logger.Debug(e.GetFullMessage());
                 }
-            }
 
             foreach (string value in args)
-            {
-                if (value.Contains("syn3updater://")) Magnet = value.Replace("syn3updater://", "").TrimEnd('/');
-            }
+                if (value.Contains("syn3updater://"))
+                    Magnet = value.Replace("syn3updater://", "").TrimEnd('/');
 
             CommonConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
             UserConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater";
             ProfileConfigFolderPath = UserConfigFolderPath + "\\Profiles\\";
             ConfigFile = UserConfigFolderPath + "\\settings.json";
-            
+
             if (!Directory.Exists(CommonConfigFolderPath)) Directory.CreateDirectory(CommonConfigFolderPath);
             if (!Directory.Exists(UserConfigFolderPath)) Directory.CreateDirectory(UserConfigFolderPath);
             if (!Directory.Exists(ProfileConfigFolderPath)) Directory.CreateDirectory(ProfileConfigFolderPath);
@@ -262,7 +265,7 @@ namespace Cyanlabs.Syn3Updater
             }
             else if (File.Exists(CommonConfigFolderPath + "\\settings.json"))
             {
-                File.Move(CommonConfigFolderPath + "\\settings.json",ConfigFile);
+                File.Move(CommonConfigFolderPath + "\\settings.json", ConfigFile);
                 try
                 {
                     MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(ConfigFile));
@@ -281,10 +284,7 @@ namespace Cyanlabs.Syn3Updater
 
             LoadProfile();
 
-            if (string.IsNullOrEmpty(MainSettings.LogPath))
-            {
-                MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
-            }
+            if (string.IsNullOrEmpty(MainSettings.LogPath)) MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
             try
             {
                 if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
@@ -294,10 +294,9 @@ namespace Cyanlabs.Syn3Updater
                 Logger.Debug("Unable to set desired log path, defaulting path");
                 MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
             }
-            
-            
+
+
             if (File.Exists(CommonConfigFolderPath + "\\launcherPrefs.json"))
-            {
                 try
                 {
                     LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(CommonConfigFolderPath + "\\launcherPrefs.json"));
@@ -307,11 +306,8 @@ namespace Cyanlabs.Syn3Updater
                     File.Delete(CommonConfigFolderPath + "\\launcherPrefs.json");
                     LauncherPrefs = new LauncherPrefs();
                 }
-            }
             else
-            {
                 LauncherPrefs = new LauncherPrefs();
-            }
 
             // ReSharper disable once IdentifierTypo
             // ReSharper disable once UnusedVariable
@@ -385,10 +381,9 @@ namespace Cyanlabs.Syn3Updater
             }
             catch (Exception e)
             {
-                Logger.Debug($"Unable to access CyanLabs API, defaulting UserAgent");
+                Logger.Debug("Unable to access CyanLabs API, defaulting UserAgent");
                 Header = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/86.0";
             }
-
         }
 
         public void RestartApp()

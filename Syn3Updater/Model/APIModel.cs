@@ -164,6 +164,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("date")] public string Date { get; set; }
             [JsonProperty("changelog")] public string ReleaseNotes { get; set; }
         }
+
         #endregion
     }
 }

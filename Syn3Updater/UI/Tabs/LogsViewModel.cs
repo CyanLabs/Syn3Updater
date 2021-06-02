@@ -15,26 +15,28 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     internal class LogsViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
+
         private AsyncCommand<string> _openLogFile;
         public AsyncCommand<string> OpenLogFile => _openLogFile ??= new AsyncCommand<string>(OpenLogFileAction);
-        
+
         private AsyncCommand _deleteLogFiles;
         public AsyncCommand DeleteLogFiles => _deleteLogFiles ??= new AsyncCommand(DeleteLogFilesAction);
-        
+
         private AsyncCommand _openLogDirectory;
         public AsyncCommand OpenLogDirectory => _openLogDirectory ??= new AsyncCommand(OpenLogDirectoryAction);
-        
+
         #endregion
 
         #region Properties & Fields
-        
+
         private string _logLocation;
+
         public string LogLocation
         {
             get => _logLocation;
             set => SetProperty(ref _logLocation, value);
         }
-        
+
         private ObservableCollection<LogModel.Log> _logFiles;
 
         public ObservableCollection<LogModel.Log> LogFiles
@@ -42,7 +44,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _logFiles;
             set => SetProperty(ref _logFiles, value);
         }
-        
+
         private LogModel.Log _selectedLogFile;
 
         public LogModel.Log SelectedLogFile
@@ -52,19 +54,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         }
 
         private string _logTitle;
+
         public string LogTitle
         {
             get => _logTitle;
             set => SetProperty(ref _logTitle, value);
         }
-        
+
         private string _logDetails;
+
         public string LogDetails
         {
             get => _logDetails;
             set => SetProperty(ref _logDetails, value);
         }
-        
+
         #endregion
 
         #region Methods
@@ -74,7 +78,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             LogLocation = AppMan.App.MainSettings.LogPath;
             Task.Run(ReloadLogs);
         }
-        
+
         private async Task OpenLogFileAction(string path)
         {
             try
@@ -88,7 +92,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
-        
+
         private async Task DeleteLogFilesAction()
         {
             foreach (LogModel.Log log in LogFiles)
@@ -103,6 +107,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     // ignored
                 }
             }
+
             await Task.Run(ReloadLogs);
         }
 
@@ -114,9 +119,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 DirectoryInfo dir = new(AppMan.App.MainSettings.LogPath);
                 foreach (FileInfo file in dir.GetFiles("*.txt"))
-                {
-                    LogFiles.Add(new LogModel.Log {Selected=false, FileName=file.Name, Date=file.LastWriteTime, Profile = "Default"});
-                }
+                    LogFiles.Add(new LogModel.Log {Selected = false, FileName = file.Name, Date = file.LastWriteTime, Profile = "Default"});
             }
         }
 
@@ -131,6 +134,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
+
         #endregion
     }
 }

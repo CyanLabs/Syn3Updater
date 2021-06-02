@@ -8,13 +8,15 @@ namespace Cyanlabs.Syn3Updater.Model
     public static class LogModel
     {
         #region Properties & Fields
+
         public class Log
         {
             public bool Selected { get; set; }
             public string FileName { get; set; }
             public string Profile { get; set; }
-            public DateTime Date{ get; set; }
+            public DateTime Date { get; set; }
         }
+
         #endregion
     }
 }

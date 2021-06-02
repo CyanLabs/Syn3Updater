@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -12,10 +11,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             InitializeComponent();
         }
-        
+
         private void Logs_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue && !(bool)e.OldValue) (DataContext as LogsViewModel)?.Reload();
+            if ((bool) e.NewValue && !(bool) e.OldValue) (DataContext as LogsViewModel)?.Reload();
         }
     }
 }

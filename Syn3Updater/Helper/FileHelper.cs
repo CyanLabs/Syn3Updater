@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,13 +8,14 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
-using HttpRequestException = System.Net.Http.HttpRequestException;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -30,6 +30,15 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         #endregion
 
+        #region Constructors
+
+        public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged)
+        {
+            _percentageChanged = externalPercentageChanged;
+        }
+
+        #endregion
+
         #region Properties & Fields
 
         public struct OutputResult
@@ -40,26 +49,17 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         #endregion
 
-        #region Constructors
-
-        public FileHelper(EventHandler<EventArgs<int>> externalPercentageChanged)
-        {
-            _percentageChanged = externalPercentageChanged;
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
-        /// Async copy file from source to destination with CancellationToken support
+        ///     Async copy file from source to destination with CancellationToken support
         /// </summary>
         /// <param name="source">Source file</param>
         /// <param name="destination">Destination file</param>
         /// <param name="ct">CancellationToken</param>
         public async Task CopyFileAsync(string source, string destination, CancellationToken ct)
         {
-            var fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
+            FileOptions fileOptions = FileOptions.Asynchronous | FileOptions.SequentialScan;
             int bufferSize = 1024 * 512;
             using FileStream inStream = new(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize, fileOptions);
             using FileStream fileStream = new(destination, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, bufferSize, fileOptions);
@@ -88,35 +88,37 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 await fileStream.WriteAsync(bytes, 0, bytesRead);
                 totalReads += bytesRead;
-                int percent = Convert.ToInt32(totalReads / (decimal)totalBytes * 100);
+                int percent = Convert.ToInt32(totalReads / (decimal) totalBytes * 100);
                 if (percent != prevPercent)
                 {
-                    _percentageChanged.Raise(this, percent,0);
+                    _percentageChanged.Raise(this, percent, 0);
                     prevPercent = percent;
                 }
             }
         }
 
-        private static HttpClient _client;
-        
-        public class Range  
-        {  
-            public long Start { get; set; }  
-            public long End { get; set; }  
-        }  
-        
-        public class DownloadResult  
-        {  
-            public long Size { get; set; }  
-            public String FilePath { get; set; }  
-            public TimeSpan TimeTaken { get; set; }  
-            public int ParallelDownloads { get; set; }  
+        public class Range
+        {
+            public long Start { get; set; }
+            public long End { get; set; }
+        }
+
+        public class DownloadResult
+        {
+            public long Size { get; set; }
+            public string FilePath { get; set; }
+            public TimeSpan TimeTaken { get; set; }
+            public int ParallelDownloads { get; set; }
         }
 
 
         /// <summary>
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
-        ///     <see href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">See more</see>
+        ///     <see
+        ///         href="https://www.technical-recipes.com/2018/reporting-the-percentage-progress-of-large-file-downloads-in-c-wpf/">
+        ///         See
+        ///         more
+        ///     </see>
         /// </summary>
         /// <param name="filename">Destination filename</param>
         /// <param name="fileUrl">Source URL</param>
@@ -127,7 +129,8 @@ namespace Cyanlabs.Syn3Updater.Helper
         public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
         {
             #region Get file size
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(fileUrl);
+
+            HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(fileUrl);
             webRequest.UserAgent = AppMan.App.Header;
             webRequest.Method = "HEAD";
             long responseLength;
@@ -136,13 +139,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                 responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
                 //result.Size = responseLength;
             }
+
             #endregion
 
             if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-            foreach(string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + $"-part*"))
-            {
-                File.Delete(file);
-            }
+            foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*")) File.Delete(file);
             using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
             {
                 ConcurrentDictionary<long, string> tempFilesDictionary = new();
@@ -152,16 +153,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                 List<Range> readRanges = new();
                 for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
                 {
-                    var range = new Range()
+                    Range range = new Range
                     {
                         Start = chunk * (responseLength / numberOfParallelDownloads),
-                        End = ((chunk + 1) * (responseLength / numberOfParallelDownloads)) - 1
+                        End = (chunk + 1) * (responseLength / numberOfParallelDownloads) - 1
                     };
                     readRanges.Add(range);
                 }
 
 
-                readRanges.Add(new Range()
+                readRanges.Add(new Range
                 {
                     Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
                     End = responseLength - 1
@@ -174,7 +175,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 #region Parallel download
 
                 int i = 1;
-                
+
                 List<Task> tasks = new();
                 List<KeyValuePair<long, string>> results = new();
 
@@ -184,37 +185,31 @@ namespace Cyanlabs.Syn3Updater.Helper
                     Task task = Task.Run(async () =>
                     {
                         KeyValuePair<long, string> result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
-                            results.Add(result);
+                        results.Add(result);
                     }, ct);
                     i++;
                     tasks.Add(task);
-                    
                 }
 
                 Task.WaitAll(tasks.ToArray(), ct);
 
-                foreach (var result in results)
-                {
-                    tempFilesDictionary.TryAdd(result.Key, result.Value);
-                }
-                
+                foreach (KeyValuePair<long, string> result in results) tempFilesDictionary.TryAdd(result.Key, result.Value);
+
                 //result.ParallelDownloads = tasks.Count;
+
                 #endregion
-                
+
                 //result.TimeTaken = DateTime.Now.Subtract(startTime);
 
                 #region Merge to single file
 
-                foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
+                foreach (KeyValuePair<long, string> tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                 {
                     if (numberOfParallelDownloads == 1)
                     {
                         destinationStream.Close();
                         destinationStream.Dispose();
-                        if (File.Exists(destinationFilePath))
-                        {
-                            File.Delete(destinationFilePath);
-                        }
+                        if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
 
                         File.Copy(tempFile.Value, destinationFilePath);
                     }
@@ -223,8 +218,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                         byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
                         destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
                     }
+
                     File.Delete(tempFile.Value);
                 }
+
                 #endregion
 
                 //GC.Collect();
@@ -234,7 +231,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         }
 
 
-        public async Task<KeyValuePair<long, string>> DownloadFilePart(string fileUrl, string destinationFilePath ,Range readRange, int concurrent, CancellationToken ct)
+        public async Task<KeyValuePair<long, string>> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
         {
             HttpClient client = new();
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
@@ -270,13 +267,14 @@ namespace Cyanlabs.Syn3Updater.Helper
                             _percentageChanged.Raise(this, value, concurrent);
                         }
                     } while (moreToRead);
-                    return new KeyValuePair<long,string>(readRange.Start, tempFilePath);
+
+                    return new KeyValuePair<long, string>(readRange.Start, tempFilePath);
                 }
             }
         }
 
         /// <summary>
-        ///     Validates downloaded or copied file against passed md5 using the <see cref="GenerateMd5"/> method
+        ///     Validates downloaded or copied file against passed md5 using the <see cref="GenerateMd5" /> method
         ///     Supports a local source using FileInfo or a remote source using HTTP HEAD requests
         ///     Supports CancellationToken
         /// </summary>
@@ -321,16 +319,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                         long newfilesize = -1;
                         HttpRequestMessage request = new(HttpMethod.Head, new Uri(source));
 
-                        var len = ((await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)).Content.Headers.ContentLength);
+                        long? len = (await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)).Content.Headers.ContentLength;
 
                         if (len != null)
-                        {
                             newfilesize = len.GetValueOrDefault();
-                        }
                         else
-                        {
                             throw new Exception("Could not get size of file from remote server");
-                        }
 
                         if (newfilesize == filesize)
                         {
@@ -385,12 +379,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                             file.Dispose();
                             return null;
                         }
+
                         buffer = new byte[4096];
                         bytesRead = file.Read(buffer, 0, buffer.Length);
                         totalBytesRead += bytesRead;
                         hasher.TransformBlock(buffer, 0, bytesRead, null, 0);
                         long read = totalBytesRead;
-                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int)((double)read / size * 100),0);
+                        if (totalBytesRead % 102400 == 0) _percentageChanged.Raise(this, (int) ((double) read / size * 100), 0);
                     } while (bytesRead != 0);
 
                     hasher.TransformFinalBlock(buffer, 0, 0);
@@ -399,7 +394,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                Application.Current.Dispatcher.Invoke(() => ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
+                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }
@@ -410,7 +405,10 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// </summary>
         /// <param name="url">URL</param>
         /// <returns>filename as String</returns>
-        public static string url_to_filename(string url) => url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1, url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+        public static string url_to_filename(string url)
+        {
+            return url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1, url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+        }
 
         /// <summary>
         ///     Extracts the tar.gz file in to multiple packages (naviextras)
@@ -420,73 +418,68 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>outputResult with Message and Result properties</returns>
         public OutputResult ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
         {
-            OutputResult outputResult = new() { Message = "" };
+            OutputResult outputResult = new() {Message = ""};
             if (item.Source != "naviextras")
             {
                 outputResult.Result = true;
                 return outputResult;
             }
-            else
+
+            string path = AppMan.App.DownloadPath + item.FileName;
+            string destination = Path.ChangeExtension(path, null);
+            Stream inStream = File.OpenRead(path);
+            Stream gzipStream = new GZipInputStream(inStream);
+
+            TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.ASCII);
+            tarArchive.ExtractContents(destination);
+            tarArchive.Close();
+
+            gzipStream.Close();
+            inStream.Close();
+
+            foreach (string tarfile in Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories))
             {
-                string path = AppMan.App.DownloadPath + item.FileName;
-                string destination = System.IO.Path.ChangeExtension(path, null);
-                Stream inStream = File.OpenRead(path);
-                Stream gzipStream = new GZipInputStream(inStream);
+                string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar", "");
+                string filename = Path.GetFileName(tarfile);
+                string newpath = AppMan.App.DownloadPath + filename;
+                if (File.Exists(newpath))
+                    File.Delete(newpath);
+                File.Move(tarfile, newpath);
+                string type = "";
 
-                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.ASCII);
-                tarArchive.ExtractContents(destination);
-                tarArchive.Close();
-
-                gzipStream.Close();
-                inStream.Close();
-
-                foreach (var tarfile in Directory.GetFiles(destination, "*.tar.gz*", SearchOption.AllDirectories))
+                if (name.Contains("14G424"))
+                    type = "MAP_LICENSE";
+                else if (name.Contains("14G421")) type = "MAP";
+                FileInfo fi = new(newpath);
+                long size = fi.Length;
+                AppMan.App.ExtraIvsus.Add(new SModel.Ivsu
                 {
-                    string name = Path.GetFileNameWithoutExtension(tarfile).Replace(".tar", "");
-                    string filename = Path.GetFileName(tarfile);
-                    string newpath = AppMan.App.DownloadPath + filename;
-                    if (File.Exists(newpath))
-                        File.Delete(newpath);
-                    File.Move(tarfile, newpath);
-                    string type = "";
-
-                    if (name.Contains("14G424"))
-                    {
-                        type = "MAP_LICENSE";
-                    }
-                    else if (name.Contains("14G421"))
-                    {
-                        type = "MAP";
-                    }
-                    FileInfo fi = new(newpath);
-                    long size = fi.Length;
-                    AppMan.App.ExtraIvsus.Add(new SModel.Ivsu
-                    {
-                        Type = type,
-                        Name = name,
-                        Version = "",
-                        Notes = "",
-                        Url = "",
-                        Md5 = GenerateMd5(newpath, ct),
-                        Selected = true,
-                        FileName = filename,
-                        FileSize = size
-                    });
-                }
-                outputResult.Message = "Added MultiPackage files to Queue";
-                outputResult.Result = true;
+                    Type = type,
+                    Name = name,
+                    Version = "",
+                    Notes = "",
+                    Url = "",
+                    Md5 = GenerateMd5(newpath, ct),
+                    Selected = true,
+                    FileName = filename,
+                    FileSize = size
+                });
             }
+
+            outputResult.Message = "Added MultiPackage files to Queue";
+            outputResult.Result = true;
             return outputResult;
         }
-        
-        //https://stackoverflow.com/questions/309485/c-sharp-sanitize-file-name
-        public static string MakeValidFileName( string name )
-        {
-            string invalidChars = System.Text.RegularExpressions.Regex.Escape( new string( System.IO.Path.GetInvalidFileNameChars() ) );
-            string invalidRegStr = string.Format( @"([{0}]*\.+$)|([{0}]+)", invalidChars );
 
-            return System.Text.RegularExpressions.Regex.Replace( name, invalidRegStr, "_" );
+        //https://stackoverflow.com/questions/309485/c-sharp-sanitize-file-name
+        public static string MakeValidFileName(string name)
+        {
+            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            return Regex.Replace(name, invalidRegStr, "_");
         }
+
         #endregion
     }
 }

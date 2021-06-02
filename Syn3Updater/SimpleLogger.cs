@@ -14,7 +14,7 @@ namespace Cyanlabs.Syn3Updater
 {
     public class SimpleLogger
     {
-        public List<LogEntry> Log = new List<LogEntry>();
+        public List<LogEntry> Log = new();
 
         public void Debug(object log, [CallerMemberName] string cmn = "")
         {
@@ -28,18 +28,18 @@ namespace Cyanlabs.Syn3Updater
 
         public void CrashWindow(Exception ex, [CallerMemberName] string callerMemberName = "")
         {
-            CrashWindow crashWindow = new CrashWindow { ErrorName = { Text = ex.GetType().ToString() }, Message = { Text = ex.Message }, StackTrace = { Text = ex.StackTrace } };
+            CrashWindow crashWindow = new() {ErrorName = {Text = ex.GetType().ToString()}, Message = {Text = ex.Message}, StackTrace = {Text = ex.StackTrace}};
             crashWindow.Show();
 
             Log.Add(new LogEntry(ex.GetType().ToString(), "Crash", ex));
             string guid = crashWindow.SendReport(ex);
-            var output = JsonConvert.DeserializeAnonymousType(guid, new { uuid = "", status = "" });
+            var output = JsonConvert.DeserializeAnonymousType(guid, new {uuid = "", status = ""});
             string url = Api.CrashLogUrl + output.uuid;
             crashWindow.ErrorReportUrl = url;
 
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeGenerator qrGenerator = new();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new QRCode(qrCodeData);
+            QRCode qrCode = new(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
 
             crashWindow.Qrcode.Source = BitmapToImageSource(qrCodeImage);
@@ -47,10 +47,10 @@ namespace Cyanlabs.Syn3Updater
 
         private BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
-            using MemoryStream memory = new MemoryStream();
+            using MemoryStream memory = new();
             bitmap.Save(memory, ImageFormat.Bmp);
             memory.Position = 0;
-            BitmapImage bitmapimage = new BitmapImage();
+            BitmapImage bitmapimage = new();
             bitmapimage.BeginInit();
             bitmapimage.StreamSource = memory;
             bitmapimage.CacheOption = BitmapCacheOption.OnLoad;

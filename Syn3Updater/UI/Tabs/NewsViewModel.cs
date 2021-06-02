@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
@@ -68,7 +66,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _importantNoticesGrid;
             set => SetProperty(ref _importantNoticesGrid, value);
         }
-        
+
         private Visibility _otherNoticesGrid;
 
         public Visibility OtherNoticesGrid
@@ -146,8 +144,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Changelog = "<style>h4 { margin:0px; } div { padding-bottom:0px;}</style>";
             foreach (Api.Changelog changelog in output.Changelog)
             {
-                string changelognotes = string.IsNullOrWhiteSpace(changelog.ReleaseNotes) ? "No Changelog Available" : changelog.ReleaseNotes.Replace(Environment.NewLine,"<br>");
-                string html = $"<div><h4><u>v{changelog.Version} - {changelog.Date}</u></h4>" + changelognotes + $"</div>";
+                string changelognotes = string.IsNullOrWhiteSpace(changelog.ReleaseNotes) ? "No Changelog Available" : changelog.ReleaseNotes.Replace(Environment.NewLine, "<br>");
+                string html = $"<div><h4><u>v{changelog.Version} - {changelog.Date}</u></h4>" + changelognotes + "</div>";
                 Changelog += html;
             }
         }

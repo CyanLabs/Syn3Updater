@@ -4,14 +4,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
-    xmlns:controls="http://schemas.modernwpf.com/2019"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs" xmlns:conv="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.News"
     mc:Ignorable="d"
     d:DesignHeight="825" d:DesignWidth="800" FontSize="12"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
-        <conv:HtmlToFlowDocumentConverter x:Key="htmlToXamlConverter"/>
+        <conv:HtmlToFlowDocumentConverter x:Key="htmlToXamlConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <tabs:NewsViewModel />
@@ -22,43 +21,47 @@
             <StackPanel>
                 <Grid>
                     <StackPanel Background="DarkGreen" Margin="10,5,10,5">
-                        <TextBlock Foreground="white" Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}" TextAlignment="Center" Text="{Binding UpdatedNotice}" Visibility="{Binding UpdatedNoticeVisible}" />
+                        <TextBlock Foreground="white" Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                                   TextAlignment="Center" Text="{Binding UpdatedNotice}"
+                                   Visibility="{Binding UpdatedNoticeVisible}" />
                     </StackPanel>
                 </Grid>
-                
+
                 <Grid Visibility="{Binding ImportantNoticesGrid}">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
-                                   Text="{Binding Language, ConverterParameter=News.ImportantNoticeTitle, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, ConverterParameter=News.ImportantNoticeTitle, Converter={StaticResource LocConverter}}" />
                             <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
-                                Style="{DynamicResource AccentButtonStyle}"
-                                ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
-                                Background="#00000000" Grid.Column="1" Command="{Binding ReloadNotices}">
+                                    Style="{DynamicResource AccentButtonStyle}"
+                                    ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
+                                    Background="#00000000" Command="{Binding ReloadNotices}">
                                 <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
-                                             VerticalAlignment="Center" />
+                                                 VerticalAlignment="Center" />
                             </Button>
                         </StackPanel>
-                        
-                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="ImportantNotices" Document="{Binding ImportantNotices, Converter={StaticResource htmlToXamlConverter}}"/>
+
+                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="ImportantNotices"
+                                                  Document="{Binding ImportantNotices, Converter={StaticResource htmlToXamlConverter}}" />
                     </StackPanel>
                 </Grid>
 
                 <Grid Visibility="{Binding OtherNoticesGrid}">
-                    
+
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
-                                   Text="{Binding Language, ConverterParameter=News.NoticeTitle, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, ConverterParameter=News.NoticeTitle, Converter={StaticResource LocConverter}}" />
                             <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
-                                Style="{DynamicResource AccentButtonStyle}"
-                                ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
-                                Background="#00000000" Grid.Column="1" Command="{Binding ReloadNotices}">
+                                    Style="{DynamicResource AccentButtonStyle}"
+                                    ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
+                                    Background="#00000000" Command="{Binding ReloadNotices}">
                                 <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
-                                             VerticalAlignment="Center" />
+                                                 VerticalAlignment="Center" />
                             </Button>
                         </StackPanel>
-                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="OtherNotices" Document="{Binding OtherNotices, Converter={StaticResource htmlToXamlConverter}}"/>
+                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="OtherNotices"
+                                                  Document="{Binding OtherNotices, Converter={StaticResource htmlToXamlConverter}}" />
                     </StackPanel>
                 </Grid>
 
@@ -66,16 +69,17 @@
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
-                                   Text="{Binding Language, ConverterParameter=News.Changelog, Converter={StaticResource LocConverter}}" />
+                                       Text="{Binding Language, ConverterParameter=News.Changelog, Converter={StaticResource LocConverter}}" />
                             <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand"
                                     Style="{DynamicResource AccentButtonStyle}"
                                     ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
-                                    Background="#00000000" Grid.Column="1" Command="{Binding ReloadChangelog}">
+                                    Background="#00000000" Command="{Binding ReloadChangelog}">
                                 <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
                                                  VerticalAlignment="Center" />
                             </Button>
                         </StackPanel>
-                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="Changelog" Document="{Binding Changelog, Converter={StaticResource htmlToXamlConverter}}"/>
+                        <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="Changelog"
+                                                  Document="{Binding Changelog, Converter={StaticResource htmlToXamlConverter}}" />
                     </StackPanel>
                 </Grid>
             </StackPanel>

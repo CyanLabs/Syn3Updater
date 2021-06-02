@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Services
 {
@@ -16,28 +17,22 @@ namespace Cyanlabs.Syn3Updater.Services
             bool canceldownload = false;
             //Install Mode is reformat or downgrade My20 warning
             if (installMode == "reformat" || installMode == "downgrade")
-            {
-                if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.My20Check"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show(LM.GetValue("MessageBox.My20Check"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
                     return;
                 }
-            }
 
             //Warn is users region is different to new selection
             if (selectedRegion.Code != AppMan.App.Settings.CurrentRegion)
-            {
-                if (await ModernWpf.MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
+                if (await MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
                     MessageBoxResult.Yes)
-                {
                     canceldownload = true;
-                }
-            }
 
             //Cancel no apps package selected
             if (!AppMan.App.AppsSelected && (installMode == "reformat" || installMode == "downgrade"))
             {
-                await ModernWpf.MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 canceldownload = true;
             }
 
@@ -51,7 +46,8 @@ namespace Cyanlabs.Syn3Updater.Services
             }
         }
 
-        public static async Task SetIvsuList(string installMode, ObservableCollection<SModel.Ivsu> ivsuList, SModel.SRegion selectedRegion, string selectedRelease, string selectedMapVersion, string driveLetter)
+        public static async Task SetIvsuList(string installMode, ObservableCollection<SModel.Ivsu> ivsuList, SModel.SRegion selectedRegion, string selectedRelease,
+            string selectedMapVersion, string driveLetter)
         {
             AppMan.Logger.Info(
                 $"USB Drive selected - Name: {AppMan.App.DriveName} - FileSystem: {AppMan.App.DriveFileSystem} - PartitionType: {AppMan.App.DrivePartitionType} - Letter: {driveLetter}");
@@ -71,10 +67,9 @@ namespace Cyanlabs.Syn3Updater.Services
                 Api.ReformatTool = await ApiHelper.GetSpecialIvsu(Api.GetReformat);
                 AppMan.App.Ivsus.Add(Api.ReformatTool);
             }
-            
+
             AppMan.App.DriveLetter = driveLetter;
             foreach (SModel.Ivsu item in ivsuList)
-            {
                 if (item.Selected)
                 {
                     if (item.Type == "APPS")
@@ -82,7 +77,6 @@ namespace Cyanlabs.Syn3Updater.Services
 
                     AppMan.App.Ivsus.Add(item);
                 }
-            }
 
             AppMan.App.SelectedRegion = selectedRegion.Code;
             AppMan.App.SelectedRelease = selectedRelease;

@@ -8,6 +8,7 @@ using Cyanlabs.Syn3Updater.Model;
 using FontAwesome5;
 using ModernWpf;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
+using MessageBox = ModernWpf.MessageBox;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Cyanlabs.Syn3Updater.UI
@@ -40,17 +41,17 @@ namespace Cyanlabs.Syn3Updater.UI
             _args = Environment.GetCommandLineArgs();
             AppMan.App.LanguageChangedEvent += delegate
             {
-                ObservableCollection<TabItem> ti = new ObservableCollection<TabItem>
+                ObservableCollection<TabItem> ti = new()
                 {
-                    new TabItem(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
-                    new TabItem(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
-                    new TabItem(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
-                    new TabItem(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"),
+                    new(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
+                    new(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
+                    new(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
+                    new(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"),
                     //new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
                     //TODO Implement Profiles in the future
-                    new TabItem(EFontAwesomeIcon.Solid_CarAlt,"Profiles","profiles"),
-                    new TabItem(EFontAwesomeIcon.Solid_FileAlt, "Logs", "logs"),
-                    new TabItem(EFontAwesomeIcon.Solid_Newspaper,"News","news"),
+                    new(EFontAwesomeIcon.Solid_CarAlt, "Profiles", "profiles"),
+                    new(EFontAwesomeIcon.Solid_FileAlt, "Logs", "logs"),
+                    new(EFontAwesomeIcon.Solid_Newspaper, "News", "news")
                 };
 
                 foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
@@ -70,10 +71,9 @@ namespace Cyanlabs.Syn3Updater.UI
         #region Properties & Fields
 
         private readonly string[] _args;
-        private int _newsvisited = 0;
         private string _currentTab = "home";
         private bool _hamburgerExtended;
-        private ObservableCollection<TabItem> _tabItems = new ObservableCollection<TabItem>();
+        private ObservableCollection<TabItem> _tabItems = new();
 
         public bool HamburgerExtended
         {
@@ -93,17 +93,18 @@ namespace Cyanlabs.Syn3Updater.UI
                 }
                 else if (value != "about" && !AppMan.App.MainSettings.DisclaimerAccepted)
                 {
-                    ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LM.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "about";
                 }
-                else if (value == "home" && (AppMan.App.Settings.CurrentRegion?.Length == 0 || AppMan.App.Settings.CurrentVersion == 0 || AppMan.App.Settings.CurrentVersion.ToString().Length != 7))
+                else if (value == "home" && (AppMan.App.Settings.CurrentRegion?.Length == 0 || AppMan.App.Settings.CurrentVersion == 0 ||
+                                             AppMan.App.Settings.CurrentVersion.ToString().Length != 7))
                 {
-                    ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.NoVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LM.GetValue("MessageBox.NoVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "settings";
                 }
                 else if (value != "downloads" && AppMan.App.IsDownloading)
                 {
-                    ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(LM.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
                     value = "downloads";
                 }
                 else if (value == "crashme")
@@ -116,9 +117,10 @@ namespace Cyanlabs.Syn3Updater.UI
 
                 SetProperty(ref _currentTab, value);
                 foreach (TabItem tabItem in TabItems)
-                    tabItem.IsCurrent = string.Equals(tabItem.Key, value, System.StringComparison.OrdinalIgnoreCase);
-                
-                AppTitle = $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")} {AppMan.App.MainSettings.Profile}";
+                    tabItem.IsCurrent = string.Equals(tabItem.Key, value, StringComparison.OrdinalIgnoreCase);
+
+                AppTitle =
+                    $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")} {AppMan.App.MainSettings.Profile}";
             }
         }
 
@@ -169,6 +171,7 @@ namespace Cyanlabs.Syn3Updater.UI
         }
 
         private EFontAwesomeIcon _themeIcon;
+
         public EFontAwesomeIcon ThemeIcon
         {
             get => _themeIcon;
@@ -176,6 +179,7 @@ namespace Cyanlabs.Syn3Updater.UI
         }
 
         private string _appTitle;
+
         public string AppTitle
         {
             get => _appTitle;

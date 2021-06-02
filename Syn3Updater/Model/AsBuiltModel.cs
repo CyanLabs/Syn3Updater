@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+
 // ReSharper disable InconsistentNaming
 
 namespace Cyanlabs.Syn3Updater.Model

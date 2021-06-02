@@ -9,6 +9,7 @@ using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Ookii.Dialogs.Wpf;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -173,17 +174,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (XamlParseException e)
             {
-                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
             {
-                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (NullReferenceException e)
             {
-                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -204,8 +205,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 DriveSize = SelectedDrive?.Size;
                 DriveFreeSpace = SelectedDrive?.FreeSpace;
                 ReloadTab();
-                AppMan.Logger.Info($"USB Drive selected - Name: {SelectedDrive?.Name} - FileSystem: {SelectedDrive?.FileSystem} - PartitionType: {SelectedDrive?.PartitionType} - Letter: {SelectedDrive?.Letter}");
+                AppMan.Logger.Info(
+                    $"USB Drive selected - Name: {SelectedDrive?.Name} - FileSystem: {SelectedDrive?.FileSystem} - PartitionType: {SelectedDrive?.PartitionType} - Letter: {SelectedDrive?.Letter}");
             }
+
             DriveLetter = SelectedDrive?.Letter;
         }
 
@@ -213,8 +216,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             await USBHelper.LogPrepareUSBAction(SelectedDrive, DriveLetter);
         }
-        
+
         private USBHelper _usbHelper;
+
         private async Task LogParseXmlAction()
         {
             string[] logDetails = await _usbHelper.LogParseXmlAction();
@@ -238,13 +242,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 Api.GracenotesRemoval = await ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
-
             }
             catch (TaskCanceledException e)
             {
-                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
+
             AppMan.App.Ivsus.Add(Api.GracenotesRemoval);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
@@ -266,14 +270,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             Api.SmallVoicePackage = await ApiHelper.GetSpecialIvsu(Api.GetSmallVoice);
             try
-            { 
+            {
                 AppMan.App.Ivsus.Add(Api.SmallVoicePackage);
             }
             catch (TaskCanceledException e)
             {
-                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
+
             AppMan.App.Settings.InstallMode = "autoinstall";
 
             if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.SmallVoicePackage == null) return;
@@ -293,16 +298,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.SelectedRelease = "Enforced Downgrade";
             Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
             try
-            { 
+            {
                 AppMan.App.Ivsus.Add(Api.DowngradeApp);
             }
             catch (TaskCanceledException e)
             {
-                await ModernWpf.MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
+
             AppMan.App.Settings.InstallMode = "autoinstall";
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive)|| Api.DowngradeApp == null) return;
+            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.DowngradeApp == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;
@@ -324,7 +330,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else
             {
-                VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Syn3 Updater Log Files|*.txt" };
+                VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Syn3 Updater Log Files|*.txt"};
                 if (dialog.ShowDialog().GetValueOrDefault())
                 {
                     string logfile = File.ReadAllText(dialog.FileName);

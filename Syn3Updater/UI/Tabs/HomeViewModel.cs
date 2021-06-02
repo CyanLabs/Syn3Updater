@@ -16,7 +16,9 @@ using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.Services;
 using Cyanlabs.Updater.Common;
+using Nito.AsyncEx;
 using Ookii.Dialogs.Wpf;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -84,10 +86,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _selectedRegion, value);
                 if (value != null)
-                {
                     //we don't need to run this code using the WPF dispatcher, so use Cleary's libary 
-                    Nito.AsyncEx.AsyncContext.Run(async () => await UpdateSelectedRegion());
-                }
+                    AsyncContext.Run(async () => await UpdateSelectedRegion());
             }
         }
 
@@ -99,10 +99,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedRelease, value);
-                if (value != null)
-                {
-                    Nito.AsyncEx.AsyncContext.Run(async () => await UpdateSelectedRelease());
-                }
+                if (value != null) AsyncContext.Run(async () => await UpdateSelectedRelease());
             }
         }
 
@@ -114,10 +111,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _selectedMapVersion, value);
-                if (value != null)
-                {
-                    Nito.AsyncEx.AsyncContext.Run(async () => await UpdateSelectedMapVersion());
-                }
+                if (value != null) AsyncContext.Run(async () => await UpdateSelectedMapVersion());
             }
         }
 
@@ -245,7 +239,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _currentNav;
             set => SetProperty(ref _currentNav, value);
         }
-        
+
         private string _currentProfile;
 
         public string CurrentProfile
@@ -298,6 +292,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         }
 
         private Dictionary<string, string> _magnetActions = new();
+
         #endregion
 
         #region Methods
@@ -309,25 +304,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentVersion = AppMan.App.SVersion;
             DownloadLocation = AppMan.App.DownloadPath;
             My20Mode = AppMan.App.Settings.My20 ? LM.GetValue("String.Enabled") : LM.GetValue("String.Disabled");
-            InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes"): LM.GetValue("String.No");
+            InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
             StartEnabled = false;
             InstallMode = AppMan.App.Settings.InstallMode;
             CurrentProfile = AppMan.App.MainSettings.Profile;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
             UpdateInstallMode();
         }
-        
+
         public void Init()
         {
             NotesVisibility = false;
             if (!string.IsNullOrEmpty(AppMan.App.Magnet))
-            {
                 _magnetActions = AppMan.App.Magnet
                     .Split(';')
-                    .Select (part  => part.Split('='))
-                    .Where (part => part.Length == 2)
-                    .ToDictionary (sp => sp[0], sp => sp[1]);
-            }
+                    .Select(part => part.Split('='))
+                    .Where(part => part.Length == 2)
+                    .ToDictionary(sp => sp[0], sp => sp[1]);
             AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
             SRegions = new ObservableCollection<SModel.SRegion>
             {
@@ -341,11 +334,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             SMapVersion = new ObservableCollection<string>();
             IvsuList = new ObservableCollection<SModel.Ivsu>();
             SVersionsEnabled = false;
-            
+
             if (_magnetActions?.Count != 0)
             {
                 bool exists = SRegions.Any(x => x.Code == _magnetActions["Region"]);
-                if(exists) SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
+                if (exists) SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
             }
             else
             {
@@ -353,6 +346,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SelectedReleaseIndex = -1;
                 SelectedMapVersionIndex = -1;
             }
+
             RefreshUsb();
         }
 
@@ -372,17 +366,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (XamlParseException e)
             {
-                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
             {
-                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (NullReferenceException e)
             {
-                ModernWpf.MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -392,22 +386,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             if (SelectedDrive?.Name == LM.GetValue("Home.NoUSBDir"))
             {
-                VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+                VistaFolderBrowserDialog dialog = new();
                 if (dialog.ShowDialog().GetValueOrDefault())
                 {
                     string destination = dialog.SelectedPath;
                     DriveInfo driveInfo = new(destination);
                     if (driveInfo.DriveType != DriveType.Fixed)
-                    {
-                        if (ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.RemovableDriveFolder"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Warning) ==
+                        if (MessageBox.Show(LM.GetValue("MessageBox.RemovableDriveFolder"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Warning) ==
                             MessageBoxResult.Cancel)
-                        {
                             return;
-                        }
-                    }
                     if (AppMan.App.DownloadPath.Contains(destination))
                     {
-                        ModernWpf.MessageBox.Show(LM.GetValue("MessageBox.CancelDownloadIsFolder"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        MessageBox.Show(LM.GetValue("MessageBox.CancelDownloadIsFolder"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         ReloadSettings();
                     }
                     else
@@ -436,7 +426,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 DriveName = SelectedDrive?.Name;
                 DriveLetter = SelectedDrive?.Letter;
             }
-            
         }
 
         private async Task UpdateSelectedRegion()
@@ -466,27 +455,20 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     throw;
                     //TODO Exception handling
                 }
-                
-                if (AppMan.App.Settings.CurrentNav && AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion)
-                {
-                    SVersion?.Add(LM.GetValue("String.OnlyMaps"));
-                }
+
+                if (AppMan.App.Settings.CurrentNav && AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion) SVersion?.Add(LM.GetValue("String.OnlyMaps"));
 
                 _jsonReleases = JsonHelpers.Deserialize<Api.JsonReleases>(stringReleasesJson);
 
                 foreach (Api.Data item in _jsonReleases.Releases)
-                {
                     if (item.Regions.Contains(SelectedRegion.Code))
                         SVersion?.Add(item.Name);
-                }
 
                 SVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
-                
+
                 if (SVersion != null && _magnetActions?.Count != 0 && SVersion.Contains("Sync " + _magnetActions?["Release"]))
-                {
                     SelectedRelease = "Sync " + _magnetActions?["Release"];
-                }
             }
         }
 
@@ -494,26 +476,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             SMapVersion?.Clear();
             if (!AppMan.App.Settings.CurrentNav)
-            {
                 SMapVersion?.Add(LM.GetValue("String.NonNavAPIM"));
-            }
             else if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion && _selectedRelease != LM.GetValue("String.OnlyMaps"))
-            {
                 SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
-            }
-            
+
             string license = "";
-            if (AppMan.App.MainSettings.LicenseKey?.Length > 10)
-            {
-                license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.MainSettings.LicenseKey + "\"}},";
-            }
-            _apiMapReleases = Api.MapReleasesConst.Replace("[published]", "filter={\"_and\":[{\"_or\":[" + license + "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},[esn]{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
+            if (AppMan.App.MainSettings.LicenseKey?.Length > 10) license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.MainSettings.LicenseKey + "\"}},";
+            _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
+                "filter={\"_and\":[{\"_or\":[" + license +
+                "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},[esn]{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
 
             if (SelectedRelease != "")
             {
                 SelectedMapVersion = null;
                 IvsuList?.Clear();
-                
+
                 foreach (Api.Data item in _jsonReleases.Releases)
                     if (item.Name == SelectedRelease)
                     {
@@ -538,7 +515,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
                     _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
                 }
-                
+
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
 
                 HttpResponseMessage response = await AppMan.App.Client.GetAsync(_apiMapReleases);
@@ -552,18 +529,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 SMapVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
-                
+
                 string mapReleaseTmp = _magnetActions?["Maps"].Replace("_", " ");
-                if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp))
-                {
-                    SelectedMapVersion = mapReleaseTmp;
-                }
+                if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp)) SelectedMapVersion = mapReleaseTmp;
             }
         }
 
         private async Task UpdateSelectedMapVersion()
         {
-            if (!String.IsNullOrWhiteSpace(SelectedMapVersion))
+            if (!string.IsNullOrWhiteSpace(SelectedMapVersion))
             {
                 IvsuList?.Clear();
 
@@ -578,12 +552,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
 
                     response = await AppMan.App.Client.GetAsync(appReleaseSingle);
-                    var stringDownloadJson = await response.Content.ReadAsStreamAsync();
+                    Stream stringDownloadJson = await response.Content.ReadAsStreamAsync();
                     Api.JsonReleases jsonIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(stringDownloadJson);
 
                     foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList)
                         if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(SelectedRegion.Code))
-                        {
                             IvsuList?.Add(new SModel.Ivsu
                             {
                                 Type = item.Ivsu.Type,
@@ -596,7 +569,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 FileName = FileHelper.url_to_filename(item.Ivsu.Url),
                                 FileSize = item.Ivsu.FileSize
                             });
-                        }
                 }
                 else
                 {
@@ -612,7 +584,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     SelectedMapVersion != LM.GetValue("String.KeepExistingMaps"))
                     foreach (Api.Ivsus item in jsonMapIvsUs.Releases[0].IvsusList)
                         if (item.MapIvsu.Regions.Contains("ALL") || item.MapIvsu.Regions.Contains(SelectedRegion.Code))
-                        {
                             IvsuList?.Add(new SModel.Ivsu
                             {
                                 Type = item.MapIvsu.Type,
@@ -626,7 +597,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 FileSize = item.MapIvsu.FileSize,
                                 Source = item.MapIvsu.Source
                             });
-                        }
             }
         }
 
@@ -637,10 +607,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 //LESS THAN 3.2
                 if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
                 {
-                    if (AppMan.App.Settings.My20)
-                    {
-                        InstallMode = "autoinstall";
-                    }
+                    if (AppMan.App.Settings.My20) InstallMode = "autoinstall";
                     if (!AppMan.App.ModeForced)
                         InstallMode = "reformat";
                 }
@@ -653,16 +620,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     if (SelectedMapVersion == LM.GetValue("String.NoMaps") || SelectedMapVersion == LM.GetValue("String.NonNavAPIM") ||
                         SelectedMapVersion == LM.GetValue("String.KeepExistingMaps"))
                     {
-                        if (!AppMan.App.ModeForced)
-                        {
-                            InstallMode = "autoinstall";
-                        }
-                            
+                        if (!AppMan.App.ModeForced) InstallMode = "autoinstall";
                     }
                     else if (AppMan.App.Settings.My20)
+                    {
                         InstallMode = "autoinstall";
+                    }
                     else if (!AppMan.App.ModeForced)
+                    {
                         InstallMode = "reformat";
+                    }
                 }
 
                 //3.4.19274 or above
@@ -676,9 +643,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             InstallMode = "autoinstall";
                     }
                     else if (AppMan.App.Settings.My20)
+                    {
                         InstallMode = "autoinstall";
+                    }
                     else if (!AppMan.App.ModeForced)
+                    {
                         InstallMode = "downgrade";
+                    }
                 }
 
                 AppMan.App.Action = "main";
@@ -690,14 +661,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task StartAction()
         {
             if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20)
-            {
-                if (ModernWpf.MessageBox.Show("WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'", "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                if (MessageBox.Show(
+                        "WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
+                        "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
                     MessageBoxResult.No)
                 {
                     Process.Start("https://community.cyanlabs.net/t/placeholder-my20-discussion/3203");
                     return;
                 }
-            }
+
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
             StartEnabled = false;
         }

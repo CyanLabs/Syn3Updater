@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Cyanlabs.Syn3Updater.Helper;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -17,7 +16,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void Home_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue && !(bool)e.OldValue) (DataContext as HomeViewModel)?.ReloadSettings();
+            if ((bool) e.NewValue && !(bool) e.OldValue) (DataContext as HomeViewModel)?.ReloadSettings();
         }
     }
 }

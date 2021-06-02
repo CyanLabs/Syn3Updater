@@ -43,13 +43,13 @@ namespace Cyanlabs.Syn3Updater.UI
                 HttpClient client = new();
                 Dictionary<string, string> values = new()
                 {
-                    {"computername",Environment.MachineName},
+                    {"computername", Environment.MachineName},
                     {"detail", JsonConvert.SerializeObject(crashContainer)},
                     {"version", Assembly.GetEntryAssembly()?.GetName().Version.ToString()},
                     {"error", crashContainer.ErrorName},
                     {"message", exception.Message},
                     {"operatingsystem", SystemHelper.GetOsFriendlyName()},
-                    {"branch", AppMan.App.LauncherPrefs.ReleaseTypeInstalled.ToString()},
+                    {"branch", AppMan.App.LauncherPrefs.ReleaseTypeInstalled.ToString()}
                 };
 
                 FormUrlEncodedContent content = new(values);

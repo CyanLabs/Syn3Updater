@@ -16,7 +16,7 @@ namespace Cyanlabs.Syn3Updater.UI
 
         public string Mask
         {
-            get => (string)GetValue(MaskProperty);
+            get => (string) GetValue(MaskProperty);
             set => SetValue(MaskProperty, value);
         }
 
@@ -81,8 +81,8 @@ namespace Cyanlabs.Syn3Updater.UI
 
         private static void OnMaskPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            MaskedTextBox control = (MaskedTextBox)d;
-            control._maskProvider = new MaskedTextProvider(control.Mask) { ResetOnSpace = false };
+            MaskedTextBox control = (MaskedTextBox) d;
+            control._maskProvider = new MaskedTextProvider(control.Mask) {ResetOnSpace = false};
             control._maskProvider.Set(control.Text);
             control.RefreshText(control.SelectionStart);
         }
@@ -102,7 +102,7 @@ namespace Cyanlabs.Syn3Updater.UI
 
         private bool IsValidKey(Key key, int position)
         {
-            char virtualKey = (char)KeyInterop.VirtualKeyFromKey(key);
+            char virtualKey = (char) KeyInterop.VirtualKeyFromKey(key);
             return _maskProvider.VerifyChar(virtualKey, position, out MaskedTextResultHint _);
         }
 

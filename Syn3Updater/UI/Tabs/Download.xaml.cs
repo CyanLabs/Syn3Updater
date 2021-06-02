@@ -14,7 +14,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void Download_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if ((bool)e.NewValue && !(bool)e.OldValue) (DataContext as DownloadViewModel)?.Init();
+            if ((bool) e.NewValue && !(bool) e.OldValue) (DataContext as DownloadViewModel)?.Init();
         }
     }
 }

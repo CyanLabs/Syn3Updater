@@ -14,7 +14,7 @@ namespace Cyanlabs.Syn3Updater.Converter
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace((string)value))
+                if (!string.IsNullOrWhiteSpace((string) value))
                     return LM.GetValue(parameter?.ToString(), value.ToString());
             }
             catch

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,41 +12,48 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     public static class ProfileModel
     {
         #region Properties & Fields
+
         public class Profile
         {
             public string Name { get; set; }
         }
+
         #endregion
     }
+
     internal class ProfilesViewModel : LanguageAwareBaseViewModel
     {
         #region Constructors
+
         private AsyncCommand<string> _selectProfile;
         public AsyncCommand<string> SelectProfile => _selectProfile ??= new AsyncCommand<string>(SelectProfileAction);
-        
+
         private AsyncCommand<string> _deleteProfile;
-        public AsyncCommand<string> DeleteProfile => _deleteProfile ??= new AsyncCommand<string>(DeleteProfileAction);   
-        
+        public AsyncCommand<string> DeleteProfile => _deleteProfile ??= new AsyncCommand<string>(DeleteProfileAction);
+
         private AsyncCommand _createProfile;
         public AsyncCommand CreateProfile => _createProfile ??= new AsyncCommand(CreateProfileAction);
+
         #endregion
 
         #region Properties & Fields
-        
+
         private string _currentProfile;
+
         public string CurrentProfile
         {
             get => _currentProfile;
             set => SetProperty(ref _currentProfile, value);
         }
-        
+
         private string _profileName;
+
         public string ProfileName
         {
             get => _profileName;
             set => SetProperty(ref _profileName, value);
         }
-        
+
         private ObservableCollection<ProfileModel.Profile> _profileList;
 
         public ObservableCollection<ProfileModel.Profile> ProfileList
@@ -57,7 +61,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _profileList;
             set => SetProperty(ref _profileList, value);
         }
-        
+
         private ProfileModel.Profile _selectedProfile;
 
         public ProfileModel.Profile SelectedProfile
@@ -65,7 +69,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _selectedProfile;
             set => SetProperty(ref _selectedProfile, value);
         }
-     
+
         #endregion
 
         #region Methods
@@ -88,6 +92,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     // ignored
                 }
+
                 await ReloadProfiles();
             }
             else
@@ -95,7 +100,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 MessageBox.Show(LM.GetValue("MessageBox.InvalidProfile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
+
         private async Task CreateProfileAction()
         {
             if (!string.IsNullOrEmpty(ProfileName))
@@ -105,7 +110,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 await ReloadProfiles();
             }
         }
-        
+
         private async Task SelectProfileAction(string name)
         {
             CurrentProfile = name;
@@ -120,10 +125,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (!string.IsNullOrEmpty(AppMan.App.ProfileConfigFolderPath))
             {
                 DirectoryInfo dir = new(AppMan.App.ProfileConfigFolderPath);
-                foreach (FileInfo file in dir.GetFiles("*.json"))
-                {
-                    ProfileList.Add(new ProfileModel.Profile() {Name = file.Name.Replace(".json","")});
-                }
+                foreach (FileInfo file in dir.GetFiles("*.json")) ProfileList.Add(new ProfileModel.Profile {Name = file.Name.Replace(".json", "")});
             }
         }
 

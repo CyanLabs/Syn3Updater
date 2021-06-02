@@ -72,7 +72,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags, bool defaultUser)
         {
-            int result = SHGetKnownFolderPath(new Guid(KnownFolderGuids[(int)knownFolder]), (uint)flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
+            int result = SHGetKnownFolderPath(new Guid(KnownFolderGuids[(int) knownFolder]), (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
             if (result >= 0)
             {
                 string path = Marshal.PtrToStringUni(outPath);
@@ -86,10 +86,10 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static string GetOsFriendlyName()
         {
             string result = string.Empty;
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption FROM Win32_OperatingSystem");
+            ManagementObjectSearcher searcher = new("SELECT Caption FROM Win32_OperatingSystem");
             foreach (ManagementBaseObject o in searcher.Get())
             {
-                ManagementObject os = (ManagementObject)o;
+                ManagementObject os = (ManagementObject) o;
                 result = os["Caption"].ToString();
                 break;
             }
@@ -104,18 +104,20 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Registry.CurrentUser.CreateSubKey(@"Software\Classes\syn3updater\Shell\Open\Command");
                 Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("", "URL:syn3updater protocol");
                 Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater", true)?.SetValue("URL Protocol", "");
-                Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater\Shell\Open\Command", true)?.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Launcher.exe\" %1");
+                Registry.CurrentUser.OpenSubKey(@"Software\Classes\syn3updater\Shell\Open\Command", true)
+                    ?.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Launcher.exe\" %1");
             }
             catch
             {
                 // ignored
             }
         }
-        
+
         public static void DeleteRegistryHandler()
         {
             Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\syn3updater");
         }
+
         #endregion
     }
 }
