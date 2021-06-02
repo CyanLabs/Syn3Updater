@@ -6,9 +6,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 using Octokit;
-using Cyanlabs.Updater.Common;
 using Application = System.Windows.Application;
 
 namespace Cyanlabs.Launcher
@@ -18,12 +18,15 @@ namespace Cyanlabs.Launcher
     /// </summary
     public class UpdateCheck
     {
-        #region Properties & Fields  
+        #region Properties & Fields
+
         public UpgradingWindow UpgradingWindow;
         private UpgradingViewModel Vm => UpgradingWindow.Vm;
+
         #endregion
 
         #region Methods
+
         public async Task<bool> Execute(LauncherPrefs.ReleaseType releaseType, UpgradingWindow upgrading, string destFolder)
         {
             UpgradingWindow = upgrading;
@@ -36,7 +39,7 @@ namespace Cyanlabs.Launcher
 
             // Sets up Octokit API with a UserAgent and assigns latest to a new Release();
             Release githubrelease = null;
-            GitHubClient githubclient = new GitHubClient(new ProductHeaderValue("CyanLabs-Launcher"));
+            GitHubClient githubclient = new(new ProductHeaderValue("CyanLabs-Launcher"));
             CIRelease ciRelease = null;
             // Attempt to get latest GitHub release
             try
@@ -47,7 +50,7 @@ namespace Cyanlabs.Launcher
                     // Continuous Intergration, 
                     case LauncherPrefs.ReleaseType.Alpha:
                         // Gets latest build via API at Cyanlabs.net
-                        WebClient wc = new WebClient();
+                        WebClient wc = new();
                         ciRelease = JsonConvert.DeserializeObject<CIRelease>(wc.DownloadString(new Uri("https://api.cyanlabs.net/ci/Syn3Updater/latest")));
                         break;
 
@@ -76,33 +79,30 @@ namespace Cyanlabs.Launcher
 
             string version;
             if (releaseType == LauncherPrefs.ReleaseType.Alpha)
-            {
                 version = ciRelease.Number;
-            }
             else
-            {
                 version = githubrelease.TagName;
-                // Use GitHub release tagname as version and parse in to an integer
-            }
+            // Use GitHub release tagname as version and parse in to an integer
 
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
-            if (Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
+            if (Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType ||
+                !File.Exists(destFolder + "\\Syn3Updater.exe"))
             {
                 Vm.Message = "Installing " + releaseType + " release " + version;
 
                 string zipPath = destFolder + "\\" + releaseType + "_" + version + ".zip";
 
-                WebClient wc = new WebClient();
+                WebClient wc = new();
 
                 // Hook WebClient DownloadProgressChanged handler
                 wc.DownloadProgressChanged += client_DownloadProgressChanged;
 
                 // Do the actual file download of the first Asset in the chosen GitHub Release or the CI download link with the previously created WebClient
                 await wc.DownloadFileTaskAsync(
-                     releaseType == LauncherPrefs.ReleaseType.Alpha
-                         ? new Uri(ciRelease.Download)
-                         : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
+                    releaseType == LauncherPrefs.ReleaseType.Alpha
+                        ? new Uri(ciRelease.Download)
+                        : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
 
                 if (Directory.Exists(destFolder + "\\temp"))
                     Directory.Delete(destFolder + "\\temp", true);
@@ -114,8 +114,8 @@ namespace Cyanlabs.Launcher
                     File.Delete(archivePath);
                 File.Move(destFolder + "\\Launcher.exe", archivePath);
 
-                if(Directory.Exists(destFolder + "\\Languages"))
-                    Directory.Delete(destFolder + "\\Languages",true);
+                if (Directory.Exists(destFolder + "\\Languages"))
+                    Directory.Delete(destFolder + "\\Languages", true);
 
                 Vm.Message = "Extracting...";
                 ZipFile.ExtractToDirectory(zipPath, destFolder + "\\temp");
@@ -141,6 +141,7 @@ namespace Cyanlabs.Launcher
                 File.WriteAllText(configFolderPath + "\\LauncherPrefs.json", JsonConvert.SerializeObject(Core.LauncherPrefs));
                 return true;
             }
+
             return false;
             // end of If 'current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing'
         }
@@ -154,7 +155,7 @@ namespace Cyanlabs.Launcher
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo dir = new(sourceDirName);
 
             if (!dir.Exists)
                 throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirName);
@@ -162,10 +163,7 @@ namespace Cyanlabs.Launcher
             DirectoryInfo[] dirs = dir.GetDirectories();
 
             // If the destination directory doesn't exist, create it.
-            if (!string.IsNullOrWhiteSpace(destDirName) && !Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
+            if (!string.IsNullOrWhiteSpace(destDirName) && !Directory.Exists(destDirName)) Directory.CreateDirectory(destDirName);
 
             // Get the files in the directory and copy them to the new location.
             foreach (FileInfo file in dir.GetFiles())
@@ -203,10 +201,10 @@ namespace Cyanlabs.Launcher
 
             Vm.Message = $"Downloaded {e.BytesReceived / 1000000}  MB of {e.TotalBytesToReceive / 1000000} MB.";
 
-            Vm.Percentage = 100 - (int)percentage;
+            Vm.Percentage = 100 - (int) percentage;
         }
-        #endregion
 
+        #endregion
     }
 
     // ReSharper disable once InconsistentNaming

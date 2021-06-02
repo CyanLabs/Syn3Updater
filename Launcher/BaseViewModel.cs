@@ -15,9 +15,11 @@ namespace Cyanlabs.Launcher
         ///     Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
         #endregion
 
         #region Methods
+
         /// <summary>
         ///     Checks if the property already matches the desired value and updates it if not.
         /// </summary>
@@ -40,6 +42,7 @@ namespace Cyanlabs.Launcher
 
             return false;
         }
+
         #endregion
     }
 }
