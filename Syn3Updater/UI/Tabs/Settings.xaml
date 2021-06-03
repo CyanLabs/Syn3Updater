@@ -240,17 +240,17 @@
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="1" HorizontalAlignment="Right"
                                Grid.Column="0"
                                Text="{Binding Language, ConverterParameter=Settings.AdvancedModeToggle, Converter={StaticResource LocConverter}}" />
-                    <controls:ToggleSwitch BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
+                    <controls:ToggleSwitch Name="AdvancedToggle"  BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
                                            Grid.Row="1" Grid.Column="1" IsOn="{Binding AdvancedModeToggle}"
-                                           OnContent="" OffContent="" />
+                                           OnContent="" OffContent=""  Toggled="AdvancedModeToggle_OnToggled" />
 
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Right"
                                Grid.Column="0"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.My20Mode, Converter={StaticResource LocConverter}}" />
-                    <controls:ToggleSwitch BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
+                    <controls:ToggleSwitch Name="My20Toggle" BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
                                            Grid.Row="2" Grid.Column="1" IsOn="{Binding My20Mode}"
-                                           OnContent="" OffContent="" IsEnabled="{Binding AdvancedModeToggle}" />
+                                           OnContent="" OffContent="" IsEnabled="{Binding AdvancedModeToggle}" Toggled="My20Toggle_OnToggled"/>
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right"
                                Grid.Column="0"

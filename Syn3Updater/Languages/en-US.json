@@ -107,7 +107,7 @@
     "Settings.Region": "Region",
     "Settings.Navigation": "Navigation",
     "MessageBox.NoVersionOrRegionSelected": "You have not set your current Version or Region!",
-    "MessageBox.My20Detected": "Syn3 Updater has detected that you are trying to force the install mode or disable 'My20 Mode' however a MY20 or newer APIM was previously detected! By doing this and using the created USB drive on a MY20 or newer APIM YOU WILL BRICK IT!!\n\nBy clicking 'Yes' you will disable all MY20 protection methods embedded in Syn3 Updater\n\nAre you sure you want to override this protection?",
+    "MessageBox.My20Detected": "Syn3 Updater has detected that you are trying to force the install mode or disable 'My20 Mode' however a APIM Manufactured in 2020 or newer was previously detected!\n\n(or MY20 Protection was turned on manually)\n\nBy doing this and using the created USB drive on a MY20 or newer APIM YOU WILL BRICK IT!!\n\nBy clicking 'Yes' you will disable all MY20 protection methods embedded in Syn3 Updater\n\nAre you sure you want to override this protection?",
     "MessageBox.My20Check": "WARNING, ANSWERING INCORRECTLY COULD RESULT IN YOUR APIM BEING BRICKED!\n\nIs you car manufactured in 2020 or newer?\n\nIf it is or you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not\n\nIf it is 2019 or older, click 'No' to continue as planned.",
     "MessageBox.My20Found": "Syn3 Updater has determined that your APIM is MY20 (Manufacture Year 2020) or newer, Syn3 Updater will now enforce autoinstall mode to prevent possible bricking of the APIM!",
     "MessageBox.My20NotFound": "Syn3 Updater has determined that your APIM is NOT MY20 and it is safe to use all functions of Syn3 Updater\n\nPlease note that if you have retrofitted your APIM or APIM Screen this information may not be accurate!",
@@ -154,6 +154,7 @@
     "String.OK": "OK",
     "String.Error": "Error",
     "String.Upload": "Upload",
+    "String.Warning": "WARNING",
     "Settings.DownloadConnections": "Download Connections",
     "MessageBox.ConnectionClosedByRemoteHost": "This error is usually temporary and caused by a connection drop on the remote server. Re-attempt the download and Syn3 Updater will only download the remaining files, if the issue persists try at another time of day or contact CyanLabs"
 }

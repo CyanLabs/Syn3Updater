@@ -203,7 +203,7 @@ namespace Cyanlabs.Syn3Updater
             }
         }
 
-        public void UpdateLauncherSettings()
+        public async void UpdateLauncherSettings()
         {
             string json = JsonConvert.SerializeObject(LauncherPrefs);
             LauncherConfigFile = CommonConfigFolderPath + "\\launcherPrefs.json";
@@ -215,7 +215,7 @@ namespace Cyanlabs.Syn3Updater
             catch (IOException e)
             {
                 Logger.Debug(e.GetFullMessage());
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
             }
         }
 

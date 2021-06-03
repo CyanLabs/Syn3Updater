@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
@@ -15,6 +16,8 @@ using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using ModernWpf;
 using ModernWpf.Controls;
+using Nito.AsyncEx;
+using Nito.AsyncEx.Synchronous;
 using Ookii.Dialogs.Wpf;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
@@ -198,27 +201,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private bool _My20Mode;
+        private bool _my20Mode;
 
         public bool My20Mode
         {
-            get => _My20Mode;
+            get => _my20Mode;
             set
             {
-                if (_My20Mode && !value)
-                {
-                    
-                    if (MessageBox.Show(LM.GetValue("MessageBox.My20Detected"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                        SetProperty(ref _My20Mode, false);
-                    AppMan.App.Settings.My20 = false;
-                }
-                else if (!_My20Mode && value)
-                {
-                    SetProperty(ref _My20Mode, true);
-                    AppMan.App.Settings.My20 = true;
-                    CurrentInstallMode = "autodetect";
-                }
-
+                SetProperty(ref _my20Mode, value);
+                AppMan.App.Settings.My20 = value;
                 InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
             }
         }
@@ -230,17 +221,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _advancedModeToggle;
             set
             {
-                if (value)
-                {
-                    if (MessageBox.Show(LM.GetValue("MessageBox.AdvancedSettings"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                        SetProperty(ref _advancedModeToggle, true);
-                }
-                else
-                {
-                    SetProperty(ref _advancedModeToggle, false);
-                }
-
-                InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
+               SetProperty(ref _advancedModeToggle, value);
+               InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
             }
         }
 
@@ -400,7 +382,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     catch (Win32Exception e)
                     {
                         AppMan.Logger.Debug(e.GetFullMessage());
-                        MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                        await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                     }
                 }
                 else
@@ -446,7 +428,30 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     LogLocation = dialog.SelectedPath + "\\";
             }
         }
-
+        
+        public async Task UpdateMy20Toggle(bool ison) {
+            if (!ison && AdvancedModeToggle)
+            {
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),LM.GetValue("String.Yes"),null,ContentDialogButton.None,Brushes.DarkRed).ShowAsync() == ContentDialogResult.Primary)
+                {
+                    My20Mode = false;
+                }
+                else
+                {
+                    My20Mode = true;
+                    CurrentInstallMode = "autodetect";
+                }
+            } 
+        }
+        
+        public async Task UpdateAdvancedModeToggle(bool ison) {
+            if (ison)
+            {
+                AdvancedModeToggle =
+                    await UIHelper.ShowDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                        LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkOrange).ShowAsync() == ContentDialogResult.Primary;
+            } 
+        }
         #endregion
     }
 }
