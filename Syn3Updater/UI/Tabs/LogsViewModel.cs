@@ -8,7 +8,6 @@ using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -89,7 +88,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
             }
         }
 
@@ -131,7 +130,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
             }
         }
 

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using MessageBox = ModernWpf.MessageBox;
+using ModernWpf.Controls;
 
 namespace Cyanlabs.Syn3Updater.Services
 {
@@ -17,7 +17,7 @@ namespace Cyanlabs.Syn3Updater.Services
             bool canceldownload = false;
             //Install Mode is reformat or downgrade My20 warning
             if (installMode == "reformat" || installMode == "downgrade")
-                if (MessageBox.Show(LM.GetValue("MessageBox.My20Check"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.My20Check")), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                 {
                     await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
                     return;
@@ -25,18 +25,17 @@ namespace Cyanlabs.Syn3Updater.Services
 
             //Warn is users region is different to new selection
             if (selectedRegion.Code != AppMan.App.Settings.CurrentRegion)
-                if (await MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelRegionMismatch"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) !=
-                    MessageBoxResult.Yes)
+                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelRegionMismatch")), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
                     canceldownload = true;
 
             //Cancel no apps package selected
             if (!AppMan.App.AppsSelected && (installMode == "reformat" || installMode == "downgrade"))
             {
-                await MessageBox.ShowAsync(LM.GetValue("MessageBox.CancelNoApps"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelNoApps")).ShowAsync();
                 canceldownload = true;
             }
 
-            if (!canceldownload && !SanityCheckHelper.CancelDownloadCheck(selectedDrive))
+            if (!canceldownload && await SanityCheckHelper.CancelDownloadCheck(selectedDrive) == false)
             {
                 AppMan.App.DriveNumber = selectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
                 AppMan.App.DriveLetter = driveLetter;

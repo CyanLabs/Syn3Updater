@@ -5,7 +5,6 @@ using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -97,7 +96,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else
             {
-                MessageBox.Show(LM.GetValue("MessageBox.InvalidProfile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.InvalidProfile")).ShowAsync();
             }
         }
 

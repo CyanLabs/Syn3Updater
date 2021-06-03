@@ -18,7 +18,6 @@ using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.UI;
 using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater
 {

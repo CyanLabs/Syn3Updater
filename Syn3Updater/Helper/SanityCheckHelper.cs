@@ -1,8 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
-using MessageBox = ModernWpf.MessageBox;
+using ModernWpf.Controls;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -16,7 +17,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// </summary>
         /// <param name="selectedDrive">USB Drive</param>
         /// <returns>true/false as Boolean depending on if Download is cancelled or not</returns>
-        public static bool CancelDownloadCheck(USBHelper.Drive selectedDrive)
+        public static async Task<bool> CancelDownloadCheck(USBHelper.Drive selectedDrive)
         {
             // Set local variables to the values of application level variables
             string driveLetter = AppMan.App.DriveLetter;
@@ -26,7 +27,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
                 {
-                    MessageBox.Show(LM.GetValue("MessageBox.CancelDownloadIsDrive"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsDrive")).ShowAsync();
                     return true;
                 }
 
@@ -35,8 +36,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (Directory.EnumerateFileSystemEntries(driveLetter, "*", SearchOption.AllDirectories).Any())
                 {
-                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter),
-                        "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                     {
                         AppMan.App.SkipFormat = false;
                     }
@@ -55,8 +55,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (selectedDrive?.FileSystem == "exFAT" && selectedDrive?.PartitionType == "MBR" && selectedDrive?.VolumeName == "CYANLABS")
                 {
-                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter),
-                        "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                     {
                         AppMan.App.SkipFormat = false;
                     }
@@ -70,9 +69,8 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             // Format USB Drive
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && !AppMan.App.SkipFormat)
-                if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater",
-                    MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                    return true;
+                if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
+                        return true;
 
             if (selectedDrive.Name == LM.GetValue("Home.NoUSBDir"))
             {
@@ -81,8 +79,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 if (string.IsNullOrEmpty(driveLetter)) return true;
 
                 if (Directory.EnumerateFiles(driveLetter).Any() && !AppMan.App.SkipFormat)
-                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater",
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
                         return true;
             }
 

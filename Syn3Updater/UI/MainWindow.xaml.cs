@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.UI
 {
@@ -20,7 +19,7 @@ namespace Cyanlabs.Syn3Updater.UI
             AppMan.Logger.Debug("MainWindow Initialized");
             if (!CryptoConfig.AllowOnlyFipsAlgorithms) return;
             MessageBox.Show(
-                "Syn3 Updater has detected that 'Use FIPS Compliant algorithms for encryption, hashing, and signing.' is enforced via Group Policy, Syn3 Updater will be unable to validate any files using MD5 with this policy enforced\n\nThe application will now close!",
+                "Syn3 Updater has detected that 'Use FIPS Compliant algorithms for encryption, hashing, and signing.' is enforced via Group Policy, Syn3 Updater will be unable to validate any files using MD5 with this policy enforced and therefore is currently unable to function\n\nThe application will now close!",
                 "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
             AppMan.App.Exit();
         }

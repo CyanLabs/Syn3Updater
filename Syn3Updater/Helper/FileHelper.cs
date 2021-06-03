@@ -15,7 +15,6 @@ using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -96,20 +95,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                     prevPercent = percent;
                 }
             }
-            catch (HttpRequestException webException)
-            {
-                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
-                    webException.GetFullMessage() + Environment.NewLine + Environment.NewLine + LM.GetValue("MessageBox.ConnectionClosedByRemoteHost"), "Syn3 Updater",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation));
-                return false;
-            }
             catch (IOException ioException)
             {
-                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
-                    ioException.GetFullMessage(), "Syn3 Updater",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation));
+                //Application.Current.Dispatcher.Invoke(() =>
+                await UIHelper.ShowErrorDialog(ioException.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }
@@ -213,10 +202,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     if (result.Ex != null)
                     {
-                        Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
-                            result.Ex.Message, "Syn3 Updater",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation));
+                        await UIHelper.ShowErrorDialog(result.Ex.Message).ShowAsync();
                         return false;
                     }
                     tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
@@ -355,7 +341,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return outputResult;
             }
 
-            string localMd5 = GenerateMd5(localfile, ct);
+            string localMd5 = await GenerateMd5(localfile, ct);
             if (md5 == null)
             {
                 long filesize = new FileInfo(localfile).Length;
@@ -363,7 +349,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     long srcfilesize = new FileInfo(source).Length;
 
-                    if (srcfilesize == filesize && localMd5 == GenerateMd5(source, ct))
+                    if (srcfilesize == filesize && localMd5 == await GenerateMd5(source, ct))
                     {
                         outputResult.Message = $"{filename} checksum matches already verified local copy";
                         outputResult.Result = true;
@@ -419,7 +405,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="filename">Source File</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>MD5 hash as String</returns>
-        public string GenerateMd5(string filename, CancellationToken ct)
+        public async Task<string> GenerateMd5(string filename, CancellationToken ct)
         {
             long totalBytesRead = 0;
             try
@@ -453,7 +439,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                Application.Current.Dispatcher.Invoke(() => MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation));
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }
@@ -475,7 +461,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="item">The SModel.Ivsu of the item to extract</param>
         /// <param name="ct"></param>
         /// <returns>outputResult with Message and Result properties</returns>
-        public OutputResult ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
+        public async Task<OutputResult> ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
         {
             OutputResult outputResult = new() {Message = ""};
             if (item.Source != "naviextras")
@@ -518,7 +504,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     Version = "",
                     Notes = "",
                     Url = "",
-                    Md5 = GenerateMd5(newpath, ct),
+                    Md5 = await GenerateMd5(newpath, ct),
                     Selected = true,
                     FileName = filename,
                     FileSize = size

@@ -16,9 +16,9 @@ using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.Services;
 using Cyanlabs.Updater.Common;
+using ModernWpf.Controls;
 using Nito.AsyncEx;
 using Ookii.Dialogs.Wpf;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -357,7 +357,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 : $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FSyn3Updater%2Fregion.php");
         }
 
-        private void RefreshUsb()
+        private async void RefreshUsb()
         {
             try
             {
@@ -367,22 +367,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (XamlParseException e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (NullReferenceException e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
 
-        private void UpdateDriveInfo()
+        private async void UpdateDriveInfo()
         {
             StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             if (SelectedDrive?.Name == LM.GetValue("Home.NoUSBDir"))
@@ -393,12 +393,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     string destination = dialog.SelectedPath;
                     DriveInfo driveInfo = new(destination);
                     if (driveInfo.DriveType != DriveType.Fixed)
-                        if (MessageBox.Show(LM.GetValue("MessageBox.RemovableDriveFolder"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Warning) ==
-                            MessageBoxResult.Cancel)
+                        if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() ==
+                            ContentDialogResult.None)
                             return;
                     if (AppMan.App.DownloadPath.Contains(destination))
                     {
-                        MessageBox.Show(LM.GetValue("MessageBox.CancelDownloadIsFolder"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsFolder")).ShowAsync();
                         ReloadSettings();
                     }
                     else
@@ -662,10 +662,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task StartAction()
         {
             if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20)
-                if (MessageBox.Show(
-                        "WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
-                        "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
-                    MessageBoxResult.No)
+                if (await UIHelper.ShowDialog("WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
+                                                  "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.None)
                 {
                     Process.Start("https://community.cyanlabs.net/t/placeholder-my20-discussion/3203");
                     return;

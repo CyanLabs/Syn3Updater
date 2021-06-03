@@ -14,9 +14,9 @@ using Cyanlabs.Updater.Common;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using ModernWpf;
+using ModernWpf.Controls;
 using Ookii.Dialogs.Wpf;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
-using MessageBox = ModernWpf.MessageBox;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
@@ -207,6 +207,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 if (_My20Mode && !value)
                 {
+                    
                     if (MessageBox.Show(LM.GetValue("MessageBox.My20Detected"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                         SetProperty(ref _My20Mode, false);
                     AppMan.App.Settings.My20 = false;
@@ -384,12 +385,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             My20Mode = AppMan.App.Settings.My20;
         }
 
-        private void ApplySettingsAction()
+        private async void ApplySettingsAction()
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (MessageBox.Show(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", MessageBoxButton.YesNo,
-                    MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                 {
                     _currentReleaseType = ReleaseType;
                     try
@@ -422,10 +422,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
-                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
-                            Environment.NewLine + oldPath + Environment.NewLine,
-                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
-                        MessageBoxResult.Yes)
+                    
+                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
+                        Environment.NewLine + oldPath + Environment.NewLine,
+                        Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                         try
                         {
                             if (type == "downloads")

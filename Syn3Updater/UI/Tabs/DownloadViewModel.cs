@@ -13,7 +13,7 @@ using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.Services;
-using MessageBox = ModernWpf.MessageBox;
+using ModernWpf.Controls;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -201,7 +201,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                     if (item.Source == @"naviextras")
                     {
-                        FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
+                        FileHelper.OutputResult outputResult = await _fileHelper.ExtractMultiPackage(item, _ct);
 
                         text = $"Extracting: {item.FileName} (This may take some time!)";
                         Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -256,7 +256,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 AppMan.Logger.Info(text);
                                 if (item.Source == @"naviextras")
                                 {
-                                    FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
+                                    FileHelper.OutputResult outputResult = await _fileHelper.ExtractMultiPackage(item, _ct);
 
                                     text = $"Extracting: {item.FileName} (This may take some time!)";
                                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -277,9 +277,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                                 AppMan.Logger.Info(text);
 
-                                Application.Current.Dispatcher.Invoke(() =>
-                                    MessageBox.Show(string.Format(LM.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater",
-                                        MessageBoxButton.OK, MessageBoxImage.Error));
+                                await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync());
                                 CancelAction();
                                 break;
                             }
@@ -376,9 +374,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                             AppMan.Logger.Info(text);
 
-                            Application.Current.Dispatcher.Invoke(() => MessageBox.Show(
-                                string.Format(LM.GetValue("MessageBox.FailedToValidate3"), item.FileName), "Syn3 Updater", MessageBoxButton.OK,
-                                MessageBoxImage.Error));
+                            await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync());
                             CancelAction();
                             break;
                         }
@@ -390,7 +386,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private void CopyComplete()
+        private async void CopyComplete()
         {
             switch (_action)
             {
@@ -426,75 +422,77 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             DownloadInfo = LM.GetValue("String.Completed");
             AppMan.App.IsDownloading = false;
-
-            Application.Current.Dispatcher.Invoke(() =>
+            
+            if (_action != "logutilitymy20")
             {
-                if (_action != "logutilitymy20")
-                    USBHelper.GenerateLog(Log,
-                        MessageBox.Show(LM.GetValue("MessageBox.UploadLog"), "Syn3 Updater", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes);
-
-                if (_action == "main")
+                ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper
+                    .ShowDialog(LM.GetValue("MessageBox.UploadLog"), "Syn3 Updater", LM.GetValue("Download.CancelButton"), LM.GetValue("String.Upload"))
+                    .ShowAsync());
+                USBHelper.GenerateLog(Log,result == ContentDialogResult.Primary);
+            }
+            
+            if (_action == "main")
+            {
+                ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper
+                    .ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentversion"), AppMan.App.SVersion, AppMan.App.SelectedRelease.Replace("Sync ", "")), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes"))
+                    .ShowAsync());
+                if (result == ContentDialogResult.Primary)
                 {
-                    if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.UpdateCurrentversion"), AppMan.App.SVersion, AppMan.App.SelectedRelease.Replace("Sync ", "")),
-                        "Syn3 Updater", MessageBoxButton.YesNo,
-                        MessageBoxImage.Information) == MessageBoxResult.Yes)
-                    {
-                        AppMan.App.Settings.CurrentVersion =
-                            Convert.ToInt32(AppMan.App.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
-                        AppMan.App.SVersion = AppMan.App.SelectedRelease.Replace("Sync ", "");
-                    }
+                    AppMan.App.Settings.CurrentVersion =
+                        Convert.ToInt32(AppMan.App.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
+                    AppMan.App.SVersion = AppMan.App.SelectedRelease.Replace("Sync ", "");
+                }
 
-                    if (AppMan.App.DownloadToFolder)
+                if (AppMan.App.DownloadToFolder)
+                {
+                    await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.CompletedFolder"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                    Process.Start(AppMan.App.DriveLetter);
+                }
+                else
+                {
+                    await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.Completed"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                    Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
+                }
+
+                AppMan.App.FireHomeTabEvent();
+            }
+            else if (_action == "logutility")
+            {
+                await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                AppMan.App.UtilityCreateLogStep1Complete = true;
+                AppMan.App.FireUtilityTabEvent();
+            }
+            else if (_action == "logutilitymy20")
+            {
+                await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                USBHelper usbHelper = new();
+                await usbHelper.LogParseXmlAction().ConfigureAwait(false);
+                AppMan.App.UtilityCreateLogStep1Complete = true;
+                if (!AppMan.App.Cancelled)
+                {
+                    if (AppMan.App.Settings.My20)
                     {
-                        MessageBox.Show(LM.GetValue("MessageBox.CompletedFolder"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                        Process.Start(AppMan.App.DriveLetter);
+                        AppMan.App.Settings.My20 = true;
+                        await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
                     }
                     else
                     {
-                        MessageBox.Show(LM.GetValue("MessageBox.Completed"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                        Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
+                        AppMan.App.Settings.My20 = false;
+                        await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
                     }
+                }
+                else
+                {
+                    await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                }
 
-                    AppMan.App.FireHomeTabEvent();
-                }
-                else if (_action == "logutility")
-                {
-                    MessageBox.Show(LM.GetValue("MessageBox.LogUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                    AppMan.App.UtilityCreateLogStep1Complete = true;
-                    AppMan.App.FireUtilityTabEvent();
-                }
-                else if (_action == "logutilitymy20")
-                {
-                    MessageBox.Show(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                    USBHelper usbHelper = new();
-                    usbHelper.LogParseXmlAction().ConfigureAwait(false);
-                    AppMan.App.UtilityCreateLogStep1Complete = true;
-                    if (!AppMan.App.Cancelled)
-                    {
-                        if (AppMan.App.Settings.My20)
-                        {
-                            AppMan.App.Settings.My20 = true;
-                            MessageBox.Show(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                        else
-                        {
-                            AppMan.App.Settings.My20 = false;
-                            MessageBox.Show(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show(LM.GetValue("MessageBox.My20CheckCancelled"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-
-                    AppMan.App.FireHomeTabEvent();
-                }
-                else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
-                {
-                    MessageBox.Show(LM.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Information);
-                    AppMan.App.FireUtilityTabEvent();
-                }
-            });
+                AppMan.App.FireHomeTabEvent();
+            }
+            else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
+            {
+                await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.GenericUtilityComplete"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                AppMan.App.FireUtilityTabEvent();
+            }
             Reset();
         }
 

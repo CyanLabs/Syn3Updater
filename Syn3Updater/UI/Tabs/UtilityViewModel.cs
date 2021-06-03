@@ -8,8 +8,8 @@ using System.Windows.Markup;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using ModernWpf.Controls;
 using Ookii.Dialogs.Wpf;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -165,7 +165,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             _usbHelper = new USBHelper();
         }
 
-        private void RefreshUsbAction()
+        private async void RefreshUsbAction()
         {
             try
             {
@@ -174,17 +174,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (XamlParseException e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (UnauthorizedAccessException e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
             catch (NullReferenceException e)
             {
-                MessageBox.Show(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -245,14 +245,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 return;
             }
 
             AppMan.App.Ivsus.Add(Api.GracenotesRemoval);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.GracenotesRemoval == null) return;
+            if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.GracenotesRemoval == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;
@@ -275,13 +275,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 return;
             }
 
             AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.SmallVoicePackage == null) return;
+            if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.SmallVoicePackage == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;
@@ -303,12 +303,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 return;
             }
 
             AppMan.App.Settings.InstallMode = "autoinstall";
-            if (SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.DowngradeApp == null) return;
+            if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.DowngradeApp == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;

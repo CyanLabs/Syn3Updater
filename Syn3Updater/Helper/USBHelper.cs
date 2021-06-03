@@ -16,10 +16,10 @@ using System.Xml;
 using System.Xml.Linq;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
+using ModernWpf.Controls;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
 using Formatting = Newtonsoft.Json.Formatting;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -188,8 +188,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         //TODO: Fma965: refactor/move this
         public async Task UploadFile()
         {
-            if (_node != null && MessageBox.Show(LM.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", MessageBoxButton.OKCancel, MessageBoxImage.Information) ==
-                MessageBoxResult.OK)
+            if (_node != null && await UIHelper.ShowDialog(LM.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", LM.GetValue("Download.CancelButton"), LM.GetValue("String.Upload")).ShowAsync() == ContentDialogResult.Primary)
             {
                 FormUrlEncodedContent formContent = new(new[]
                 {
@@ -321,9 +320,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
                         {
-                            if (MessageBox.Show(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
-                                "Syn3 Updater",
-                                MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                            if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                             {
                                 AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
@@ -353,11 +350,11 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show(LM.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync();
             }
             catch (XmlException)
             {
-                MessageBox.Show(LM.GetValue("MessageBox.LogUtilityInvalidFile"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Error);
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync();
             }
 
             return new[] {LogXmlDetails, LogXmlDetails2, LogXmlDetails3};
@@ -386,14 +383,14 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (TaskCanceledException e)
             {
-                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 return;
             }
 
             AppMan.App.Ivsus.Add(Api.InterrogatorTool);
             AppMan.App.Settings.InstallMode = "autoinstall";
 
-            if (SanityCheckHelper.CancelDownloadCheck(selectedDrive) || Api.InterrogatorTool == null)
+            if (await SanityCheckHelper.CancelDownloadCheck(selectedDrive) || Api.InterrogatorTool == null)
                 return;
 
             AppMan.App.IsDownloading = true;

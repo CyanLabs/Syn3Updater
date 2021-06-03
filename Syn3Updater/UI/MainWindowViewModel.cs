@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using FontAwesome5;
 using ModernWpf;
+using ModernWpf.Controls;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
-using MessageBox = ModernWpf.MessageBox;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
 namespace Cyanlabs.Syn3Updater.UI
@@ -93,18 +94,18 @@ namespace Cyanlabs.Syn3Updater.UI
                 }
                 else if (value != "about" && !AppMan.App.MainSettings.DisclaimerAccepted)
                 {
-                    MessageBox.Show(LM.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    UIHelper.ShowDialog(LM.GetValue("MessageBox.DisclaimerNotAccepted"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync();
                     value = "about";
                 }
                 else if (value == "home" && (AppMan.App.Settings.CurrentRegion?.Length == 0 || AppMan.App.Settings.CurrentVersion == 0 ||
                                              AppMan.App.Settings.CurrentVersion.ToString().Length != 7))
                 {
-                    MessageBox.Show(LM.GetValue("MessageBox.NoVersionOrRegionSelected"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    UIHelper.ShowDialog(LM.GetValue("MessageBox.NoVersionOrRegionSelected"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync();
                     value = "settings";
                 }
                 else if (value != "downloads" && AppMan.App.IsDownloading)
                 {
-                    MessageBox.Show(LM.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    UIHelper.ShowDialog(LM.GetValue("MessageBox.DownloadInProgress"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync();
                     value = "downloads";
                 }
                 else if (value == "crashme")

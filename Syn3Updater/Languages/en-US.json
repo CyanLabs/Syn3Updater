@@ -151,6 +151,9 @@
     "String.Disabled": "Disabled / Not MY20",
     "String.Yes": "Yes",
     "String.No": "No",
+    "String.OK": "OK",
+    "String.Error": "Error",
+    "String.Upload": "Upload",
     "Settings.DownloadConnections": "Download Connections",
     "MessageBox.ConnectionClosedByRemoteHost": "This error is usually temporary and caused by a connection drop on the remote server. Re-attempt the download and Syn3 Updater will only download the remaining files, if the issue persists try at another time of day or contact CyanLabs"
 }

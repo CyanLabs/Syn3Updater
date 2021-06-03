@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
-using MessageBox = ModernWpf.MessageBox;
 
 namespace Cyanlabs.Syn3Updater.Helper
 {
@@ -31,7 +30,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (HttpRequestException e)
             {
-                await MessageBox.ShowAsync(e.GetFullMessage(), "Syn3 Updater", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: fetching SpecialPackage - " + e.GetFullMessage());
                 return null;
             }
