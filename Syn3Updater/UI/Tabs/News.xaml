@@ -53,7 +53,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                        Text="{Binding Language, ConverterParameter=News.NoticeTitle, Converter={StaticResource LocConverter}}" />
-                            <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand" Background="Gray"
+                            <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand" Background="#00000000"
                                     Style="{DynamicResource AccentButtonStyle}"
                                     ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                                     Command="{Binding ReloadNotices}">
@@ -71,7 +71,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                        Text="{Binding Language, ConverterParameter=News.Changelog, Converter={StaticResource LocConverter}}" />
-                            <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand" Background="Gray"
+                            <Button Margin="5,0,0,0" BorderThickness="0" Cursor="Hand" Background="#00000000"
                                     Style="{DynamicResource AccentButtonStyle}"
                                     ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                                     Command="{Binding ReloadChangelog}">

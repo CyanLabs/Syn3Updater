@@ -202,9 +202,13 @@
                                     CommandParameter="{Binding RelativeSource={RelativeSource Self},Path=Tag}" Padding="5,5" VerticalAlignment="Center" Content="Feedback Thread" Tag="{Binding FeedbackUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding FeedbackVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                     </Button>
                 </Grid>
-                <TextBox Text="{Binding Notes}" Height="110" Margin="20,5,10,0" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow" />
-            </StackPanel>
-
+                <TextBox Style="{StaticResource TextBoxRevealStyle}"
+                         Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                         Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
+                         BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Notes}"
+                         Height="110" Margin="20,5,10,0"
+                         IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow"
+                         TextAlignment="Left" /></StackPanel>
             <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,10,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30" />
