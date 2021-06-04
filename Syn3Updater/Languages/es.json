@@ -150,5 +150,11 @@
     "String.Enabled": "Activado",
     "String.Disabled": "Desactivado / No MY20",
     "String.Yes": "Si",
-    "String.No": "No"
+    "String.No": "No",
+    "Settings.DownloadConnections": "Conexiones de Descarga",
+    "MessageBox.ConnectionClosedByRemoteHost": "Este error normalmente es temporario y se causa de un corto de conexión de el servidor remoto. Trata de descargar los archivos, y Syn3 Updater solo va descargar los archivos que no se han descargado. Si la problema es existente, por favor trata descargar los archivos más tarde.",
+    "String.OK": "OK",
+    "String.Error": "Error",
+    "String.Upload": "Upload",
+    "String.Warning": "WARNING"
 }
