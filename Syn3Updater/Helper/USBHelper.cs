@@ -312,7 +312,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.IvsuSingle + sappname);
                         Api.JsonReleases sversion = JsonHelpers.Deserialize<Api.JsonReleases>(await response.Content.ReadAsStreamAsync());
-                        string convertedsversion = sversion.Releases[0].Version.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                        string convertedsversion = sversion.Releases[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")
                         {
                             AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
@@ -371,12 +371,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             string currentversion = AppMan.App.SVersion;
             try
             {
-                if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}4"))
+                if (currentversion.StartsWith($"3.4"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-                else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}2") ||
-                         currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}3"))
+                else if (currentversion.StartsWith($"3.2") ||
+                         currentversion.StartsWith($"3.3"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
-                else if (currentversion.StartsWith($"3{CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator}"))
+                else if (currentversion.StartsWith($"3."))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
                 else
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);

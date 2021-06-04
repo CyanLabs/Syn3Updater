@@ -152,13 +152,11 @@ namespace Cyanlabs.Syn3Updater
             }
 
             string version = App.Settings.CurrentVersion.ToString();
-            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-            Logger.Debug($"Current Version set to {version}, Decimal seperator set to {decimalSeparator}");
             try
             {
                 SVersion = version.Length == 7
-                    ? $"{version[0]}{decimalSeparator}{version[1]}{decimalSeparator}{version.Substring(2, version.Length - 2)}"
-                    : $"0{decimalSeparator}0{decimalSeparator}00000";
+                    ? $"{version[0]}.{version[1]}.{version.Substring(2, version.Length - 2)}"
+                    : $"0.0.00000";
             }
             catch (IndexOutOfRangeException e)
             {

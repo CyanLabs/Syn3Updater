@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -93,8 +95,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _currentVersion;
             set
             {
-                string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                if (value != null && value != $"_{decimalSeparator}_{decimalSeparator}_____" && value.Any(char.IsDigit))
+                if (value != null && value.Any(char.IsDigit))
                 {
                     SetProperty(ref _currentVersion, value);
                     AppMan.App.SVersion = value;
@@ -285,6 +286,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             public string Name { get; set; }
             public string Code { get; set; }
         }
+        
+        private Api.Ivsus2 _syncVersions;
+
+        public Api.Ivsus2 SyncVersions
+        {
+            get => _syncVersions;
+            set => SetProperty(ref _syncVersions, value);
+        }
+        
 
         private LauncherPrefs.ReleaseType _currentReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
 
