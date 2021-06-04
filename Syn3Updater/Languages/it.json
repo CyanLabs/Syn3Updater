@@ -1,7 +1,7 @@
 {
     "Main.Home": "Pagina principale",
     "Main.About": "Di",
-    "Main.Downloads": "Downloads",
+    "Main.Downloads": "SYNC\n",
     "Main.News": "Novità",
     "Main.Crashme": "Crash",
     "Main.Settings": "Impostazioni",
@@ -107,10 +107,10 @@
     "Settings.Region": "Regione",
     "Settings.Navigation": "Navigatore",
     "MessageBox.NoVersionOrRegionSelected": "Non hai impostato la tua versione attuale o non hai selezionato la tua regione corrente!",
-    "MessageBox.My20Detected": "Syn3 Updater ha rilevato che stai tentando di forzare il metodo di installazione ma è stata precedentemente rilevata una MY20 o APIM superiore! Facendo questo e usando la chiavetta USB creata su una MY20 o APIM più nuova BRICCHERAI IL TUTTO!!\n\nCliccando 'Si' disabiliterai tutti i metodi di protezione MY20 integrati in Syn3 Updater\n\nSei sicuro di voler cambiare il metodo di installazione?",
+    "MessageBox.My20Detected": "Syn3 Updater ha rilevato che stai tentando di forzare l'installazione o di disabilitare il 'Modo My20' tuttavia è stata precedentemente rilevata una MY20 o APIM superiore! Facendo questo e usando la chiavetta USB creata su una MY20 o APIM più nuova BRICCHERAI IL TUTTO!!\n\nCliccando 'Si' disabiliterai tutti i metodi di protezione MY20 integrati in Syn3 Updater\n\nSei sicuro di voler cambiare il metodo di installazione?",
     "MessageBox.My20Check": "ATTENZIONE, RISPONDERE IN MODO ERRATO PUÒ PORTARE AL BRICK DELLA TUA APIM!\n\nLa tua macchina è prodotta dal 2020 in poi?\n\nSe lo è clicca 'Si' e Syn3 Updater ti guiderà nell'usare lo 'strumento ufficiale di interrogazione' per validare se hai una MY20 APIM o no\n\nSe è 2019 o più vecchia, clicca 'No' per continuare come previsto.",
     "MessageBox.My20Found": "Syn3 Updater ha determinato che la tua APIM è MY20 (Manufacture Year 2020) o più nuova, Syn3 Updater forzerà la modalità autoinstall per prevenire un possibile brick della tua APIM!",
-    "MessageBox.My20NotFound": "Syn3 Updater ha determinato che la tua APIM NON è MY20 ed è quindi sicuro usare tutte le funzioni di Syn3 Updater",
+    "MessageBox.My20NotFound": "Syn3 Updater ha determinato che la tua APIM NON è MY20 ed è quindi sicuro usare tutte le funzioni di Syn3 Updater\n\nSi prega di prendere nota che sei hai aggiornato l'APIM o lo Schermo APIM questa informazione potrebbe non essere accurata!",
     "MessageBox.LogUtilityCompleteMy20": "Preparazione della chiavetta USB di interrogazione (Logging) completata con successo!\n\nRimuovi la chiavetta USB dal computer e inseriscila nella tua auto, assicurati che il motore si acceso e aspetta qualche attimo fino al messaggio di \"Installazione Completata\" o il riavvio della APIM.\n\nFatto ciò re-inserisci la chiavetta USB nel PC, clicca 'OK' e seleziona il file XML contenuto nella cartella SyncMyRide della tua Chiavetta USB",
     "String.OnlyMaps": "Aggiorna solo Mappe",
     "Settings.My20Mode": "Attivazione protezione MY20",
@@ -150,5 +150,11 @@
     "String.Enabled": "Attivato",
     "String.Disabled": "Disattivato / Non MY20",
     "String.Yes": "Si",
-    "String.No": "No"
+    "String.No": "No",
+    "Settings.DownloadConnections": "Connessioni per il download",
+    "MessageBox.ConnectionClosedByRemoteHost": "Questo errore è in genere temporaneo e causato da un'interruzione della connessione sul server remoto.  Ritentare il download e Syn3 Updater scaricherà solo i file rimanenti, se il problema persiste provare in un'altra ora del giorno o contattare CyanLabs",
+    "String.OK": "OK",
+    "String.Error": "Errore",
+    "String.Upload": "Carica",
+    "String.Warning": "ATTENZIONE"
 }
