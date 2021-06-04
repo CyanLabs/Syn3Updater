@@ -83,8 +83,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             UpdatedNoticeVisible = Visibility.Collapsed;
-            Task.Run(UpdateNoticesAsync);
-            Task.Run(GetChangelog);
+            Nito.AsyncEx.AsyncContext.Run(async () => await UpdateNoticesAsync());
+            Nito.AsyncEx.AsyncContext.Run(async () => await GetChangelog());
             if (AppMan.App.AppUpdated != 0)
             {
                 UpdatedNoticeVisible = Visibility.Visible;
