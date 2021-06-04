@@ -28,10 +28,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private AsyncCommand _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
+        private AsyncCommand<string> _visitFeedbackThread;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
         public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
         public AsyncCommand StartButton => _startButton ??= new AsyncCommand(StartAction);
-
+        
+        public AsyncCommand<string> VisitFeedbackThread => _visitFeedbackThread ??= new AsyncCommand<string>(VisitFeedbackThreadAction);
         #endregion
 
         #region Properties & Fields
@@ -202,6 +204,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _notesVisibility, value);
         }
 
+        private bool _feedbackVisibility;
+
+        public bool FeedbackVisibility
+        {
+            get => _feedbackVisibility;
+            set => SetProperty(ref _feedbackVisibility, value);
+        }
+
         private ObservableCollection<SModel.Ivsu> _ivsuList;
 
         public ObservableCollection<SModel.Ivsu> IvsuList
@@ -288,6 +298,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             get => _startEnabled;
             set => SetProperty(ref _startEnabled, value);
+        }
+
+        private string _feedbackUrl;
+
+        public string FeedbackUrl
+        {
+            get => _feedbackUrl;
+            set => SetProperty(ref _feedbackUrl, value);
         }
 
         private Dictionary<string, string> _magnetActions = new();
@@ -503,6 +521,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                         NotesVisibility = true;
                         Notes = item.Notes.Replace("\n", Environment.NewLine);
+
+                        if (item.FeedbackUrl == null)
+                        {             
+                            FeedbackVisibility = false;
+                            continue;
+                        }
+                        FeedbackUrl = item.FeedbackUrl;
+                        FeedbackVisibility = true;
                     }
 
                 if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20)
@@ -670,6 +696,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
             StartEnabled = false;
+        }
+
+        public async Task VisitFeedbackThreadAction(string url)
+        {
+           if(!string.IsNullOrEmpty(url))
+            Process.Start(url);
         }
 
         #endregion

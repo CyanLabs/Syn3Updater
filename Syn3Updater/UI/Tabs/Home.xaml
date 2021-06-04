@@ -189,18 +189,23 @@
                        Text="{Binding Language, ConverterParameter=Home.NewVersion, Converter={StaticResource LocConverter}}" />
             <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
                         Visibility="{Binding NotesVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Margin="20,15,20,0" FontWeight="Bold"
-                           Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" />
-                <TextBox Style="{StaticResource TextBoxRevealStyle}"
-                         Foreground="{DynamicResource SystemBaseHighColorBrush}"
-                         Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
-                         BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Notes}"
-                         Height="110" Margin="20,10,10,0"
-                         IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow"
-                         TextAlignment="Left" />
+                <Grid Margin="20,8,10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontWeight="Bold" Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" VerticalAlignment="Bottom" />
+                    <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" Background="Gray" Cursor="Hand" Command="{Binding VisitFeedbackThread}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource Self},Path=Tag}" Padding="5,5" VerticalAlignment="Center" Content="Feedback Thread" Tag="{Binding FeedbackUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding FeedbackVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                    </Button>
+                </Grid>
+                <TextBox Text="{Binding Notes}" Height="110" Margin="20,5,10,0" IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow" />
             </StackPanel>
 
-            <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,10,0">
+            <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,10,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30" />
                     <ColumnDefinition Width="Auto" />

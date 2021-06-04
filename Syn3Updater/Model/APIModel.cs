@@ -28,7 +28,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string APIBase = "https://api.cyanlabs.net/";
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
 
-        public const string AppReleasesConst = Syn3UpdaterBase + "items/releases?fields=name,notes,regions,version&sort=-name&limit=-1&[published]";
+        public const string AppReleasesConst = Syn3UpdaterBase + "items/releases?fields=name,notes,regions,version,feedbackurl&sort=-name&limit=-1&[published]";
         public const string MapReleasesConst = Syn3UpdaterBase + "items/map_releases?fields=name,regions,esn&sort=-name&limit=-1&[published]";
         public const string AppReleaseSingle = Syn3UpdaterBase + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
         public const string MapReleaseSingle = Syn3UpdaterBase + "items/map_releases?fields=*.*.*&filter[name]=";
@@ -72,6 +72,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("status")] public string Status { get; set; }
             [JsonProperty("version")] public string Version { get; set; }
             [JsonProperty("ivsus")] public IList<Ivsus> IvsusList { get; set; }
+            [JsonProperty("feedbackurl")] public string FeedbackUrl { get; set; }
         }
 
         public class Ivsu
