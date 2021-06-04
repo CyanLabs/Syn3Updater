@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private AsyncCommand _reloadChangelog;
         public AsyncCommand ReloadChangelog => _reloadChangelog ??= new AsyncCommand(ReloadChangelogAction);
 
+        private AsyncCommand<string> _visitGithub;
+        public AsyncCommand<string> VisitGithub => _visitGithub ??= new AsyncCommand<string>(VisitGithubAction);
+
         private string _importantNotices;
 
         public string ImportantNotices
@@ -36,12 +40,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _otherNotices, value);
         }
 
-        private string _changelog;
+        private Api.Changelogs _changelogs;
 
-        public string Changelog
+        public Api.Changelogs Changelogs
         {
-            get => _changelog;
-            set => SetProperty(ref _changelog, value);
+            get => _changelogs;
+            set => SetProperty(ref _changelogs, value);
         }
 
         private string _updatedNotice;
@@ -139,16 +143,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task GetChangelog()
         {
-            Changelog = "Loading changelog, please wait...";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.ChangelogURL);
-            Api.Changelogs output = JsonHelpers.Deserialize<Api.Changelogs>(await response.Content.ReadAsStreamAsync());
-            Changelog = "<style>h4 { margin:0px; } div { padding-bottom:0px;}</style>";
-            foreach (Api.Changelog changelog in output.Changelog)
-            {
-                string changelognotes = string.IsNullOrWhiteSpace(changelog.ReleaseNotes) ? "No Changelog Available" : changelog.ReleaseNotes.Replace(Environment.NewLine, "<br>");
-                string html = $"<div><h4><u>v{changelog.Version} - {changelog.Date}</u></h4>" + changelognotes + "</div>";
-                Changelog += html;
-            }
+            Changelogs = JsonHelpers.Deserialize<Api.Changelogs>(await response.Content.ReadAsStreamAsync());
+        }
+
+        public async Task VisitGithubAction(string version)
+        {
+            Process.Start($"https://github.com/CyanLabs/Syn3Updater/releases/tag/{version}");
         }
 
         #endregion
