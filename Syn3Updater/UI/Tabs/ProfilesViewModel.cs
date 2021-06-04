@@ -1,10 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -24,14 +25,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     {
         #region Constructors
 
-        private AsyncCommand<string> _selectProfile;
-        public AsyncCommand<string> SelectProfile => _selectProfile ??= new AsyncCommand<string>(SelectProfileAction);
+        private AsyncValueCommand<string> _selectProfile;
+        public AsyncValueCommand<string> SelectProfile => _selectProfile ??= new AsyncValueCommand<string>(SelectProfileAction);
 
         private AsyncCommand<string> _deleteProfile;
         public AsyncCommand<string> DeleteProfile => _deleteProfile ??= new AsyncCommand<string>(DeleteProfileAction);
 
-        private AsyncCommand _createProfile;
-        public AsyncCommand CreateProfile => _createProfile ??= new AsyncCommand(CreateProfileAction);
+        private ActionCommand _createProfile;
+        public ActionCommand CreateProfile => _createProfile ??= new ActionCommand(CreateProfileAction);
 
         #endregion
 
@@ -76,7 +77,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Reload()
         {
             CurrentProfile = AppMan.App.MainSettings.Profile;
-            Task.Run(ReloadProfiles);
+            ReloadProfiles();
         }
 
         private async Task DeleteProfileAction(string name)
@@ -92,7 +93,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     // ignored
                 }
 
-                await ReloadProfiles();
+                 ReloadProfiles();
             }
             else
             {
@@ -100,25 +101,26 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private async Task CreateProfileAction()
+        private  void CreateProfileAction()
         {
             if (!string.IsNullOrEmpty(ProfileName))
             {
                 string filename = FileHelper.MakeValidFileName(ProfileName);
-                await SelectProfileAction(filename);
-                await ReloadProfiles();
+                SelectProfileAction(filename);
+                ReloadProfiles();
             }
         }
 
-        private async Task SelectProfileAction(string name)
+        private  ValueTask SelectProfileAction(string name)
         {
             CurrentProfile = name;
             AppMan.App.MainSettings.Profile = name;
             AppMan.App.LoadProfile();
             AppMan.App.FireSettingsTabEvent();
+            return new ValueTask(); 
         }
 
-        private async Task ReloadProfiles()
+        private void ReloadProfiles()
         {
             ProfileList = new ObservableCollection<ProfileModel.Profile>();
             if (!string.IsNullOrEmpty(AppMan.App.ProfileConfigFolderPath))
