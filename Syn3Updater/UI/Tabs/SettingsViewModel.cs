@@ -103,18 +103,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private string _downloadConnections;
+        private double _downloadConnectionsValue;
 
-        public string DownloadConnections
+        public double DownloadConnectionsValue
         {
-            get => _downloadConnections;
+            get => _downloadConnectionsValue;
             set
             {
-                if (value != null && value.Any(char.IsDigit))
-                {
-                    SetProperty(ref _downloadConnections, value);
-                    AppMan.App.Settings.DownloadConnections = int.Parse(value);
-                }
+                if (double.IsNaN(value)) value = 8;
+                SetProperty(ref _downloadConnectionsValue, Convert.ToInt16(value));
+                AppMan.App.Settings.DownloadConnections = Convert.ToInt16(value);
             }
         }
 
@@ -210,6 +208,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SetProperty(ref _my20Mode, value);
                 AppMan.App.Settings.My20 = value;
                 InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
+                InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
             }
         }
 
@@ -295,6 +294,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
+            DownloadConnectionsValue = AppMan.App.Settings.DownloadConnections;
             if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.ToString()))
                 CurrentLanguage = CultureInfo.CurrentCulture.ToString();
             else if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
@@ -359,10 +359,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentRegion = currentRegionTemp;
             string currentInstallModeTemp = AppMan.App.Settings.InstallMode;
             CurrentInstallMode = currentInstallModeTemp;
-
             CurrentNav = AppMan.App.Settings.CurrentNav;
             CurrentVersion = AppMan.App.SVersion;
-            DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
             My20Mode = AppMan.App.Settings.My20;
         }
 
