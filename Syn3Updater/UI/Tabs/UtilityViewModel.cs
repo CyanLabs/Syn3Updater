@@ -3,12 +3,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Markup;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using ModernWpf.Controls;
 using Ookii.Dialogs.Wpf;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs

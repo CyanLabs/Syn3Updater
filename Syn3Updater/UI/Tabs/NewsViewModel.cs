@@ -3,9 +3,10 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using Cyanlabs.Syn3Updater.Helper;
+using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Model;
-using Newtonsoft.Json;
+using Cyanlabs.Updater.Common;
+
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -13,11 +14,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     {
         #region Properties & Fields
 
-        private ActionCommand _reloadNotices;
-        public ActionCommand ReloadNotices => _reloadNotices ??= new ActionCommand(ReloadNoticesAction);
+        private AsyncCommand _reloadNotices;
+        public AsyncCommand ReloadNotices => _reloadNotices ??= new AsyncCommand(ReloadNoticesAction);
 
-        private ActionCommand _reloadChangelog;
-        public ActionCommand ReloadChangelog => _reloadChangelog ??= new ActionCommand(ReloadChangelogAction);
+        private AsyncCommand _reloadChangelog;
+        public AsyncCommand ReloadChangelog => _reloadChangelog ??= new AsyncCommand(ReloadChangelogAction);
 
         private string _importantNotices;
 
@@ -82,8 +83,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             UpdatedNoticeVisible = Visibility.Collapsed;
-            Task.Run(UpdateNoticesAsync);
-            Task.Run(GetChangelog);
+            Nito.AsyncEx.AsyncContext.Run(async () => await UpdateNoticesAsync());
+            Nito.AsyncEx.AsyncContext.Run(async () => await GetChangelog());
             if (AppMan.App.AppUpdated != 0)
             {
                 UpdatedNoticeVisible = Visibility.Visible;
@@ -91,14 +92,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        public void ReloadNoticesAction()
+        public async Task ReloadNoticesAction()
         {
-            Task.Run(UpdateNoticesAsync);
+           await UpdateNoticesAsync();
         }
 
-        public void ReloadChangelogAction()
+        public async Task  ReloadChangelogAction()
         {
-            Task.Run(GetChangelog);
+            await GetChangelog();
         }
 
         public async Task UpdateNoticesAsync()
@@ -106,7 +107,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ImportantNotices = "Loading notices, please wait...";
             OtherNotices = "Loading notices, please wait...";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.NoticesURL);
-            Api.Notices output = JsonConvert.DeserializeObject<Api.Notices>(await response.Content.ReadAsStringAsync());
+            Api.Notices output = JsonHelpers.Deserialize<Api.Notices>(await response.Content.ReadAsStreamAsync());
             string updatedDate = "";
             ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
             OtherNotices = "";
@@ -140,7 +141,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             Changelog = "Loading changelog, please wait...";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.ChangelogURL);
-            Api.Changelogs output = JsonConvert.DeserializeObject<Api.Changelogs>(await response.Content.ReadAsStringAsync());
+            Api.Changelogs output = JsonHelpers.Deserialize<Api.Changelogs>(await response.Content.ReadAsStreamAsync());
             Changelog = "<style>h4 { margin:0px; } div { padding-bottom:0px;}</style>";
             foreach (Api.Changelog changelog in output.Changelog)
             {

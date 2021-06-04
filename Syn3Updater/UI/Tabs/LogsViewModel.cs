@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -18,8 +18,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private AsyncCommand<string> _openLogFile;
         public AsyncCommand<string> OpenLogFile => _openLogFile ??= new AsyncCommand<string>(OpenLogFileAction);
 
-        private AsyncCommand _deleteLogFiles;
-        public AsyncCommand DeleteLogFiles => _deleteLogFiles ??= new AsyncCommand(DeleteLogFilesAction);
+        private ActionCommand _deleteLogFiles;
+        public ActionCommand DeleteLogFiles => _deleteLogFiles ??= new ActionCommand(DeleteLogFilesAction);
 
         private AsyncCommand _openLogDirectory;
         public AsyncCommand OpenLogDirectory => _openLogDirectory ??= new AsyncCommand(OpenLogDirectoryAction);
@@ -75,7 +75,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Reload()
         {
             LogLocation = AppMan.App.MainSettings.LogPath;
-            Task.Run(ReloadLogs);
+            ReloadLogs();
         }
 
         private async Task OpenLogFileAction(string path)
@@ -92,7 +92,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private async Task DeleteLogFilesAction()
+        private void DeleteLogFilesAction()
         {
             foreach (LogModel.Log log in LogFiles)
             {
@@ -107,10 +107,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
             }
 
-            await Task.Run(ReloadLogs);
+            ReloadLogs();
         }
 
-        private async Task ReloadLogs()
+        private void ReloadLogs()
         {
             LogDetails = null;
             LogFiles = new ObservableCollection<LogModel.Log>();

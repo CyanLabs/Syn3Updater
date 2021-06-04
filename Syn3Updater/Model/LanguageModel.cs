@@ -92,15 +92,15 @@ namespace Cyanlabs.Syn3Updater.Model
         {
             try
             {
-                LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());
+                LanguageModel l = Languages.Find(x => x.Code.ToUpper() == lang.ToUpper());
                 if (l == null)
                     l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
 
-                if (l == null) l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
+                if (l == null) l = Languages.Find(x => x.Code.ToUpper().StartsWith("EN"));
 
                 if (l == null) return $"[{lang}:{key}]";
 
-                string r = l.Items.FirstOrDefault(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
+                string r = l.Items.Find(x => x.Key.ToLower() == key.ToLower())?.Value.Replace("\\r\\n", Environment.NewLine).Replace("\\n", Environment.NewLine)
                     .Replace("\\r", Environment.NewLine);
                 if (string.IsNullOrWhiteSpace(r))
                 {
@@ -137,7 +137,7 @@ namespace Cyanlabs.Syn3Updater.Model
 
                 LanguageModel l = Languages.FirstOrDefault(x => x.Code.ToUpper() == lang.ToUpper());
                 if (l == null)
-                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
+                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-')[0]));
 
                 if (l == null) l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith("EN"));
 

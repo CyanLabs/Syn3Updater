@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Windows;
-using Nito.AsyncEx;
-using Nito.AsyncEx.Synchronous;
+
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -25,13 +23,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         // Yes it's in the Code Behind, i can't seem to get it working in the viewmodel by binding the Toggled event.
         private void My20Toggle_OnToggled(object sender, RoutedEventArgs e)
         {
-            Task task = Task.Run(async () => await Application.Current.Dispatcher.Invoke(() =>  (DataContext as SettingsViewModel)?.UpdateMy20Toggle(My20Toggle.IsOn)));
+             (DataContext as SettingsViewModel)?.UpdateMy20Toggle(My20Toggle.IsOn);
         }
         
         // Yes it's in the Code Behind, i can't seem to get it working in the viewmodel by binding the Toggled event.
         private void AdvancedModeToggle_OnToggled(object sender, RoutedEventArgs e)
         {
-            Task task = Task.Run(async () => await Application.Current.Dispatcher.Invoke(() =>  (DataContext as SettingsViewModel)?.UpdateAdvancedModeToggle(AdvancedToggle.IsOn)));
+             (DataContext as SettingsViewModel)?.UpdateAdvancedModeToggle(AdvancedToggle.IsOn);
         }
     }
 }

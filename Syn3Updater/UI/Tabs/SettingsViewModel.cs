@@ -16,8 +16,7 @@ using Microsoft.VisualBasic.FileIO;
 using Microsoft.Win32;
 using ModernWpf;
 using ModernWpf.Controls;
-using Nito.AsyncEx;
-using Nito.AsyncEx.Synchronous;
+
 using Ookii.Dialogs.Wpf;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
