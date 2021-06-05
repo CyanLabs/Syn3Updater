@@ -701,7 +701,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (type == "DownloadOnly")
             {
-                if(await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"),LM.GetValue("String.Warning"),LM.GetValue("Download.CancelButton"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                if(await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"),LM.GetValue("String.Warning") + "!",LM.GetValue("Download.CancelButton"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                     AppMan.App.DownloadOnly = true;
                 else
                     return;

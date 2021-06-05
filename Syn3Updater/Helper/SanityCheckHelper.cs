@@ -69,7 +69,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             // Format USB Drive
             if (!string.IsNullOrWhiteSpace(selectedDrive.Path) && !AppMan.App.SkipFormat)
-                if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
+                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
                         return true;
 
             if (selectedDrive.Name == LM.GetValue("Home.NoUSBDir"))
@@ -79,7 +79,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 if (string.IsNullOrEmpty(driveLetter)) return true;
 
                 if (Directory.EnumerateFiles(driveLetter).Any() && !AppMan.App.SkipFormat)
-                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
+                    if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
                         return true;
             }
 

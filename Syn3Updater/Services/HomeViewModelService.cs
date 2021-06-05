@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using ModernWpf.Controls;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace Cyanlabs.Syn3Updater.Services
 {
@@ -17,7 +19,7 @@ namespace Cyanlabs.Syn3Updater.Services
             bool canceldownload = false;
             //Install Mode is reformat or downgrade My20 warning
             if (installMode == "reformat" || installMode == "downgrade")
-                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.My20Check")), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.My20Check")), LM.GetValue("WARNING!"), LM.GetValue("String.No"), LM.GetValue("String.Yes"),null,ContentDialogButton.None,Brushes.DarkRed).ShowAsync() == ContentDialogResult.Primary)
                 {
                     await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
                     return;
@@ -25,7 +27,7 @@ namespace Cyanlabs.Syn3Updater.Services
 
             //Warn is users region is different to new selection
             if (selectedRegion.Code != AppMan.App.Settings.CurrentRegion)
-                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelRegionMismatch")), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
+                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelRegionMismatch")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
                     canceldownload = true;
 
             //Cancel no apps package selected

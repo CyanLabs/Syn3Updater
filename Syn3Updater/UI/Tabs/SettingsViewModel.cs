@@ -453,8 +453,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (ison)
             {
                 AdvancedModeToggle =
-                    await UIHelper.ShowDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
-                        LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkOrange).ShowAsync() == ContentDialogResult.Primary;
+                    await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                        LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary;
             }
         }
         #endregion

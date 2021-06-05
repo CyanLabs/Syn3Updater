@@ -435,7 +435,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (_action != "logutilitymy20")
             {
-                ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.UploadLog"), "Syn3 Updater", LM.GetValue("Download.CancelButton"), LM.GetValue("String.Upload")).ShowAsync());
+                ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.UploadLog"), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Upload")).ShowAsync());
                 USBHelper.GenerateLog(Log,result == ContentDialogResult.Primary);
             }
 
@@ -472,29 +472,32 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else if (_action == "logutilitymy20")
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
-                USBHelper usbHelper = new();
-                await usbHelper.LogParseXmlAction().ConfigureAwait(false);
-                AppMan.App.UtilityCreateLogStep1Complete = true;
-                if (!AppMan.App.Cancelled)
+                if (await Application.Current.Dispatcher.Invoke(() =>
+                    UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync()) == ContentDialogResult.None)
                 {
-                    if (AppMan.App.Settings.My20)
+                    USBHelper usbHelper = new();
+                    await usbHelper.LogParseXmlAction().ConfigureAwait(false);
+                    AppMan.App.UtilityCreateLogStep1Complete = true;
+                    if (!AppMan.App.Cancelled)
                     {
-                        AppMan.App.Settings.My20 = true;
-                        await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                        if (AppMan.App.Settings.My20)
+                        {
+                            AppMan.App.Settings.My20 = true;
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                        }
+                        else
+                        {
+                            AppMan.App.Settings.My20 = false;
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                        }
                     }
                     else
                     {
-                        AppMan.App.Settings.My20 = false;
-                        await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
+                        await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
                     }
-                }
-                else
-                {
-                    await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), "Syn3 Updater", LM.GetValue("String.OK")).ShowAsync());
-                }
 
-                AppMan.App.FireHomeTabEvent();
+                    AppMan.App.FireHomeTabEvent();
+                };
             }
             else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
             {
