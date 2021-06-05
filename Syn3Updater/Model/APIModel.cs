@@ -24,7 +24,7 @@ namespace Cyanlabs.Syn3Updater.Model
 
         private const string Syn3UpdaterBase = "https://syn3updater.cyanlabs.net/";
         //private const string Syn3UpdaterBase = "https://syn3updater-test.cyanlabs.net/";
-        
+
         public const string APIBase = "https://api.cyanlabs.net/";
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
 
@@ -168,7 +168,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("date")] public string Date { get; set; }
             [JsonProperty("changelog")] public string ReleaseNotes { get; set; }
         }
-        
+
         public class Ivsus2
         {
             [JsonProperty("data")] public IList<Ivsu> Ivsu { get; set; }

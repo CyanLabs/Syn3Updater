@@ -118,8 +118,6 @@ namespace Cyanlabs.Syn3Updater.Helper
             public Exception Ex  { get; set; }
         }
 
-        
-
         /// <summary>
         ///     Downloads file from URL to specified filename using HTTPClient with CancellationToken support
         ///     <see
@@ -148,10 +146,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             #endregion
 
             if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-            
-            foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*")) 
+
+            foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
                 File.Delete(file);
-            
+
             using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
             {
                 ConcurrentDictionary<long, string> tempFilesDictionary = new();
@@ -167,7 +165,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     };
                     readRanges.Add(range);
                 }
-                
+
                 readRanges.Add(new Range
                 {
                     Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
@@ -189,14 +187,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
                         results.Add(result);
-                        
                     }, ct);
                     i++;
                     tasks.Add(t);
                 }
 
                 Task.WaitAll(tasks.ToArray(), ct);
-                
+
                 foreach (DownloadPartResult result in results)
                 {
                     if (result.Ex != null)
@@ -222,7 +219,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                     else
                     {
-                        byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
+                        byte[] tempFileBytes =  File.ReadAllBytes(tempFile.Value);
                         destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
                     }
 
@@ -236,11 +233,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return true;
             }
         }
-        
-        
+
         public async Task<DownloadPartResult> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
         {
-           
             HttpClient client = new();
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
             client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
@@ -303,12 +298,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                         {
                             // ignored
                         }
-                        
+
                         return new DownloadPartResult{FilePath = "", RangeStart = readRange.Start, Ex = httpRequestException};
                     }
                     finally
                     {
-                        
                         output.Close();
                         output.Dispose();
                     }
@@ -526,6 +520,4 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         #endregion
     }
-    
-    
 }

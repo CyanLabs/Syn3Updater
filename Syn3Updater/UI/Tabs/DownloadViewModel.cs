@@ -346,7 +346,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             AppMan.Logger.Info($"Copying (Attempt #{i}): {item.FileName}");
                         }
 
-
                         if (await _fileHelper.CopyFileAsync(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", _ct))
                         {
                             _count ++;
@@ -356,7 +355,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             CancelAction();
                             break;
                         }
-                        
 
                         if (await ValidateFile(AppMan.App.DownloadPath + item.FileName,
                             $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
@@ -422,7 +420,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             DownloadInfo = LM.GetValue("String.Completed");
             AppMan.App.IsDownloading = false;
-            
+
             if (_action != "logutilitymy20")
             {
                 ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper
@@ -430,7 +428,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     .ShowAsync());
                 USBHelper.GenerateLog(Log,result == ContentDialogResult.Primary);
             }
-            
+
             if (_action == "main")
             {
                 ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper
@@ -534,7 +532,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void DownloadPercentageChanged(object sender, EventArgs<int> e)
         {
             if (e.Part == 0)
-            { 
+            {
                 CurrentProgress = e.Value;
                 DownloadPercentage = $"{e.Value}% {_progressBarSuffix}";
                 TotalPercentage = _count * 100 + e.Value;
@@ -641,7 +639,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
             File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
         }
-
 
         private void CreateReformat()
         {

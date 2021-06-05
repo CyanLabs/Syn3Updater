@@ -8,7 +8,6 @@ using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 
-
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     internal class LogsViewModel : LanguageAwareBaseViewModel

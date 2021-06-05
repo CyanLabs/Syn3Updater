@@ -94,7 +94,7 @@ namespace Cyanlabs.Syn3Updater.Model
             {
                 LanguageModel l = Languages.Find(x => x.Code.ToUpper() == lang.ToUpper());
                 if (l == null)
-                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-').First()));
+                    l = Languages.FirstOrDefault(x => x.Code.ToUpper().StartsWith(lang.ToUpper().Split('-')[0]));
 
                 if (l == null) l = Languages.Find(x => x.Code.ToUpper().StartsWith("EN"));
 
