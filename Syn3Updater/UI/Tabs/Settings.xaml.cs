@@ -10,7 +10,6 @@ using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 using ModernWpf.Controls;
 
-
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     /// <summary>
@@ -25,19 +24,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (!DesignerProperties.GetIsInDesignMode(this)) (DataContext as SettingsViewModel)?.Init();
         }
 
-
         #region Code to Move to ViewModel at later date
         //TODO - Move to viewModel
         private void Settings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool) e.NewValue && !(bool) e.OldValue) (DataContext as SettingsViewModel)?.ReloadSettings();
         }
-        
+
         private void My20Toggle_OnToggled(object sender, RoutedEventArgs e)
         {
              (DataContext as SettingsViewModel)?.UpdateMy20Toggle(My20Toggle.IsOn);
         }
-        
+
         private void AdvancedModeToggle_OnToggled(object sender, RoutedEventArgs e)
         {
              (DataContext as SettingsViewModel)?.UpdateAdvancedModeToggle(AdvancedToggle.IsOn);

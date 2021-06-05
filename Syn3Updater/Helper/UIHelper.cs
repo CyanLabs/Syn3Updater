@@ -16,11 +16,10 @@ namespace Cyanlabs.Syn3Updater.Helper
     /// </summary>
     public static class UIHelper
     {
-        
         #region Methods
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="content"></param>
         /// <param name="title"></param>
@@ -38,7 +37,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             contentDialog.Background = Brushes.DarkRed;
             return contentDialog;
         }
-        
+
         public static ContentDialog ShowWarningDialog(string content, string title, string cancel, string primarybutton, string secondarybutton = null)
         {
             ContentDialog contentDialog = new();
@@ -50,7 +49,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if(!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
             return contentDialog;
         }
-        
+
         public static ContentDialog ShowDialog(string content, string title, string cancel, string primarybutton = null, string secondarybutton = null, ContentDialogButton defaultbutton = ContentDialogButton.None, Brush bg = null)
         {
             ContentDialog contentDialog = new();

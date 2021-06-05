@@ -32,7 +32,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
         public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
         public AsyncCommand<string> StartButton => _startButton ??= new AsyncCommand<string>(StartAction);
-        
+    
         public AsyncCommand<string> VisitFeedbackThread => _visitFeedbackThread ??= new AsyncCommand<string>(VisitFeedbackThreadAction);
         #endregion
 
@@ -534,7 +534,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Notes = item.Notes.Replace("\n", Environment.NewLine);
 
                         if (item.FeedbackUrl == null)
-                        {             
+                        {
                             FeedbackVisibility = false;
                             continue;
                         }
@@ -582,11 +582,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 UpdateInstallMode();
 
                 HttpResponseMessage response;
-                
+
                 string appReleaseSingle = AppMan.App.Settings.CurrentNav
                     ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
                     : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
-                
+
                 if (SelectedRelease != LM.GetValue("String.OnlyMaps"))
                 {
                     response = await AppMan.App.Client.GetAsync(appReleaseSingle);

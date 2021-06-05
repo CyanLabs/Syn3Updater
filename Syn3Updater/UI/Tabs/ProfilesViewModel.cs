@@ -6,7 +6,6 @@ using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 
-
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     public static class ProfileModel
@@ -117,7 +116,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.MainSettings.Profile = name;
             AppMan.App.LoadProfile();
             AppMan.App.FireSettingsTabEvent();
-            return new ValueTask(); 
+            return new ValueTask();
         }
 
         private void ReloadProfiles()

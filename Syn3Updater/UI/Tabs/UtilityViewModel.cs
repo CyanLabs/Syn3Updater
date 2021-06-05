@@ -78,7 +78,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _driveFreeSpace, value);
         }
 
-
         private string _driveFileSystem;
 
         public string DriveFileSystem
@@ -168,7 +167,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(false);
-                if (tmpDriveList != null && tmpDriveList.Count > 0) DriveList = tmpDriveList;
+                if (tmpDriveList?.Count > 0) DriveList = tmpDriveList;
             }
             catch (XamlParseException e)
             {

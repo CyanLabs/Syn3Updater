@@ -8,7 +8,6 @@ using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 
-
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
     internal class NewsViewModel : LanguageAwareBaseViewModel
@@ -112,7 +111,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             OtherNotices = "Loading notices, please wait...";
             HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.NoticesURL);
             Api.Notices output = JsonHelpers.Deserialize<Api.Notices>(await response.Content.ReadAsStreamAsync());
-            string updatedDate = "";
+            string updatedDate;
             ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
             OtherNotices = "";
             foreach (Api.Notice notice in output.Notice)

@@ -143,11 +143,13 @@ namespace Cyanlabs.Syn3Updater
             else
             {
                 Logger.Debug("No Profile Settings file found, initializing JSON settings");
-                Settings = new JsonSettings();
-                Settings.CurrentNav = MainSettings.CurrentNav;
-                Settings.CurrentRegion = MainSettings.CurrentRegion;
-                Settings.CurrentVersion = MainSettings.CurrentVersion;
-                Settings.My20 = MainSettings.My20;
+                Settings = new JsonSettings
+                {
+                    CurrentNav = MainSettings.CurrentNav,
+                    CurrentRegion = MainSettings.CurrentRegion,
+                    CurrentVersion = MainSettings.CurrentVersion,
+                    My20 = MainSettings.My20
+                };
                 SaveSettings();
             }
 
@@ -291,7 +293,6 @@ namespace Cyanlabs.Syn3Updater
                 Logger.Debug("Unable to set desired log path, defaulting path");
                 MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
             }
-
 
             if (File.Exists(CommonConfigFolderPath + "\\launcherPrefs.json"))
                 try
