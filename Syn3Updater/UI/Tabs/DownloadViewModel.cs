@@ -193,7 +193,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     return;
                 }
 
-                if (await ValidateFile(item.Url, AppMan.App.DownloadPath + item.FileName, item.Md5, false, true))
+                if (await Task.Run(async ()=>await ValidateFile(item.Url, AppMan.App.DownloadPath + item.FileName, item.Md5, false, true)))
                 {
                     string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -248,7 +248,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 break;
                             }
 
-                            if (await ValidateFile(item.Url, AppMan.App.DownloadPath + item.FileName, item.Md5, false))
+                            if (await Task.Run(async () => await ValidateFile(item.Url, AppMan.App.DownloadPath + item.FileName, item.Md5, false)))
                             {
                                 _count++;
                                 text = $"Downloaded: {item.FileName}";
@@ -316,8 +316,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     continue;
                 }
 
-                if (await ValidateFile(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
-                    true, true))
+                if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
+                    true, true)))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -356,8 +356,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             break;
                         }
 
-                        if (await ValidateFile(AppMan.App.DownloadPath + item.FileName,
-                            $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true))
+                        if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName,
+                            $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true)))
                         {
                             string text = $"Copied: {item.FileName}";
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -388,24 +388,24 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             switch (_action)
             {
-                case @"main":
+                case "main":
                     switch (InstallMode)
                     {
-                        case @"autoinstall":
+                        case "autoinstall":
                             CreateAutoInstall();
                             break;
-                        case @"downgrade":
-                        case @"reformat":
+                        case "downgrade":
+                        case "reformat":
                             CreateReformat();
                             break;
                     }
 
                     break;
-                case @"logutility":
-                case @"logutilitymy20":
-                case @"gracenotesremoval":
-                case @"voiceshrinker":
-                case @"downgrade":
+                case "logutility":
+                case "logutilitymy20":
+                case "gracenotesremoval":
+                case "voiceshrinker":
+                case "downgrade":
                     CreateAutoInstall();
                     break;
             }
@@ -544,9 +544,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                     _parts.TryAdd(e.Part, e.Value);
 
-                double downloadPercentage = Convert.ToInt32(_parts.Sum(part => part.Value) * 1d / (AppMan.App.Settings.DownloadConnections * 1d));
-                int value = Convert.ToInt32(downloadPercentage);
-                CurrentProgress = value;
+                double downloadPercentage = Convert.ToInt32(_parts.Sum(part => part.Value) * 1d / (AppMan.App.Settings.DownloadConnections * 1d));           
+                CurrentProgress = Convert.ToInt32(downloadPercentage);
                 DownloadPercentage = $"{CurrentProgress}% {_progressBarSuffix}";
                 TotalPercentage = _count * 100 + CurrentProgress;
             }
@@ -609,7 +608,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         p.WaitForExit();
                     }
 
-                    Thread.Sleep(5000);
+                    await Task.Delay(5000);
                 }
             }
 

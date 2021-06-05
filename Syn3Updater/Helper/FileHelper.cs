@@ -183,7 +183,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 foreach (Range readRange in readRanges)
                 {
                     int i1 = i;
-                    Task t = Task.Run(async () =>
+                    Task t =  Task.Run(async () =>
                     {
                         DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
                         results.Add(result);
@@ -256,6 +256,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         do
                         {
+                            //TODO: Change to Span/Memory once the netframework version is depricated  
                             int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
                             if (read == 0)
                             {
@@ -265,8 +266,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                             }
                             else
                             {
-                                byte[] data = new byte[read];
-                                buffer.ToList().CopyTo(0, data, 0, read);
+                                //byte[] data = new byte[read];
+                                //Array.Copy(buffer, data, read);   
                                 await output.WriteAsync(buffer, 0, read, ct);
                                 totalRead += read;
                                 double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
