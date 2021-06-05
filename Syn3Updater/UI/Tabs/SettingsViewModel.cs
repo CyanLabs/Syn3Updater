@@ -286,7 +286,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             public string Name { get; set; }
             public string Code { get; set; }
         }
-        
+
         private Api.Ivsus2 _syncVersions;
 
         public Api.Ivsus2 SyncVersions
@@ -294,7 +294,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _syncVersions;
             set => SetProperty(ref _syncVersions, value);
         }
-        
 
         private LauncherPrefs.ReleaseType _currentReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
 
@@ -411,7 +410,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
-                    
                     if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
                         Environment.NewLine + oldPath + Environment.NewLine,
                         Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
@@ -435,7 +433,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     LogLocation = dialog.SelectedPath + "\\";
             }
         }
-        
+
         public async Task UpdateMy20Toggle(bool ison) {
             if (!ison && AdvancedModeToggle)
             {
@@ -448,16 +446,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     My20Mode = true;
                     CurrentInstallMode = "autodetect";
                 }
-            } 
+            }
         }
-        
+
         public async Task UpdateAdvancedModeToggle(bool ison) {
             if (ison)
             {
                 AdvancedModeToggle =
                     await UIHelper.ShowDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
                         LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkOrange).ShowAsync() == ContentDialogResult.Primary;
-            } 
+            }
         }
         #endregion
     }

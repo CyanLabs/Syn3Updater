@@ -25,11 +25,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FluentWPF" Version="0.9.0" />
+		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.227701" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Octokit" Version="0.50.0" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.220602">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>		
+		<PackageReference Include="Octokit" Version="0.50.0" />		
 	</ItemGroup>	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
