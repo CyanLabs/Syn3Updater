@@ -22,7 +22,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             // Set local variables to the values of application level variables
             string driveLetter = AppMan.App.DriveLetter;
             string downloadPath = AppMan.App.DownloadPath;
-
+            
             // Ensure drive letter is not used as download path
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))

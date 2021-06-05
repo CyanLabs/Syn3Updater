@@ -25,13 +25,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     {
         #region Constructors
 
-        private AsyncCommand _startButton;
+        private AsyncCommand<string> _startButton;
         private ActionCommand _refreshUSB;
         private ActionCommand _regionInfo;
         private AsyncCommand<string> _visitFeedbackThread;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
         public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
-        public AsyncCommand StartButton => _startButton ??= new AsyncCommand(StartAction);
+        public AsyncCommand<string> StartButton => _startButton ??= new AsyncCommand<string>(StartAction);
         
         public AsyncCommand<string> VisitFeedbackThread => _visitFeedbackThread ??= new AsyncCommand<string>(VisitFeedbackThreadAction);
         #endregion
@@ -299,6 +299,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _startEnabled;
             set => SetProperty(ref _startEnabled, value);
         }
+        
+        private bool _downloadOnlyEnabled;
+
+        public bool DownloadOnlyEnabled
+        {
+            get => _downloadOnlyEnabled;
+            set => SetProperty(ref _downloadOnlyEnabled, value);
+        }
 
         private string _feedbackUrl;
 
@@ -323,6 +331,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             My20Mode = AppMan.App.Settings.My20 ? LM.GetValue("String.Enabled") : LM.GetValue("String.Disabled");
             InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
             StartEnabled = false;
+            DownloadOnlyEnabled = false;
             InstallMode = AppMan.App.Settings.InstallMode;
             CurrentProfile = AppMan.App.MainSettings.Profile;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
@@ -402,6 +411,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async void UpdateDriveInfo()
         {
             StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
+            DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
             if (SelectedDrive?.Name == LM.GetValue("Home.NoUSBDir"))
             {
                 VistaFolderBrowserDialog dialog = new();
@@ -484,7 +494,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 SVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
-
+                DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+                
                 if (SVersion != null && _magnetActions?.Count != 0 && SVersion.Contains("Sync " + _magnetActions?["Release"]))
                     SelectedRelease = "Sync " + _magnetActions?["Release"];
             }
@@ -555,7 +566,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 SMapVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
-
+                DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+                
                 string mapReleaseTmp = _magnetActions?["Maps"].Replace("_", " ");
                 if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp)) SelectedMapVersion = mapReleaseTmp;
             }
@@ -681,12 +693,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.Action = "main";
                 AppMan.App.Settings.InstallMode = InstallMode;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
+                DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
             }
         }
 
-        private async Task StartAction()
+        private async Task StartAction(string type)
         {
-            if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20)
+            if (type == "DownloadOnly")
+            {
+                if(await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"),LM.GetValue("String.Warning"),LM.GetValue("Download.CancelButton"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                    AppMan.App.DownloadOnly = true;
+                else
+                    return;
+            }
+            
+            if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20 && !AppMan.App.DownloadOnly)
                 if (await UIHelper.ShowDialog("WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
                                                   "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.None)
                 {
@@ -696,6 +717,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
             StartEnabled = false;
+            DownloadOnlyEnabled = false;
         }
 
         public async Task VisitFeedbackThreadAction(string url)

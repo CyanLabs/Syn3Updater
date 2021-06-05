@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Cyanlabs.Syn3Updater.Model;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
@@ -97,7 +98,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException ioException)
             {
-                await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()).ShowAsync());
+                Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()).ShowAsync());
                 AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }
@@ -201,7 +202,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     if (result.Ex != null)
                     {
-                        await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
+                        await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
                         return false;
                     }
                     tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
@@ -438,7 +439,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }
