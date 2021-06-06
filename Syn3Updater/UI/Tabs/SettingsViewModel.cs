@@ -372,7 +372,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), LM.GetValue("String.Information"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                 {
                     _currentReleaseType = ReleaseType;
                     try
