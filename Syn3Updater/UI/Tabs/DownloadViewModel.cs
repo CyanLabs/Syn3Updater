@@ -156,17 +156,29 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         
         private async void DoDownloadCopyTask()
         {
+            _doCopy = false;
+            _doDownload = false;
             try
             {
-                _doDownload = await Task.Run(DoDownload,_tokenSource.Token);
+                _doDownload = await Task.Run(DoDownload, _tokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                CancelAction();
+                return;
             }
             catch (Exception e)
             {
                 AppMan.Logger.CrashWindow(e);
                 CancelAction();
+                return;
             }
 
-            if (!_doDownload) return;
+            if (!_doDownload)
+            {
+                CancelAction();
+                return;
+            }
 
             CurrentProgress = 100;
             TotalPercentage = (AppMan.App.DownloadOnly ? TotalPercentageMax : TotalPercentage / 2);
@@ -184,13 +196,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     _doCopy = await Task.Run(DoCopy,_tokenSource.Token);
                 }
+                catch (OperationCanceledException)
+                {
+                    CancelAction();
+                    return;
+                }
                 catch (Exception e)
                 {
                     AppMan.Logger.CrashWindow(e);
                     CancelAction();
+                    return;
                 }
                 
-                if (!_doCopy) return;
+                if (!_doCopy)
+                {
+                    CancelAction();
+                    return;
+                }
 
                 await CopyComplete();
             }
@@ -263,7 +285,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             }
                             else
                             {
-                                CancelAction();
+                                return false;
                                 break;
                             }
 
@@ -297,7 +319,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 AppMan.Logger.Info(text);
 
                                 await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync();
-                                CancelAction();
+                                return false;
                                 break;
                             }
                         }
@@ -367,7 +389,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         }
                         else
                         {
-                            CancelAction();
+                            return false;
                             break;
                         }
 
@@ -388,7 +410,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             AppMan.Logger.Info(text);
 
                             await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync();
-                            CancelAction();
+                            return false;
                             break;
                         }
                     }
@@ -438,17 +460,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadInfo = LM.GetValue("String.Completed");
             AppMan.App.IsDownloading = false;
 
-            if (_action != "logutilitymy20")
+            if (_action != "logutilitymy20" && _action != "logutility")
             {
-                ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.UploadLog"), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Upload")).ShowAsync());
+                ContentDialogResult result = await UIHelper.ShowDialog(LM.GetValue("MessageBox.UploadLog"), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Upload")).ShowAsync();
                 USBHelper.GenerateLog(Log,result == ContentDialogResult.Primary);
             }
 
             if (_action == "main")
             {
-                ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper
-                    .ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentversion"), AppMan.App.SVersion, AppMan.App.SelectedRelease.Replace("Sync ", "")), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))
-                    .ShowAsync());
+                ContentDialogResult result = await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentversion"), AppMan.App.SVersion, AppMan.App.SelectedRelease.Replace("Sync ", "")), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))
+                    .ShowAsync();
                 if (result == ContentDialogResult.Primary)
                 {
                     AppMan.App.Settings.CurrentVersion =
@@ -477,8 +498,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else if (_action == "logutilitymy20")
             {
-                if (await Application.Current.Dispatcher.Invoke(() =>
-                    UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync()) == ContentDialogResult.None)
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync() == ContentDialogResult.None)
                 {
                     USBHelper usbHelper = new();
                     await usbHelper.LogParseXmlAction().ConfigureAwait(false);
@@ -538,7 +558,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentProgress = 0;
             DownloadInfo = "";
             DownloadPercentage = "";
-            Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
+            DownloadQueueList.Clear();
             AppMan.App.AppsSelected = false;
             AppMan.App.SkipFormat = false;
             _tokenSource.Dispose();
