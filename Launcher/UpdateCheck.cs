@@ -15,7 +15,7 @@ namespace Cyanlabs.Launcher
 {
     /// <summary>
     ///     Checks for any update on the selected branch, if found downloads and extracts it
-    /// </summary
+    /// </summary>
     public class UpdateCheck
     {
         #region Properties & Fields
@@ -62,10 +62,11 @@ namespace Cyanlabs.Launcher
                         break;
 
                     // Release
-                    case LauncherPrefs.ReleaseType.Stable:
+                    default:
                         // Get all GitHub releases for Syn3Updater that aren't marked as 'prerelease' and sets the value of 'latest' to the first (newest) retrieved
                         githubrelease = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
                         break;
+
                 } // End of Switch 'Get Correct Release'
             }
 
@@ -77,17 +78,14 @@ namespace Cyanlabs.Launcher
                 return false;
             }
 
-            string version;
-            if (releaseType == LauncherPrefs.ReleaseType.Alpha)
-                version = ciRelease.Number;
-            else
-                version = githubrelease.TagName;
+            string version = releaseType == LauncherPrefs.ReleaseType.Alpha ? ciRelease?.Number : githubrelease?.TagName;
             // Use GitHub release tagname as version and parse in to an integer
 
+            bool empty = (releaseType == LauncherPrefs.ReleaseType.Alpha && ciRelease != null) || (releaseType != LauncherPrefs.ReleaseType.Alpha && githubrelease != null);
+            
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
-            if (Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType ||
-                !File.Exists(destFolder + "\\Syn3Updater.exe"))
+            if (version != null && empty != true && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
             {
                 Vm.Message = "Installing " + releaseType + " release " + version;
 
@@ -101,7 +99,9 @@ namespace Cyanlabs.Launcher
                 // Do the actual file download of the first Asset in the chosen GitHub Release or the CI download link with the previously created WebClient
                 await wc.DownloadFileTaskAsync(
                     releaseType == LauncherPrefs.ReleaseType.Alpha
+                        // ReSharper disable once PossibleNullReferenceException
                         ? new Uri(ciRelease.Download)
+                        // ReSharper disable once PossibleNullReferenceException
                         : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
 
                 if (Directory.Exists(destFolder + "\\temp"))
@@ -177,6 +177,7 @@ namespace Cyanlabs.Launcher
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 
