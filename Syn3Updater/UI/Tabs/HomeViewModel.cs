@@ -544,6 +544,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20)
                 {
+                    if (SelectedRelease == LM.GetValue("String.OnlyMaps")) NotesVisibility = false;
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
                     _apiMapReleases = _apiMapReleases.Replace("[esn]", "{\"esn\": {\"_eq\": \"false\"}},");
                 }
@@ -610,6 +611,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 else
                 {
+                    NotesVisibility = false;
                     InstallMode = "autoinstall";
                     AppMan.App.Settings.InstallMode = InstallMode;
                 }
