@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,11 +10,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.Services;
 using ModernWpf.Controls;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -508,17 +509,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (AppMan.App.Settings.My20)
                         {
                             AppMan.App.Settings.My20 = true;
-                            await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                            await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), LM.GetValue("String.Notice"), LM.GetValue("String.OK"),null,null,ModernWpf.Controls.ContentDialogButton.None,Brushes.DarkRed).ShowAsync());
                         }
                         else
                         {
                             AppMan.App.Settings.My20 = false;
-                            await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                            await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                         }
                     }
                     else
                     {
-                        await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                        await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                     }
 
                     AppMan.App.FireHomeTabEvent();
@@ -558,7 +559,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentProgress = 0;
             DownloadInfo = "";
             DownloadPercentage = "";
-            DownloadQueueList.Clear();
+            Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
             AppMan.App.AppsSelected = false;
             AppMan.App.SkipFormat = false;
             _tokenSource.Dispose();
