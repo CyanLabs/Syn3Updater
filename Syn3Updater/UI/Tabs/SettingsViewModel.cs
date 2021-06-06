@@ -377,7 +377,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                 {
                     _currentReleaseType = ReleaseType;
                     try
@@ -412,7 +412,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
                     if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
                         Environment.NewLine + oldPath + Environment.NewLine,
-                        Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                        Environment.NewLine + dialog.SelectedPath + Environment.NewLine), LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                         try
                         {
                             if (type == "downloads")

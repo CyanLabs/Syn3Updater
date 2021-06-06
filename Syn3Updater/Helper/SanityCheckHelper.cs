@@ -36,7 +36,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (Directory.EnumerateFileSystemEntries(driveLetter, "*", SearchOption.AllDirectories).Any())
                 {
-                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                     {
                         AppMan.App.SkipFormat = false;
                     }
@@ -55,7 +55,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (selectedDrive?.FileSystem == "exFAT" && selectedDrive?.PartitionType == "MBR" && selectedDrive?.VolumeName == "CYANLABS")
                 {
-                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                     {
                         AppMan.App.SkipFormat = false;
                     }

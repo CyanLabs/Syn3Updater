@@ -188,7 +188,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         //TODO: Fma965: refactor/move this
         public async Task UploadFile()
         {
-            if (_node != null && await UIHelper.ShowDialog(LM.GetValue("MessageBox.AsBuiltVinWarning"), "Syn3 Updater", LM.GetValue("Download.CancelButton"), LM.GetValue("String.Upload")).ShowAsync() == ContentDialogResult.Primary)
+            if (_node != null && await UIHelper.ShowDialog(LM.GetValue("MessageBox.AsBuiltVinWarning"), LM.GetValue("String.Notice"), LM.GetValue("Download.CancelButton"), LM.GetValue("String.Upload")).ShowAsync() == ContentDialogResult.Primary)
             {
                 FormUrlEncodedContent formContent = new(new[]
                 {
@@ -320,7 +320,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
                         {
-                            if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                            if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                             {
                                 AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;

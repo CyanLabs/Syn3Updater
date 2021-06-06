@@ -420,7 +420,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     string destination = dialog.SelectedPath;
                     DriveInfo driveInfo = new(destination);
                     if (driveInfo.DriveType != DriveType.Fixed)
-                        if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() ==
+                        if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() ==
                             ContentDialogResult.None)
                             return;
                     if (AppMan.App.DownloadPath.Contains(destination))
@@ -709,7 +709,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             
             if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20 && !AppMan.App.DownloadOnly)
                 if (await UIHelper.ShowDialog("WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
-                                                  "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.None)
+                                                  LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.None)
                 {
                     Process.Start("https://community.cyanlabs.net/t/placeholder-my20-discussion/3203");
                     return;
