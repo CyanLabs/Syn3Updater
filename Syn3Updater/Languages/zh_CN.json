@@ -151,10 +151,16 @@
     "String.Disabled": "禁用 / 不是20年款",
     "String.Yes": "是",
     "String.No": "否",
-    "Settings.DownloadConnections": "Download Connections",
-    "MessageBox.ConnectionClosedByRemoteHost": "This error is usually temporary and caused by a connection drop on the remote server. Re-attempt the download and Syn3 Updater will only download the remaining files, if the issue persists try at another time of day or contact CyanLabs",
-    "String.OK": "OK",
-    "String.Error": "Error",
-    "String.Upload": "Upload",
-    "String.Warning": "WARNING"
+    "Settings.DownloadConnections": "下载连接",
+    "MessageBox.ConnectionClosedByRemoteHost": "这个错误通常是暂时的，由远程服务器的连接中断引起。重新尝试下载，Syn3更新器将只下载剩余的文件，如果问题仍然存在，请在一天中的其他时间尝试，或联系CyanLabs",
+    "String.OK": "好",
+    "String.Error": "错误",
+    "String.Upload": "上传",
+    "String.Warning": "警告",
+    "Home.StartDownloadOnly": "仅下载",
+    "MessageBox.DownloadOnlyComplete": "所有文件都已下载并验证成功！",
+    "String.DownloadComplete": "下载完成",
+    "MessageBox.DownloadOnlyMode": "你选择了 \"仅下载\"，这将下载所有要求的文件到你的下载目录并验证它们，但不会准备任何安装引导文件，如果不手动创建lst文件，稍后将这些下载的文件复制到你的USB驱动器将无法工作！\n\n如果你想在复制到U盘前准备好文件，请使用U盘列表中的 \"选择一个目录\"，或者选择一个U盘直接创建安装U盘!\n\n一旦选择了一个USB驱动器或目录，请按'开始'来开始这个操作！\n\n你确定你只想下载文件而不使用准备USB驱动器或目录吗？",
+    "Home.FeedbackButton": "反馈主题",
+    "String.Notice": "Notice"
 }
