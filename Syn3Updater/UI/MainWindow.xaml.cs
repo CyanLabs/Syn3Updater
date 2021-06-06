@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using Microsoft.Win32;
 using ModernWpf.Controls;
 
 namespace Cyanlabs.Syn3Updater.UI
@@ -20,14 +22,32 @@ namespace Cyanlabs.Syn3Updater.UI
         {
             InitializeComponent();
             AppMan.Logger.Debug("MainWindow Initialized");
-            if (!CryptoConfig.AllowOnlyFipsAlgorithms) return;
+            if (CryptoConfig.AllowOnlyFipsAlgorithms)
+            {
+                // Do not replace with ContentDialog
+                MessageBox.Show(
+                    "Syn3 Updater has detected that 'Use FIPS Compliant algorithms for encryption, hashing, and signing.' is enforced via Group Policy, Syn3 Updater will be unable to validate any files using MD5 with this policy enforced and therefore is currently unable to function\n\nThe application will now close!",
+                    LM.GetValue("String.Notice"), MessageBoxButton.OK, MessageBoxImage.Error);
+                AppMan.App.Exit();
+            }
             
-            // Do not replace with ContentDialog
-            MessageBox.Show(
-                "Syn3 Updater has detected that 'Use FIPS Compliant algorithms for encryption, hashing, and signing.' is enforced via Group Policy, Syn3 Updater will be unable to validate any files using MD5 with this policy enforced and therefore is currently unable to function\n\nThe application will now close!",
-                LM.GetValue("String.Notice"), MessageBoxButton.OK, MessageBoxImage.Error);
-            
-            AppMan.App.Exit();
+            try
+            {
+                object v = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\Controlled Folder Access", "EnableControlledFolderAccess", "0");
+                if (v != null && v.ToString() != "0")
+                {
+                    if (Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\Controlled Folder Access\AllowedApplications", Assembly.GetExecutingAssembly().Location, null) == null)
+                    {
+                        MessageBox.Show(
+                            "Syn3 Updater has detected that 'Controlled Folder Access' is enabled on this computer\n\nSyn3 Updater may be unable to read or write to files at certain locations, to prevent potential issues please exclude Syn3 Updater from Controlled Folder Access or ensure you are using a folder that is not protected.",
+                            LM.GetValue("String.Notice"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         private MainWindowViewModel Vm => (MainWindowViewModel) DataContext;
