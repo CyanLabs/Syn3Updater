@@ -49,7 +49,6 @@ namespace Cyanlabs.Syn3Updater.UI
                     new(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
                     new(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"),
                     //new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
-                    //TODO Implement Profiles in the future
                     new(EFontAwesomeIcon.Solid_CarAlt, "Profiles", "profiles"),
                     new(EFontAwesomeIcon.Solid_FileAlt, "Logs", "logs"),
                     new(EFontAwesomeIcon.Solid_Newspaper, "News", "news")
