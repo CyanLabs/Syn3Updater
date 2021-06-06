@@ -312,7 +312,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 CurrentLanguage = AppMan.App.MainSettings.Lang;
 
             AppMan.App.FireHomeTabEvent();
-
+            string currentRegionTemp = AppMan.App.Settings.CurrentRegion;
             SRegions = new ObservableCollection<SModel.SRegion>
             {
                 new() {Code = "EU", Name = "Europe"},
@@ -321,12 +321,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 new() {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
                 new() {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean and Central America"}
             };
-
+            CurrentRegion = currentRegionTemp;
+            string currentInstallModeTemp = AppMan.App.Settings.InstallMode;
             InstallModes = new ObservableCollection<string>
             {
                 "autodetect", "autoinstall", "reformat", "downgrade"
             };
-
+            CurrentInstallMode = currentInstallModeTemp;
             Themes = new ObservableCollection<string>
             {
                 "Dark", "Light"
@@ -357,18 +358,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             LogLocation = AppMan.App.MainSettings.LogPath;
             LicenseKey = AppMan.App.MainSettings.LicenseKey;
             DownloadLocation = AppMan.App.DownloadPath;
-
+            CurrentNav = AppMan.App.Settings.CurrentNav;
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
         }
 
         public void ReloadSettings()
         {
-            //TODO Fix need for temp strings
-            string currentRegionTemp = AppMan.App.Settings.CurrentRegion;
-            CurrentRegion = currentRegionTemp;
-            string currentInstallModeTemp = AppMan.App.Settings.InstallMode;
-            CurrentInstallMode = currentInstallModeTemp;
-            CurrentNav = AppMan.App.Settings.CurrentNav;
             CurrentVersion = AppMan.App.SVersion;
             My20Mode = AppMan.App.Settings.My20;
         }
@@ -377,7 +372,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), LM.GetValue("String.Information"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                 {
                     _currentReleaseType = ReleaseType;
                     try
@@ -412,7 +407,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
                     if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
                         Environment.NewLine + oldPath + Environment.NewLine,
-                        Environment.NewLine + dialog.SelectedPath + Environment.NewLine), LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                        Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                         try
                         {
                             if (type == "downloads")
