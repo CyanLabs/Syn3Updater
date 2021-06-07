@@ -336,6 +336,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentProfile = AppMan.App.MainSettings.Profile;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
             UpdateInstallMode();
+
+            if (AppMan.App.LanguageChanged)
+            {
+                SMapVersion.Clear();
+                DriveList.Clear();
+                RefreshUsb();
+                AppMan.App.LanguageChanged = false;
+            }
         }
 
         public void Init()

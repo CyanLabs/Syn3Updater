@@ -3,12 +3,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using FontAwesome5;
 using ModernWpf;
-using ModernWpf.Controls;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
 
@@ -57,6 +55,9 @@ namespace Cyanlabs.Syn3Updater.UI
                 foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
                     tabItem.Name = LM.GetValue($"Main.{tabItem.Key}", Language);
                 TabItems = ti;
+                
+                AppTitle =
+                    $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")} {AppMan.App.MainSettings.Profile}";
             };
 
             AppMan.App.ShowDownloadsTab += delegate { CurrentTab = "downloads"; };

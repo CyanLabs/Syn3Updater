@@ -113,8 +113,9 @@ namespace Cyanlabs.Syn3Updater
             Header,
             LauncherConfigFile,
             Magnet;
+            
 
-        public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly;
+        public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, LanguageChanged;
 
         public int AppUpdated = 0;
 
