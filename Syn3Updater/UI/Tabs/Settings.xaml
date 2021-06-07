@@ -7,6 +7,7 @@
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:ui="clr-namespace:Cyanlabs.Syn3Updater.UI"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Settings"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Settings_OnIsVisibleChanged" FontSize="12"
@@ -143,7 +144,7 @@
                         Margin="0" VerticalAlignment="Center" Command="{Binding PathSelector}"
                         CommandParameter="downloads"
                         Style="{DynamicResource AccentButtonStyle}">
-                    <fa5:FontAwesome Icon="Regular_FolderOpen" FontSize="18" Foreground="White"
+                    <iconPacks:PackIconVaadinIcons Kind="FolderOpen" Height="18" Width="18" Foreground="White"
                                      VerticalAlignment="Center" Margin="0,0,0,0" />
                 </Button>
 
@@ -156,8 +157,8 @@
                 <Button Cursor="Hand" Grid.Row="2" Grid.Column="4" BorderThickness="0" Background="#FF808080"
                         Margin="0" VerticalAlignment="Center" Command="{Binding PathSelector}" CommandParameter="log"
                         Style="{DynamicResource AccentButtonStyle}">
-                    <fa5:FontAwesome Icon="Regular_FolderOpen" FontSize="18" Foreground="White"
-                                     VerticalAlignment="Center" Margin="0,0,0,0" />
+                    <iconPacks:PackIconVaadinIcons Kind="FolderOpen" Height="18" Width="18" Foreground="White"
+                                                   VerticalAlignment="Center" Margin="0,0,0,0" />
                 </Button>
 
             </Grid>

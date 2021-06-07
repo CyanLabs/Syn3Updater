@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
-using FontAwesome5;
+using MahApps.Metro.IconPacks;
 using ModernWpf;
 using ElementTheme = SourceChord.FluentWPF.ElementTheme;
 using ResourceDictionaryEx = SourceChord.FluentWPF.ResourceDictionaryEx;
@@ -23,33 +23,33 @@ namespace Cyanlabs.Syn3Updater.UI
                 case "Dark":
                     ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                    ThemeIcon = EFontAwesomeIcon.Solid_Sun;
+                    ThemeIcon = PackIconVaadinIconsKind.SunOutline;
                     break;
                 case "Light":
                     ResourceDictionaryEx.GlobalTheme = ElementTheme.Light;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-                    ThemeIcon = EFontAwesomeIcon.Solid_Sun;
+                    ThemeIcon = PackIconVaadinIconsKind.SunOutline;
                     break;
                 default:
                     ResourceDictionaryEx.GlobalTheme = ElementTheme.Dark;
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                    ThemeIcon = EFontAwesomeIcon.Solid_Sun;
+                    ThemeIcon = PackIconVaadinIconsKind.SunOutline;
                     break;
             }
-
+            
             _args = Environment.GetCommandLineArgs();
             AppMan.App.LanguageChangedEvent += delegate
             {
                 ObservableCollection<TabItem> ti = new()
                 {
-                    new(EFontAwesomeIcon.Solid_InfoCircle, "About", "about"),
-                    new(EFontAwesomeIcon.Solid_Home, "Home", "home", true),
-                    new(EFontAwesomeIcon.Solid_Tools, "Utility", "utility"),
-                    new(EFontAwesomeIcon.Solid_Download, "Downloads", "downloads"),
+                    new(PackIconVaadinIconsKind.InfoCircle, "About", "about"),
+                    new(PackIconVaadinIconsKind.Home, "Home", "home", true),
+                    new(PackIconVaadinIconsKind.Tools, "Utility", "utility"),
+                    new(PackIconVaadinIconsKind.Download, "Downloads", "downloads"),
                     //new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
-                    new(EFontAwesomeIcon.Solid_CarAlt, "Profiles", "profiles"),
-                    new(EFontAwesomeIcon.Solid_FileAlt, "Logs", "logs"),
-                    new(EFontAwesomeIcon.Solid_Newspaper, "News", "news")
+                    new(PackIconVaadinIconsKind.Car, "Profiles", "profiles"),
+                    new(PackIconVaadinIconsKind.FileText, "Logs", "logs"),
+                    new(PackIconVaadinIconsKind.Newspaper, "News", "news")
                 };
 
                 foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
@@ -138,7 +138,7 @@ namespace Cyanlabs.Syn3Updater.UI
             private string _key;
             private string _name;
 
-            public TabItem(EFontAwesomeIcon icon, string name, string key, bool current = false)
+            public TabItem(PackIconVaadinIconsKind icon, string name, string key, bool current = false)
             {
                 Icon = icon.ToString();
                 Name = name;
@@ -171,9 +171,9 @@ namespace Cyanlabs.Syn3Updater.UI
             }
         }
 
-        private EFontAwesomeIcon _themeIcon;
+        private PackIconVaadinIconsKind _themeIcon;
 
-        public EFontAwesomeIcon ThemeIcon
+        public PackIconVaadinIconsKind ThemeIcon
         {
             get => _themeIcon;
             set => SetProperty(ref _themeIcon, value);

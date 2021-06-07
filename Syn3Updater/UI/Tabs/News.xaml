@@ -6,6 +6,7 @@
     xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs" xmlns:conv="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     xmlns:controls="http://schemas.modernwpf.com/2019"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.News"
     mc:Ignorable="d"
     d:DesignHeight="825" d:DesignWidth="800" FontSize="12"
@@ -37,8 +38,8 @@
                                     Style="{DynamicResource AccentButtonStyle}"
                                     ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                                     Background="#00000000" Command="{Binding ReloadNotices}">
-                                <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
-                                                 VerticalAlignment="Center" />
+                                <iconPacks:PackIconVaadinIcons Kind="Refresh" Height="18" Width="18" Foreground="White"
+                                                               VerticalAlignment="Center" />
                             </Button>
                         </StackPanel>
 
@@ -57,8 +58,8 @@
                                     Style="{DynamicResource AccentButtonStyle}"
                                     ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                                     Command="{Binding ReloadNotices}">
-                                <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
-                                                 VerticalAlignment="Center" />
+                                <iconPacks:PackIconVaadinIcons Kind="Refresh" Height="18" Width="18" Foreground="White"
+                                                               VerticalAlignment="Center" />
                             </Button>
                         </StackPanel>
                         <FlowDocumentScrollViewer PreviewMouseWheel="HandlePreviewMouseWheel" Name="OtherNotices"
@@ -75,7 +76,7 @@
                                     Style="{DynamicResource AccentButtonStyle}"
                                     ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                                     Command="{Binding ReloadChangelog}">
-                                <fa5:FontAwesome Icon="Solid_Sync" FontSize="18" Foreground="White"
+                                <iconPacks:PackIconVaadinIcons Kind="Refresh" Height="18" Width="18" Foreground="White"
                                                  VerticalAlignment="Center" />
                             </Button>
                         </StackPanel>
@@ -86,8 +87,13 @@
                                         <TextBlock Text="{Binding Version, StringFormat='Version {0}'}" Margin="0,5,0,5" FontSize="20" FontWeight="Bold"></TextBlock>
                                         <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" Background="Gray" Cursor="Hand" Command="{Binding Source={x:Reference NewsTabDataContext}, Path=VisitGithub}"
                                     CommandParameter="{Binding Version}" Margin="10,0,0,0" Padding="5,2" VerticalAlignment="Center">
-                                            <fa5:FontAwesome Icon="Brands_Github" FontSize="16" Margin="0"
-                                                             Foreground="White" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconVaadinIcons Kind="Globe" Height="18" Width="18"
+                                                                               VerticalAlignment="Center" Margin="0,0,10,0" />
+                                                <TextBlock
+                                                    Text="GitHub"
+                                                    VerticalAlignment="Center" />
+                                            </StackPanel>
                                         </Button>
                                     </StackPanel>
                                     <TextBlock Text="{Binding Date}" Margin="5,5,0,0" FontSize="12" TextDecorations="Underline"></TextBlock>
