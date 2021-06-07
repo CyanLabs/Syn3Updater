@@ -304,12 +304,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             DownloadConnectionsValue = AppMan.App.Settings.DownloadConnections;
-            if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.ToString()))
+            
+            if (AppMan.App.MainSettings.Lang != null)
+                CurrentLanguage = AppMan.App.MainSettings.Lang;
+            else if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.ToString()))
                 CurrentLanguage = CultureInfo.CurrentCulture.ToString();
             else if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
                 CurrentLanguage = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            else if (AppMan.App.MainSettings.Lang != null)
-                CurrentLanguage = AppMan.App.MainSettings.Lang;
 
             AppMan.App.FireHomeTabEvent();
             string currentRegionTemp = AppMan.App.Settings.CurrentRegion;
