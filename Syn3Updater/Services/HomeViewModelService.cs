@@ -18,7 +18,7 @@ namespace Cyanlabs.Syn3Updater.Services
 
             bool canceldownload = false;
             //Install Mode is reformat or downgrade My20 warning
-            if (installMode == "reformat" || installMode == "downgrade")
+            if ((installMode == "reformat" || installMode == "downgrade") && !AppMan.App.DownloadOnly)
                 if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.My20Check")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"), LM.GetValue("String.Yes"),null,ContentDialogButton.None,Brushes.DarkRed).ShowAsync() == ContentDialogResult.Primary)
                 {
                     await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
