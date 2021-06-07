@@ -222,7 +222,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private async Task<bool> DoDownload()
         {
             _count = 0;
-            
+            if (!Directory.Exists(AppMan.App.DownloadPath)) Directory.CreateDirectory(AppMan.App.DownloadPath);
             TotalPercentageMax = 100 * AppMan.App.Ivsus.Count * (AppMan.App.DownloadOnly ? 2 : 4);
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
             {
