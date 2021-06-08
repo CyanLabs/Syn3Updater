@@ -469,13 +469,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (_action == "main")
             {
-                ContentDialogResult result = await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentversion"), AppMan.App.SVersion, AppMan.App.SelectedRelease.Replace("Sync ", "")), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))
-                    .ShowAsync();
-                if (result == ContentDialogResult.Primary)
+                if (_selectedRelease != LM.GetValue("String.OnlyMaps"))
                 {
-                    AppMan.App.Settings.CurrentVersion =
-                        Convert.ToInt32(AppMan.App.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
-                    AppMan.App.SVersion = AppMan.App.SelectedRelease.Replace("Sync ", "");
+                    ContentDialogResult result = await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentversion"), AppMan.App.SVersion, AppMan.App.SelectedRelease.Replace("Sync ", "")), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))
+                        .ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        AppMan.App.Settings.CurrentVersion =
+                            Convert.ToInt32(AppMan.App.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
+                        AppMan.App.SVersion = AppMan.App.SelectedRelease.Replace("Sync ", "");
+                    }
                 }
 
                 if (AppMan.App.DownloadToFolder)
