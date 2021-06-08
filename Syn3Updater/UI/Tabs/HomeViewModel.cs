@@ -621,7 +621,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     NotesVisibility = false;
                     InstallMode = "autoinstall";
-                    AppMan.App.Settings.InstallMode = InstallMode;
+                    AppMan.App.InstallMode = InstallMode;
                 }
 
                 response = await AppMan.App.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion);
@@ -701,7 +701,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
 
                 AppMan.App.Action = "main";
-                AppMan.App.Settings.InstallMode = InstallMode;
+                AppMan.App.InstallMode = InstallMode;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
                 DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
             }
