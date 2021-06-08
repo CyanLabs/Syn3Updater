@@ -247,7 +247,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
 
             AppMan.App.Ivsus.Add(Api.GracenotesRemoval);
-            AppMan.App.Settings.InstallMode = "autoinstall";
+            AppMan.App.InstallMode = "autoinstall";
 
             if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.GracenotesRemoval == null) return;
 
@@ -276,7 +276,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 return;
             }
 
-            AppMan.App.Settings.InstallMode = "autoinstall";
+            AppMan.App.InstallMode = "autoinstall";
 
             if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.SmallVoicePackage == null) return;
 
@@ -304,7 +304,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 return;
             }
 
-            AppMan.App.Settings.InstallMode = "autoinstall";
+            AppMan.App.InstallMode = "autoinstall";
             if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.DowngradeApp == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
