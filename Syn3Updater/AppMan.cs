@@ -151,7 +151,6 @@ namespace Cyanlabs.Syn3Updater
                     CurrentVersion = MainSettings.CurrentVersion,
                     My20 = MainSettings.My20
                 };
-                SaveSettings();
             }
 
             string version = App.Settings.CurrentVersion.ToString();
