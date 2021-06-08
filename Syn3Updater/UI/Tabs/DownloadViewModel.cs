@@ -187,6 +187,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 DownloadPercentage = "";
                 DownloadInfo = "";
+                AppMan.App.IsDownloading = false;
                 await UIHelper.ShowDialog(LM.GetValue("MessageBox.DownloadOnlyComplete"),LM.GetValue("String.DownloadComplete"),LM.GetValue("String.OK")).ShowAsync();
                 AppMan.App.FireHomeTabEvent();
             }
