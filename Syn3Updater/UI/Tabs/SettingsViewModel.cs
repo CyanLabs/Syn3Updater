@@ -116,6 +116,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.Settings.DownloadConnections = Convert.ToInt16(value);
             }
         }
+        
+        private int _downloadConnectionsMin;
+
+        public int DownloadConnectionsMin
+        {
+            get => _downloadConnectionsMin;
+            set => SetProperty(ref _downloadConnectionsMin, value);
+        }
 
         private bool _currentNav;
 
@@ -305,7 +313,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             DownloadConnectionsValue = AppMan.App.Settings.DownloadConnections;
-            
+            DownloadConnectionsMin = 1;
             if (AppMan.App.MainSettings.Lang != null)
                 CurrentLanguage = AppMan.App.MainSettings.Lang;
             else if (Languages.Any(x => x.Code == CultureInfo.CurrentCulture.ToString()))
