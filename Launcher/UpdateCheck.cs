@@ -131,7 +131,6 @@ namespace Cyanlabs.Launcher
                     }
                 }
 
-                MessageBox.Show("Deleted");
                 Vm.Message = "Extracting...";
                 ZipFile.ExtractToDirectory(zipPath, destFolder + "\\temp");
                 DirectoryCopy(destFolder + "\\temp", destFolder, true);
