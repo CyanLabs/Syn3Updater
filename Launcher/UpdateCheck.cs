@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows;
 using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 using Octokit;
@@ -117,6 +118,20 @@ namespace Cyanlabs.Launcher
                 if (Directory.Exists(destFolder + "\\Languages"))
                     Directory.Delete(destFolder + "\\Languages", true);
 
+                
+                foreach (var file in Directory.GetFiles(destFolder, "*.dll", SearchOption.AllDirectories))
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch (Exception )
+                    {
+                        //ignored, try to delete all files
+                    }
+                }
+
+                MessageBox.Show("Deleted");
                 Vm.Message = "Extracting...";
                 ZipFile.ExtractToDirectory(zipPath, destFolder + "\\temp");
                 DirectoryCopy(destFolder + "\\temp", destFolder, true);
