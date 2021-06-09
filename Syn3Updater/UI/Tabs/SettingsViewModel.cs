@@ -267,8 +267,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value != null)
                 {
                     SetProperty(ref _currentLanguage, value);
+                    
+                    if (value != AppMan.App.MainSettings.Lang)
+                        AppMan.App.LanguageChanged = true;
+                    
                     AppMan.App.MainSettings.Lang = value;
-                    AppMan.App.LanguageChanged = true;
                     AppMan.App.FireLanguageChangedEvent();
                     OnPropertyChanged();
                 }

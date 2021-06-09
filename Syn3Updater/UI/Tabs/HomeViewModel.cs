@@ -339,7 +339,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (AppMan.App.LanguageChanged)
             {
+                SelectedRegionIndex = -1;
+                SelectedReleaseIndex = -1;
                 SMapVersion.Clear();
+                IvsuList.Clear();
                 DriveList.Clear();
                 RefreshUsb();
                 AppMan.App.LanguageChanged = false;
