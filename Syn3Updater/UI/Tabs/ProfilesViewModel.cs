@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
@@ -92,7 +91,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     // ignored
                 }
 
-                 ReloadProfiles();
+                ReloadProfiles();
             }
             else
             {
@@ -100,7 +99,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private  void CreateProfileAction()
+        private void CreateProfileAction()
         {
             if (!string.IsNullOrEmpty(ProfileName))
             {
@@ -110,7 +109,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private  ValueTask SelectProfileAction(string name)
+        private ValueTask SelectProfileAction(string name)
         {
             CurrentProfile = name;
             AppMan.App.MainSettings.Profile = name;

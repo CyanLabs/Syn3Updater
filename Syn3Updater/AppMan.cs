@@ -113,7 +113,7 @@ namespace Cyanlabs.Syn3Updater
             Header,
             LauncherConfigFile,
             Magnet;
-            
+
 
         public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, LanguageChanged;
 
@@ -158,7 +158,7 @@ namespace Cyanlabs.Syn3Updater
             {
                 SVersion = version.Length == 7
                     ? $"{version[0]}.{version[1]}.{version.Substring(2, version.Length - 2)}"
-                    : $"0.0.00000";
+                    : "0.0.00000";
             }
             catch (IndexOutOfRangeException e)
             {

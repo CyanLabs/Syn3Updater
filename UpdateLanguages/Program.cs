@@ -28,7 +28,6 @@ namespace Cyanlabs.UpdateLanguages
                 }
 
                 foreach (JsonData.Language language in output.Result.Languages)
-                {
                     using (WebClient client = new())
                     {
                         NameValueCollection reqparm = new();
@@ -39,10 +38,9 @@ namespace Cyanlabs.UpdateLanguages
                         byte[] responsebytes = client.UploadValues("https://api.poeditor.com/v2/projects/export", "POST", reqparm);
                         string responsebody = Encoding.UTF8.GetString(responsebytes);
                         string url = JsonConvert.DeserializeObject<JsonData.Root>(responsebody).Result.Url;
-                        client.DownloadFile(url, language.Code == "en" ? $"Languages\\en-US.json" : $"Languages\\{language.Code}.json");
+                        client.DownloadFile(url, language.Code == "en" ? "Languages\\en-US.json" : $"Languages\\{language.Code}.json");
                         Console.WriteLine($"Downloaded {language.Name} ({language.Code})");
                     }
-                }
             }
             catch (Exception)
             {

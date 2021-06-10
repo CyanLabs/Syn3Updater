@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:controls="http://schemas.modernwpf.com/2019"
     xmlns:converter="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
@@ -108,17 +107,21 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconVaadinIcons Kind="Folder" Height="18" Width="18" Foreground="White" Margin="1,0,10,0"
+                                <iconPacks:PackIconVaadinIcons Kind="Folder" Height="18" Width="18" Foreground="White"
+                                                               Margin="1,0,10,0"
                                                                VerticalAlignment="Center"
                                                                Visibility="{Binding Fake, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                <iconPacks:PackIconVaadinIcons Kind="Harddrive" Height="18" Width="18" Foreground="White" Margin="0,0,10,0"
-                                                 VerticalAlignment="Center"
-                                                 Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
+                                <iconPacks:PackIconVaadinIcons Kind="Harddrive" Height="18" Width="18"
+                                                               Foreground="White" Margin="0,0,10,0"
+                                                               VerticalAlignment="Center"
+                                                               Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
                                         <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
-                                        <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName , StringFormat='{}({0})'}" Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
+                                        <TextBlock Margin="0,3,0,3"
+                                                   Text="{Binding VolumeName , StringFormat='{}({0})'}"
+                                                   Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal"
@@ -192,16 +195,22 @@
                         Visibility="{Binding NotesVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid Margin="20,8,10,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30" />
                     </Grid.RowDefinitions>
-                    <TextBlock FontWeight="Bold" Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}" VerticalAlignment="Bottom" />
-                    <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" Background="Gray" Cursor="Hand" Command="{Binding VisitFeedbackThread}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Self},Path=Tag}" Padding="5,5" VerticalAlignment="Center" Content="{Binding Language, ConverterParameter=Home.FeedbackButton, Converter={StaticResource LocConverter}}" Tag="{Binding FeedbackUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding FeedbackVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
-                    </Button>
+                    <TextBlock FontWeight="Bold"
+                               Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.Notes, Converter={StaticResource LocConverter}}"
+                               VerticalAlignment="Bottom" />
+                    <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" Background="Gray" Cursor="Hand"
+                            Command="{Binding VisitFeedbackThread}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource Self},Path=Tag}" Padding="5,5"
+                            VerticalAlignment="Center"
+                            Content="{Binding Language, ConverterParameter=Home.FeedbackButton, Converter={StaticResource LocConverter}}"
+                            Tag="{Binding FeedbackUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Visibility="{Binding FeedbackVisibility, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </Grid>
                 <TextBox Style="{StaticResource TextBoxRevealStyle}"
                          Foreground="{DynamicResource SystemBaseHighColorBrush}"
@@ -209,7 +218,8 @@
                          BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Notes}"
                          Height="110" Margin="20,5,10,0"
                          IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow"
-                         TextAlignment="Left" /></StackPanel>
+                         TextAlignment="Left" />
+            </StackPanel>
             <Grid Grid.Row="1" Grid.Column="0" Margin="5,0,10,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30" />
@@ -238,12 +248,12 @@
                         HorizontalAlignment="Center" Command="{Binding RegionInfo}"
                         Style="{DynamicResource AccentButtonStyle}">
                     <iconPacks:PackIconVaadinIcons Kind="Question" Height="14" Width="14" Foreground="White"
-                                     VerticalAlignment="Center" Margin="0,0,0,0" />
+                                                   VerticalAlignment="Center" Margin="0,0,0,0" />
                 </Button>
 
                 <iconPacks:PackIconVaadinIcons Kind="Split" Height="18" Width="18" Foreground="White" Margin="5,0,0,0"
-                                 VerticalAlignment="Center" Grid.Row="1"
-                                 Grid.Column="0" />
+                                               VerticalAlignment="Center" Grid.Row="1"
+                                               Grid.Column="0" />
                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"
                            Grid.Column="1"
                            Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.Version, Converter={StaticResource LocConverter}}" />
@@ -252,8 +262,9 @@
                           IsEnabled="{Binding SVersionsEnabled}" ItemsSource="{Binding SVersion}"
                           SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="2"
                           Grid.ColumnSpan="2" />
-                
-                <iconPacks:PackIconVaadinIcons Kind="MapMarker" Height="18" Width="18" Foreground="White" Margin="5,0,0,0"
+
+                <iconPacks:PackIconVaadinIcons Kind="MapMarker" Height="18" Width="18" Foreground="White"
+                                               Margin="5,0,0,0"
                                                VerticalAlignment="Center" Grid.Row="2"
                                                Grid.Column="0" />
                 <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
@@ -295,30 +306,38 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <iconPacks:PackIconVaadinIcons Kind="Package"  Grid.Column="0" Height="18" Width="18" Foreground="White"
+                            <iconPacks:PackIconVaadinIcons Kind="Package" Grid.Column="0" Height="18" Width="18"
+                                                           Foreground="White"
                                                            VerticalAlignment="Center"
                                                            Visibility="{Binding Type, ConverterParameter=APPS, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                            <iconPacks:PackIconVaadinIcons Kind="Microphone" Grid.Column="0" Height="18" Width="18" Foreground="White"
-                                             VerticalAlignment="Center"
-                                             Visibility="{Binding Type, ConverterParameter=VOICE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                            <iconPacks:PackIconVaadinIcons Grid.Column="0" Kind="Headset" Height="18" Width="18" Foreground="White"
+                            <iconPacks:PackIconVaadinIcons Kind="Microphone" Grid.Column="0" Height="18" Width="18"
+                                                           Foreground="White"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding Type, ConverterParameter=VOICE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <iconPacks:PackIconVaadinIcons Grid.Column="0" Kind="Headset" Height="18" Width="18"
+                                                           Foreground="White"
                                                            VerticalAlignment="Center"
                                                            Visibility="{Binding Type, ConverterParameter=VOICE_NAV, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                            <iconPacks:PackIconVaadinIcons Kind="MapMarker" Grid.Column="0" Height="18" Width="18" Foreground="White"
-                                             VerticalAlignment="Center"
-                                             Visibility="{Binding Type, ConverterParameter=MAP, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                            <iconPacks:PackIconVaadinIcons Kind="Key" Grid.Column="0" Height="18" Width="18" Foreground="White"
-                                             VerticalAlignment="Center"
-                                             Visibility="{Binding Type, ConverterParameter=MAP_LICENSE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                            <iconPacks:PackIconVaadinIcons Kind="Music" Grid.Column="0" Height="18" Width="18" Foreground="White"
-                                             VerticalAlignment="Center"
-                                             Visibility="{Binding Type, ConverterParameter=GRACENOTES, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                            <iconPacks:PackIconVaadinIcons Kind="Picture" Grid.Column="0" Height="18" Width="18" Foreground="White"
-                                             VerticalAlignment="Center"
-                                             Visibility="{Binding Type, ConverterParameter=ENH_DAB, Converter={StaticResource StringMatchToVisibilityConverter}}" />
-                            <iconPacks:PackIconVaadinIcons Kind="Toolbox" Grid.Column="0" Height="18" Width="18" Foreground="White"
-                                             VerticalAlignment="Center"
-                                             Visibility="{Binding Type, ConverterParameter=TOOL, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <iconPacks:PackIconVaadinIcons Kind="MapMarker" Grid.Column="0" Height="18" Width="18"
+                                                           Foreground="White"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding Type, ConverterParameter=MAP, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <iconPacks:PackIconVaadinIcons Kind="Key" Grid.Column="0" Height="18" Width="18"
+                                                           Foreground="White"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding Type, ConverterParameter=MAP_LICENSE, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <iconPacks:PackIconVaadinIcons Kind="Music" Grid.Column="0" Height="18" Width="18"
+                                                           Foreground="White"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding Type, ConverterParameter=GRACENOTES, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <iconPacks:PackIconVaadinIcons Kind="Picture" Grid.Column="0" Height="18" Width="18"
+                                                           Foreground="White"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding Type, ConverterParameter=ENH_DAB, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <iconPacks:PackIconVaadinIcons Kind="Toolbox" Grid.Column="0" Height="18" Width="18"
+                                                           Foreground="White"
+                                                           VerticalAlignment="Center"
+                                                           Visibility="{Binding Type, ConverterParameter=TOOL, Converter={StaticResource StringMatchToVisibilityConverter}}" />
 
                             <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Text="{Binding Type}" />
                             <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="5,0" Text="{Binding Name}" />
@@ -341,21 +360,27 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <StackPanel Margin="10 0 0 0" >
-                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center" TextDecorations="Underline"
+                <StackPanel Margin="10 0 0 0">
+                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
+                               TextDecorations="Underline"
                                Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
-                    <TextBlock FontSize="14" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding InstallMode}" />
+                    <TextBlock FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
+                               Text="{Binding InstallMode}" />
                 </StackPanel>
                 <StackPanel Margin="30 0 0 0">
-                    <TextBlock  FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center" TextDecorations="Underline"
+                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
+                               TextDecorations="Underline"
                                Text="{Binding Language, ConverterParameter=Home.InstallModeForced, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding InstallModeForced}" />
-                </StackPanel>  
+                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
+                               Text="{Binding InstallModeForced}" />
+                </StackPanel>
                 <StackPanel Margin="30 0 0 0">
-                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center" TextDecorations="Underline"
+                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
+                               TextDecorations="Underline"
                                Text="{Binding Language, ConverterParameter=Home.MY20Protection, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding My20Mode}" />
-                </StackPanel>   
+                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
+                               Text="{Binding My20Mode}" />
+                </StackPanel>
             </StackPanel>
             <Button IsEnabled="{Binding DownloadOnlyEnabled}" Grid.Column="1" Margin="5" HorizontalAlignment="Right"
                     Padding="15,5" Style="{DynamicResource AccentButtonStyle}"

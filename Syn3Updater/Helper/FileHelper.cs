@@ -116,7 +116,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             public long RangeStart { get; set; }
             public string FilePath { get; set; }
-            public Exception Ex  { get; set; }
+            public Exception Ex { get; set; }
         }
 
         /// <summary>
@@ -136,6 +136,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
         {
             #region Get file size
+
             HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(fileUrl);
             webRequest.UserAgent = AppMan.App.Header;
             webRequest.Method = "HEAD";
@@ -144,6 +145,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
             }
+
             #endregion
 
             if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
@@ -156,10 +158,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                 ConcurrentDictionary<long, string> tempFilesDictionary = new();
 
                 #region Calculate ranges
+
                 List<Range> readRanges = new();
                 for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
                 {
-                    Range range = new Range
+                    Range range = new()
                     {
                         Start = chunk * (responseLength / numberOfParallelDownloads),
                         End = (chunk + 1) * (responseLength / numberOfParallelDownloads) - 1
@@ -172,6 +175,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
                     End = responseLength - 1
                 });
+
                 #endregion
 
                 #region Parallel download
@@ -184,7 +188,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 foreach (Range readRange in readRanges)
                 {
                     int i1 = i;
-                    Task t =  Task.Run(async () =>
+                    Task t = Task.Run(async () =>
                     {
                         DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
                         results.Add(result);
@@ -202,8 +206,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                         await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
                         return false;
                     }
+
                     tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
                 }
+
                 #endregion
 
                 #region Merge to single file
@@ -220,7 +226,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                     else
                     {
-                        byte[] tempFileBytes =  File.ReadAllBytes(tempFile.Value);
+                        byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
                         destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
                     }
 
@@ -288,7 +294,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             // ignored
                         }
 
-                        return new DownloadPartResult{FilePath = "", RangeStart = readRange.Start, Ex = ioException};
+                        return new DownloadPartResult {FilePath = "", RangeStart = readRange.Start, Ex = ioException};
                     }
                     catch (HttpRequestException httpRequestException)
                     {
@@ -301,14 +307,15 @@ namespace Cyanlabs.Syn3Updater.Helper
                             // ignored
                         }
 
-                        return new DownloadPartResult{FilePath = "", RangeStart = readRange.Start, Ex = httpRequestException};
+                        return new DownloadPartResult {FilePath = "", RangeStart = readRange.Start, Ex = httpRequestException};
                     }
                     finally
                     {
                         output.Close();
                         output.Dispose();
                     }
-                    return new DownloadPartResult{FilePath = tempFilePath, RangeStart = readRange.Start, Ex = null};
+
+                    return new DownloadPartResult {FilePath = tempFilePath, RangeStart = readRange.Start, Ex = null};
                 }
             }
         }

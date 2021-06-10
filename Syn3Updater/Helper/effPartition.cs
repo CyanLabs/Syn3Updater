@@ -469,23 +469,26 @@ namespace Cyanlabs.Syn3Updater.Helper
             /// <summary>average sum value among subsets</summary>
             private readonly float avrSum;
 
-            /// <summary>counter of DSTree() invokes</summary>
-            private uint callCnt;
-
             /// <summary>current DSTree() invokes limit</summary>
             private readonly ulong callLimit;
-
-            /// <summary>holder of DSTree() completion flags (signs)</summary>
-            private byte complete;
-
-            /// <summary>current result</summary>
-            private Result currResult;
 
             /// <summary>final result</summary>
             private readonly Result finalResult;
 
             /// <summary>true if avrSum is not an integer (has a nonzero fractional part)</summary>
             private readonly bool isAvrFract;
+
+            /// <summary>input numbers</summary>
+            private readonly IdNumbers numbs;
+
+            /// <summary>counter of DSTree() invokes</summary>
+            private uint callCnt;
+
+            /// <summary>holder of DSTree() completion flags (signs)</summary>
+            private byte complete;
+
+            /// <summary>current result</summary>
+            private Result currResult;
 
             /// <summary>last best inaccuracy: used in DSTree()</summary>
             private ulong lastSumDiff;
@@ -495,9 +498,6 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             /// <summary>current minimum sum among subsets</summary>
             private ulong minSum;
-
-            /// <summary>input numbers</summary>
-            private readonly IdNumbers numbs;
 
             /// <summary>numbers with the best unsaved maximum sum difference: used in DSTree()</summary>
             private IdNumbers standbyNumbs;

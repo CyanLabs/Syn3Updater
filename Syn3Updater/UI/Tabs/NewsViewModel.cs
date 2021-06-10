@@ -7,6 +7,7 @@ using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
+using Nito.AsyncEx;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -86,8 +87,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             UpdatedNoticeVisible = Visibility.Collapsed;
-            Nito.AsyncEx.AsyncContext.Run(async () => await UpdateNoticesAsync());
-            Nito.AsyncEx.AsyncContext.Run(async () => await GetChangelog());
+            AsyncContext.Run(async () => await UpdateNoticesAsync());
+            AsyncContext.Run(async () => await GetChangelog());
             if (AppMan.App.AppUpdated != 0)
             {
                 UpdatedNoticeVisible = Visibility.Visible;
@@ -97,10 +98,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task ReloadNoticesAction()
         {
-           await UpdateNoticesAsync();
+            await UpdateNoticesAsync();
         }
 
-        public async Task  ReloadChangelogAction()
+        public async Task ReloadChangelogAction()
         {
             await GetChangelog();
         }

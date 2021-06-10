@@ -32,8 +32,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
         public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
         public AsyncCommand<string> StartButton => _startButton ??= new AsyncCommand<string>(StartAction);
-    
+
         public AsyncCommand<string> VisitFeedbackThread => _visitFeedbackThread ??= new AsyncCommand<string>(VisitFeedbackThreadAction);
+
         #endregion
 
         #region Properties & Fields
@@ -299,7 +300,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _startEnabled;
             set => SetProperty(ref _startEnabled, value);
         }
-        
+
         private bool _downloadOnlyEnabled;
 
         public bool DownloadOnlyEnabled
@@ -431,7 +432,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     string destination = dialog.SelectedPath;
                     DriveInfo driveInfo = new(destination);
                     if (driveInfo.DriveType != DriveType.Fixed)
-                        if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() ==
+                        if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
+                                LM.GetValue("String.Yes")).ShowAsync() ==
                             ContentDialogResult.None)
                             return;
                     if (AppMan.App.DownloadPath.Contains(destination))
@@ -506,7 +508,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
                 DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
-                
+
                 if (SVersion != null && _magnetActions?.Count != 0 && SVersion.Contains("Sync " + _magnetActions?["Release"]))
                     SelectedRelease = "Sync " + _magnetActions?["Release"];
             }
@@ -549,6 +551,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             FeedbackVisibility = false;
                             continue;
                         }
+
                         FeedbackUrl = item.FeedbackUrl;
                         FeedbackVisibility = true;
                     }
@@ -579,7 +582,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SMapVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
                 DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
-                
+
                 string mapReleaseTmp = _magnetActions?["Maps"].Replace("_", " ");
                 if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp)) SelectedMapVersion = mapReleaseTmp;
             }
@@ -714,15 +717,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (type == "DownloadOnly")
             {
-                if(await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"),LM.GetValue("String.Warning") + "!",LM.GetValue("Download.CancelButton"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                if (await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                    LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                     AppMan.App.DownloadOnly = true;
                 else
                     return;
             }
-            
+
             if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20 && !AppMan.App.DownloadOnly)
-                if (await UIHelper.ShowDialog("WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
-                                                  LM.GetValue("String.Notice"), LM.GetValue("String.No"),LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.None)
+                if (await UIHelper.ShowDialog(
+                    "WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
+                    LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.None)
                 {
                     Process.Start("https://community.cyanlabs.net/t/placeholder-my20-discussion/3203");
                     return;
@@ -735,8 +740,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task VisitFeedbackThreadAction(string url)
         {
-           if(!string.IsNullOrEmpty(url))
-            Process.Start(url);
+            if (!string.IsNullOrEmpty(url))
+                Process.Start(url);
         }
 
         #endregion

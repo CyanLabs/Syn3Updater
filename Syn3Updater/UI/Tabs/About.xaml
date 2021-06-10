@@ -60,7 +60,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconVaadinIcons Kind="Globe" Height="24" Width="24"
                                                                VerticalAlignment="Center" Margin="0,0,10,0" />
-                            <TextBlock
+                                <TextBlock
                                     Text="{Binding Language, ConverterParameter=About.DonateButton, Converter={StaticResource LocConverter}}"
                                     VerticalAlignment="Center" />
                             </StackPanel>

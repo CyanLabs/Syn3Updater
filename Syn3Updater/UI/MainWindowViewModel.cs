@@ -36,26 +36,26 @@ namespace Cyanlabs.Syn3Updater.UI
                     ThemeIcon = PackIconVaadinIconsKind.SunOutline;
                     break;
             }
-            
+
             _args = Environment.GetCommandLineArgs();
             AppMan.App.LanguageChangedEvent += delegate
             {
                 ObservableCollection<TabItem> ti = new()
                 {
-                    new(PackIconVaadinIconsKind.InfoCircle, "About", "about"),
-                    new(PackIconVaadinIconsKind.Home, "Home", "home", true),
-                    new(PackIconVaadinIconsKind.Tools, "Utility", "utility"),
-                    new(PackIconVaadinIconsKind.Download, "Downloads", "downloads"),
+                    new TabItem(PackIconVaadinIconsKind.InfoCircle, "About", "about"),
+                    new TabItem(PackIconVaadinIconsKind.Home, "Home", "home", true),
+                    new TabItem(PackIconVaadinIconsKind.Tools, "Utility", "utility"),
+                    new TabItem(PackIconVaadinIconsKind.Download, "Downloads", "downloads"),
                     //new TabItem(EFontAwesomeIcon.Solid_Bug, "Crash", "crashme"),
-                    new(PackIconVaadinIconsKind.Car, "Profiles", "profiles"),
-                    new(PackIconVaadinIconsKind.FileText, "Logs", "logs"),
-                    new(PackIconVaadinIconsKind.Newspaper, "News", "news")
+                    new TabItem(PackIconVaadinIconsKind.Car, "Profiles", "profiles"),
+                    new TabItem(PackIconVaadinIconsKind.FileText, "Logs", "logs"),
+                    new TabItem(PackIconVaadinIconsKind.Newspaper, "News", "news")
                 };
 
                 foreach (TabItem tabItem in ti.Where(x => x != null && !string.IsNullOrWhiteSpace(x.Key)))
                     tabItem.Name = LM.GetValue($"Main.{tabItem.Key}", Language);
                 TabItems = ti;
-                
+
                 AppTitle =
                     $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")} {AppMan.App.MainSettings.Profile}";
             };

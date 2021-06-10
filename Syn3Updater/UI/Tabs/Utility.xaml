@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     xmlns:converter="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -68,13 +67,15 @@
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconVaadinIcons Kind="Harddrive" Height="18" Width="18" Foreground="White"
+                                    <iconPacks:PackIconVaadinIcons Kind="Harddrive" Height="18" Width="18"
+                                                                   Foreground="White"
                                                                    Margin="0,0,10,0" VerticalAlignment="Center" />
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
                                             <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
-                                            <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName , StringFormat='{}({0})'}" />
+                                            <TextBlock Margin="0,3,0,3"
+                                                       Text="{Binding VolumeName , StringFormat='{}({0})'}" />
                                         </StackPanel>
 
                                         <StackPanel Orientation="Horizontal"

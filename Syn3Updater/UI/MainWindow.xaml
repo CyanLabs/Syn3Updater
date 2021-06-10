@@ -50,10 +50,11 @@
                         </Style>
                     </Grid.Style>
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                    <iconPacks:PackIconVaadinIcons Kind="{Binding Icon}" Height="24" Width="24" ToolTip="{Binding Name}"
-                                                   VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"/>
-                    
-                    
+                    <iconPacks:PackIconVaadinIcons Kind="{Binding Icon}" Height="24" Width="24"
+                                                   ToolTip="{Binding Name}"
+                                                   VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White" />
+
+
                     <TextBlock
                         Grid.Column="1"
                         Margin="10,0"

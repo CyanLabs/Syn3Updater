@@ -11,7 +11,6 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 using Cyanlabs.Syn3Updater.Model;
@@ -188,7 +187,9 @@ namespace Cyanlabs.Syn3Updater.Helper
         //TODO: Fma965: refactor/move this
         public async Task UploadFile()
         {
-            if (_node != null && await UIHelper.ShowDialog(LM.GetValue("MessageBox.AsBuiltVinWarning"), LM.GetValue("String.Notice"), LM.GetValue("Download.CancelButton"), LM.GetValue("String.Upload")).ShowAsync() == ContentDialogResult.Primary)
+            if (_node != null &&
+                await UIHelper.ShowDialog(LM.GetValue("MessageBox.AsBuiltVinWarning"), LM.GetValue("String.Notice"), LM.GetValue("Download.CancelButton"),
+                    LM.GetValue("String.Upload")).ShowAsync() == ContentDialogResult.Primary)
             {
                 FormUrlEncodedContent formContent = new(new[]
                 {
@@ -320,7 +321,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
                         {
-                            if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                            if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
+                                LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                             {
                                 AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
@@ -371,12 +373,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             string currentversion = AppMan.App.SVersion;
             try
             {
-                if (currentversion.StartsWith($"3.4"))
+                if (currentversion.StartsWith("3.4"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-                else if (currentversion.StartsWith($"3.2") ||
-                         currentversion.StartsWith($"3.3"))
+                else if (currentversion.StartsWith("3.2") ||
+                         currentversion.StartsWith("3.3"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
-                else if (currentversion.StartsWith($"3."))
+                else if (currentversion.StartsWith("3."))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
                 else
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);

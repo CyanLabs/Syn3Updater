@@ -6,7 +6,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows;
 using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 using Octokit;
@@ -67,7 +66,6 @@ namespace Cyanlabs.Launcher
                         // Get all GitHub releases for Syn3Updater that aren't marked as 'prerelease' and sets the value of 'latest' to the first (newest) retrieved
                         githubrelease = await githubclient.Repository.Release.GetLatest("cyanlabs", "Syn3Updater");
                         break;
-
                 } // End of Switch 'Get Correct Release'
             }
 
@@ -83,10 +81,11 @@ namespace Cyanlabs.Launcher
             // Use GitHub release tagname as version and parse in to an integer
 
             bool norelease = ciRelease == null && githubrelease != null;
-            
+
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
-            if (version != null && norelease != true && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) || Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
+            if (version != null && norelease != true && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) ||
+                Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
             {
                 Vm.Message = "Installing " + releaseType + " release " + version;
 
@@ -118,18 +117,16 @@ namespace Cyanlabs.Launcher
                 if (Directory.Exists(destFolder + "\\Languages"))
                     Directory.Delete(destFolder + "\\Languages", true);
 
-                
-                foreach (var file in Directory.GetFiles(destFolder, "*.dll", SearchOption.AllDirectories))
-                {
+
+                foreach (string file in Directory.GetFiles(destFolder, "*.dll", SearchOption.AllDirectories))
                     try
                     {
                         File.Delete(file);
                     }
-                    catch (Exception )
+                    catch (Exception)
                     {
                         //ignored, try to delete all files
                     }
-                }
 
                 Vm.Message = "Extracting...";
                 ZipFile.ExtractToDirectory(zipPath, destFolder + "\\temp");

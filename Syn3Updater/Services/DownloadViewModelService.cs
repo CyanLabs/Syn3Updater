@@ -13,7 +13,7 @@ namespace Cyanlabs.Syn3Updater.Services
         public static StringBuilder CreateAutoInstallFile(string selectedRelease, string selectedRegion)
         {
             StringBuilder autoinstalllst =
-                new StringBuilder(
+                new(
                     $@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} - Autoinstall {(AppMan.App.ModeForced ? "FORCED " : "")}Mode - {selectedRelease} {selectedRegion}{Environment.NewLine}{Environment.NewLine}");
             //naviextras not handled here 
             List<SModel.Ivsu> ivsuList = AppMan.App.Ivsus.Where(item => item.Source != "naviextras").ToList();
@@ -27,7 +27,7 @@ namespace Cyanlabs.Syn3Updater.Services
 
                 List<uint> vals = ivsuList.ConvertAll(ivsu => (uint) ivsu.FileSize);
                 //splits the ivsus into 3 evenly distibuted buckets 
-                effPartition buckets = new effPartition(vals, 3);
+                effPartition buckets = new(vals, 3);
                 for (ushort i = 0; i < buckets.SubsetCount; i++)
                 {
                     for (int j = 0; j < buckets[i].NumbIDs.Count; j++)

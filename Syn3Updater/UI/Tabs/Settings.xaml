@@ -4,8 +4,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="http://schemas.modernwpf.com/2019"
-    xmlns:fa5="http://schemas.fontawesome.com/icons/"
-    xmlns:ui="clr-namespace:Cyanlabs.Syn3Updater.UI"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Settings"
@@ -66,12 +64,17 @@
                                Grid.Column="0"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.FullVersion, Converter={StaticResource LocConverter}}" />
 
-                    <controls:AutoSuggestBox Grid.Column="1" Name="SyncVersionsAutoSuggestBox" TextChanged="AutoSuggestBox_TextChanged"
-                                             TextMemberPath="Version" Text="{Binding CurrentVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             VerticalAlignment="Center" HorizontalContentAlignment="Left" UpdateTextOnSelect="True" GotFocus="SyncVersionsAutoSuggestBox_OnGotFocus" >
+                    <controls:AutoSuggestBox Grid.Column="1" Name="SyncVersionsAutoSuggestBox"
+                                             TextChanged="AutoSuggestBox_TextChanged"
+                                             TextMemberPath="Version"
+                                             Text="{Binding CurrentVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             VerticalAlignment="Center" HorizontalContentAlignment="Left"
+                                             UpdateTextOnSelect="True" GotFocus="SyncVersionsAutoSuggestBox_OnGotFocus">
                         <controls:AutoSuggestBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Version}" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Foreground="{DynamicResource SystemBaseHighColorBrush}" Margin="0,10"/>
+                                <TextBlock Text="{Binding Version}" VerticalAlignment="Center" TextAlignment="Center"
+                                           FontSize="14" Foreground="{DynamicResource SystemBaseHighColorBrush}"
+                                           Margin="0,10" />
                             </DataTemplate>
                         </controls:AutoSuggestBox.ItemTemplate>
                         <controls:AutoSuggestBox.ItemContainerStyle>
@@ -111,7 +114,8 @@
                     <controls:ToggleSwitch BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
                                            HorizontalAlignment="Left"
                                            Grid.Row="0" Grid.Column="1" IsOn="{Binding CurrentNav}"
-                                           OnContent="{Binding Language, ConverterParameter=String.Yes, Converter={StaticResource LocConverter}}" OffContent="{Binding Language, ConverterParameter=String.No, Converter={StaticResource LocConverter}}" />
+                                           OnContent="{Binding Language, ConverterParameter=String.Yes, Converter={StaticResource LocConverter}}"
+                                           OffContent="{Binding Language, ConverterParameter=String.No, Converter={StaticResource LocConverter}}" />
                 </Grid>
             </Grid>
 
@@ -145,7 +149,7 @@
                         CommandParameter="downloads"
                         Style="{DynamicResource AccentButtonStyle}">
                     <iconPacks:PackIconVaadinIcons Kind="FolderOpen" Height="18" Width="18" Foreground="White"
-                                     VerticalAlignment="Center" Margin="0,0,0,0" />
+                                                   VerticalAlignment="Center" Margin="0,0,0,0" />
                 </Button>
 
                 <TextBlock Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2"
@@ -204,12 +208,14 @@
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.DownloadConnections, Converter={StaticResource LocConverter}}" />
 
-                    
+
                     <controls:NumberBox Grid.Row="3" Grid.Column="1" Margin="0,0,10,0"
-                                                    FontSize="12" SpinButtonPlacementMode="Inline" 
-                                                    Value="{Binding DownloadConnectionsValue}"
-                                                    VerticalContentAlignment="Center" Minimum="{Binding DownloadConnectionsMin}" Maximum="32" ValidationMode="InvalidInputOverwritten"
-                                                    VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch" PlaceholderText="8" />
+                                        FontSize="12" SpinButtonPlacementMode="Inline"
+                                        Value="{Binding DownloadConnectionsValue}"
+                                        VerticalContentAlignment="Center" Minimum="{Binding DownloadConnectionsMin}"
+                                        Maximum="32" ValidationMode="InvalidInputOverwritten"
+                                        VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch"
+                                        PlaceholderText="8" />
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="4"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.LicenseKey, Converter={StaticResource LocConverter}}" />
@@ -250,17 +256,21 @@
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="1" HorizontalAlignment="Right"
                                Grid.Column="0"
                                Text="{Binding Language, ConverterParameter=Settings.AdvancedModeToggle, Converter={StaticResource LocConverter}}" />
-                    <controls:ToggleSwitch Name="AdvancedToggle"  BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
+                    <controls:ToggleSwitch Name="AdvancedToggle" BorderThickness="0" Cursor="Hand"
+                                           VerticalAlignment="Center"
                                            Grid.Row="1" Grid.Column="1" IsOn="{Binding AdvancedModeToggle}"
-                                           OnContent="" OffContent=""  Toggled="AdvancedModeToggle_OnToggled" />
+                                           OnContent="" OffContent="" Toggled="AdvancedModeToggle_OnToggled" />
 
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Right"
                                Grid.Column="0"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.MY20Protection, Converter={StaticResource LocConverter}}" />
-                    <controls:ToggleSwitch Name="My20Toggle" BorderThickness="0" Cursor="Hand" VerticalAlignment="Center"
+                    <controls:ToggleSwitch Name="My20Toggle" BorderThickness="0" Cursor="Hand"
+                                           VerticalAlignment="Center"
                                            Grid.Row="2" Grid.Column="1" IsOn="{Binding My20Mode}"
-                                           OnContent="{Binding Language, ConverterParameter=String.Enabled, Converter={StaticResource LocConverter}}" OffContent="{Binding Language, ConverterParameter=String.Disabled, Converter={StaticResource LocConverter}}" IsEnabled="{Binding AdvancedModeToggle}" Toggled="My20Toggle_OnToggled"/>
+                                           OnContent="{Binding Language, ConverterParameter=String.Enabled, Converter={StaticResource LocConverter}}"
+                                           OffContent="{Binding Language, ConverterParameter=String.Disabled, Converter={StaticResource LocConverter}}"
+                                           IsEnabled="{Binding AdvancedModeToggle}" Toggled="My20Toggle_OnToggled" />
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right"
                                Grid.Column="0"

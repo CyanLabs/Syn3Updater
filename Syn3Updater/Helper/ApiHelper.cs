@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 

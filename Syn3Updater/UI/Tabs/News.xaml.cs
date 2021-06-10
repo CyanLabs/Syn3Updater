@@ -23,7 +23,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (!(sender is FlowDocumentScrollViewer) || e.Handled) return;
             e.Handled = true;
-            MouseWheelEventArgs eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+            MouseWheelEventArgs eventArg = new(e.MouseDevice, e.Timestamp, e.Delta);
             eventArg.RoutedEvent = MouseWheelEvent;
             eventArg.Source = sender;
             UIElement parent = ((Control) sender).Parent as UIElement;
