@@ -370,6 +370,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadLocation = AppMan.App.DownloadPath;
             CurrentNav = AppMan.App.Settings.CurrentNav;
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
+            AdvancedModeToggle = CurrentInstallMode != "autodetect";
         }
 
         public void ReloadSettings()
@@ -452,9 +453,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public async Task UpdateAdvancedModeToggle(bool ison)
         {
             if (ison)
-                AdvancedModeToggle =
-                    await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
-                        LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary;
+            {
+                if (CurrentInstallMode != "autodetect" || await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                    LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                {
+                    AdvancedModeToggle = true;
+                }
+                else
+                {
+                    AdvancedModeToggle = false;
+                }
+            }
         }
 
         #endregion
