@@ -157,10 +157,10 @@
     "String.Error": "Errore",
     "String.Upload": "Carica",
     "String.Warning": "ATTENZIONE",
-    "Home.StartDownloadOnly": "Download Only",
-    "MessageBox.DownloadOnlyComplete": "All files downloaded and verified successfully!",
-    "String.DownloadComplete": "Download Complete",
-    "MessageBox.DownloadOnlyMode": "You have selected 'Download Only' this will download all the files requested to your download directory and verify them but WILL NOT prepare any install files, copying these downloaded files to your USB drive at a later date will not work without manual creation of lst files!\n\nPlease use 'Select A Directory' from the USB Drive list if you wish to prepare the files before copying to a USB drive or select a USB Drive to prepare the USB Drive directly!\n\nOnce a USB Drive or Directory has been selected press 'Start' to begin the process!\n\nAre you sure you want to only download the files without preparing a USB Drive or Directory?",
-    "Home.FeedbackButton": "Feedback Thread",
-    "String.Notice": "Notice"
+    "Home.StartDownloadOnly": "Solo Download",
+    "MessageBox.DownloadOnlyComplete": "Tutti i file sono stati scaricati e verificati correttamente!",
+    "String.DownloadComplete": "Download Completato",
+    "MessageBox.DownloadOnlyMode": "Hai selezionato \"Solo download\" questo scaricherà tutti i file richiesti nella directory di download e li verificherà, ma NON preparerà alcun file di installazione, la semplice copia di questi file scaricati sull'unità USB  non funzionerà senza la creazione manuale dei file lst!\n\n Si prega di utilizzare 'Seleziona una cartella' dall'elenco Unità USB se si desidera preparare i file prima di copiarli su un'unità USB o selezionare un'unità USB per preparare direttamente l'unità USB!\n\n Una volta selezionata un'unità USB o una cartella, premere \"Avvia\" per iniziare il processo!\n\n Sei sicuro di voler scaricare solo i file senza preparare un'unità USB o una cartella?",
+    "Home.FeedbackButton": "Sezione Feedback",
+    "String.Notice": "Avviso"
 }
