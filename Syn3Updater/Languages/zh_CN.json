@@ -162,5 +162,6 @@
     "String.DownloadComplete": "下载完成",
     "MessageBox.DownloadOnlyMode": "你选择了 \"仅下载\"，这将下载所有要求的文件到你的下载目录并验证它们，但不会准备任何安装引导文件，如果不手动创建lst文件，稍后将这些下载的文件复制到你的USB驱动器将无法工作！\n\n如果你想在复制到U盘前准备好文件，请使用U盘列表中的 \"选择一个目录\"，或者选择一个U盘直接创建安装U盘!\n\n一旦选择了一个USB驱动器或目录，请按'开始'来开始这个操作！\n\n你确定你只想下载文件而不使用准备USB驱动器或目录吗？",
     "Home.FeedbackButton": "反馈主题",
-    "String.Notice": "须知"
+    "String.Notice": "须知",
+    "String.AutoDetect": "Auto-Detect"
 }

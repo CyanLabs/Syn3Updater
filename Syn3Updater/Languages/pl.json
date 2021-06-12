@@ -162,5 +162,6 @@
     "String.DownloadComplete": "Pobieranie zakończone",
     "MessageBox.DownloadOnlyMode": "Wybrano tryb „Tylko pobieranie”. Wymagane pliki zostaną pobrane i zweryfikowane, ale skopiowanie plików na dysk USB bez ręcznego utworzenia wymaganych plików LST nie pozwoli na aktualizację oprogramowania modułu APIM.\n\nAby przygotować wszystkie wymagane pliki do procesu instalacji użyj opcji „Wybierz katalog lub dysk USB”.\n\nCzy chcesz kontynuować w trybie „Tylko pobieranie”?",
     "Home.FeedbackButton": "Zgłoś uwagi",
-    "String.Notice": "Informacja"
+    "String.Notice": "Informacja",
+    "String.AutoDetect": "Auto-Detect"
 }
