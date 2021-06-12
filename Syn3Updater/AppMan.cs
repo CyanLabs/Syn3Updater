@@ -149,7 +149,6 @@ namespace Cyanlabs.Syn3Updater
                     CurrentNav = MainSettings.CurrentNav,
                     CurrentRegion = MainSettings.CurrentRegion,
                     CurrentVersion = MainSettings.CurrentVersion,
-                    My20 = MainSettings.My20
                 };
             }
 

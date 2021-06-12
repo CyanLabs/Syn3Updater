@@ -204,17 +204,31 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private bool _my20Mode;
+        
+        private string _my20ModeText;
 
-        public bool My20Mode
+        public string My20ModeText
+        {
+            get => _my20ModeText;
+            set => SetProperty(ref _my20ModeText, value);
+        }
+        
+        private bool? _my20Mode;
+
+        public bool? My20Mode
         {
             get => _my20Mode;
             set
             {
                 SetProperty(ref _my20Mode, value);
-                AppMan.App.Settings.My20 = value;
-                InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
-                InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
+                AppMan.App.Settings.My20v2 = value;
+                InstallModesEnabled = AppMan.App.Settings.My20v2 != true && AdvancedModeToggle;
+                My20ModeText = value switch
+                {
+                    null => "Autodetect",
+                    true => LM.GetValue("String.Enabled"),
+                    false => LM.GetValue("String.Disabled"),
+                };
             }
         }
 
@@ -226,7 +240,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set
             {
                 SetProperty(ref _advancedModeToggle, value);
-                InstallModesEnabled = !AppMan.App.Settings.My20 && AdvancedModeToggle;
+                InstallModesEnabled = AppMan.App.Settings.My20v2 != true && AdvancedModeToggle;
             }
         }
 
@@ -376,7 +390,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void ReloadSettings()
         {
             CurrentVersion = AppMan.App.SVersion;
-            My20Mode = AppMan.App.Settings.My20;
+            My20Mode = AppMan.App.Settings.My20v2;
         }
 
         private async void ApplySettingsAction()
@@ -442,11 +456,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        public async Task UpdateMy20Toggle(bool ison)
+        public async Task UpdateMy20Toggle(bool? ison)
         {
-            if (!ison && AdvancedModeToggle)
-                My20Mode = await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
-                    LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync() != ContentDialogResult.Primary;
+            if (AdvancedModeToggle)
+                if(await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                    LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync() == ContentDialogResult.Primary)
+                    My20Mode = false;
+
             CurrentInstallMode = "autodetect";
         }
 

@@ -123,7 +123,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"Navigation: {AppMan.App.Settings.CurrentNav}{Environment.NewLine}")
                 .Append($@"Install Mode: {AppMan.App.Settings.InstallMode}{Environment.NewLine}")
                 .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}")
-                .Append($@"My20 Protection Enabled: {AppMan.App.Settings.My20}{Environment.NewLine}")
+                .Append($@"My20 Protection Enabled: {AppMan.App.Settings.My20v2}{Environment.NewLine}")
                 .Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
             if (AppMan.App.DownloadToFolder)
                 data.Append("Mode: Directory").Append(Environment.NewLine)
@@ -250,8 +250,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                 string result = AppMan.App.Client.GetStringAsync(Api.My20URL).Result;
                 Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
                 foreach (string my20 in output.My20Model)
-                    if (apimmodel.Contains(my20))
-                        AppMan.App.Settings.My20 = true;
+                    if (apimmodel.Contains(my20)) 
+                        AppMan.App.Settings.My20v2 = true;
+                    else
+                        AppMan.App.Settings.My20v2 = false;
                 string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                     .Select(x => x.Total)
                     .Single();

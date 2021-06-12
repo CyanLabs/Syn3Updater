@@ -126,7 +126,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
 
             InstallMode = AppMan.App.InstallMode;
-            My20Mode = AppMan.App.Settings.My20 ? LM.GetValue("String.Enabled") : LM.GetValue("String.Disabled");
+            My20Mode = AppMan.App.Settings.My20v2 switch
+            {
+                null => "Autodetect",
+                true => LM.GetValue("String.Enabled"),
+                false => LM.GetValue("String.Disabled")
+            };
             InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
             _action = AppMan.App.Action;
 
@@ -134,7 +139,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             AppMan.Logger.Info(text);
 
-            text = $"MY20 Protection: {AppMan.App.Settings.My20}";
+            text = $"MY20 Protection: {AppMan.App.Settings.My20v2}";
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             AppMan.Logger.Info(text);
 
@@ -516,15 +521,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.UtilityCreateLogStep1Complete = true;
                     if (!AppMan.App.Cancelled)
                     {
-                        if (AppMan.App.Settings.My20)
+                        if (AppMan.App.Settings.My20v2 == true)
                         {
-                            AppMan.App.Settings.My20 = true;
                             await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), LM.GetValue("String.Notice"),
                                 LM.GetValue("String.OK"), null, null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync());
                         }
                         else
                         {
-                            AppMan.App.Settings.My20 = false;
                             await Application.Current.Dispatcher.Invoke(() =>
                                 UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                         }

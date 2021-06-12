@@ -48,7 +48,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void My20Toggle_OnToggled(object sender, RoutedEventArgs e)
         {
-            (DataContext as SettingsViewModel)?.UpdateMy20Toggle(My20Toggle.IsOn);
+            (DataContext as SettingsViewModel)?.UpdateMy20Toggle(My20Toggle.IsChecked);
         }
 
         private void AdvancedModeToggle_OnToggled(object sender, RoutedEventArgs e)

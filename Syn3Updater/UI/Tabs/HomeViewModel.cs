@@ -329,7 +329,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentRegion = AppMan.App.Settings.CurrentRegion;
             CurrentVersion = AppMan.App.SVersion;
             DownloadLocation = AppMan.App.DownloadPath;
-            My20Mode = AppMan.App.Settings.My20 ? LM.GetValue("String.Enabled") : LM.GetValue("String.Disabled");
+            My20Mode = AppMan.App.Settings.My20v2 switch
+            {
+                null => "Autodetect",
+                true => LM.GetValue("String.Enabled"),
+                false => LM.GetValue("String.Disabled")
+            };
             InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
             StartEnabled = false;
             DownloadOnlyEnabled = false;
@@ -556,7 +561,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         FeedbackVisibility = true;
                     }
 
-                if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20)
+                if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20v2 == true)
                 {
                     if (SelectedRelease == LM.GetValue("String.OnlyMaps")) NotesVisibility = false;
                     _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
@@ -661,7 +666,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 //LESS THAN 3.2
                 if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
                 {
-                    if (AppMan.App.Settings.My20) InstallMode = "autoinstall";
+                    if (AppMan.App.Settings.My20v2 == true) InstallMode = "autoinstall";
                     if (!AppMan.App.ModeForced)
                         InstallMode = "reformat";
                 }
@@ -676,7 +681,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         if (!AppMan.App.ModeForced) InstallMode = "autoinstall";
                     }
-                    else if (AppMan.App.Settings.My20)
+                    else if (AppMan.App.Settings.My20v2 == true)
                     {
                         InstallMode = "autoinstall";
                     }
@@ -696,7 +701,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         if (!AppMan.App.ModeForced)
                             InstallMode = "autoinstall";
                     }
-                    else if (AppMan.App.Settings.My20)
+                    else if (AppMan.App.Settings.My20v2 == true)
                     {
                         InstallMode = "autoinstall";
                     }
@@ -723,15 +728,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                     return;
             }
-
-            if (_selectedRegion.Code == "NA" && AppMan.App.Settings.My20 && !AppMan.App.DownloadOnly)
-                if (await UIHelper.ShowDialog(
-                    "WARNING, FROM OUR TESTING SOME VOICES MAY BE MISSED WHEN INSTALLING NA MAPS VIA AUTOINSTALL (MY20), FROM OUR TESTING IT SEEMS ENGLISH (AMERICAN) IS INSTALLED WITHOUT ISSUE BUT THE OTHERS ARE STILL BEING INVESTIGATED. FOR FURTHER INFORMATION AND TO HELP CYANLABS TROUBLESHOOT THIS ISSUE PLEASE CLICK 'NO' TO VISIT OUR FORUM THREAD.\n\nIf you understand the risks and wish to continue anyway click 'YES'",
-                    LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.None)
-                {
-                    Process.Start("https://community.cyanlabs.net/t/placeholder-my20-discussion/3203");
-                    return;
-                }
 
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
             StartEnabled = false;

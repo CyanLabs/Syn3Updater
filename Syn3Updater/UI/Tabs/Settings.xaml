@@ -265,12 +265,9 @@
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Right"
                                Grid.Column="0"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.MY20Protection, Converter={StaticResource LocConverter}}" />
-                    <controls:ToggleSwitch Name="My20Toggle" BorderThickness="0" Cursor="Hand"
-                                           VerticalAlignment="Center"
-                                           Grid.Row="2" Grid.Column="1" IsOn="{Binding My20Mode}"
-                                           OnContent="{Binding Language, ConverterParameter=String.Enabled, Converter={StaticResource LocConverter}}"
-                                           OffContent="{Binding Language, ConverterParameter=String.Disabled, Converter={StaticResource LocConverter}}"
-                                           IsEnabled="{Binding AdvancedModeToggle}" Toggled="My20Toggle_OnToggled" />
+                    <CheckBox Grid.Row="2" Grid.Column="1" Name="My20Toggle" BorderThickness="0" Cursor="Hand"
+                              VerticalAlignment="Center" IsChecked="{Binding My20Mode}" Content="{Binding My20ModeText}"
+                              IsEnabled="{Binding AdvancedModeToggle}" Unchecked="My20Toggle_OnToggled"/>
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right"
                                Grid.Column="0"
