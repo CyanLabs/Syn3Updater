@@ -131,6 +131,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 SetProperty(ref _currentNav, value);
                 AppMan.App.Settings.CurrentNav = value;
+                AppMan.App.ClearSelections = true;
             }
         }
 
@@ -225,7 +226,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 InstallModesEnabled = AppMan.App.Settings.My20v2 != true && AdvancedModeToggle;
                 My20ModeText = value switch
                 {
-                    null => "Autodetect",
+                    null => "autodetect",
                     true => LM.GetValue("String.Enabled"),
                     false => LM.GetValue("String.Disabled"),
                 };
@@ -280,7 +281,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     SetProperty(ref _currentLanguage, value);
 
                     if (value != AppMan.App.MainSettings.Lang)
-                        AppMan.App.LanguageChanged = true;
+                        AppMan.App.ClearSelections = true;
 
                     AppMan.App.MainSettings.Lang = value;
                     AppMan.App.FireLanguageChangedEvent();

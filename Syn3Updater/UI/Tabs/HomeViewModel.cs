@@ -331,7 +331,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadLocation = AppMan.App.DownloadPath;
             My20Mode = AppMan.App.Settings.My20v2 switch
             {
-                null => "Autodetect",
+                null => "autodetect",
                 true => LM.GetValue("String.Enabled"),
                 false => LM.GetValue("String.Disabled")
             };
@@ -343,15 +343,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
             UpdateInstallMode();
 
-            if (AppMan.App.LanguageChanged)
+            if (AppMan.App.ClearSelections)
             {
                 SelectedRegionIndex = -1;
-                SelectedReleaseIndex = -1;
+                SVersion.Clear();
                 SMapVersion.Clear();
                 IvsuList.Clear();
                 DriveList.Clear();
                 RefreshUsb();
-                AppMan.App.LanguageChanged = false;
+                AppMan.App.ClearSelections = false;
             }
         }
 

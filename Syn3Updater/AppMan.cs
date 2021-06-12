@@ -115,7 +115,7 @@ namespace Cyanlabs.Syn3Updater
             Magnet;
 
 
-        public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, LanguageChanged;
+        public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, ClearSelections;
 
         public int AppUpdated = 0;
 

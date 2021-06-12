@@ -128,7 +128,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             InstallMode = AppMan.App.InstallMode;
             My20Mode = AppMan.App.Settings.My20v2 switch
             {
-                null => "Autodetect",
+                null => "autodetect",
                 true => LM.GetValue("String.Enabled"),
                 false => LM.GetValue("String.Disabled")
             };
@@ -538,10 +538,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                     }
 
+                    AppMan.App.ClearSelections = true;
                     AppMan.App.FireHomeTabEvent();
                 }
-
-                ;
             }
             else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
             {
