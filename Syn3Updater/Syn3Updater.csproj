@@ -109,9 +109,6 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	  <None Remove="Languages\sk.json" />
-	  <Content Include="Languages\sk.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	  <None Remove="Languages\vi.json" />
 	  <Content Include="Languages\vi.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -125,29 +122,14 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	  <None Remove="Languages\ro.json" />
-	  <Content Include="Languages\ro.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	  <None Remove="Languages\ru.json" />
-	  <Content Include="Languages\ru.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	  <None Remove="Languages\pt-PT.json" />
-	  <Content Include="Languages\pt-PT.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	  <None Remove="Languages\pl.json" />
 	  <Content Include="Languages\pl.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	  <None Remove="Languages\hr.json" />
-	  <Content Include="Languages\hr.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	  <None Remove="Languages\el.json" />
-	  <Content Include="Languages\el.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	  <None Remove="Languages\da.json" />
 	  <Content Include="Languages\da.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -157,9 +139,6 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	  <None Remove="Languages\bg.json" />
-	  <Content Include="Languages\bg.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
 	</ItemGroup>
 	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
 </Project>
