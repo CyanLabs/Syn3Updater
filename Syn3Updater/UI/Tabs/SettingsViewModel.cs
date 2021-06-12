@@ -176,7 +176,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value == null) return;
                 AppMan.App.Settings.InstallMode = value;
                 SetProperty(ref _currentInstallMode, value);
-                AppMan.App.ModeForced = value != "autodetect";
+                AppMan.App.ModeForced = value != LM.GetValue("String.AutoDetect");
             }
         }
 
@@ -226,7 +226,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 InstallModesEnabled = AppMan.App.Settings.My20v2 == false && AdvancedModeToggle;
                 My20ModeText = value switch
                 {
-                    null => "Auto Detect",
+                    null => LM.GetValue("String.AutoDetect"),
                     true => LM.GetValue("String.Enabled"),
                     false => LM.GetValue("String.Disabled"),
                 };
@@ -350,9 +350,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             string currentInstallModeTemp = AppMan.App.Settings.InstallMode;
             InstallModes = new ObservableCollection<string>
             {
-                "autodetect", "autoinstall", "reformat", "downgrade"
+                LM.GetValue("String.AutoDetect"), "autoinstall", "reformat", "downgrade"
             };
-            CurrentInstallMode = currentInstallModeTemp;
+            CurrentInstallMode = currentInstallModeTemp.Replace("autodetect",LM.GetValue("String.AutoDetect"));
             Themes = new ObservableCollection<string>
             {
                 "Dark", "Light"
@@ -385,7 +385,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadLocation = AppMan.App.DownloadPath;
             CurrentNav = AppMan.App.Settings.CurrentNav;
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
-            AdvancedModeToggle = CurrentInstallMode != "autodetect";
+            AdvancedModeToggle = CurrentInstallMode != LM.GetValue("String.AutoDetect");
         }
 
         public void ReloadSettings()
@@ -464,14 +464,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync() != ContentDialogResult.Primary)
                     My20Mode = null;
 
-            CurrentInstallMode = "autodetect";
+            CurrentInstallMode = LM.GetValue("String.AutoDetect");
         }
 
         public async Task UpdateAdvancedModeToggle(bool ison)
         {
             if (ison)
             {
-                if (CurrentInstallMode != "autodetect" || await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                if (CurrentInstallMode != LM.GetValue("String.AutoDetect") || await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
                     LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
                 {
                     AdvancedModeToggle = true;
