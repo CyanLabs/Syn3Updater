@@ -162,5 +162,6 @@
     "String.DownloadComplete": "Descarga Completa",
     "MessageBox.DownloadOnlyMode": "Ha seleccionado \"Sólo Descargar\": esto descargará los archivos requeridos al directorio de descarga y los verificará. pero NO PREPARARÁ ningún archivo de instalación. Copiar éstos archivos a un USB no funcionará sin la creación manual de archivos LST.\n\nPor favor use 'Seleccionar un Directorio' de la lista \"Unidad USB\" si desea preparar los archivos antes de copiarlos a un USB o seleccione una unidad USB para crear un USB directamente.\n\nUna vez que se haya seleccionado una Unidad USB o Directorio, presione \"Comenzar\" para iniciar el proceso!.\n\nEstá seguro que quiere sólo descargar los archivos sin preparar una unidad USB o Directorio?",
     "Home.FeedbackButton": "Comentarios",
-    "String.Notice": "Aviso"
+    "String.Notice": "Aviso",
+    "String.AutoDetect": "Auto-Detect"
 }
