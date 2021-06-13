@@ -203,6 +203,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                     foreach (DownloadPartResult result in results)
                     {
+                        if (result == null) return false;
                         if (result.Ex != null)
                         {
                             await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
@@ -210,6 +211,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
 
                         tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
+
                     }
 
                     #endregion
