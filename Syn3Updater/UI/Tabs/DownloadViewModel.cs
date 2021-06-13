@@ -418,8 +418,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             string text = $"unable to validate {item.FileName} after 3 tries, ABORTING PROCESS!";
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                             AppMan.Logger.Info(text);
-
-                            await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync();
+                            await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync());
                             return false;
                             break;
                         }
