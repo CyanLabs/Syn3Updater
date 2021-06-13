@@ -114,6 +114,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentProfile = name;
             AppMan.App.MainSettings.Profile = name;
             AppMan.App.LoadProfile();
+            AppMan.App.SaveSettings();
             AppMan.App.FireSettingsTabEvent();
             return new ValueTask();
         }
