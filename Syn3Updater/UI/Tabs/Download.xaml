@@ -54,17 +54,30 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="10 0 0 0" FontSize="14" VerticalAlignment="Center"
-                               Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" Text="{Binding InstallMode}" />
-                    <TextBlock Margin="10 0 0 0" FontSize="14" VerticalAlignment="Center"
-                               Text="{Binding Language, ConverterParameter=Home.InstallModeForced, StringFormat='{}{0}: ',  Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" Text="{Binding InstallModeForced}" />
-                    <TextBlock Margin="10 0 0 0" FontSize="14" VerticalAlignment="Center"
-                               Text="{Binding Language, ConverterParameter=Home.MY20Protection, StringFormat='{}{0}: ',  Converter={StaticResource LocConverter}}" />
-                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" Text="{Binding My20Mode}" />
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <StackPanel Margin="10 0 0 0">
+                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
+                               TextDecorations="Underline"
+                               Text="{Binding Language, ConverterParameter=Home.InstallMode, Converter={StaticResource LocConverter}}" />
+                    <TextBlock FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
+                               Text="{Binding InstallMode}" />
                 </StackPanel>
+                <StackPanel Margin="30 0 0 0">
+                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
+                               TextDecorations="Underline"
+                               Text="{Binding Language, ConverterParameter=Home.InstallModeForced, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
+                               Text="{Binding InstallModeForced}" />
+                </StackPanel>
+                <StackPanel Margin="30 0 0 0">
+                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
+                               TextDecorations="Underline"
+                               Text="{Binding Language, ConverterParameter=Home.MY20Protection, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
+                               Text="{Binding My20Mode}" />
+                </StackPanel>
+            </StackPanel>
+                
                 <Button Cursor="Hand" Grid.Column="1" Command="{Binding CancelButton}"
                         IsEnabled="{Binding CancelButtonEnabled}"
                         Style="{DynamicResource AccentButtonStyle}" Margin="5" HorizontalAlignment="Right"

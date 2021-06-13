@@ -117,15 +117,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            if (!AppMan.App.IsDownloading) return;
-            Log = string.Empty;
-            _selectedRelease = AppMan.App.SelectedRelease;
-            _selectedRegion = AppMan.App.SelectedRegion;
-            _selectedMapVersion = AppMan.App.SelectedMapVersion;
-            string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
-            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-
-            InstallMode = AppMan.App.InstallMode;
             My20Mode = AppMan.App.Settings.My20v2 switch
             {
                 null => LM.GetValue("String.AutoDetect"),
@@ -133,6 +124,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 false => LM.GetValue("String.Disabled")
             };
             InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
+            InstallMode = AppMan.App.Settings.InstallMode;
+            if (!AppMan.App.IsDownloading) return;
+            InstallMode = AppMan.App.InstallMode;
+            Log = string.Empty;
+            _selectedRelease = AppMan.App.SelectedRelease;
+            _selectedRegion = AppMan.App.SelectedRegion;
+            _selectedMapVersion = AppMan.App.SelectedMapVersion;
+            string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
+            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
+
             _action = AppMan.App.Action;
 
             text = $"Install Mode: {InstallMode} Forced: {AppMan.App.ModeForced}";
