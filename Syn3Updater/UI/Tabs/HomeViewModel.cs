@@ -351,6 +351,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 IvsuList.Clear();
                 DriveList.Clear();
                 RefreshUsb();
+                NotesVisibility = false;
                 AppMan.App.ClearSelections = false;
             }
         }

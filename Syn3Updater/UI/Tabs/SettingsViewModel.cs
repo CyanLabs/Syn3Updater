@@ -177,6 +177,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.Settings.InstallMode = value;
                 SetProperty(ref _currentInstallMode, value);
                 AppMan.App.ModeForced = value != LM.GetValue("String.AutoDetect");
+                AppMan.App.ClearSelections = true;
             }
         }
 
@@ -230,6 +231,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     true => LM.GetValue("String.Enabled"),
                     false => LM.GetValue("String.Disabled"),
                 };
+                AppMan.App.ClearSelections = true;
             }
         }
 
@@ -459,7 +461,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task UpdateMy20Toggle(bool? ison)
         {
-            if (AdvancedModeToggle && CurrentInstallMode == LM.GetValue("String.AutoDetect"))
+            if (AdvancedModeToggle && ison == false && CurrentInstallMode == LM.GetValue("String.AutoDetect"))
                 if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
                     LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync() != ContentDialogResult.Primary)
                     My20Mode = null;
