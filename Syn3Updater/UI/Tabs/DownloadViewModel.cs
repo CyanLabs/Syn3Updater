@@ -293,7 +293,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             else
                             {
                                 return false;
-                                break;
                             }
 
                             if (await Task.Run(async () => await ValidateFile(item.Url, AppMan.App.DownloadPath + item.FileName, item.Md5, false)))
@@ -328,7 +327,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                                 await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync();
                                 return false;
-                                break;
                             }
                         }
                     }
@@ -400,7 +398,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         else
                         {
                             return false;
-                            break;
                         }
 
                         if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName,
@@ -420,7 +417,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             AppMan.Logger.Info(text);
                             await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.FailedToValidate3")).ShowAsync());
                             return false;
-                            break;
                         }
                     }
                 }

@@ -11,8 +11,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     /// </summary>
     public partial class News
     {
-        private Task _updateNotices;
-
         public News()
         {
             InitializeComponent();
@@ -23,11 +21,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (!(sender is FlowDocumentScrollViewer) || e.Handled) return;
             e.Handled = true;
-            MouseWheelEventArgs eventArg = new(e.MouseDevice, e.Timestamp, e.Delta);
-            eventArg.RoutedEvent = MouseWheelEvent;
-            eventArg.Source = sender;
-            UIElement parent = ((Control) sender).Parent as UIElement;
-            if (parent != null) parent.RaiseEvent(eventArg);
+            MouseWheelEventArgs eventArg = new(e.MouseDevice, e.Timestamp, e.Delta) {RoutedEvent = MouseWheelEvent, Source = sender};
+            if (((Control) sender).Parent is UIElement parent) parent.RaiseEvent(eventArg);
         }
     }
 }

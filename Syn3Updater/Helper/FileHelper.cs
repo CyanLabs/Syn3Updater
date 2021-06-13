@@ -98,7 +98,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException ioException)
             {
-                Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()).ShowAsync());
                 AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }

@@ -172,7 +172,7 @@ namespace Cyanlabs.Syn3Updater
                 string mainJson = JsonConvert.SerializeObject(MainSettings, Formatting.Indented);
                 File.WriteAllText(ConfigFile, mainJson);
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 Logger.Debug($"Unable to save main settings, another process is accessing {ConfigFile}");
             }
@@ -182,7 +182,7 @@ namespace Cyanlabs.Syn3Updater
                 string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
                 File.WriteAllText(ProfileFile, profileJson);
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 Logger.Debug($"Unable to save profile settings, another process is accessing {ProfileFile}");
             }
@@ -287,7 +287,7 @@ namespace Cyanlabs.Syn3Updater
             {
                 if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
             }
-            catch (DirectoryNotFoundException e)
+            catch (DirectoryNotFoundException)
             {
                 Logger.Debug("Unable to set desired log path, defaulting path");
                 MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
@@ -376,7 +376,7 @@ namespace Cyanlabs.Syn3Updater
                 int index = rand.Next(header.Count);
                 Header = header[index];
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Logger.Debug("Unable to access CyanLabs API, defaulting UserAgent");
                 Header = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/86.0";
