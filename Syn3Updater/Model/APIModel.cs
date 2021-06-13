@@ -167,6 +167,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("version")] public string Version { get; set; }
             [JsonProperty("date")] public string Date { get; set; }
             [JsonProperty("changelog")] public string ReleaseNotes { get; set; }
+            [JsonProperty("branch")] public string Branch { get; set; }
         }
 
         public class Ivsus2

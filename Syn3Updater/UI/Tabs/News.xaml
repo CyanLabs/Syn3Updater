@@ -85,6 +85,8 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Version, StringFormat='Version {0}'}"
                                                    Margin="0,5,0,5" FontSize="20" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Branch, StringFormat='({0})'}"
+                                                   Margin="5,5,0,5" FontSize="20" FontWeight="Bold" />
                                         <Button Style="{DynamicResource AccentButtonStyle}"
                                                 Background="Gray" Cursor="Hand"
                                                 Command="{Binding Source={x:Reference NewsTabDataContext}, Path=VisitGithub}"
