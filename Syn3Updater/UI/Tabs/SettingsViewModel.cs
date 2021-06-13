@@ -459,12 +459,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task UpdateMy20Toggle(bool? ison)
         {
-            if (AdvancedModeToggle)
-                if(await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+            if (AdvancedModeToggle && CurrentInstallMode == LM.GetValue("String.AutoDetect"))
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
                     LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync() != ContentDialogResult.Primary)
                     My20Mode = null;
-
-            CurrentInstallMode = LM.GetValue("String.AutoDetect");
+            if(ison == true || ison == null) CurrentInstallMode = LM.GetValue("String.AutoDetect");
         }
 
         public async Task UpdateAdvancedModeToggle(bool ison)
@@ -480,6 +479,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     AdvancedModeToggle = false;
                 }
+            }
+            else
+            {
+                CurrentInstallMode = LM.GetValue("String.AutoDetect");
+                My20Mode = null;
             }
         }
 

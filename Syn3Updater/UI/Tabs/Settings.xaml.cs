@@ -38,14 +38,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             SyncVersionsAutoSuggestBox.ItemsSource = _syncVersions.Ivsu.OrderByDescending(u => u.Version).ToList();
         }
 
-        #region Code to Move to ViewModel at later date
-
-        //TODO - Move to viewModel
         private void Settings_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool) e.NewValue && !(bool) e.OldValue) (DataContext as SettingsViewModel)?.ReloadSettings();
         }
+        
+        #region Code to Move to ViewModel at later date
 
+        //TODO - Move to viewModel
         private void My20Toggle_OnToggled(object sender, RoutedEventArgs e)
         {
             (DataContext as SettingsViewModel)?.UpdateMy20Toggle(My20Toggle.IsChecked);
