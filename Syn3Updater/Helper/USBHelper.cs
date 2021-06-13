@@ -122,9 +122,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"Region: {AppMan.App.Settings.CurrentRegion}{Environment.NewLine}")
                 .Append($@"Navigation: {AppMan.App.Settings.CurrentNav}{Environment.NewLine}")
                 .Append($@"Install Mode: {AppMan.App.Settings.InstallMode}{Environment.NewLine}")
-                .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}")
-                .Append($@"My20 Protection Enabled: {AppMan.App.Settings.My20v2}{Environment.NewLine}")
-                .Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
+                .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}");
+            
+            if (AppMan.App.Settings.My20v2 == null)
+                data.Append($@"My20 Protection Enabled: {LM.GetValue("String.AutoDetect")}{Environment.NewLine}");
+            else if (AppMan.App.Settings.My20v2 == true)
+                data.Append($@"My20 Protection Enabled: {LM.GetValue("String.Enabled")}{Environment.NewLine}");
+            else if (AppMan.App.Settings.My20v2 == false) 
+                data.Append($@"My20 Protection Enabled: {LM.GetValue("String.Disabled")}{Environment.NewLine}");
+
+            data.Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
             if (AppMan.App.DownloadToFolder)
                 data.Append("Mode: Directory").Append(Environment.NewLine)
                     .Append(@"Path: ").Append(AppMan.App.DriveLetter).Append(Environment.NewLine);

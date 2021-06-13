@@ -139,7 +139,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             AppMan.Logger.Info(text);
 
-            text = $"MY20 Protection: {AppMan.App.Settings.My20v2}";
+            text = $"MY20 Protection: {My20Mode}";
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             AppMan.Logger.Info(text);
 
