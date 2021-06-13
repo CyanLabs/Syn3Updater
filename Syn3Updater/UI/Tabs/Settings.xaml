@@ -213,7 +213,7 @@
                                         FontSize="12" SpinButtonPlacementMode="Inline"
                                         Value="{Binding DownloadConnectionsValue}"
                                         VerticalContentAlignment="Center" Minimum="{Binding DownloadConnectionsMin}"
-                                        Maximum="32" ValidationMode="InvalidInputOverwritten"
+                                        Maximum="16" ValidationMode="InvalidInputOverwritten"
                                         VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch"
                                         PlaceholderText="8" />
 

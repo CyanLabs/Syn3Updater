@@ -218,26 +218,17 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                     foreach (KeyValuePair<long, string> tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                     {
-                        destinationStream.Close();
-                        destinationStream.Dispose();
-                        if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-
-                        File.Copy(tempFile.Value, destinationFilePath);
+                        byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
+                        destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
                         File.Delete(tempFile.Value);
                     }
 
                     #endregion
-
-                    //GC.Collect();
-
                     return true;
                 }
             }
-            else
-            {
-                DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, new Range{Start = 0,End = responseLength}, 0, ct);
-                return result.FilePath != null;
-            }
+            DownloadPartResult result2 = await DownloadFilePart(fileUrl, destinationFilePath, new Range{Start = 0,End = responseLength}, 0, ct);
+            return result2.FilePath != null;
         }
 
         public async Task<DownloadPartResult> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
