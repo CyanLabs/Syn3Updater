@@ -35,9 +35,6 @@
 	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows10.0.18362.0' ">
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.212405">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
 	</ItemGroup>
 	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
 </Project>
