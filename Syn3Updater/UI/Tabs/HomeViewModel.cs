@@ -27,10 +27,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private AsyncCommand<string> _startButton;
         private ActionCommand _refreshUSB;
-        private ActionCommand _regionInfo;
+        private AsyncCommand _regionInfo;
         private AsyncCommand<string> _visitFeedbackThread;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsb);
-        public ActionCommand RegionInfo => _regionInfo ??= new ActionCommand(RegionInfoAction);
+        public AsyncCommand RegionInfo => _regionInfo ??= new AsyncCommand(RegionInfoAction);
         public AsyncCommand<string> StartButton => _startButton ??= new AsyncCommand<string>(StartAction);
 
         public AsyncCommand<string> VisitFeedbackThread => _visitFeedbackThread ??= new AsyncCommand<string>(VisitFeedbackThreadAction);
@@ -393,11 +393,24 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             RefreshUsb();
         }
 
-        private static void RegionInfoAction()
+        private static async Task RegionInfoAction()
         {
+            try
+            {
+                string regioninfo = await AppMan.App.Client.GetStringAsync(new Uri("https://api.cyanlabs.net/Syn3Updater/regioninfo/text"));
+                if (await UIHelper.ShowDialog(regioninfo.Replace(@"\n",Environment.NewLine), LM.GetValue("Home.Region"), LM.GetValue("String.OK"), "Translate").ShowAsync() != ContentDialogResult.Primary)
+                { 
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
             Process.Start(Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName == "en"
-                ? "https://cyanlabs.net/api/Syn3Updater/region.php"
-                : $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fcyanlabs.net%2Fapi%2FSyn3Updater%2Fregion.php");
+                ? "https://api.cyanlabs.net/Syn3Updater/regioninfo"
+                : $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fapi.cyanlabs.net%2FSyn3Updater%2Fregioninfo");
         }
 
         private async void RefreshUsb()
