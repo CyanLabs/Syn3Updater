@@ -102,7 +102,7 @@
                                     </StackPanel>
                                     <TextBlock Text="{Binding Date}" Margin="5,5,0,0" FontSize="12"
                                                TextDecorations="Underline" />
-                                    <TextBlock Text="{Binding ReleaseNotes}" Margin="5,5,0,10" />
+                                    <TextBlock Text="{Binding ReleaseNotes}" TextWrapping="WrapWithOverflow" Margin="5,5,0,10" />
                                 </StackPanel>
                             </DataTemplate>
                         </controls:ItemsRepeater>
