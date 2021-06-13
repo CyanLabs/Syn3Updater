@@ -166,20 +166,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             try
             {
-                ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(false);
-                if (tmpDriveList?.Count > 0) DriveList = tmpDriveList;
+                DriveList = USBHelper.RefreshDevices(false);
             }
-            catch (XamlParseException e)
-            {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
-                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
-                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
-            }
-            catch (NullReferenceException e)
+            catch (Exception e)
             {
                 await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
