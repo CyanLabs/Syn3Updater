@@ -159,7 +159,7 @@
     "String.Warning": "WAARSCHUWING",
     "Home.StartDownloadOnly": "Enkel Downloaden",
     "MessageBox.DownloadOnlyComplete": "Alle bestanden gedownload en met succes geverifeerd!",
-    "String.DownloadComplete": "Downloaden voltooid",
+    "String.DownloadComplete": "Downloaden Voltooid",
     "MessageBox.DownloadOnlyMode": "U hebt 'Alleen downloaden' geselecteerd. Dit zal alle gevraagde bestanden naar uw downloadmap downloaden en verifiëren, maar ZAL GEEN installatiebestanden voorbereiden. Het kopiëren van deze gedownloade bestanden naar uw USB-station op een later tijdstip zal niet werken zonder handmatige creatie van lst-bestanden !\n\nGebruik a.u.b. 'Selecteer een Directory' uit de USB-drivelijst als u de bestanden wilt voorbereiden voordat U ze naar een USB-drive kopieert of selecteer een USB-drive om de USB-drive direct voor te bereiden!\n\nZodra een USB-drive of Directory is geselecteerd, drukt U op 'Begin' om het proces te starten!\n\nWeet u zeker dat U alleen de bestanden wilt downloaden zonder een USB-drive of Directory voor te bereiden?",
     "Home.FeedbackButton": "Feedback Thread",
     "String.Notice": "Opmerking",
