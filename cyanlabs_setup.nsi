@@ -92,6 +92,8 @@ Section Uninstall
   Delete "$DESKTOP\${PRODUCT_NAME}.lnk"
   RMDir /r "$SMPROGRAMS\${PRODUCT_NAME}"
   RMDir /r "$APPDATA\CyanLabs\${PRODUCT_NAME}"
+  SetShellVarContext current
+  RMDir /r "$LOCALAPPDATA\CyanLabs\${PRODUCT_NAME}"
   SetAutoClose true
 SectionEnd
 
