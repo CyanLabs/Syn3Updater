@@ -147,97 +147,96 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
 
             #endregion
+            
+            if (numberOfParallelDownloads > 1)
+            {  
+                if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
 
-            if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-
-            foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
-                File.Delete(file);
-
-            using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
-            {
-                ConcurrentDictionary<long, string> tempFilesDictionary = new();
-
-                #region Calculate ranges
-
-                List<Range> readRanges = new();
-                for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
+                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
+                    File.Delete(file);
+                
+                using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
                 {
-                    Range range = new()
+                    ConcurrentDictionary<long, string> tempFilesDictionary = new();
+
+                    #region Calculate ranges
+
+                    List<Range> readRanges = new();
+                    for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
                     {
-                        Start = chunk * (responseLength / numberOfParallelDownloads),
-                        End = (chunk + 1) * (responseLength / numberOfParallelDownloads) - 1
-                    };
-                    readRanges.Add(range);
-                }
-
-                readRanges.Add(new Range
-                {
-                    Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
-                    End = responseLength - 1
-                });
-
-                #endregion
-
-                #region Parallel download
-
-                int i = 1;
-
-                List<Task> tasks = new();
-                List<DownloadPartResult> results = new();
-
-                foreach (Range readRange in readRanges)
-                {
-                    int i1 = i;
-                    Task t = Task.Run(async () =>
-                    {
-                        DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
-                        results.Add(result);
-                    }, ct);
-                    i++;
-                    tasks.Add(t);
-                }
-
-                Task.WaitAll(tasks.ToArray(), ct);
-
-                foreach (DownloadPartResult result in results)
-                {
-                    if (result.Ex != null)
-                    {
-                        await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
-                        return false;
+                        Range range = new()
+                        {
+                            Start = chunk * (responseLength / numberOfParallelDownloads),
+                            End = (chunk + 1) * (responseLength / numberOfParallelDownloads) - 1
+                        };
+                        readRanges.Add(range);
                     }
 
-                    tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
-                }
+                    readRanges.Add(new Range
+                    {
+                        Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
+                        End = responseLength - 1
+                    });
 
-                #endregion
+                    #endregion
 
-                #region Merge to single file
+                    #region Parallel download
 
-                foreach (KeyValuePair<long, string> tempFile in tempFilesDictionary.OrderBy(b => b.Key))
-                {
-                    if (numberOfParallelDownloads == 1)
+                    int i = 1;
+
+                    List<Task> tasks = new();
+                    List<DownloadPartResult> results = new();
+
+                    foreach (Range readRange in readRanges)
+                    {
+                        int i1 = i;
+                        Task t = Task.Run(async () =>
+                        {
+                            DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
+                            results.Add(result);
+                        }, ct);
+                        i++;
+                        tasks.Add(t);
+                    }
+
+                    Task.WaitAll(tasks.ToArray(), ct);
+
+                    foreach (DownloadPartResult result in results)
+                    {
+                        if (result.Ex != null)
+                        {
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
+                            return false;
+                        }
+
+                        tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
+                    }
+
+                    #endregion
+
+                    #region Merge to single file
+
+                    foreach (KeyValuePair<long, string> tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                     {
                         destinationStream.Close();
                         destinationStream.Dispose();
                         if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
 
                         File.Copy(tempFile.Value, destinationFilePath);
-                    }
-                    else
-                    {
-                        byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
-                        destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
+                        File.Delete(tempFile.Value);
                     }
 
-                    File.Delete(tempFile.Value);
+                    #endregion
+
+                    //GC.Collect();
+
+                    return true;
                 }
-
-                #endregion
-
-                //GC.Collect();
-
-                return true;
+            }
+            else
+            {
+                DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, new Range{Start = 0,End = responseLength}, 0, ct);
+                return result.FilePath != null;
             }
         }
 
@@ -248,7 +247,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
             if (!fileUrl.Contains("dropbox"))
                 client.DefaultRequestHeaders.ConnectionClose = true;
-            string tempFilePath = destinationFilePath + $"-part{concurrent}";
+            string tempFilePath = concurrent == 0 ? destinationFilePath : destinationFilePath + $"-part{concurrent}";
             if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
             using (Stream stream = await client.GetStreamAsync(fileUrl))
             {

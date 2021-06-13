@@ -17,7 +17,6 @@
         public string CurrentRegion { get; set; }
         public int CurrentVersion { get; set; } = 0;
         public bool CurrentNav { get; set; } = false;
-        public bool My20 { get; set; } = false;
     }
 
     public class JsonSettings
