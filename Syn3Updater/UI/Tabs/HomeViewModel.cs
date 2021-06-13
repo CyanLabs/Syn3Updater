@@ -407,10 +407,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 // ignored
             }
-
-            Process.Start(Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName == "en"
+            Process.Start(AppMan.App.MainSettings.Lang.Contains("en")
                 ? "https://api.cyanlabs.net/Syn3Updater/regioninfo"
-                : $"https://translate.google.co.uk/translate?hl=&sl=en&tl={Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName}&u=https%3A%2F%2Fapi.cyanlabs.net%2FSyn3Updater%2Fregioninfo");
+                : $"https://translate.google.co.uk/translate?hl=&sl=en&tl={AppMan.App.MainSettings.Lang}&u=https%3A%2F%2Fapi.cyanlabs.net%2FSyn3Updater%2Fregioninfo");
         }
 
         private async void RefreshUsb()
