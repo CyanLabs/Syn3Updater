@@ -80,8 +80,8 @@ namespace Cyanlabs.Launcher
             string version = releaseType == LauncherPrefs.ReleaseType.Alpha ? ciRelease?.Number : githubrelease?.TagName;
             // Use GitHub release tagname as version and parse in to an integer
 
-            bool norelease = ciRelease == null && githubrelease != null;
-
+            bool norelease = ciRelease == null && githubrelease == null;
+            
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
             if (version != null && norelease != true && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) ||
