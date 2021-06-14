@@ -377,7 +377,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     .Select(part => part.Split('='))
                     .Where(part => part.Length == 2)
                     .ToDictionary(sp => sp[0], sp => sp[1]);
-            AppMan.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
+            
             SRegions = new ObservableCollection<SModel.SRegion>
             {
                 new() {Code = "EU", Name = "Europe"},
@@ -517,7 +517,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     // however don't call ConfigureAwait(false) here or on any of it's friends below as you need this code to run on the previous context (ie the UI context)
                     // https://blog.stephencleary.com/2012/02/async-and-await.html#context
-                    HttpResponseMessage response = await AppMan.Client.GetAsync(_apiAppReleases);
+                    HttpRequestMessage httpRequestMessage = new()
+                    {
+                        Method = HttpMethod.Get,
+                        RequestUri = new Uri(_apiAppReleases),
+                        Headers = { 
+                            { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                        },
+                    };
+                    HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
                     stringReleasesJson = await response.Content.ReadAsStreamAsync();
                 }
                 // ReSharper disable once RedundantCatchClause
@@ -600,7 +608,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
 
-                HttpResponseMessage response = await AppMan.Client.GetAsync(_apiMapReleases);
+                HttpRequestMessage httpRequestMessage = new()
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(_apiMapReleases),
+                    Headers = { 
+                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    },
+                };
+                HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
                 Stream stringMapReleasesJson = await response.Content.ReadAsStreamAsync();
 
                 if (AppMan.App.Settings.CurrentNav)
@@ -626,15 +642,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 UpdateInstallMode();
 
-                HttpResponseMessage response;
-
                 string appReleaseSingle = AppMan.App.Settings.CurrentNav
                     ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
                     : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
 
                 if (SelectedRelease != LM.GetValue("String.OnlyMaps"))
                 {
-                    response = await AppMan.Client.GetAsync(appReleaseSingle);
+                    HttpRequestMessage httpRequestMessage = new()
+                        {
+                            Method = HttpMethod.Get,
+                            RequestUri = new Uri(appReleaseSingle),
+                            Headers = { 
+                                { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                            },
+                        };
+                    HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
                     Stream stringDownloadJson = await response.Content.ReadAsStreamAsync();
                     Api.JsonReleases jsonIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(stringDownloadJson);
 
@@ -660,8 +682,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.InstallMode = InstallMode;
                 }
 
-                response = await AppMan.Client.GetAsync(Api.MapReleaseSingle + SelectedMapVersion);
-                Stream stringMapDownloadJson = await response.Content.ReadAsStreamAsync();
+                HttpRequestMessage httpRequestMessage2 = new()
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(Api.MapReleaseSingle + SelectedMapVersion),
+                    Headers = { 
+                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    },
+                };
+                HttpResponseMessage response2 = await AppMan.Client.SendAsync(httpRequestMessage2);
+                Stream stringMapDownloadJson = await response2.Content.ReadAsStreamAsync();
                 Api.JsonReleases jsonMapIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(stringMapDownloadJson);
 
                 if (SelectedMapVersion != LM.GetValue("String.NoMaps") && SelectedMapVersion != LM.GetValue("String.NonNavAPIM") &&

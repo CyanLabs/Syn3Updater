@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -132,7 +133,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             ImportantNotices = "Loading notices, please wait...";
             OtherNotices = "Loading notices, please wait...";
-            HttpResponseMessage response = await AppMan.Client.GetAsync(Api.NoticesURL);
+            
+            HttpRequestMessage httpRequestMessage = new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(Api.NoticesURL),
+                Headers = { 
+                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                },
+            };
+            HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
             Api.Notices output = JsonHelpers.Deserialize<Api.Notices>(await response.Content.ReadAsStreamAsync());
             string updatedDate;
             ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";

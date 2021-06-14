@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows;
@@ -50,9 +51,18 @@ namespace Cyanlabs.Syn3Updater.UI
                     {"operatingsystem", SystemHelper.GetOsFriendlyName()},
                     {"branch", AppMan.App.LauncherPrefs.ReleaseTypeInstalled.ToString()}
                 };
+                
+                HttpRequestMessage httpRequestMessage = new()
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri(Api.CrashLogPost),
+                    Headers = { 
+                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    },
+                    Content = new FormUrlEncodedContent(values)
+                };
 
-                FormUrlEncodedContent content = new(values);
-                HttpResponseMessage response = AppMan.Client.PostAsync(Api.CrashLogPost, content).GetAwaiter().GetResult();
+                HttpResponseMessage response = AppMan.Client.SendAsync(httpRequestMessage).GetAwaiter().GetResult();
                 return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
             catch (HttpRequestException)

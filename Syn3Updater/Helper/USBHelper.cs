@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -186,7 +187,17 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {"computername", Environment.MachineName},
                 {"contents", log}
             };
-            HttpResponseMessage response = AppMan.Client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values)).GetAwaiter().GetResult();
+            HttpRequestMessage httpRequestMessage = new()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(Api.LogPost),
+                Headers = { 
+                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                },
+                Content = new FormUrlEncodedContent(values)
+            };
+           
+            HttpResponseMessage response = AppMan.Client.SendAsync(httpRequestMessage).GetAwaiter().GetResult();
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var output = JsonConvert.DeserializeAnonymousType(responseString, new {uuid = "", status = ""});
             Process.Start(Api.LogUrl + output.uuid);
@@ -207,7 +218,18 @@ namespace Cyanlabs.Syn3Updater.Helper
                     new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                     new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                 });
-                HttpResponseMessage response = await AppMan.Client.PostAsync(Api.AsBuiltPost, formContent);
+                
+                HttpRequestMessage httpRequestMessage = new()
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri(Api.AsBuiltPost),
+                    Headers = { 
+                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    },
+                    Content = formContent
+                };
+           
+                HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
                 var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new {filename = "", status = ""});
                 Process.Start(Api.AsBuiltOutput + output.filename);
             }
@@ -319,11 +341,18 @@ namespace Cyanlabs.Syn3Updater.Helper
                         LogXmlDetails3 += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
                         asBuiltValues.Add(new AsBuilt.DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
                     }
-
-                    AppMan.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
                     try
                     {
-                        HttpResponseMessage response = await AppMan.Client.GetAsync(Api.IvsuSingle + sappname);
+                        HttpRequestMessage httpRequestMessage = new()
+                        {
+                            Method = HttpMethod.Get,
+                            RequestUri = new Uri(Api.IvsuSingle + sappname),
+                            Headers = { 
+                                { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                            },
+                        };
+                        HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
+                        
                         Api.JsonReleases sversion = JsonHelpers.Deserialize<Api.JsonReleases>(await response.Content.ReadAsStreamAsync());
                         string convertedsversion = sversion.Releases[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")

@@ -28,7 +28,16 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (SyncVersionsAutoSuggestBox.ItemsSource != null) return;
             try
             {
-                HttpResponseMessage response = AppMan.Client.GetAsync(Api.SyncVersions).Result;
+                HttpRequestMessage httpRequestMessage = new()
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(Api.SyncVersions),
+                    Headers = { 
+                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    },
+                };
+
+                HttpResponseMessage response = AppMan.Client.SendAsync(httpRequestMessage).GetAwaiter().GetResult();
                 _syncVersions = JsonHelpers.Deserialize<Api.Ivsus2>(response.Content.ReadAsStreamAsync().Result);
             }
             catch (Exception)
