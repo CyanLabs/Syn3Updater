@@ -345,7 +345,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (AppMan.App.ClearSelections)
             {
-                SelectedRegionIndex = -1;
+                SRegions.Clear();
+                SRegions = new ObservableCollection<SModel.SRegion>
+                {
+                    new() {Code = "EU", Name = "Europe"},
+                    new() {Code = "NA", Name = "United States, Canada & Mexico"},
+                    new() {Code = "CN", Name = "China"},
+                    new() {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
+                    new() {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
+                };
                 SVersion.Clear();
                 SMapVersion.Clear();
                 IvsuList.Clear();
