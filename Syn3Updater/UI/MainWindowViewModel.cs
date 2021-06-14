@@ -57,7 +57,7 @@ namespace Cyanlabs.Syn3Updater.UI
                 TabItems = ti;
 
                 AppTitle =
-                    $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")} {AppMan.App.MainSettings.Profile}";
+                    $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")}: {AppMan.App.MainSettings.Profile}";
             };
 
             AppMan.App.ShowDownloadsTab += delegate { CurrentTab = "downloads"; };
@@ -121,7 +121,7 @@ namespace Cyanlabs.Syn3Updater.UI
                     tabItem.IsCurrent = string.Equals(tabItem.Key, value, StringComparison.OrdinalIgnoreCase);
 
                 AppTitle =
-                    $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")} {AppMan.App.MainSettings.Profile}";
+                    $"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({AppMan.App.LauncherPrefs.ReleaseTypeInstalled}) - {LM.GetValue("Profiles.CurrentProfile")}: {AppMan.App.MainSettings.Profile}";
             }
         }
 
