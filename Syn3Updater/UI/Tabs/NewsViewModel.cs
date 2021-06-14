@@ -110,8 +110,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 UpdatedNoticeVisible = Visibility.Visible;
                 UpdatedNotice = $"Syn3 Updater has been updated to {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} version {Assembly.GetEntryAssembly()?.GetName().Version}";
-            } 
-            if (AppMan.App.Outdated != null)
+            } else if (AppMan.App.Outdated != null)
             {
                 OutdatedNoticeVisible = Visibility.Visible;
                 OutdatedNotice = $"Syn3 Updater version {AppMan.App.Outdated} is available! Please restart Syn3 Updater and run the Launcher to update, if this fails please update manually";

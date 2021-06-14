@@ -98,7 +98,11 @@ namespace Cyanlabs.Syn3Updater.UI
             get => _currentTab;
             set
             {
-                if ((AppMan.App.AppUpdated != 2 && _args.Contains("/updated")) || AppMan.App.Outdated != null)
+                if (AppMan.App.Outdated != null)
+                {
+                    value = "news";
+                }
+                if (AppMan.App.AppUpdated != 2 && _args.Contains("/updated"))
                 {
                     value = "news";
                     AppMan.App.AppUpdated++;

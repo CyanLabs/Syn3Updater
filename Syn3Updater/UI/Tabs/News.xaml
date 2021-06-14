@@ -20,18 +20,16 @@
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <Grid>
-                    <StackPanel Background="DarkGreen" Margin="10,5,10,5">
-                        <TextBlock Foreground="white" Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                <StackPanel Background="DarkGreen" Margin="10,5,10,5">
+                    <TextBlock Foreground="white" Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
                                    TextAlignment="Center" Text="{Binding UpdatedNotice}"
                                    Visibility="{Binding UpdatedNoticeVisible}" />
-                    </StackPanel>
-                    <StackPanel Background="DarkRed" Margin="10,5,10,5">
-                        <TextBlock Foreground="white" Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
-                                   TextAlignment="Center" Text="{Binding OutdatedNotice}"
-                                   Visibility="{Binding OutdatedNoticeVisible}" />
-                    </StackPanel>
-                </Grid>
+                </StackPanel>
+                <StackPanel Background="DarkRed" Margin="10,5,10,5">
+                    <TextBlock Foreground="white" Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
+                               TextAlignment="Center" Text="{Binding OutdatedNotice}"
+                               Visibility="{Binding OutdatedNoticeVisible}" />
+                </StackPanel>
 
                 <Grid Visibility="{Binding ImportantNoticesGrid}">
                     <StackPanel Background="#40000000" Margin="10,5,10,5">
