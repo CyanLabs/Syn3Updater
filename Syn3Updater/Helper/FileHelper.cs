@@ -369,7 +369,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    AppMan.Client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
                     long newfilesize = -1;
                     HttpRequestMessage request = new(HttpMethod.Head, new Uri(source));
 
