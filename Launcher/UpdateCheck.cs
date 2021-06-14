@@ -84,7 +84,7 @@ namespace Cyanlabs.Launcher
             
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
-            if (version != null && norelease != true && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) < Version.Parse(version) ||
+            if (version != null && norelease != true && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) != Version.Parse(version) ||
                 Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
             {
                 Vm.Message = "Installing " + releaseType + " release " + version;
