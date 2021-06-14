@@ -125,7 +125,7 @@ namespace Cyanlabs.Syn3Updater
 
         public void LoadProfile()
         {
-            if (string.IsNullOrEmpty(MainSettings.Profile)) MainSettings.Profile = "default";
+            if (MainSettings != null && string.IsNullOrEmpty(MainSettings.Profile)) MainSettings.Profile = "default";
             ProfileFile = ProfileConfigFolderPath + $"{MainSettings.Profile}.json";
             if (File.Exists(ProfileFile))
             {
