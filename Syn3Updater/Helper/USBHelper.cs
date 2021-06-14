@@ -184,8 +184,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {"computername", Environment.MachineName},
                 {"contents", log}
             };
-            HttpClient client = new();
-            HttpResponseMessage response = client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values)).GetAwaiter().GetResult();
+            HttpResponseMessage response = AppMan.Client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values)).GetAwaiter().GetResult();
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var output = JsonConvert.DeserializeAnonymousType(responseString, new {uuid = "", status = ""});
             Process.Start(Api.LogUrl + output.uuid);
@@ -206,7 +205,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                     new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                 });
-                HttpResponseMessage response = await AppMan.App.Client.PostAsync(Api.AsBuiltPost, formContent);
+                HttpResponseMessage response = await AppMan.Client.PostAsync(Api.AsBuiltPost, formContent);
                 var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new {filename = "", status = ""});
                 Process.Start(Api.AsBuiltOutput + output.filename);
             }
@@ -254,7 +253,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMModel")}: {apimmodel}{Environment.NewLine}";
 
-                string result = AppMan.App.Client.GetStringAsync(Api.My20URL).Result;
+                string result = AppMan.Client.GetStringAsync(Api.My20URL).Result;
                 Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
                 foreach (string my20 in output.My20Model)
                 {
@@ -319,10 +318,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                         asBuiltValues.Add(new AsBuilt.DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
                     }
 
-                    AppMan.App.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
+                    AppMan.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiSecret.Token);
                     try
                     {
-                        HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.IvsuSingle + sappname);
+                        HttpResponseMessage response = await AppMan.Client.GetAsync(Api.IvsuSingle + sappname);
                         Api.JsonReleases sversion = JsonHelpers.Deserialize<Api.JsonReleases>(await response.Content.ReadAsStreamAsync());
                         string convertedsversion = sversion.Releases[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")

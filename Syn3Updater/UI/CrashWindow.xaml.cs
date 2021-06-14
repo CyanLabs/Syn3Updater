@@ -39,8 +39,7 @@ namespace Cyanlabs.Syn3Updater.UI
                 if (frame != null)
                     crashContainer.ErrorLocation = $"{frame.GetFileName()}/{frame.GetMethod().Name}/{frame.GetFileLineNumber()}";
                 crashContainer.Logs = AppMan.Logger.Log;
-
-                HttpClient client = new();
+                
                 Dictionary<string, string> values = new()
                 {
                     {"computername", Environment.MachineName},
@@ -53,7 +52,7 @@ namespace Cyanlabs.Syn3Updater.UI
                 };
 
                 FormUrlEncodedContent content = new(values);
-                HttpResponseMessage response = client.PostAsync(Api.CrashLogPost, content).GetAwaiter().GetResult();
+                HttpResponseMessage response = AppMan.Client.PostAsync(Api.CrashLogPost, content).GetAwaiter().GetResult();
                 return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
             catch (HttpRequestException)

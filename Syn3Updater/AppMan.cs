@@ -39,7 +39,7 @@ namespace Cyanlabs.Syn3Updater
         public JsonMainSettings MainSettings { get; set; }
         public JsonSettings Settings { get; set; }
 
-        public readonly HttpClient Client = new();
+        public static HttpClient Client = new();
 
         #endregion
 
@@ -222,6 +222,7 @@ namespace Cyanlabs.Syn3Updater
         {
             SystemHelper.WriteRegistryHandler();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.DefaultConnectionLimit = 8;
             ServicePointManager.Expect100Continue = false;
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
             string[] args = Environment.GetCommandLineArgs();

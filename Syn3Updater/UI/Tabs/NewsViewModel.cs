@@ -110,7 +110,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             ImportantNotices = "Loading notices, please wait...";
             OtherNotices = "Loading notices, please wait...";
-            HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.NoticesURL);
+            HttpResponseMessage response = await AppMan.Client.GetAsync(Api.NoticesURL);
             Api.Notices output = JsonHelpers.Deserialize<Api.Notices>(await response.Content.ReadAsStreamAsync());
             string updatedDate;
             ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
@@ -143,7 +143,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task GetChangelog()
         {
-            HttpResponseMessage response = await AppMan.App.Client.GetAsync(Api.ChangelogURL);
+            HttpResponseMessage response = await AppMan.Client.GetAsync(Api.ChangelogURL);
             Changelogs = JsonHelpers.Deserialize<Api.Changelogs>(await response.Content.ReadAsStreamAsync());
         }
 

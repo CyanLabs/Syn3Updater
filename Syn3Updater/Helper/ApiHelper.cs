@@ -23,7 +23,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             try
             {
-                HttpResponseMessage response = await AppMan.App.Client.GetAsync(url);
+                HttpResponseMessage response = await AppMan.Client.GetAsync(url);
                 Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());
                 return ConvertIvsu(ivsu);
             }

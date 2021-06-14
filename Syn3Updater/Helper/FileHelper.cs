@@ -232,17 +232,19 @@ namespace Cyanlabs.Syn3Updater.Helper
             DownloadPartResult result2 = await DownloadFilePart(fileUrl, destinationFilePath, new Range{Start = 0,End = responseLength}, 0, ct);
             return result2.FilePath != null;
         }
+        
+        
 
         public async Task<DownloadPartResult> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
         {
-            HttpClient client = new();
-            client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
-            client.DefaultRequestHeaders.Range = new RangeHeaderValue(readRange.Start, readRange.End);
-            if (!fileUrl.Contains("dropbox"))
-                client.DefaultRequestHeaders.ConnectionClose = true;
             string tempFilePath = concurrent == 0 ? destinationFilePath : destinationFilePath + $"-part{concurrent}";
             if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
-            using (Stream stream = await client.GetStreamAsync(fileUrl))
+
+            HttpRequestMessage request = new(HttpMethod.Get, new Uri(fileUrl));
+            request.Headers.Range = new RangeHeaderValue(readRange.Start, readRange.End);
+            HttpResponseMessage response = await AppMan.Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+            response.EnsureSuccessStatusCode();
+            using (Stream stream = await response.Content.ReadAsStreamAsync())
             {
                 long total = readRange.End - readRange.Start;
                 long totalRead = 0L;
@@ -352,25 +354,22 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
                 else
                 {
-                    using (HttpClient httpClient = new())
+                    AppMan.Client.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
+                    long newfilesize = -1;
+                    HttpRequestMessage request = new(HttpMethod.Head, new Uri(source));
+
+                    long? len = (await AppMan.Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)).Content.Headers.ContentLength;
+
+                    if (len != null)
+                        newfilesize = len.GetValueOrDefault();
+                    else
+                        throw new Exception("Could not get size of file from remote server");
+
+                    if (newfilesize == filesize)
                     {
-                        httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(AppMan.App.Header);
-                        long newfilesize = -1;
-                        HttpRequestMessage request = new(HttpMethod.Head, new Uri(source));
-
-                        long? len = (await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)).Content.Headers.ContentLength;
-
-                        if (len != null)
-                            newfilesize = len.GetValueOrDefault();
-                        else
-                            throw new Exception("Could not get size of file from remote server");
-
-                        if (newfilesize == filesize)
-                        {
-                            outputResult.Message = $"no source checksum available for {filename} comparing file size";
-                            outputResult.Result = true;
-                            return outputResult;
-                        }
+                        outputResult.Message = $"no source checksum available for {filename} comparing file size";
+                        outputResult.Result = true;
+                        return outputResult;
                     }
                 }
             }
