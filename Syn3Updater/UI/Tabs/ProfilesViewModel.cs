@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
@@ -95,7 +97,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else
             {
-                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.InvalidProfile")).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.InvalidProfile")).ShowAsync());
             }
         }
 

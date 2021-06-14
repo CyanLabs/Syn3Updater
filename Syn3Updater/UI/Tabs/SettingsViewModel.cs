@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
@@ -412,7 +413,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     catch (Win32Exception e)
                     {
                         AppMan.Logger.Debug(e.GetFullMessage());
-                        await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                        await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                     }
                 }
                 else

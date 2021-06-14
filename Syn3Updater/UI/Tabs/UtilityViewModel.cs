@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Markup;
+using System.Windows.Threading;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
@@ -170,7 +172,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (Exception e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -231,7 +233,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return;
             }
 
@@ -261,7 +263,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return;
             }
 
@@ -289,7 +291,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return;
             }
 

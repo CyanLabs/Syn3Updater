@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using ModernWpf.Controls;
@@ -33,7 +35,7 @@ namespace Cyanlabs.Syn3Updater.Services
             //Cancel no apps package selected
             if (!AppMan.App.AppsSelected && (installMode == "reformat" || installMode == "downgrade"))
             {
-                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelNoApps")).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelNoApps")).ShowAsync());
                 canceldownload = true;
             }
 

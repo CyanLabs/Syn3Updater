@@ -204,6 +204,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     foreach (DownloadPartResult result in results)
                     {
                         if (result == null) return false;
+                        if (result.FilePath == "cancelled") return false;
                         if (result.Ex != null)
                         {
                             await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
@@ -257,6 +258,20 @@ namespace Cyanlabs.Syn3Updater.Helper
                     {
                         do
                         {
+                            if (ct.IsCancellationRequested)
+                            {
+                                output.Close();
+                                output.Dispose();
+                                try
+                                {
+                                    File.Delete(destinationFilePath);
+                                }
+                                catch (IOException)
+                                {
+                                }
+
+                                return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
+                            }
                             //TODO: Change to Span/Memory once the netframework version is depricated  
                             int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
                             if (read == 0)

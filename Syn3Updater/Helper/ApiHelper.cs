@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 
@@ -29,7 +31,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (HttpRequestException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 AppMan.Logger.Info("ERROR: fetching SpecialPackage - " + e.GetFullMessage());
                 return null;
             }

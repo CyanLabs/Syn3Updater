@@ -11,6 +11,8 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Cyanlabs.Syn3Updater.Model;
@@ -362,11 +364,11 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (NullReferenceException)
             {
-                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
             }
             catch (XmlException)
             {
-                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
             }
 
             return new[] {LogXmlDetails, LogXmlDetails2, LogXmlDetails3};
@@ -395,7 +397,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (TaskCanceledException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return;
             }
 

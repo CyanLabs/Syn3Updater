@@ -112,12 +112,20 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _my20Mode, value);
         }
 
+        private string _downloadConnections;
+        public string DownloadConnections
+        {
+            get => _downloadConnections;
+            set => SetProperty(ref _downloadConnections, value);
+        }
+
         #endregion
 
         #region Methods
 
         public void Init()
         {
+            DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
             My20Mode = AppMan.App.Settings.My20v2 switch
             {
                 null => LM.GetValue("String.AutoDetect"),
@@ -194,7 +202,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 DownloadPercentage = "";
                 DownloadInfo = "";
                 AppMan.App.IsDownloading = false;
-                await UIHelper.ShowDialog(LM.GetValue("MessageBox.DownloadOnlyComplete"), LM.GetValue("String.DownloadComplete"), LM.GetValue("String.OK")).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.DownloadOnlyComplete"), LM.GetValue("String.DownloadComplete"), LM.GetValue("String.OK")).ShowAsync());
                 AppMan.App.FireHomeTabEvent();
             }
             else if (!_ct.IsCancellationRequested)
@@ -491,12 +499,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 if (AppMan.App.DownloadToFolder)
                 {
-                    await UIHelper.ShowDialog(LM.GetValue("MessageBox.CompletedFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                    await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowDialog(LM.GetValue("MessageBox.CompletedFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                     Process.Start(AppMan.App.DriveLetter);
                 }
                 else
                 {
-                    await UIHelper.ShowDialog(LM.GetValue("MessageBox.Completed"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                    await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowDialog(LM.GetValue("MessageBox.Completed"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                     Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
                 }
 
@@ -504,7 +512,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else if (_action == "logutility")
             {
-                await UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityComplete"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityComplete"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                 AppMan.App.UtilityCreateLogStep1Complete = true;
                 AppMan.App.FireUtilityTabEvent();
             }
@@ -520,18 +528,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         if (AppMan.App.Settings.My20v2 == true)
                         {
-                            await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), LM.GetValue("String.Notice"),
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Found"), LM.GetValue("String.Notice"),
                                 LM.GetValue("String.OK"), null, null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync());
                         }
                         else
                         {
-                            await Application.Current.Dispatcher.Invoke(() =>
+                            await Application.Current.Dispatcher.BeginInvoke(() =>
                                 UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                         }
                     }
                     else
                     {
-                        await Application.Current.Dispatcher.Invoke(() =>
+                        await Application.Current.Dispatcher.BeginInvoke(() =>
                             UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                     }
 
@@ -541,7 +549,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
             {
-                await UIHelper.ShowDialog(LM.GetValue("MessageBox.GenericUtilityComplete"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() =>   UIHelper.ShowDialog(LM.GetValue("MessageBox.GenericUtilityComplete"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                 AppMan.App.FireUtilityTabEvent();
             }
 

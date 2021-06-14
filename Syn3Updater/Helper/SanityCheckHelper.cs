@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using Cyanlabs.Syn3Updater.Model;
 using ModernWpf.Controls;
 
@@ -26,7 +28,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
                 {
-                    await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsDrive")).ShowAsync();
+                    await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsDrive")).ShowAsync());
                     return true;
                 }
 

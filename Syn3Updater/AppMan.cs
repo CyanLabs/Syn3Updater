@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.UI;
@@ -214,7 +215,7 @@ namespace Cyanlabs.Syn3Updater
             catch (IOException e)
             {
                 Logger.Debug(e.GetFullMessage());
-                await UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
             }
         }
 
