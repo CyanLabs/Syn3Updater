@@ -62,19 +62,26 @@
                     <TextBlock FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
                                Text="{Binding InstallMode}" />
                 </StackPanel>
-                <StackPanel Margin="30 0 0 0">
+                <StackPanel Margin="20 0 0 0">
                     <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
                                TextDecorations="Underline"
                                Text="{Binding Language, ConverterParameter=Home.InstallModeForced, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
                                Text="{Binding InstallModeForced}" />
                 </StackPanel>
-                <StackPanel Margin="30 0 0 0">
+                <StackPanel Margin="20 0 0 0">
                     <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
                                TextDecorations="Underline"
                                Text="{Binding Language, ConverterParameter=Home.MY20Protection, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
                                Text="{Binding My20Mode}" />
+                </StackPanel>
+                <StackPanel Margin="20 0 0 0">
+                    <TextBlock FontSize="14" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center"
+                               TextDecorations="Underline"
+                               Text="{Binding Language, ConverterParameter=Settings.DownloadConnections, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="0" FontSize="14" VerticalAlignment="Center" TextAlignment="Center"
+                               Text="{Binding DownloadConnections}" />
                 </StackPanel>
             </StackPanel>
                 
