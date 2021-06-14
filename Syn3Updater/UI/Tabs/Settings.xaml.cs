@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -30,7 +31,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 HttpResponseMessage response = AppMan.App.Client.GetAsync(Api.SyncVersions).Result;
                 _syncVersions = JsonHelpers.Deserialize<Api.Ivsus2>(response.Content.ReadAsStreamAsync().Result);
             }
-            catch (WebException)
+            catch (Exception)
             {
                 //Do nothing
             }
