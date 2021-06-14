@@ -361,6 +361,7 @@ namespace Cyanlabs.Syn3Updater
 
             Randomize();
             App.SaveSettings();
+            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
             Logger.Debug("Launching main window");
             if (_mainWindow == null) _mainWindow = new MainWindow();
             if (!_mainWindow.IsVisible) _mainWindow.Show();
