@@ -222,6 +222,7 @@ namespace Cyanlabs.Syn3Updater
         {
             SystemHelper.WriteRegistryHandler();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.Expect100Continue = false;
             Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
             string[] args = Environment.GetCommandLineArgs();
             if (!args.Contains("/launcher"))
