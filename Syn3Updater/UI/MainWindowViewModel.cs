@@ -18,6 +18,17 @@ namespace Cyanlabs.Syn3Updater.UI
 
         public MainWindowViewModel()
         {
+            try
+            {
+                string regioninfo = AppMan.Client.GetStringAsync(new Uri("https://api.cyanlabs.net/app/syn3updater/githublatest")).Result;
+                if (Version.Parse(regioninfo) > Version.Parse(Assembly.GetEntryAssembly()?.GetName().Version.ToString()!))
+                    AppMan.App.Outdated = regioninfo;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            
             switch (AppMan.App.MainSettings.Theme)
             {
                 case "Dark":
@@ -87,7 +98,7 @@ namespace Cyanlabs.Syn3Updater.UI
             get => _currentTab;
             set
             {
-                if (AppMan.App.AppUpdated != 2 && _args.Contains("/updated"))
+                if ((AppMan.App.AppUpdated != 2 && _args.Contains("/updated")) || AppMan.App.Outdated != null)
                 {
                     value = "news";
                     AppMan.App.AppUpdated++;

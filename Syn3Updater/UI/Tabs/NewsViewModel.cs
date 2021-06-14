@@ -63,6 +63,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _updatedNoticeVisible;
             set => SetProperty(ref _updatedNoticeVisible, value);
         }
+        
+        private string _outdatedNotice;
+
+        public string OutdatedNotice
+        {
+            get => _outdatedNotice;
+            set => SetProperty(ref _outdatedNotice, value);
+        }
+
+        private Visibility _outdatedNoticeVisible;
+
+        public Visibility OutdatedNoticeVisible
+        {
+            get => _outdatedNoticeVisible;
+            set => SetProperty(ref _outdatedNoticeVisible, value);
+        }
 
         private Visibility _importantNoticesGrid;
 
@@ -87,12 +103,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public void Init()
         {
             UpdatedNoticeVisible = Visibility.Collapsed;
+            OutdatedNoticeVisible = Visibility.Collapsed;
             AsyncContext.Run(async () => await UpdateNoticesAsync());
             AsyncContext.Run(async () => await GetChangelog());
             if (AppMan.App.AppUpdated != 0)
             {
                 UpdatedNoticeVisible = Visibility.Visible;
                 UpdatedNotice = $"Syn3 Updater has been updated to {AppMan.App.LauncherPrefs.ReleaseTypeInstalled} version {Assembly.GetEntryAssembly()?.GetName().Version}";
+            } 
+            if (AppMan.App.Outdated != null)
+            {
+                OutdatedNoticeVisible = Visibility.Visible;
+                OutdatedNotice = $"Syn3 Updater version {AppMan.App.Outdated} is available! Please restart Syn3 Updater and run the Launcher to update, if this fails please update manually";
+                AppMan.App.Outdated = null;
             }
         }
 

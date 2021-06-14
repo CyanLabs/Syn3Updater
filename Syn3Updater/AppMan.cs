@@ -113,7 +113,8 @@ namespace Cyanlabs.Syn3Updater
             ProfileConfigFolderPath,
             Header,
             LauncherConfigFile,
-            Magnet;
+            Magnet,
+            Outdated;
 
 
         public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, ClearSelections;
