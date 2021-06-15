@@ -149,14 +149,14 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
 
                 #endregion
-                
+
                 if (numberOfParallelDownloads > 1)
-                {  
+                {
                     if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
 
                     foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
                         File.Delete(file);
-                    
+
                     using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
                     {
                         ConcurrentDictionary<long, string> tempFilesDictionary = new();
@@ -202,7 +202,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
 
                         Task.WaitAll(tasks.ToArray(), ct);
-                        
+
                         if (ct.IsCancellationRequested)
                             return false;
 
@@ -240,11 +240,23 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
 
                         #endregion
+
                         return true;
                     }
                 }
-                DownloadPartResult result2 = await DownloadFilePart(fileUrl, destinationFilePath, new Range{Start = 0,End = responseLength}, 0, ct);
+
+                DownloadPartResult result2 = await DownloadFilePart(fileUrl, destinationFilePath, new Range {Start = 0, End = responseLength}, 0, ct);
                 return result2.FilePath != null;
+            }
+            catch (WebException e)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox! Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
+                return false;
+            }
+            catch (HttpRequestException e)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox! Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
+                return false;
             }
             catch (TaskCanceledException e)
             {
