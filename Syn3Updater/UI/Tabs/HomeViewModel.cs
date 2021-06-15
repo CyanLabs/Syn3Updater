@@ -347,7 +347,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (AppMan.App.ClearSelections)
             {
-                SRegions.Clear();
+                SRegions?.Clear();
                 SRegions = new ObservableCollection<SModel.SRegion>
                 {
                     new() {Code = "EU", Name = "Europe"},
