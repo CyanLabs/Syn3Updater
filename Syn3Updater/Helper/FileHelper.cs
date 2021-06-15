@@ -202,7 +202,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                         try
                         {
-                            await Task.WhenAll(tasks.ToArray());
+                            await Task.WhenAll(tasks);
                         }
                         catch (OperationCanceledException e)
                         {
@@ -211,22 +211,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                                 foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
                                     File.Delete(file);
                                 File.Delete(destinationFilePath);
-                            }
-                            catch (Exception)
-                            {
-                                // ignored
-                            }
-                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
-                            return false;
-                        }
-                        catch (AggregateException e)
-                        {
-                            try
-                            {
-                                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
-                                    File.Delete(file);
-                                File.Delete(destinationFilePath);
-                                
                             }
                             catch (Exception)
                             {
