@@ -411,7 +411,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 string regioninfo = await AppMan.Client.GetStringAsync(new Uri("https://api.cyanlabs.net/Syn3Updater/regioninfo/text"));
-                if (await UIHelper.ShowDialog(regioninfo.Replace(@"\n",Environment.NewLine), LM.GetValue("Home.Region"), LM.GetValue("String.OK"), "Translate").ShowAsync() != ContentDialogResult.Primary)
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(regioninfo.Replace(@"\n",Environment.NewLine), LM.GetValue("Home.Region"), LM.GetValue("String.OK"), "Translate").ShowAsync()) != ContentDialogResult.Primary)
                 { 
                     return;
                 }
@@ -466,8 +466,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         DriveInfo driveInfo = new(destination);
                         if (driveInfo.DriveType != DriveType.Fixed)
-                            if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
-                                    LM.GetValue("String.Yes")).ShowAsync() ==
+                            if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
+                                    LM.GetValue("String.Yes")).ShowAsync()) ==
                                 ContentDialogResult.None)
                                 return;
                     }
@@ -783,8 +783,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (type == "DownloadOnly")
             {
-                if (await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
-                    LM.GetValue("String.Yes")).ShowAsync() == ContentDialogResult.Primary)
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                    LM.GetValue("String.Yes")).ShowAsync()) == ContentDialogResult.Primary)
                     AppMan.App.DownloadOnly = true;
                 else
                     return;

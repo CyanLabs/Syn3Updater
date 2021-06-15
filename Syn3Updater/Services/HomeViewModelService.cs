@@ -19,8 +19,8 @@ namespace Cyanlabs.Syn3Updater.Services
             bool canceldownload = false;
             //Install Mode is reformat or downgrade My20 warning
             if ((installMode == "reformat" || installMode == "downgrade") && !AppMan.App.DownloadOnly && AppMan.App.Settings.My20v2 == null)
-                if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.My20Check")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"),
-                    LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync() == ContentDialogResult.Primary)
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.My20Check")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"),
+                    LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync()) == ContentDialogResult.Primary)
                 {
                     await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
                     return;
@@ -28,8 +28,8 @@ namespace Cyanlabs.Syn3Updater.Services
 
             //Warn is users region is different to new selection
             if (selectedRegion.Code != AppMan.App.Settings.CurrentRegion)
-                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelRegionMismatch")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"),
-                    LM.GetValue("String.Yes")).ShowAsync() != ContentDialogResult.Primary)
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelRegionMismatch")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"),
+                    LM.GetValue("String.Yes")).ShowAsync()) != ContentDialogResult.Primary)
                     canceldownload = true;
 
             //Cancel no apps package selected

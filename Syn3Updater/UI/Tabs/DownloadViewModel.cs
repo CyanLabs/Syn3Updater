@@ -518,7 +518,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else if (_action == "logutilitymy20")
             {
-                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync() ==
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync()) ==
                     ContentDialogResult.None)
                 {
                     USBHelper usbHelper = new();
@@ -549,7 +549,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>   UIHelper.ShowDialog(LM.GetValue("MessageBox.GenericUtilityComplete"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.GenericUtilityComplete"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync());
                 AppMan.App.FireUtilityTabEvent();
             }
 
