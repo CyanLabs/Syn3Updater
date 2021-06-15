@@ -138,7 +138,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             try
             {
                 #region Get file size
-
+                
                 HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(fileUrl);
                 webRequest.UserAgent = AppMan.App.Header;
                 webRequest.Method = "HEAD";
@@ -250,12 +250,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (WebException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox! Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
                 return false;
             }
             catch (HttpRequestException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox! Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
                 return false;
             }
             catch (TaskCanceledException e)
