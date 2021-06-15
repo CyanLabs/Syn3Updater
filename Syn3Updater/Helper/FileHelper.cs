@@ -135,106 +135,113 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns>bool with True if successful or False if not</returns>
         public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
         {
-            #region Get file size
-
-            HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(fileUrl);
-            webRequest.UserAgent = AppMan.App.Header;
-            webRequest.Method = "HEAD";
-            long responseLength;
-            using (WebResponse webResponse = webRequest.GetResponse())
+            try
             {
-                responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
-            }
+                #region Get file size
 
-            #endregion
-            
-            if (numberOfParallelDownloads > 1)
-            {  
-                if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-
-                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
-                    File.Delete(file);
-                
-                using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
+                HttpWebRequest webRequest = (HttpWebRequest) WebRequest.Create(fileUrl);
+                webRequest.UserAgent = AppMan.App.Header;
+                webRequest.Method = "HEAD";
+                long responseLength;
+                using (WebResponse webResponse = webRequest.GetResponse())
                 {
-                    ConcurrentDictionary<long, string> tempFilesDictionary = new();
+                    responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
+                }
 
-                    #region Calculate ranges
+                #endregion
+                
+                if (numberOfParallelDownloads > 1)
+                {  
+                    if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
 
-                    List<Range> readRanges = new();
-                    for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
-                    {
-                        Range range = new()
-                        {
-                            Start = chunk * (responseLength / numberOfParallelDownloads),
-                            End = (chunk + 1) * (responseLength / numberOfParallelDownloads) - 1
-                        };
-                        readRanges.Add(range);
-                    }
-
-                    readRanges.Add(new Range
-                    {
-                        Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
-                        End = responseLength - 1
-                    });
-
-                    #endregion
-
-                    #region Parallel download
-
-                    int i = 1;
-
-                    List<Task> tasks = new();
-                    List<DownloadPartResult> results = new();
-
-                    foreach (Range readRange in readRanges)
-                    {
-                        int i1 = i;
-                        Task t = Task.Run(async () =>
-                        {
-                            DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
-                            results.Add(result);
-                        }, ct);
-                        i++;
-                        tasks.Add(t);
-                    }
-
-                    Task.WaitAll(tasks.ToArray(), ct);
+                    foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
+                        File.Delete(file);
                     
-                    if (ct.IsCancellationRequested)
-                        return false;
-
-                    foreach (DownloadPartResult result in results)
+                    using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
                     {
-                        if (result == null) return false;
-                        if (result.FilePath == "cancelled") return false;
-                        if (result.Ex != null)
+                        ConcurrentDictionary<long, string> tempFilesDictionary = new();
+
+                        #region Calculate ranges
+
+                        List<Range> readRanges = new();
+                        for (int chunk = 0; chunk < numberOfParallelDownloads - 1; chunk++)
                         {
-                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
-                            return false;
+                            Range range = new()
+                            {
+                                Start = chunk * (responseLength / numberOfParallelDownloads),
+                                End = (chunk + 1) * (responseLength / numberOfParallelDownloads) - 1
+                            };
+                            readRanges.Add(range);
                         }
 
-                        tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
+                        readRanges.Add(new Range
+                        {
+                            Start = readRanges.Any() ? readRanges.Last().End + 1 : 0,
+                            End = responseLength - 1
+                        });
 
+                        #endregion
+
+                        #region Parallel download
+
+                        int i = 1;
+
+                        List<Task> tasks = new();
+                        List<DownloadPartResult> results = new();
+
+                        foreach (Range readRange in readRanges)
+                        {
+                            int i1 = i;
+                            Task t = Task.Run(async () =>
+                            {
+                                DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
+                                results.Add(result);
+                            }, ct);
+                            i++;
+                            tasks.Add(t);
+                        }
+
+                        Task.WaitAll(tasks.ToArray(), ct);
+                        
+                        if (ct.IsCancellationRequested)
+                            return false;
+
+                        foreach (DownloadPartResult result in results)
+                        {
+                            if (result == null) return false;
+                            if (result.FilePath == "cancelled") return false;
+                            if (result.Ex != null)
+                            {
+                                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
+                                return false;
+                            }
+
+                            tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
+
+                        }
+
+                        #endregion
+
+                        #region Merge to single file
+
+                        foreach (KeyValuePair<long, string> tempFile in tempFilesDictionary.OrderBy(b => b.Key))
+                        {
+                            byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
+                            destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
+                            File.Delete(tempFile.Value);
+                        }
+
+                        #endregion
+                        return true;
                     }
-
-                    #endregion
-
-                    #region Merge to single file
-
-                    foreach (KeyValuePair<long, string> tempFile in tempFilesDictionary.OrderBy(b => b.Key))
-                    {
-                        byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
-                        destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
-                        File.Delete(tempFile.Value);
-                    }
-
-                    #endregion
-                    return true;
                 }
+                DownloadPartResult result2 = await DownloadFilePart(fileUrl, destinationFilePath, new Range{Start = 0,End = responseLength}, 0, ct);
+                return result2.FilePath != null;
             }
-            DownloadPartResult result2 = await DownloadFilePart(fileUrl, destinationFilePath, new Range{Start = 0,End = responseLength}, 0, ct);
-            return result2.FilePath != null;
+            catch (TaskCanceledException e)
+            {
+                return false;
+            }
         }
         
         
