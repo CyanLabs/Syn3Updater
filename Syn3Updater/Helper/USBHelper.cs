@@ -169,9 +169,17 @@ namespace Cyanlabs.Syn3Updater.Helper
             data.Append("LOG").Append(Environment.NewLine)
                 .Append(log);
             string complete = data.ToString();
-            File.WriteAllText($@"{driveletter}\log.txt", complete);
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-            File.WriteAllText($@"{AppMan.App.MainSettings.LogPath}log-{currentDate}.txt", complete);
+            try
+            {
+                File.WriteAllText($@"{driveletter}\log.txt", complete);
+                File.WriteAllText($@"{AppMan.App.MainSettings.LogPath}log-{currentDate}.txt", complete);
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+            }
+
             if (upload)
                 UploadLog(complete);
         }

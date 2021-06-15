@@ -678,7 +678,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(AppMan.App.DownloadPath + item.FileName));
 
-            Directory.CreateDirectory($@"{AppMan.App.DriveLetter}\SyncMyRide\");
+            try
+            {
+                Directory.CreateDirectory($@"{AppMan.App.DriveLetter}\SyncMyRide\");
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+            }
+            
             return true;
         }
 
