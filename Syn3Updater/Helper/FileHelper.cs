@@ -270,8 +270,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                         {
                             if (ct.IsCancellationRequested)
                             {
-                                output.Close();
-                                output.Dispose();
                                 try
                                 {
                                     File.Delete(destinationFilePath);
@@ -287,8 +285,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                             if (read == 0)
                             {
                                 moreToRead = false;
-                                output.Close();
-                                output.Dispose();
                             }
                             else
                             {
@@ -328,12 +324,6 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                         return new DownloadPartResult {FilePath = "", RangeStart = readRange.Start, Ex = httpRequestException};
                     }
-                    finally
-                    {
-                        output.Close();
-                        output.Dispose();
-                    }
-
                     return new DownloadPartResult {FilePath = tempFilePath, RangeStart = readRange.Start, Ex = null};
                 }
             }
