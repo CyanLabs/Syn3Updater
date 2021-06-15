@@ -124,7 +124,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"Version: {AppMan.App.SVersion}{Environment.NewLine}")
                 .Append($@"Region: {AppMan.App.Settings.CurrentRegion}{Environment.NewLine}")
                 .Append($@"Navigation: {AppMan.App.Settings.CurrentNav}{Environment.NewLine}")
-                .Append($@"Install Mode: {AppMan.App.Settings.InstallMode}{Environment.NewLine}")
+                .Append($@"Install Mode: {AppMan.App.Settings.InstallMode} ({AppMan.App.InstallMode}){Environment.NewLine}")
                 .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}");
             
             if (AppMan.App.Settings.My20v2 == null)

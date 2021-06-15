@@ -145,7 +145,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             _action = AppMan.App.Action;
 
-            text = $"Install Mode: {InstallMode} Forced: {AppMan.App.ModeForced}";
+            text = $"Install Mode: {AppMan.App.Settings.InstallMode} ({InstallMode}) Forced: {AppMan.App.ModeForced}";
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
             AppMan.Logger.Info(text);
 
