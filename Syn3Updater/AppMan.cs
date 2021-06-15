@@ -106,11 +106,11 @@ namespace Cyanlabs.Syn3Updater
             InstallMode,
             SVersion,
             Action,
-            ConfigFile,
+            MainConfigFile,
             ProfileFile,
-            CommonConfigFolderPath,
-            UserConfigFolderPath,
-            ProfileConfigFolderPath,
+            ProgramDataPath,
+            LocalAppDataPath,
+            ProfilePath,
             Header,
             LauncherConfigFile,
             Magnet,
@@ -125,110 +125,15 @@ namespace Cyanlabs.Syn3Updater
 
         #region Methods
 
-        public void LoadProfile()
-        {
-            if (MainSettings != null && string.IsNullOrEmpty(MainSettings.Profile)) MainSettings.Profile = "default";
-            ProfileFile = ProfileConfigFolderPath + $"{MainSettings.Profile}.json";
-            if (File.Exists(ProfileFile))
-            {
-                try
-                {
-                    Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ProfileFile));
-                }
-                catch (JsonReaderException)
-                {
-                    File.Delete(ProfileFile);
-                    Settings = new JsonSettings();
-                }
-
-                Logger.Debug($"Loaded Profile: {MainSettings.Profile}");
-            }
-            else
-            {
-                Logger.Debug("No Profile Settings file found, initializing JSON settings");
-                Settings = new JsonSettings
-                {
-                    CurrentNav = MainSettings.CurrentNav,
-                    CurrentRegion = MainSettings.CurrentRegion,
-                    CurrentVersion = MainSettings.CurrentVersion,
-                };
-            }
-
-            string version = App.Settings.CurrentVersion.ToString();
-            try
-            {
-                SVersion = version.Length == 7
-                    ? $"{version[0]}.{version[1]}.{version.Substring(2, version.Length - 2)}"
-                    : "0.0.00000";
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                Logger.Debug(e.GetFullMessage());
-            }
-        }
-
-        public void SaveSettings()
-        {
-            try
-            {
-                string mainJson = JsonConvert.SerializeObject(MainSettings, Formatting.Indented);
-                File.WriteAllText(ConfigFile, mainJson);
-            }
-            catch (IOException)
-            {
-                Logger.Debug($"Unable to save main settings, another process is accessing {ConfigFile}");
-            }
-
-            try
-            {
-                string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
-                File.WriteAllText(ProfileFile, profileJson);
-            }
-            catch (IOException)
-            {
-                Logger.Debug($"Unable to save profile settings, another process is accessing {ProfileFile}");
-            }
-        }
-
-        public void ResetSettings()
-        {
-            try
-            {
-                if (File.Exists(ConfigFile)) File.Delete(ConfigFile);
-                if (File.Exists(ProfileFile)) File.Delete(ProfileFile);
-                if (File.Exists(LauncherConfigFile)) File.Delete(LauncherConfigFile);
-            }
-            catch (Exception e)
-            {
-                Logger.Debug(e.GetFullMessage());
-            }
-        }
-
-        public async void UpdateLauncherSettings()
-        {
-            string json = JsonConvert.SerializeObject(LauncherPrefs);
-            LauncherConfigFile = CommonConfigFolderPath + "\\launcherPrefs.json";
-            if (!Directory.Exists(CommonConfigFolderPath)) Directory.CreateDirectory(CommonConfigFolderPath);
-            try
-            {
-                File.WriteAllText(CommonConfigFolderPath + "\\launcherPrefs.json", json);
-            }
-            catch (IOException e)
-            {
-                Logger.Debug(e.GetFullMessage());
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
-            }
-        }
-
         public void Initialize()
         {
             SystemHelper.WriteRegistryHandler();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.DefaultConnectionLimit = 8;
             ServicePointManager.Expect100Continue = false;
-            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
             string[] args = Environment.GetCommandLineArgs();
             if (!args.Contains("/launcher"))
+            {
                 try
                 {
                     Process.Start("Launcher.exe");
@@ -239,54 +144,79 @@ namespace Cyanlabs.Syn3Updater
                     Logger.Debug("Something went wrong launching 'Launcher.exe', skipping launcher!");
                     Logger.Debug(e.GetFullMessage());
                 }
-
+            }
+            
+            Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} ({LauncherPrefs.ReleaseTypeInstalled}) is Starting");
+            
             foreach (string value in args)
                 if (value.Contains("syn3updater://"))
                     Magnet = value.Replace("syn3updater://", "").TrimEnd('/');
 
-            CommonConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
-            UserConfigFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater";
-            ProfileConfigFolderPath = UserConfigFolderPath + "\\Profiles\\";
-            ConfigFile = UserConfigFolderPath + "\\settings.json";
+            Logger.Debug($"URL Intent: {Magnet}");
+            
+            ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+            LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater";
+            ProfilePath = LocalAppDataPath + "\\Profiles\\";
+            MainConfigFile = LocalAppDataPath + "\\settings.json";
 
-            if (!Directory.Exists(CommonConfigFolderPath)) Directory.CreateDirectory(CommonConfigFolderPath);
-            if (!Directory.Exists(UserConfigFolderPath)) Directory.CreateDirectory(UserConfigFolderPath);
-            if (!Directory.Exists(ProfileConfigFolderPath)) Directory.CreateDirectory(ProfileConfigFolderPath);
-
-            if (File.Exists(ConfigFile))
+            if (!Directory.Exists(ProgramDataPath))
             {
+                Logger.Debug("ProgramDataPath does not exist, creating directory!");
+                Directory.CreateDirectory(ProgramDataPath);
+            }
+
+            if (!Directory.Exists(LocalAppDataPath))
+            {
+                Logger.Debug("LocalAppDataPath does not exist, creating directory!");
+                Directory.CreateDirectory(LocalAppDataPath);
+            }
+
+            if (!Directory.Exists(ProfilePath))
+            {
+                Logger.Debug("ProfilePath does not exist, creating directory!");
+                Directory.CreateDirectory(ProfilePath);
+            }
+
+            if (File.Exists(MainConfigFile))
+            {
+                Logger.Debug("MainSettings found in LocalAppDataPath");
                 try
                 {
-                    MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(ConfigFile));
+                    MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(MainConfigFile));
+                    Logger.Debug("MainSettings loaded successfully");
                 }
                 catch (JsonReaderException)
                 {
-                    File.Delete(ConfigFile);
+                    File.Delete(MainConfigFile);
                     MainSettings = new JsonMainSettings();
+                    Logger.Debug("MainSettings corrupted, creating new MainSettings");
                 }
             }
-            else if (File.Exists(CommonConfigFolderPath + "\\settings.json"))
+            else if (File.Exists(ProgramDataPath + "\\settings.json"))
             {
-                File.Move(CommonConfigFolderPath + "\\settings.json", ConfigFile);
+                Logger.Debug("MainSettings found in ProgramDataPath but not LocalAppDataPath");
+                File.Move(ProgramDataPath + "\\settings.json", MainConfigFile);
                 try
                 {
-                    MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(ConfigFile));
+                    MainSettings = JsonConvert.DeserializeObject<JsonMainSettings>(File.ReadAllText(MainConfigFile));
+                    Logger.Debug("MainSettings loaded successfully");
                 }
                 catch (JsonReaderException)
                 {
-                    File.Delete(ConfigFile);
+                    File.Delete(MainConfigFile);
                     MainSettings = new JsonMainSettings();
+                    Logger.Debug("MainSettings corrupted, creating new MainSettings");
                 }
             }
             else
             {
-                Logger.Debug("No Main Settings file found, initializing JSON settings");
+                Logger.Debug("MainSettings not found in ProgramDataPath or LocalAppDataPath, Initializing new MainSettings");
                 MainSettings = new JsonMainSettings();
             }
 
             LoadProfile();
 
-            if (string.IsNullOrEmpty(MainSettings.LogPath)) MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
+            if (string.IsNullOrEmpty(MainSettings.LogPath)) MainSettings.LogPath = LocalAppDataPath + "\\Logs\\";
             try
             {
                 if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
@@ -294,26 +224,23 @@ namespace Cyanlabs.Syn3Updater
             catch (DirectoryNotFoundException)
             {
                 Logger.Debug("Unable to set desired log path, defaulting path");
-                MainSettings.LogPath = UserConfigFolderPath + "\\Logs\\";
+                MainSettings.LogPath = LocalAppDataPath + "\\Logs\\";
             }
 
-            if (File.Exists(CommonConfigFolderPath + "\\launcherPrefs.json"))
+            if (File.Exists(ProgramDataPath + "\\launcherPrefs.json"))
                 try
                 {
-                    LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(CommonConfigFolderPath + "\\launcherPrefs.json"));
+                    LauncherPrefs = JsonConvert.DeserializeObject<LauncherPrefs>(File.ReadAllText(ProgramDataPath + "\\launcherPrefs.json"));
                 }
                 catch (JsonReaderException)
                 {
-                    File.Delete(CommonConfigFolderPath + "\\launcherPrefs.json");
+                    File.Delete(ProgramDataPath + "\\launcherPrefs.json");
                     LauncherPrefs = new LauncherPrefs();
                 }
             else
                 LauncherPrefs = new LauncherPrefs();
-
-            // ReSharper disable once IdentifierTypo
-            // ReSharper disable once UnusedVariable
+            
             Logger.Debug("Determining language to use for the application");
-            List<LanguageModel> langs = LM.Languages;
             CultureInfo ci = CultureInfo.InstalledUICulture;
             if (string.IsNullOrWhiteSpace(MainSettings.Lang))
             {
@@ -387,6 +314,105 @@ namespace Cyanlabs.Syn3Updater
                 Header = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/86.0";
             }
         }
+        
+        
+        public void LoadProfile()
+        {
+            if (MainSettings != null && string.IsNullOrEmpty(MainSettings.Profile))
+            {
+                Logger.Debug("No Profile specified, using default");
+                MainSettings.Profile = "default";
+            }
+            ProfileFile = ProfilePath + $"{MainSettings.Profile}.json";
+            if (File.Exists(ProfileFile))
+            {
+                try
+                {
+                    Settings = JsonConvert.DeserializeObject<JsonSettings>(File.ReadAllText(ProfileFile));
+                    Logger.Debug($"Profile {MainSettings.Profile} loaded");
+                }
+                catch (JsonReaderException)
+                {
+                    File.Delete(ProfileFile);
+                    Settings = new JsonSettings();
+                    Logger.Debug($"Profile {MainSettings.Profile} corrupted, creating new {MainSettings.Profile} Profile");
+                }
+            }
+            else
+            {
+                Logger.Debug($"Profile {MainSettings.Profile} not found, Initializing new {MainSettings.Profile} Profile");
+                Settings = new JsonSettings();
+            }
+
+            string version = App.Settings.CurrentVersion.ToString();
+            try
+            {
+                SVersion = version.Length == 7
+                    ? $"{version[0]}.{version[1]}.{version.Substring(2, version.Length - 2)}"
+                    : "0.0.00000";
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Logger.Debug(e.GetFullMessage());
+            }
+        }
+
+        public void SaveSettings()
+        {
+            try
+            {
+                string mainJson = JsonConvert.SerializeObject(MainSettings, Formatting.Indented);
+                File.WriteAllText(MainConfigFile, mainJson);
+                Logger.Debug("MainSettings saved successfully");
+            }
+            catch (IOException)
+            {
+                Logger.Debug($"Unable to save main settings, another process is accessing {MainConfigFile}");
+            }
+
+            try
+            {
+                string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
+                File.WriteAllText(ProfileFile, profileJson);
+                Logger.Debug($"Profile {MainSettings.Profile} saved successfully");
+            }
+            catch (IOException)
+            {
+                Logger.Debug($"Unable to save profile settings, another process is accessing {ProfileFile}");
+            }
+        }
+
+        public void ResetSettings()
+        {
+            try
+            {
+                Logger.Debug($"ALL SETTINGS RESET");
+                if (File.Exists(MainConfigFile)) File.Delete(MainConfigFile);
+                if (File.Exists(ProfileFile)) File.Delete(ProfileFile);
+                if (File.Exists(LauncherConfigFile)) File.Delete(LauncherConfigFile);
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e.GetFullMessage());
+            }
+        }
+
+        public async void UpdateLauncherSettings()
+        {
+            string json = JsonConvert.SerializeObject(LauncherPrefs);
+            LauncherConfigFile = ProgramDataPath + "\\launcherPrefs.json";
+            if (!Directory.Exists(ProgramDataPath)) Directory.CreateDirectory(ProgramDataPath);
+            try
+            {
+                File.WriteAllText(ProgramDataPath + "\\launcherPrefs.json", json);
+                Logger.Debug("LauncherPrefs saved successfully");
+            }
+            catch (IOException e)
+            {
+                Logger.Debug($"Unable to save LauncherPrefs, another process is accessing {LauncherConfigFile}");
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+            }
+        }
 
         public void RestartApp()
         {
@@ -410,7 +436,7 @@ namespace Cyanlabs.Syn3Updater
             Logger.Debug("Writing log to disk before shutdown");
             try
             {
-                File.WriteAllText(UserConfigFolderPath + "\\applog.txt", JsonConvert.SerializeObject(Logger.Log));
+                File.WriteAllText(LocalAppDataPath + "\\applog.txt", JsonConvert.SerializeObject(Logger.Log));
             }
             catch (UnauthorizedAccessException e)
             {

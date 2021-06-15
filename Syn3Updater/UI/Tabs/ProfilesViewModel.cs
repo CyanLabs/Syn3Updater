@@ -86,7 +86,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 try
                 {
-                    File.Delete(AppMan.App.ProfileConfigFolderPath + name + ".json");
+                    File.Delete(AppMan.App.ProfilePath + name + ".json");
                 }
                 catch
                 {
@@ -124,9 +124,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void ReloadProfiles()
         {
             ProfileList = new ObservableCollection<ProfileModel.Profile>();
-            if (!string.IsNullOrEmpty(AppMan.App.ProfileConfigFolderPath))
+            if (!string.IsNullOrEmpty(AppMan.App.ProfilePath))
             {
-                DirectoryInfo dir = new(AppMan.App.ProfileConfigFolderPath);
+                DirectoryInfo dir = new(AppMan.App.ProfilePath);
                 foreach (FileInfo file in dir.GetFiles("*.json")) ProfileList.Add(new ProfileModel.Profile {Name = file.Name.Replace(".json", "")});
             }
         }
