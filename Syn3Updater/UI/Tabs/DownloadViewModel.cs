@@ -685,6 +685,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             catch (DirectoryNotFoundException e)
             {
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                return false;
+            }
+            catch (IOException e)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                return false;
             }
             
             return true;

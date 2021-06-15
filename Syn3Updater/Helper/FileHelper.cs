@@ -226,9 +226,17 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                         foreach (KeyValuePair<long, string> tempFile in tempFilesDictionary.OrderBy(b => b.Key))
                         {
-                            byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
-                            destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
-                            File.Delete(tempFile.Value);
+                            try
+                            {
+                                byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
+                                destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
+                                File.Delete(tempFile.Value);
+                            }
+                            catch (IOException e)
+                            {
+                                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                                return false;
+                            }
                         }
 
                         #endregion
