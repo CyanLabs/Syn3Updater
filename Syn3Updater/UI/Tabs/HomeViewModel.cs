@@ -460,12 +460,18 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (dialog.ShowDialog().GetValueOrDefault())
                 {
                     string destination = dialog.SelectedPath;
-                    DriveInfo driveInfo = new(destination);
-                    if (driveInfo.DriveType != DriveType.Fixed)
-                        if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
-                                LM.GetValue("String.Yes")).ShowAsync() ==
-                            ContentDialogResult.None)
-                            return;
+                    
+                    
+                    if (!destination.StartsWith(@"\\")) //Not UNC Path
+                    {
+                        DriveInfo driveInfo = new(destination);
+                        if (driveInfo.DriveType != DriveType.Fixed)
+                            if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
+                                    LM.GetValue("String.Yes")).ShowAsync() ==
+                                ContentDialogResult.None)
+                                return;
+                    }
+                    
                     if (AppMan.App.DownloadPath.Contains(destination))
                     {
                         await Application.Current.Dispatcher.BeginInvoke(() =>   UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsFolder")).ShowAsync());
