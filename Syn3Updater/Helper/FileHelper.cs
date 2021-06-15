@@ -200,6 +200,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
 
                     Task.WaitAll(tasks.ToArray(), ct);
+                    
+                    if (ct.IsCancellationRequested)
+                        return false;
 
                     foreach (DownloadPartResult result in results)
                     {
