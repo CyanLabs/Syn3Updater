@@ -180,18 +180,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             catch (OperationCanceledException)
             {
                 CancelAction();
+                AppMan.App.FireHomeTabEvent();
                 return;
             }
             catch (Exception e)
             {
                 AppMan.Logger.CrashWindow(e);
                 CancelAction();
+                AppMan.App.FireHomeTabEvent();
                 return;
             }
 
             if (!_doDownload)
             {
                 CancelAction();
+                AppMan.App.FireHomeTabEvent();
                 return;
             }
 
@@ -215,18 +218,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 catch (OperationCanceledException)
                 {
                     CancelAction();
+                    AppMan.App.FireHomeTabEvent();
                     return;
                 }
                 catch (Exception e)
                 {
                     AppMan.Logger.CrashWindow(e);
                     CancelAction();
+                    AppMan.App.FireHomeTabEvent();
                     return;
                 }
 
                 if (!_doCopy)
                 {
                     CancelAction();
+                    AppMan.App.FireHomeTabEvent();
                     return;
                 }
 
@@ -553,27 +559,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.FireUtilityTabEvent();
             }
 
-            Reset();
+           CancelAction();
         }
 
         private void CancelAction()
-        {
-            CancelButtonEnabled = false;
-            AppMan.App.IsDownloading = false;
-            _tokenSource.Cancel();
-            TotalPercentage = 0;
-            CurrentProgress = 0;
-            DownloadInfo = "";
-            DownloadPercentage = "";
-            Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
-            AppMan.App.AppsSelected = false;
-            AppMan.App.SkipFormat = false;
-            _tokenSource.Dispose();
-            _tokenSource = new CancellationTokenSource();
-            AppMan.App.FireHomeTabEvent();
-        }
-
-        private void Reset()
         {
             CancelButtonEnabled = false;
             AppMan.App.IsDownloading = false;
