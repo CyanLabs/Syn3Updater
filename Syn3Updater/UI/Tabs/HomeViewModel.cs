@@ -781,18 +781,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task StartAction(string type)
         {
+            bool startEnabledOld = StartEnabled;
+            StartEnabled = false;
+            DownloadOnlyEnabled = false;
             if (type == "DownloadOnly")
             {
                 if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
                     LM.GetValue("String.Yes")).ShowAsync()) == ContentDialogResult.Primary)
                     AppMan.App.DownloadOnly = true;
                 else
+                    StartEnabled = startEnabledOld;
+                    DownloadOnlyEnabled = true;
                     return;
             }
 
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
-            StartEnabled = false;
-            DownloadOnlyEnabled = false;
+
         }
 
         public async Task VisitFeedbackThreadAction(string url)
