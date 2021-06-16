@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
@@ -134,49 +137,70 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ImportantNotices = "Loading notices, please wait...";
             OtherNotices = "Loading notices, please wait...";
             
-            HttpRequestMessage httpRequestMessage = new()
+            try
             {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(Api.NoticesURL),
-                Headers = { 
-                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
-                },
-            };
-            HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-            Api.Notices output = JsonHelpers.Deserialize<Api.Notices>(await response.Content.ReadAsStreamAsync());
-            string updatedDate;
-            ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
-            OtherNotices = "";
-            foreach (Api.Notice notice in output.Notice)
-            {
-                DateTime utcCreatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateCreated), DateTimeKind.Local);
-                string createdDate = $"Published: {utcCreatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss}";
-
-                if (notice?.DateUpdated != null)
+                HttpRequestMessage httpRequestMessage = new()
                 {
-                    DateTime utcUpdatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateUpdated), DateTimeKind.Local);
-                    updatedDate = $" (Updated: {utcUpdatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss})";
-                }
-                else
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(Api.NoticesURL),
+                    Headers = { 
+                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    },
+                };
+                HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
+                Api.Notices output = JsonHelpers.Deserialize<Api.Notices>(await response.Content.ReadAsStreamAsync());
+                
+                string updatedDate;
+                ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
+                OtherNotices = "";
+                foreach (Api.Notice notice in output.Notice)
                 {
-                    updatedDate = null;
+                    DateTime utcCreatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateCreated), DateTimeKind.Local);
+                    string createdDate = $"Published: {utcCreatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss}";
+
+                    if (notice?.DateUpdated != null)
+                    {
+                        DateTime utcUpdatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateUpdated), DateTimeKind.Local);
+                        updatedDate = $" (Updated: {utcUpdatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss})";
+                    }
+                    else
+                    {
+                        updatedDate = null;
+                    }
+
+                    string html = $"<div><h4><u>{notice.Title}</u></h4>" + notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
+                    if (notice.Important)
+                        ImportantNotices = html + ImportantNotices;
+                    else
+                        OtherNotices = html + OtherNotices;
                 }
 
-                string html = $"<div><h4><u>{notice.Title}</u></h4>" + notice.NoticeContent + $"<h6>{createdDate} {updatedDate}</h6></div>";
-                if (notice.Important)
-                    ImportantNotices = html + ImportantNotices;
-                else
-                    OtherNotices = html + OtherNotices;
+                OtherNoticesGrid = string.IsNullOrEmpty(OtherNotices) ? Visibility.Collapsed : Visibility.Visible;
+                ImportantNoticesGrid = ImportantNotices == "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>" ? Visibility.Collapsed : Visibility.Visible;
             }
-
-            OtherNoticesGrid = string.IsNullOrEmpty(OtherNotices) ? Visibility.Collapsed : Visibility.Visible;
-            ImportantNoticesGrid = ImportantNotices == "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>" ? Visibility.Collapsed : Visibility.Visible;
+            catch (Exception e)
+            {
+                AppMan.Logger.Debug($"Unable to load notices - {e.Message}");
+                ImportantNotices = "ERROR: Unable to load Important Notices";
+                OtherNotices = "ERROR: Unable to load Other Notices";
+                ImportantNoticesGrid = Visibility.Visible;
+                OtherNoticesGrid = Visibility.Visible;
+            }
         }
 
         public async Task GetChangelog()
         {
-            HttpResponseMessage response = await AppMan.Client.GetAsync(Api.ChangelogURL);
-            Changelogs = JsonHelpers.Deserialize<Api.Changelogs>(await response.Content.ReadAsStreamAsync());
+            try
+            {
+                HttpResponseMessage response = await AppMan.Client.GetAsync(Api.ChangelogURL);
+                Changelogs = JsonHelpers.Deserialize<Api.Changelogs>(await response.Content.ReadAsStreamAsync());
+            }
+            catch (Exception e)
+            {
+                AppMan.Logger.Debug($"Unable to load changelog - {e.Message}");
+                IList<Api.Changelog> changelog = new List<Api.Changelog>() {new(){Version = "Error", Branch = "Unable to access changelog, try again later"}};
+                Changelogs = new Api.Changelogs() {Changelog = changelog};
+            }
         }
 
         public async Task VisitGithubAction(string version)

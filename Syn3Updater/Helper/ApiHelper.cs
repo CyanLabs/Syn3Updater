@@ -29,7 +29,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());
                 return ConvertIvsu(ivsu);
             }
-            catch (HttpRequestException e)
+            catch (Exception e)
             {
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 AppMan.Logger.Info("ERROR: fetching SpecialPackage - " + e.GetFullMessage());
