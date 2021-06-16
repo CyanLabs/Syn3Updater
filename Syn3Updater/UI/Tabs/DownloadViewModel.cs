@@ -478,7 +478,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 ContentDialogResult result = await UIHelper
                     .ShowDialog(LM.GetValue("MessageBox.UploadLog"), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Upload")).ShowAsync();
-                USBHelper.GenerateLog(Log, result == ContentDialogResult.Primary);
+                await USBHelper.GenerateLog(Log, result == ContentDialogResult.Primary);
             }
 
             if (_action == "main")

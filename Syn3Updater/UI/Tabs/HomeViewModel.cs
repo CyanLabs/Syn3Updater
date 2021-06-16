@@ -528,7 +528,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Method = HttpMethod.Get,
                         RequestUri = new Uri(_apiAppReleases),
                         Headers = { 
-                            { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                            { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                         },
                     };
                     HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
@@ -566,13 +566,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             else if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion && _selectedRelease != LM.GetValue("String.OnlyMaps"))
                 SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
 
-            string license = "";
+            string license = string.Empty;
             if (AppMan.App.MainSettings.LicenseKey?.Length > 10) license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.MainSettings.LicenseKey + "\"}},";
             _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
                 "filter={\"_and\":[{\"_or\":[" + license +
                 "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},[esn]{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
 
-            if (SelectedRelease != "")
+            if (!String.IsNullOrWhiteSpace(SelectedRelease))
             {
                 SelectedMapVersion = null;
                 IvsuList?.Clear();
@@ -612,23 +612,23 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
                 }
 
-                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);
-
-                HttpRequestMessage httpRequestMessage = new()
-                {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri(_apiMapReleases),
-                    Headers = { 
-                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
-                    },
-                };
-                HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-                Stream stringMapReleasesJson = await response.Content.ReadAsStreamAsync();
+                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);           
 
                 if (AppMan.App.Settings.CurrentNav)
                 {
+                    HttpRequestMessage httpRequestMessage = new()
+                    {
+                        Method = HttpMethod.Get,
+                        RequestUri = new Uri(_apiMapReleases),
+                        Headers = {
+                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
+                    },
+                    };
+                    HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
+                    Stream stringMapReleasesJson = await response.Content.ReadAsStreamAsync();
                     _jsonMapReleases = JsonHelpers.Deserialize<Api.JsonReleases>(stringMapReleasesJson);
-                    foreach (Api.Data item in _jsonMapReleases.Releases) SMapVersion?.Add(item.Name);
+                    foreach (Api.Data item in _jsonMapReleases.Releases)
+                        SMapVersion.Add(item.Name);
                 }
 
                 SMapVersionsEnabled = true;
@@ -636,7 +636,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
 
                 string mapReleaseTmp = _magnetActions?["Maps"].Replace("_", " ");
-                if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp)) SelectedMapVersion = mapReleaseTmp;
+                if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp)) 
+                    SelectedMapVersion = mapReleaseTmp;
             }
         }
 
@@ -659,7 +660,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             Method = HttpMethod.Get,
                             RequestUri = new Uri(appReleaseSingle),
                             Headers = { 
-                                { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                                { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                             },
                         };
                     HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
@@ -693,7 +694,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     Method = HttpMethod.Get,
                     RequestUri = new Uri(Api.MapReleaseSingle + SelectedMapVersion),
                     Headers = { 
-                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                     },
                 };
                 HttpResponseMessage response2 = await AppMan.Client.SendAsync(httpRequestMessage2);

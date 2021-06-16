@@ -139,7 +139,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(Api.NoticesURL),
                 Headers = { 
-                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                 },
             };
             HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
