@@ -152,10 +152,6 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 if (numberOfParallelDownloads > 1)
                 {
-                    if (File.Exists(destinationFilePath)) File.Delete(destinationFilePath);
-
-                    foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
-                        File.Delete(file);
 
                     using (FileStream destinationStream = new(destinationFilePath, FileMode.Append))
                     {
@@ -206,16 +202,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                         catch (OperationCanceledException e)
                         {
-                            try
-                            {
-                                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
-                                    File.Delete(file);
-                                File.Delete(destinationFilePath);
-                            }
-                            catch (Exception)
-                            {
-                                // ignored
-                            }
+                            AttemptDownloadFileDelete(destinationFilePath);
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                            return false;
+                        }
+                        catch (IOException e)
+                        {
+                            AttemptDownloadFileDelete(destinationFilePath);
                             await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                             return false;
                         }
@@ -278,7 +271,20 @@ namespace Cyanlabs.Syn3Updater.Helper
                 return false;
             }
         }
-        
+
+        private void AttemptDownloadFileDelete(string destinationFilePath)
+        {
+            try
+            {
+                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
+                    File.Delete(file);
+                File.Delete(destinationFilePath);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
         
 
         public async Task<DownloadPartResult> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
@@ -299,66 +305,37 @@ namespace Cyanlabs.Syn3Updater.Helper
                 const int chunkSize = 4096;
                 using (FileStream output = File.Create(tempFilePath, chunkSize))
                 {
-                    try
+                    do
                     {
-                        do
+                        if (ct.IsCancellationRequested)
                         {
-                            if (ct.IsCancellationRequested)
+                            try
                             {
-                                try
-                                {
-                                    File.Delete(destinationFilePath);
-                                }
-                                catch (IOException)
-                                {
-                                }
-
-                                return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
+                                File.Delete(destinationFilePath);
                             }
-                            //TODO: Change to Span/Memory once the netframework version is depricated  
-                            int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
-                            if (read == 0)
+                            catch (IOException)
                             {
-                                moreToRead = false;
                             }
-                            else
-                            {
-                                //byte[] data = new byte[read];
-                                //Array.Copy(buffer, data, read);   
-                                await output.WriteAsync(buffer, 0, read, ct);
-                                totalRead += read;
-                                double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
-                                int value = Convert.ToInt32(downloadPercentage);
-                                _percentageChanged.Raise(this, value, concurrent);
-                            }
-                        } while (moreToRead);
-                    }
-                    catch (IOException ioException)
-                    {
-                        try
-                        {
-                            if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
-                        }
-                        catch (Exception)
-                        {
-                            // ignored
-                        }
 
-                        return new DownloadPartResult {FilePath = "", RangeStart = readRange.Start, Ex = ioException};
-                    }
-                    catch (HttpRequestException httpRequestException)
-                    {
-                        try
-                        {
-                            if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
+                            return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
                         }
-                        catch (Exception)
+                        //TODO: Change to Span/Memory once the netframework version is depricated  
+                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+                        if (read == 0)
                         {
-                            // ignored
+                            moreToRead = false;
                         }
-
-                        return new DownloadPartResult {FilePath = "", RangeStart = readRange.Start, Ex = httpRequestException};
-                    }
+                        else
+                        {
+                            //byte[] data = new byte[read];
+                            //Array.Copy(buffer, data, read);   
+                            await output.WriteAsync(buffer, 0, read, ct);
+                            totalRead += read;
+                            double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
+                            int value = Convert.ToInt32(downloadPercentage);
+                            _percentageChanged.Raise(this, value, concurrent);
+                        }
+                    } while (moreToRead);
                     return new DownloadPartResult {FilePath = tempFilePath, RangeStart = readRange.Start, Ex = null};
                 }
             }
