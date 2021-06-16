@@ -347,15 +347,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (AppMan.App.ClearSelections)
             {
+                NotesVisibility = false;
                 if (!string.IsNullOrEmpty(AppMan.App.Magnet))
                     _magnetActions = AppMan.App.Magnet
                         .Split(';')
                         .Select(part => part.Split('='))
                         .Where(part => part.Length == 2)
                         .ToDictionary(sp => sp[0], sp => sp[1]);
-                
-                SVersionsEnabled = false;
-                
+
                 SRegions = new ObservableCollection<SModel.SRegion>
                 {
                     new() {Code = "EU", Name = "Europe"},
@@ -378,6 +377,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     SelectedRegionIndex = -1;
                     SelectedReleaseIndex = -1;
                     SelectedMapVersionIndex = -1;
+                    SVersionsEnabled = false;
+                    SMapVersionsEnabled = false;
                 }
                 
                 RefreshUsb();
