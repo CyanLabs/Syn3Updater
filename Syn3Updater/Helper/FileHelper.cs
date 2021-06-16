@@ -212,6 +212,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                             await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                             return false;
                         }
+                        catch (ObjectDisposedException  e)
+                        {
+                            AttemptDownloadFileDelete(destinationFilePath);
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                            return false;
+                        }
 
                         foreach (DownloadPartResult result in results)
                         {
@@ -307,6 +313,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     do
                     {
+                        //TODO: Change to Span/Memory once the netframework version is depricated  
+                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
                         if (ct.IsCancellationRequested)
                         {
                             try
@@ -319,8 +327,6 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                             return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
                         }
-                        //TODO: Change to Span/Memory once the netframework version is depricated  
-                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
                         if (read == 0)
                         {
                             moreToRead = false;
