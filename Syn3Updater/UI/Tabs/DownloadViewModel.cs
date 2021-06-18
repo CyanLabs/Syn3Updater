@@ -180,18 +180,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             catch (OperationCanceledException)
             {
                 CancelAction();
+                AppMan.App.FireHomeTabEvent();
                 return;
             }
             catch (Exception e)
             {
                 AppMan.Logger.CrashWindow(e);
                 CancelAction();
+                AppMan.App.FireHomeTabEvent();
                 return;
             }
 
             if (!_doDownload)
             {
                 CancelAction();
+                AppMan.App.FireHomeTabEvent();
                 return;
             }
 
@@ -215,18 +218,21 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 catch (OperationCanceledException)
                 {
                     CancelAction();
+                    AppMan.App.FireHomeTabEvent();
                     return;
                 }
                 catch (Exception e)
                 {
                     AppMan.Logger.CrashWindow(e);
                     CancelAction();
+                    AppMan.App.FireHomeTabEvent();
                     return;
                 }
 
                 if (!_doCopy)
                 {
                     CancelAction();
+                    AppMan.App.FireHomeTabEvent();
                     return;
                 }
 
@@ -553,27 +559,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.FireUtilityTabEvent();
             }
 
-            Reset();
+           CancelAction();
         }
 
         private void CancelAction()
-        {
-            CancelButtonEnabled = false;
-            AppMan.App.IsDownloading = false;
-            _tokenSource.Cancel();
-            TotalPercentage = 0;
-            CurrentProgress = 0;
-            DownloadInfo = "";
-            DownloadPercentage = "";
-            Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Clear());
-            AppMan.App.AppsSelected = false;
-            AppMan.App.SkipFormat = false;
-            _tokenSource.Dispose();
-            _tokenSource = new CancellationTokenSource();
-            AppMan.App.FireHomeTabEvent();
-        }
-
-        private void Reset()
         {
             CancelButtonEnabled = false;
             AppMan.App.IsDownloading = false;
@@ -701,8 +690,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             Log += "[" + DateTime.Now + "] Generating Autoinstall.lst" + Environment.NewLine;
             AppMan.Logger.Info("Generating Autoinstall.lst");
             StringBuilder autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease, _selectedRegion);
-            File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
-            File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
+            try
+            {
+                File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
+                File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
+            }
+            catch (IOException e)
+            {
+                Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+            }
         }
 
         private void CreateReformat()
@@ -731,7 +727,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     reformatlst += Environment.NewLine;
             }
 
-            File.WriteAllText($@"{AppMan.App.DriveLetter}\reformat.lst", reformatlst);
+            try
+            {
+                File.WriteAllText($@"{AppMan.App.DriveLetter}\reformat.lst", reformatlst);
+            }
+            catch (IOException e)
+            {
+                Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+            }
 
             Log += "[" + DateTime.Now + "] Generating autoinstall.lst" + Environment.NewLine;
             AppMan.Logger.Info("Generating autoinstall.lst");
@@ -758,8 +761,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 autoinstalllst.Append("Options = AutoInstall");
             }
 
-            File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
-            File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
+            try
+            {
+                File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
+                File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
+            }
+            catch (IOException e)
+            {
+                Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+            }
         }
 
         private async Task<bool> ValidateFile(string srcfile, string localfile, string md5, bool copy, bool existing = false)

@@ -327,6 +327,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void ReloadSettings()
         {
+            StartEnabled = false;
+            DownloadOnlyEnabled = false;
             CurrentNav = AppMan.App.Settings.CurrentNav ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
             CurrentRegion = AppMan.App.Settings.CurrentRegion;
             CurrentVersion = AppMan.App.SVersion;
@@ -338,8 +340,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 false => LM.GetValue("String.Disabled")
             };
             InstallModeForced = AppMan.App.ModeForced ? LM.GetValue("String.Yes") : LM.GetValue("String.No");
-            StartEnabled = false;
-            DownloadOnlyEnabled = false;
             InstallMode = AppMan.App.Settings.InstallMode;
             CurrentProfile = AppMan.App.MainSettings.Profile;
             AppMan.Logger.Info($"Current Details - Region: {CurrentRegion} - Version: {CurrentVersion} - Navigation: {CurrentNav}");
@@ -347,7 +347,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (AppMan.App.ClearSelections)
             {
-                SRegions?.Clear();
+                NotesVisibility = false;
+                if (!string.IsNullOrEmpty(AppMan.App.Magnet))
+                    _magnetActions = AppMan.App.Magnet
+                        .Split(';')
+                        .Select(part => part.Split('='))
+                        .Where(part => part.Length == 2)
+                        .ToDictionary(sp => sp[0], sp => sp[1]);
+
                 SRegions = new ObservableCollection<SModel.SRegion>
                 {
                     new() {Code = "EU", Name = "Europe"},
@@ -356,54 +363,27 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     new() {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
                     new() {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
                 };
-                SVersion.Clear();
-                SMapVersion.Clear();
-                IvsuList.Clear();
-                DriveList.Clear();
+                SVersion = new ObservableCollection<string>();
+                SMapVersion = new ObservableCollection<string>();
+                IvsuList = new ObservableCollection<SModel.Ivsu>();
+
+                if (_magnetActions?.Count != 0)
+                {
+                    bool exists = SRegions.Any(x => x.Code == _magnetActions["Region"]);
+                    if (exists) SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
+                }
+                else
+                {
+                    SelectedRegionIndex = -1;
+                    SelectedReleaseIndex = -1;
+                    SelectedMapVersionIndex = -1;
+                    SVersionsEnabled = false;
+                    SMapVersionsEnabled = false;
+                }
+                
                 RefreshUsb();
-                NotesVisibility = false;
-                StartEnabled = false;
-                DownloadOnlyEnabled = false;
                 AppMan.App.ClearSelections = false;
             }
-        }
-
-        public void Init()
-        {
-            NotesVisibility = false;
-            if (!string.IsNullOrEmpty(AppMan.App.Magnet))
-                _magnetActions = AppMan.App.Magnet
-                    .Split(';')
-                    .Select(part => part.Split('='))
-                    .Where(part => part.Length == 2)
-                    .ToDictionary(sp => sp[0], sp => sp[1]);
-            
-            SRegions = new ObservableCollection<SModel.SRegion>
-            {
-                new() {Code = "EU", Name = "Europe"},
-                new() {Code = "NA", Name = "United States, Canada & Mexico"},
-                new() {Code = "CN", Name = "China"},
-                new() {Code = "ANZ", Name = "Australia, New Zealand, South America, Turkey & Taiwan"},
-                new() {Code = "ROW", Name = "Middle East, Africa, India, Sri Lanka, Israel, South East Asia, Caribbean & Central America"}
-            };
-            SVersion = new ObservableCollection<string>();
-            SMapVersion = new ObservableCollection<string>();
-            IvsuList = new ObservableCollection<SModel.Ivsu>();
-            SVersionsEnabled = false;
-
-            if (_magnetActions?.Count != 0)
-            {
-                bool exists = SRegions.Any(x => x.Code == _magnetActions["Region"]);
-                if (exists) SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
-            }
-            else
-            {
-                SelectedRegionIndex = -1;
-                SelectedReleaseIndex = -1;
-                SelectedMapVersionIndex = -1;
-            }
-
-            RefreshUsb();
         }
 
         private static async Task RegionInfoAction()
@@ -430,22 +410,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 DriveLetter = null;
-                ObservableCollection<USBHelper.Drive> tmpDriveList = USBHelper.RefreshDevices(true);
-                if (tmpDriveList != null && tmpDriveList.Count > 0) DriveList = tmpDriveList;
+                DriveList = USBHelper.RefreshDevices(true);
             }
-            catch (XamlParseException e)
+            catch (Exception e)
             {
                 await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
-                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                await Application.Current.Dispatcher.BeginInvoke(() =>   UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
-                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
-            }
-            catch (NullReferenceException e)
-            {
-                await Application.Current.Dispatcher.BeginInvoke(() =>   UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -782,18 +751,27 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task StartAction(string type)
         {
+            bool startEnabledOld = StartEnabled;
+            StartEnabled = false;
+            DownloadOnlyEnabled = false;
             if (type == "DownloadOnly")
             {
-                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!",
+                    LM.GetValue("Download.CancelButton"),
                     LM.GetValue("String.Yes")).ShowAsync()) == ContentDialogResult.Primary)
+                {
                     AppMan.App.DownloadOnly = true;
+                }
                 else
+                {
+                    StartEnabled = startEnabledOld;
+                    DownloadOnlyEnabled = true;
                     return;
+                }
             }
 
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
-            StartEnabled = false;
-            DownloadOnlyEnabled = false;
+
         }
 
         public async Task VisitFeedbackThreadAction(string url)

@@ -202,7 +202,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task LogPrepareUSBAction()
         {
+            UtiltyButtonStatus = false;
             await USBHelper.LogPrepareUSBAction(SelectedDrive, DriveLetter);
+            UtiltyButtonStatus = true;
         }
 
         private USBHelper _usbHelper;
@@ -221,6 +223,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task GracenotesRemovalAction()
         {
+            UtiltyButtonStatus = false;
             //Reset ApplicationManager variables
             AppMan.App.Ivsus.Clear();
             AppMan.App.DriveLetter = DriveLetter;
@@ -246,10 +249,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.IsDownloading = true;
             AppMan.Logger.Info("Starting process (Gracenotes Removal");
             AppMan.App.FireDownloadsTabEvent();
+            UtiltyButtonStatus = true;
         }
 
         private async Task SmallVoiceAction()
         {
+            UtiltyButtonStatus = false;
             //Reset ApplicationManager variables
             AppMan.App.Ivsus.Clear();
             AppMan.App.DriveLetter = DriveLetter;
@@ -275,10 +280,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.IsDownloading = true;
             AppMan.Logger.Info("Starting process (Voice Package Shrinker");
             AppMan.App.FireDownloadsTabEvent();
+            UtiltyButtonStatus = true;
         }
 
         private async Task DowngradeAction()
         {
+            UtiltyButtonStatus = false;
             //Reset ApplicationManager variables
             AppMan.App.Ivsus.Clear();
             AppMan.App.DriveLetter = DriveLetter;
@@ -302,6 +309,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.IsDownloading = true;
             AppMan.Logger.Info("Starting process (Enforced Downgrade");
             AppMan.App.FireDownloadsTabEvent();
+            UtiltyButtonStatus = true;
         }
 
         private static void TroubleshootingDetailsAction()
