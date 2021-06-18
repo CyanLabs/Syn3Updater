@@ -194,9 +194,17 @@ namespace Cyanlabs.Syn3Updater.Helper
                 { "computername", Environment.MachineName },
                 { "contents", log }
             };
-            HttpClient client = new();
-            HttpResponseMessage response = await client.PostAsync(Api.LogPost, new FormUrlEncodedContent(values));
-            string responseString = await response.Content.ReadAsStringAsync();
+            HttpRequestMessage httpRequestMessage = new()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(Api.LogPost),
+                Headers = {
+                    { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
+                },
+                Content = new FormUrlEncodedContent(values)
+            };
+            HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
+            string responseString = await response.Content.ReadAsStringAsync();           
             var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
             Process.Start(Api.LogUrl + output.uuid);
         }
