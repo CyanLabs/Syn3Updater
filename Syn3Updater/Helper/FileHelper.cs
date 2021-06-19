@@ -277,6 +277,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return false;
             }
+            catch (OutOfMemoryException e)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                return false;
+            }
             catch (TaskCanceledException e)
             {
                 return false;
