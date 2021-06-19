@@ -769,6 +769,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     return;
                 }
             }
+            else if (string.IsNullOrEmpty(DriveLetter))
+            {
+                return;
+            }
 
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
 

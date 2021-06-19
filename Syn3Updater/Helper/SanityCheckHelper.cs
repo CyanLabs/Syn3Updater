@@ -33,7 +33,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
 
             // Optional Format
-            if (string.IsNullOrWhiteSpace(selectedDrive.Path) && driveLetter != null)
+            if (string.IsNullOrWhiteSpace(selectedDrive?.Path) && driveLetter != null)
             {
                 if (Directory.EnumerateFileSystemEntries(driveLetter, "*", SearchOption.AllDirectories).Any())
                 {

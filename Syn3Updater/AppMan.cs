@@ -322,8 +322,13 @@ namespace Cyanlabs.Syn3Updater
             {
                 Logger.Debug("No Profile specified, using default");
                 MainSettings.Profile = "default";
+                ProfileFile = ProfilePath + "default.json";
             }
-            ProfileFile = ProfilePath + $"{MainSettings.Profile}.json";
+            else if (MainSettings != null)
+            {
+                ProfileFile = ProfilePath + $"{MainSettings.Profile}.json";
+            }
+            
             if (File.Exists(ProfileFile))
             {
                 try
