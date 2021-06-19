@@ -4,7 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="http://schemas.modernwpf.com/2019"
-    xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
+    xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs" xmlns:converter="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Profiles"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" FontSize="12"
@@ -13,6 +13,10 @@
     <UserControl.DataContext>
         <tabs:ProfilesViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -73,22 +77,32 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
+                            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                       TextAlignment="Left" Margin="5,0"
+                                       Text="{Binding Name}" Visibility="{Binding Path=DataContext.RenameMode, ElementName=ProfilesTab, Converter={StaticResource BoolToVisibilityConverter}}" />
                             <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"
                                        TextAlignment="Left" Margin="5,0"
-                                       Text="{Binding Name}" />
+                                       Text="{Binding Name}" Visibility="{Binding Path=DataContext.RenameMode, ElementName=ProfilesTab, Converter={StaticResource InvertedBoolToVisibilityConverter}}"/>
                             <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" Height="35"
+                                    Cursor="Hand"
+                                    Command="{Binding Path=DataContext.RenameProfile, ElementName=ProfilesTab}"
+                                    CommandParameter="{Binding Name}"
+                                    Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5"
+                                    Content="{Binding Path=DataContext.RenameButtonText, ElementName=ProfilesTab}" />
+                            <Button Grid.Column="2" Style="{DynamicResource AccentButtonStyle}" Height="35"
                                     Cursor="Hand"
                                     Command="{Binding Path=DataContext.SelectProfile, ElementName=ProfilesTab}"
                                     CommandParameter="{Binding Name}"
                                     Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5"
                                     Content="{Binding Language, ConverterParameter=Profiles.SelectProfile, ElementName=ProfilesTab, Converter={StaticResource LocConverter}}" />
-                            <Button Grid.Column="2" Style="{DynamicResource AccentButtonStyle}" Height="35"
+                            <Button Grid.Column="3" Style="{DynamicResource AccentButtonStyle}" Height="35"
                                     Cursor="Hand"
                                     Command="{Binding Path=DataContext.DeleteProfile, ElementName=ProfilesTab}"
                                     CommandParameter="{Binding Name}"

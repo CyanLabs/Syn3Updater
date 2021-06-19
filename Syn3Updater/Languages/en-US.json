@@ -164,5 +164,7 @@
     "Home.FeedbackButton": "Feedback Thread",
     "String.Notice": "Notice",
     "String.AutoDetect": "Auto-Detect",
-    "Utility.CopyAsBuilt": "Copy AsBuilt"
+    "Utility.CopyAsBuilt": "Copy AsBuilt",
+    "Profiles.RenameProfile": "Rename",
+    "Profiles.Save": "Save"
 }

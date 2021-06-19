@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,6 +28,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private AsyncValueCommand<string> _selectProfile;
         public AsyncValueCommand<string> SelectProfile => _selectProfile ??= new AsyncValueCommand<string>(SelectProfileAction);
+        
+        private AsyncValueCommand<string> _renameProfile;
+        public AsyncValueCommand<string> RenameProfile => _renameProfile ??= new AsyncValueCommand<string>(RenameProfileAction);
 
         private AsyncCommand<string> _deleteProfile;
         public AsyncCommand<string> DeleteProfile => _deleteProfile ??= new AsyncCommand<string>(DeleteProfileAction);
@@ -53,6 +57,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _profileName;
             set => SetProperty(ref _profileName, value);
         }
+        
+        private string _renameButtonText;
+
+        public string RenameButtonText
+        {
+            get => _renameButtonText;
+            set => SetProperty(ref _renameButtonText, value);
+        }
 
         private ObservableCollection<ProfileModel.Profile> _profileList;
 
@@ -69,6 +81,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _selectedProfile;
             set => SetProperty(ref _selectedProfile, value);
         }
+        
+        private bool _renameMode;
+
+        public bool RenameMode
+        {
+            get => _renameMode;
+            set => SetProperty(ref _renameMode, value);
+        }
 
         #endregion
 
@@ -78,6 +98,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             CurrentProfile = AppMan.App.MainSettings.Profile;
             ReloadProfiles();
+            RenameButtonText = LM.GetValue("Profiles.Rename");
+            RenameMode = false;
+            ProfileName = null;
         }
 
         private async Task DeleteProfileAction(string name)
@@ -131,6 +154,31 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
+        private string _oldname;
+        private ValueTask RenameProfileAction(string name)
+        {
+            if(RenameButtonText == LM.GetValue("Profiles.Rename"))
+            {
+                RenameButtonText = LM.GetValue("Profiles.Save");
+                RenameMode = true;
+                _oldname = name;
+            } 
+            else
+            {
+                try
+                {
+                    File.Move(AppMan.App.ProfilePath + _oldname + ".json",AppMan.App.ProfilePath + name + ".json" );
+                    SelectProfileAction(name);
+                }
+                catch (Exception e)
+                {
+                    UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                }
+            }
+            
+            
+            return new ValueTask();
+        }
         #endregion
     }
 }
