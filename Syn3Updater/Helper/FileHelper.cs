@@ -272,6 +272,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
                 return false;
             }
+            catch (IOException e)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                return false;
+            }
             catch (TaskCanceledException e)
             {
                 return false;
