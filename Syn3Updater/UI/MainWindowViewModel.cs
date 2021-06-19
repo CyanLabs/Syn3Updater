@@ -109,18 +109,18 @@ namespace Cyanlabs.Syn3Updater.UI
                 }
                 else if (value != "about" && !AppMan.App.MainSettings.DisclaimerAccepted)
                 {
-                    UIHelper.ShowDialog(LM.GetValue("MessageBox.DisclaimerNotAccepted"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                    UIHelper.ShowDialog(LM.GetValue("MessageBox.DisclaimerNotAccepted"), LM.GetValue("String.Notice"), LM.GetValue("String.OK"));
                     value = "about";
                 }
                 else if (value == "home" && (AppMan.App.Settings.CurrentRegion?.Length == 0 || AppMan.App.Settings.CurrentVersion == 0 ||
                                              AppMan.App.Settings.CurrentVersion.ToString().Length != 7))
                 {
-                    UIHelper.ShowDialog(LM.GetValue("MessageBox.NoVersionOrRegionSelected"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                    UIHelper.ShowDialog(LM.GetValue("MessageBox.NoVersionOrRegionSelected"), LM.GetValue("String.Notice"), LM.GetValue("String.OK"));
                     value = "settings";
                 }
                 else if (value != "downloads" && AppMan.App.IsDownloading)
                 {
-                    UIHelper.ShowDialog(LM.GetValue("MessageBox.DownloadInProgress"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")).ShowAsync();
+                    UIHelper.ShowDialog(LM.GetValue("MessageBox.DownloadInProgress"), LM.GetValue("String.Notice"), LM.GetValue("String.OK"));
                     value = "downloads";
                 }
                 else if (value == "crashme")

@@ -401,8 +401,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (ReleaseType != _currentReleaseType)
             {
-                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
-                    LM.GetValue("String.Yes")).ShowAsync()) == ContentDialogResult.Primary)
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.ChangeApplicationReleaseBranch"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
+                    LM.GetValue("String.Yes")) == ContentDialogResult.Primary)
                 {
                     _currentReleaseType = ReleaseType;
                     try
@@ -413,7 +413,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     catch (Win32Exception e)
                     {
                         AppMan.Logger.Debug(e.GetFullMessage());
-                        await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                        UIHelper.ShowErrorDialog(e.GetFullMessage());
                     }
                 }
                 else
@@ -435,9 +435,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (dialog.ShowDialog().GetValueOrDefault())
             {
                 if (Directory.Exists(oldPath) && oldPath != dialog.SelectedPath)
-                    if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
+                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.DownloadPathChangeCopy"),
                             Environment.NewLine + oldPath + Environment.NewLine,
-                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync()) ==
+                            Environment.NewLine + dialog.SelectedPath + Environment.NewLine), "Syn3 Updater", LM.GetValue("String.No"), LM.GetValue("String.Yes")) ==
                         ContentDialogResult.Primary)
                         try
                         {
@@ -463,8 +463,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public async Task UpdateMy20Toggle(bool? ison)
         {
             if (AdvancedModeToggle && ison == false && CurrentInstallMode == LM.GetValue("String.AutoDetect"))
-                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
-                    LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed).ShowAsync()) != ContentDialogResult.Primary)
+                if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.My20Detected"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                    LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed) != ContentDialogResult.Primary)
                     My20Mode = null;
             if(ison == true || ison == null) CurrentInstallMode = LM.GetValue("String.AutoDetect");
         }
@@ -473,8 +473,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (ison)
             {
-                if (CurrentInstallMode != LM.GetValue("String.AutoDetect") || await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
-                    LM.GetValue("String.Yes")).ShowAsync()) == ContentDialogResult.Primary)
+                if (CurrentInstallMode != LM.GetValue("String.AutoDetect") || await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.AdvancedSettings"), LM.GetValue("String.Warning") + "!", LM.GetValue("Download.CancelButton"),
+                    LM.GetValue("String.Yes")) == ContentDialogResult.Primary)
                 {
                     AdvancedModeToggle = true;
                 }

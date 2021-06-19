@@ -120,7 +120,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.InvalidProfile")).ShowAsync());
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.InvalidProfile"));
             }
         }
 
@@ -172,7 +172,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 }
                 catch (Exception e)
                 {
-                    UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync();
+                    UIHelper.ShowErrorDialog(e.GetFullMessage());
                 }
             }
             

@@ -98,7 +98,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException ioException)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(ioException.GetFullMessage());
                 AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }
@@ -203,19 +203,19 @@ namespace Cyanlabs.Syn3Updater.Helper
                         catch (OperationCanceledException e)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                            await UIHelper.ShowErrorDialog(e.GetFullMessage());
                             return false;
                         }
                         catch (IOException e)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                            await UIHelper.ShowErrorDialog(e.GetFullMessage());
                             return false;
                         }
                         catch (ObjectDisposedException  e)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                            await UIHelper.ShowErrorDialog(e.GetFullMessage());
                             return false;
                         }
 
@@ -226,7 +226,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             if (result.FilePath == "cancelled") return false;
                             if (result.Ex != null)
                             {
-                                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()).ShowAsync());
+                                await UIHelper.ShowErrorDialog(result.Ex.GetFullMessage());
                                 return false;
                             }
 
@@ -248,7 +248,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             }
                             catch (IOException e)
                             {
-                                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                                await UIHelper.ShowErrorDialog(e.GetFullMessage());
                                 return false;
                             }
                         }
@@ -264,22 +264,22 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (WebException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage());
                 return false;
             }
             catch (HttpRequestException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage());
                 return false;
             }
             catch (IOException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
                 return false;
             }
             catch (OutOfMemoryException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
                 return false;
             }
             catch (TaskCanceledException e)
@@ -305,55 +305,65 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         public async Task<DownloadPartResult> DownloadFilePart(string fileUrl, string destinationFilePath, Range readRange, int concurrent, CancellationToken ct)
         {
-            string tempFilePath = concurrent == 0 ? destinationFilePath : destinationFilePath + $"-part{concurrent}";
-            if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
-
-            HttpRequestMessage request = new(HttpMethod.Get, new Uri(fileUrl));
-            request.Headers.Range = new RangeHeaderValue(readRange.Start, readRange.End);
-            HttpResponseMessage response = await AppMan.Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
-            response.EnsureSuccessStatusCode();
-            using (Stream stream = await response.Content.ReadAsStreamAsync())
+            try
             {
-                long total = readRange.End - readRange.Start;
-                long totalRead = 0L;
-                byte[] buffer = new byte[4096];
-                bool moreToRead = true;
-                const int chunkSize = 4096;
-                using (FileStream output = File.Create(tempFilePath, chunkSize))
+                string tempFilePath = concurrent == 0 ? destinationFilePath : destinationFilePath + $"-part{concurrent}";
+                if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
+
+                HttpRequestMessage request = new(HttpMethod.Get, new Uri(fileUrl));
+                request.Headers.Range = new RangeHeaderValue(readRange.Start, readRange.End);
+                HttpResponseMessage response = await AppMan.Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+                response.EnsureSuccessStatusCode();
+                using (Stream stream = await response.Content.ReadAsStreamAsync())
                 {
-                    do
+                    long total = readRange.End - readRange.Start;
+                    long totalRead = 0L;
+                    byte[] buffer = new byte[4096];
+                    bool moreToRead = true;
+                    const int chunkSize = 4096;
+                    using (FileStream output = File.Create(tempFilePath, chunkSize))
                     {
-                        //TODO: Change to Span/Memory once the netframework version is depricated  
-                        int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
-                        if (ct.IsCancellationRequested)
+                        do
                         {
-                            try
+                            //TODO: Change to Span/Memory once the netframework version is depricated  
+                            int read = await stream.ReadAsync(buffer, 0, buffer.Length, ct);
+                            if (ct.IsCancellationRequested)
                             {
-                                File.Delete(destinationFilePath);
-                            }
-                            catch (IOException)
-                            {
+                                try
+                                {
+                                    File.Delete(destinationFilePath);
+                                }
+                                catch (IOException)
+                                {
+                                }
+
+                                return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
                             }
 
-                            return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
-                        }
-                        if (read == 0)
-                        {
-                            moreToRead = false;
-                        }
-                        else
-                        {
-                            //byte[] data = new byte[read];
-                            //Array.Copy(buffer, data, read);   
-                            await output.WriteAsync(buffer, 0, read, ct);
-                            totalRead += read;
-                            double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
-                            int value = Convert.ToInt32(downloadPercentage);
-                            _percentageChanged.Raise(this, value, concurrent);
-                        }
-                    } while (moreToRead);
-                    return new DownloadPartResult {FilePath = tempFilePath, RangeStart = readRange.Start, Ex = null};
+                            if (read == 0)
+                            {
+                                moreToRead = false;
+                            }
+                            else
+                            {
+                                //byte[] data = new byte[read];
+                                //Array.Copy(buffer, data, read);   
+                                await output.WriteAsync(buffer, 0, read, ct);
+                                totalRead += read;
+                                double downloadPercentage = totalRead * 1d / (total * 1d) * 100;
+                                int value = Convert.ToInt32(downloadPercentage);
+                                _percentageChanged.Raise(this, value, concurrent);
+                            }
+                        } while (moreToRead);
+
+                        return new DownloadPartResult {FilePath = tempFilePath, RangeStart = readRange.Start, Ex = null};
+                    }
                 }
+            }
+            catch (IOException e)
+            {
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
             }
         }
 
@@ -474,7 +484,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }

@@ -391,7 +391,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             try
             {
                 string regioninfo = await AppMan.Client.GetStringAsync(new Uri("https://api.cyanlabs.net/Syn3Updater/regioninfo/text"));
-                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(regioninfo.Replace(@"\n",Environment.NewLine), LM.GetValue("Home.Region"), LM.GetValue("String.OK"), "Translate").ShowAsync()) != ContentDialogResult.Primary)
+                if (await UIHelper.ShowDialog(regioninfo.Replace(@"\n",Environment.NewLine), LM.GetValue("Home.Region"), LM.GetValue("String.OK"), "Translate") != ContentDialogResult.Primary)
                 { 
                     return;
                 }
@@ -414,7 +414,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (Exception e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                UIHelper.ShowErrorDialog(e.GetFullMessage());
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
             }
         }
@@ -435,15 +435,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     {
                         DriveInfo driveInfo = new(destination);
                         if (driveInfo.DriveType != DriveType.Fixed)
-                            if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
-                                    LM.GetValue("String.Yes")).ShowAsync()) ==
-                                ContentDialogResult.None)
+                            if (await UIHelper.ShowDialog(LM.GetValue("MessageBox.RemovableDriveFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
+                                    LM.GetValue("String.Yes")) == ContentDialogResult.None)
                                 return;
                     }
                     
                     if (AppMan.App.DownloadPath.Contains(destination))
                     {
-                        await Application.Current.Dispatcher.BeginInvoke(() =>   UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsFolder")).ShowAsync());
+                        await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsFolder"));
                         ReloadSettings();
                     }
                     else
@@ -756,9 +755,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadOnlyEnabled = false;
             if (type == "DownloadOnly")
             {
-                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!",
+                if (await UIHelper.ShowWarningDialog(LM.GetValue("MessageBox.DownloadOnlyMode"), LM.GetValue("String.Warning") + "!",
                     LM.GetValue("Download.CancelButton"),
-                    LM.GetValue("String.Yes")).ShowAsync()) == ContentDialogResult.Primary)
+                    LM.GetValue("String.Yes")) == ContentDialogResult.Primary)
                 {
                     AppMan.App.DownloadOnly = true;
                 }

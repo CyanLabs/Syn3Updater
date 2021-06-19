@@ -89,7 +89,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (Exception e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                UIHelper.ShowErrorDialog(e.GetFullMessage());
             }
         }
 
@@ -131,7 +131,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (Exception e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
             }
         }
 

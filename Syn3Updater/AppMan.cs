@@ -415,7 +415,7 @@ namespace Cyanlabs.Syn3Updater
             catch (IOException e)
             {
                 Logger.Debug($"Unable to save LauncherPrefs, another process is accessing {LauncherConfigFile}");
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
             }
         }
 
