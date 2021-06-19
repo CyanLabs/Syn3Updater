@@ -89,7 +89,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (Exception e)
             {
-                UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
             }
         }
 

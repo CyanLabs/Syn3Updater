@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -26,46 +28,103 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <returns></returns>
         public static async Task ShowErrorDialog(string content, string cancel = null)
         {
-            ContentDialog contentDialog = new()
+            try 
             {
-                Title = LM.GetValue("String.Error"),
-                Content = content,
-                CloseButtonText = string.IsNullOrEmpty(cancel) ? LM.GetValue("String.OK") : cancel,
-                Background = Brushes.DarkRed
-            };
-            await Application.Current.Dispatcher.BeginInvoke(() => contentDialog.ShowAsync());
+                SequentialDialog contentDialog = new()
+                {
+                    Title = LM.GetValue("String.Error"),
+                    Content = content,
+                    CloseButtonText = string.IsNullOrEmpty(cancel) ? LM.GetValue("String.OK") : cancel,
+                    Background = Brushes.DarkRed
+                };
+                await Application.Current.Dispatcher.Invoke(() => DialogManager.OpenDialogAsync(contentDialog, true));
+            }
+            catch (InvalidOperationException)
+            {
+
+            }
         }
 
         public static async Task<ContentDialogResult> ShowWarningDialog(string content, string title, string cancel, string primarybutton, string secondarybutton = null)
         {
-            ContentDialog contentDialog = new()
+            try
             {
-                Title = title,
-                Content = content,
-                CloseButtonText = cancel,
-                Background = Brushes.DarkOrange
-            };
-            if (!string.IsNullOrEmpty(primarybutton)) contentDialog.PrimaryButtonText = primarybutton;
-            if (!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
-            return await Application.Current.Dispatcher.Invoke(() => contentDialog.ShowAsync());
+                SequentialDialog contentDialog = new()
+                {
+                    Title = title,
+                    Content = content,
+                    CloseButtonText = cancel,
+                    Background = Brushes.DarkOrange
+                };
+                if (!string.IsNullOrEmpty(primarybutton)) contentDialog.PrimaryButtonText = primarybutton;
+                if (!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
+                return await Application.Current.Dispatcher.Invoke(() => DialogManager.OpenDialogAsync(contentDialog, true));
+            }
+            catch (InvalidOperationException)
+            {
+                return ContentDialogResult.None;
+            }
         }
 
         public static async Task<ContentDialogResult> ShowDialog(string content, string title, string cancel, string primarybutton = null, string secondarybutton = null,
             ContentDialogButton defaultbutton = ContentDialogButton.None, Brush bg = null)
         {
-            ContentDialog contentDialog = new()
+            SequentialDialog  contentDialog = new()
             {
                 Title = title,
                 Content = content,
-                CloseButtonText = cancel
+                CloseButtonText = cancel,
+                
             };
             if (bg != null) contentDialog.Background = bg;
             if (!string.IsNullOrEmpty(primarybutton)) contentDialog.PrimaryButtonText = primarybutton;
             if (defaultbutton != ContentDialogButton.None) contentDialog.DefaultButton = defaultbutton;
             if (!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
-            return await Application.Current.Dispatcher.Invoke(() => contentDialog.ShowAsync());
+            return await Application.Current.Dispatcher.Invoke(() => DialogManager.OpenDialogAsync(contentDialog, true));
         }
+    }
 
         #endregion
     }
-}
+    
+    // https://github.com/microsoft/microsoft-ui-xaml/issues/1679#issuecomment-603214112
+    public class SequentialDialog : ContentDialog
+    {
+        public bool IsAborted;
+    }
+    
+    public static class DialogManager
+    {
+        public static SequentialDialog ActiveDialog;
+        private static TaskCompletionSource<bool> _dialogAwaiter = new();
+
+        public static async Task<ContentDialogResult> OpenDialogAsync(SequentialDialog dialog, bool awaitPreviousDialog)
+        {
+            return await OpenDialog(dialog, awaitPreviousDialog);
+        }
+
+        static async Task<ContentDialogResult> OpenDialog(SequentialDialog dialog, bool awaitPreviousDialog)
+        {
+            TaskCompletionSource<bool> currentAwaiter = _dialogAwaiter;
+            TaskCompletionSource<bool> nextAwaiter = new();
+            _dialogAwaiter = nextAwaiter;
+
+            if (ActiveDialog != null)
+            {
+                if (awaitPreviousDialog)
+                {
+                    await currentAwaiter.Task;
+                }
+                else
+                {
+                    ActiveDialog.IsAborted = true;
+                    ActiveDialog.Hide();
+                }
+            }
+
+            ActiveDialog = dialog;
+            ContentDialogResult result = await ActiveDialog.ShowAsync();
+            nextAwaiter.SetResult(true);
+            return result;
+        }
+    }
