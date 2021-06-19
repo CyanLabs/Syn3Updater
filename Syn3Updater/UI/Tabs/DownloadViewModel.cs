@@ -627,7 +627,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         foreach (string dir in Directory.GetDirectories(AppMan.App.DriveLetter))
                             Directory.Delete(dir, true);
                     }
-                    catch (IOException)
+                    catch (Exception)
                     {
                         Log += "[" + DateTime.Now + "] Unable to clear folder, continuing anyway" + Environment.NewLine;
                         AppMan.Logger.Info("Unable to clear folder, continuing anyway");
