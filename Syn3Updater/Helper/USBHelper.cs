@@ -422,13 +422,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (currentversion.StartsWith("3.4"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-                else if (currentversion.StartsWith("3.2") ||
-                         currentversion.StartsWith("3.3"))
+                else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
-                else if (currentversion.StartsWith("3."))
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
-                else
+                else if (currentversion.StartsWith("3.0") || currentversion.StartsWith("2.") || currentversion.StartsWith("1."))
                     Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
+                else
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
             }
             catch (TaskCanceledException e)
             {
