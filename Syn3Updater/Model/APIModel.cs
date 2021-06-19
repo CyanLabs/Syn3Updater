@@ -34,7 +34,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string MapReleaseSingle = Syn3UpdaterBase + "items/map_releases?fields=*.*.*&filter[name]=";
         public const string IvsuSingle = Syn3UpdaterBase + "items/ivsu?limit=1&fields=version&filter[name]=";
         public const string NoticesURL = Syn3UpdaterBase + "items/notices?fields=*&limit=-1&filter[enabled]=true";
-        public const string SyncVersions = Syn3UpdaterBase + "items/ivsu?limit=-1&fields=version&filter[type]=APPS&filter[notes][_ncontains]='4\"'";
+        public const string SyncVersions = Syn3UpdaterBase + "items/ivsu?limit=-1&fields=version&filter[type]=APPS";
 
         public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
         public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";
