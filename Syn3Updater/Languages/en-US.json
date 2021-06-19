@@ -163,5 +163,6 @@
     "MessageBox.DownloadOnlyMode": "You have selected 'Download Only' this will download all the files requested to your download directory and verify them but WILL NOT prepare any install files, copying these downloaded files to your USB drive at a later date will not work without manual creation of lst files!\n\nPlease use 'Select A Directory' from the USB Drive list if you wish to prepare the files before copying to a USB drive or select a USB Drive to prepare the USB Drive directly!\n\nOnce a USB Drive or Directory has been selected press 'Start' to begin the process!\n\nAre you sure you want to only download the files without preparing a USB Drive or Directory?",
     "Home.FeedbackButton": "Feedback Thread",
     "String.Notice": "Notice",
-    "String.AutoDetect": "Auto-Detect"
+    "String.AutoDetect": "Auto-Detect",
+    "Utility.CopyAsBuilt": "Copy AsBuilt"
 }

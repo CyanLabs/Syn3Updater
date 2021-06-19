@@ -227,7 +227,12 @@
                          BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding LogXmlDetails3}"
                          Margin="5,0,10,0" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
                          TextWrapping="WrapWithOverflow" TextAlignment="Left" />
-                <Button Grid.Row="6" Cursor="Hand" Grid.Column="0" Grid.ColumnSpan="3" Command="{Binding ViewAsBuilt}"
+                <Button Grid.Row="6" Cursor="Hand" Grid.Column="0" Grid.ColumnSpan="1" Command="{Binding CopyAsBuilt}"
+                        Margin="10,10,10,5"
+                        FontFamily="Segoe UI" Padding="10,10" Style="{DynamicResource AccentButtonStyle}"
+                        HorizontalAlignment="Left"
+                        Content="{Binding Language, ConverterParameter=Utility.CopyAsBuilt, Converter={StaticResource LocConverter}}" />
+                <Button Grid.Row="6" Cursor="Hand" Grid.Column="1" Grid.ColumnSpan="2" Command="{Binding ViewAsBuilt}"
                         Margin="10,10,10,5"
                         FontFamily="Segoe UI" Padding="10,10" Style="{DynamicResource AccentButtonStyle}"
                         HorizontalAlignment="Right"

@@ -20,6 +20,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private AsyncCommand _viewAsBuilt;
         public AsyncCommand ViewAsBuilt => _viewAsBuilt ??= new AsyncCommand(UploadFile);
 
+        private ActionCommand _copyAsBuilt;
+        public ActionCommand CopyAsBuilt => _copyAsBuilt ??= new ActionCommand(CopyAsBuiltAction);
+
         private ActionCommand _refreshUSB;
         public ActionCommand RefreshUSB => _refreshUSB ??= new ActionCommand(RefreshUsbAction);
 
@@ -236,7 +239,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return;
             }
 
@@ -268,7 +271,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             catch (TaskCanceledException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return;
             }
 
@@ -326,7 +329,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else
             {
-                VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Syn3 Updater Log Files|*.txt"};
+                VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Syn3 Updater Log Files|*.txt" };
                 if (dialog.ShowDialog().GetValueOrDefault())
                 {
                     string logfile = File.ReadAllText(dialog.FileName);
@@ -340,6 +343,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             await _usbHelper.UploadFile();
         }
 
+        private void CopyAsBuiltAction()
+        {
+            Clipboard.SetText($"{LogXmlDetails1}{Environment.NewLine}{Environment.NewLine}{LogXmlDetails2}{Environment.NewLine}{LogXmlDetails3}");
+        }
         #endregion
     }
 }
