@@ -33,7 +33,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     Method = HttpMethod.Get,
                     RequestUri = new Uri(Api.SyncVersions),
                     Headers = { 
-                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                     },
                 };
 

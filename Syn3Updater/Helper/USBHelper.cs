@@ -8,7 +8,6 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,7 +61,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             ManagementObjectSearcher driveQuery = new("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject n in driveQuery.Get())
             {
-                ManagementObject d = (ManagementObject) n;
+                ManagementObject d = (ManagementObject)n;
                 string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
 
                 if (friendlySize == "0B") continue;
@@ -72,12 +71,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                 ManagementObjectSearcher partitionQuery = new(partitionQueryText);
                 foreach (ManagementBaseObject o in partitionQuery.Get())
                 {
-                    ManagementObject p = (ManagementObject) o;
+                    ManagementObject p = (ManagementObject)o;
                     string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
                     ManagementObjectSearcher logicalDriveQuery = new(logicalDriveQueryText);
                     foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                     {
-                        ManagementObject ld = (ManagementObject) managementBaseObject;
+                        ManagementObject ld = (ManagementObject)managementBaseObject;
                         drive.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
                         drive.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
                         drive.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
@@ -103,7 +102,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
 
             if (fakeusb)
-                driveList.Add(new Drive {Path = "", Name = LM.GetValue("Home.NoUSBDir"), Fake = true});
+                driveList.Add(new Drive { Path = "", Name = LM.GetValue("Home.NoUSBDir"), Fake = true });
 
             // Return a list of drives
             return driveList;
@@ -114,7 +113,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// </summary>
         /// <param name="log">Additional log to append, usually the log textbox</param>
         /// <param name="upload">Set to true to upload log file <see cref="UploadLog" />, else false to only save it to USB drive</param>
-        public static void GenerateLog(string log, bool upload)
+        public async static Task GenerateLog(string log, bool upload)
         {
             StringBuilder data = new($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
             data.Append(@"Branch: ").Append(AppMan.App.LauncherPrefs.ReleaseTypeInstalled).Append(Environment.NewLine)
@@ -126,12 +125,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                 .Append($@"Navigation: {AppMan.App.Settings.CurrentNav}{Environment.NewLine}")
                 .Append($@"Install Mode: {AppMan.App.Settings.InstallMode} ({AppMan.App.InstallMode}){Environment.NewLine}")
                 .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}");
-            
+
             if (AppMan.App.Settings.My20v2 == null)
                 data.Append($@"My20 Protection Enabled: {LM.GetValue("String.AutoDetect")}{Environment.NewLine}");
             else if (AppMan.App.Settings.My20v2 == true)
                 data.Append($@"My20 Protection Enabled: {LM.GetValue("String.Enabled")}{Environment.NewLine}");
-            else if (AppMan.App.Settings.My20v2 == false) 
+            else if (AppMan.App.Settings.My20v2 == false)
                 data.Append($@"My20 Protection Enabled: {LM.GetValue("String.Disabled")}{Environment.NewLine}");
 
             data.Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
@@ -177,37 +176,36 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (DirectoryNotFoundException e)
             {
-                Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+               await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
             }
 
             if (upload)
-                UploadLog(complete);
+                await UploadLog(complete);
         }
 
         /// <summary>
         ///     Uploads log to our API server for easy diagnostics
         /// </summary>
         /// <param name="log">Contents of log file</param>
-        public static void UploadLog(string log)
+        public async static Task UploadLog(string log)
         {
             Dictionary<string, string> values = new()
             {
-                {"computername", Environment.MachineName},
-                {"contents", log}
+                { "computername", Environment.MachineName },
+                { "contents", log }
             };
             HttpRequestMessage httpRequestMessage = new()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(Api.LogPost),
-                Headers = { 
-                    { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                Headers = {
+                    { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                 },
                 Content = new FormUrlEncodedContent(values)
             };
-           
-            HttpResponseMessage response = AppMan.Client.SendAsync(httpRequestMessage).GetAwaiter().GetResult();
-            string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var output = JsonConvert.DeserializeAnonymousType(responseString, new {uuid = "", status = ""});
+            HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
+            string responseString = await response.Content.ReadAsStringAsync();           
+            var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
             Process.Start(Api.LogUrl + output.uuid);
         }
 
@@ -226,19 +224,19 @@ namespace Cyanlabs.Syn3Updater.Helper
                     new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
                     new KeyValuePair<string, string>("vin", _apimDetails.VIN)
                 });
-                
+
                 HttpRequestMessage httpRequestMessage = new()
                 {
                     Method = HttpMethod.Post,
                     RequestUri = new Uri(Api.AsBuiltPost),
-                    Headers = { 
-                        { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                    Headers = {
+                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                     },
                     Content = formContent
                 };
-           
+
                 HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new {filename = "", status = ""});
+                var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { filename = "", status = "" });
                 Process.Start(Api.AsBuiltOutput + output.filename);
             }
         }
@@ -260,11 +258,11 @@ namespace Cyanlabs.Syn3Updater.Helper
             string LogXmlDetails = "";
             string LogXmlDetails2 = "";
             string LogXmlDetails3 = "";
-            VistaFileDialog dialog = new VistaOpenFileDialog {Filter = "Interrogator Log XML Files|*.xml"};
+            VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Interrogator Log XML Files|*.xml" };
             if (!dialog.ShowDialog().GetValueOrDefault())
             {
                 AppMan.App.Cancelled = true;
-                return new[] {""};
+                return new[] { "" };
             }
 
             try
@@ -289,7 +287,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
                 foreach (string my20 in output.My20Model)
                 {
-                    if (apimmodel.Contains(my20)) 
+                    if (apimmodel.Contains(my20))
                         AppMan.App.Settings.My20v2 = true;
                 }
 
@@ -347,7 +345,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
                     {
                         LogXmlDetails3 += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
-                        asBuiltValues.Add(new AsBuilt.DID {ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper()});
+                        asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
                     }
                     try
                     {
@@ -355,12 +353,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                         {
                             Method = HttpMethod.Get,
                             RequestUri = new Uri(Api.IvsuSingle + sappname),
-                            Headers = { 
-                                { HttpRequestHeader.Authorization.ToString(), $"Bearer {ApiSecret.Token}" },
+                            Headers = {
+                                { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
                             },
                         };
                         HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-                        
+
                         Api.JsonReleases sversion = JsonHelpers.Deserialize<Api.JsonReleases>(await response.Content.ReadAsStreamAsync());
                         string convertedsversion = sversion.Releases[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")
@@ -401,14 +399,14 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (NullReferenceException)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
             }
             catch (XmlException)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
             }
 
-            return new[] {LogXmlDetails, LogXmlDetails2, LogXmlDetails3};
+            return new[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };
         }
 
         public static async Task LogPrepareUSBAction(Drive selectedDrive, string driveLetter, string action = "logutility")
@@ -434,7 +432,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (TaskCanceledException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() =>  UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
                 return;
             }
 

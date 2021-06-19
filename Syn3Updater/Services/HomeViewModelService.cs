@@ -40,7 +40,7 @@ namespace Cyanlabs.Syn3Updater.Services
             }
 
 
-            if (!canceldownload && (AppMan.App.DownloadOnly || await SanityCheckHelper.CancelDownloadCheck(selectedDrive) == false))
+            if (!canceldownload && (AppMan.App.DownloadOnly || !await SanityCheckHelper.CancelDownloadCheck(selectedDrive)))
             {
                 if (AppMan.App.DownloadOnly)
                 {
