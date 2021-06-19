@@ -176,7 +176,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (DirectoryNotFoundException e)
             {
-               await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+               await UIHelper.ShowErrorDialog(e.GetFullMessage());
             }
 
             if (upload)
@@ -189,24 +189,31 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="log">Contents of log file</param>
         public async static Task UploadLog(string log)
         {
-            Dictionary<string, string> values = new()
+            try
             {
-                { "computername", Environment.MachineName },
-                { "contents", log }
-            };
-            HttpRequestMessage httpRequestMessage = new()
+                Dictionary<string, string> values = new()
+                {
+                    { "computername", Environment.MachineName },
+                    { "contents", log }
+                };
+                HttpRequestMessage httpRequestMessage = new()
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri(Api.LogPost),
+                    Headers = {
+                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
+                    },
+                    Content = new FormUrlEncodedContent(values)
+                };
+                HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
+                string responseString = await response.Content.ReadAsStringAsync();           
+                var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
+                Process.Start(Api.LogUrl + output.uuid);
+            }
+            catch (Exception e)
             {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(Api.LogPost),
-                Headers = {
-                    { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                },
-                Content = new FormUrlEncodedContent(values)
-            };
-            HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-            string responseString = await response.Content.ReadAsStringAsync();           
-            var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
-            Process.Start(Api.LogUrl + output.uuid);
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+            }
         }
 
         //TODO: Fma965: refactor/move this
@@ -214,7 +221,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             if (_node != null &&
                 await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.AsBuiltVinWarning"), LM.GetValue("String.Notice"), LM.GetValue("Download.CancelButton"),
-                    LM.GetValue("String.Upload")).ShowAsync()) == ContentDialogResult.Primary)
+                    LM.GetValue("String.Upload"))) == ContentDialogResult.Primary)
             {
                 FormUrlEncodedContent formContent = new(new[]
                 {
@@ -287,7 +294,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
                 foreach (string my20 in output.My20Model)
                 {
-                    if (apimmodel.Contains(my20))
+                    if ( apimmodel.Contains(my20))
                         AppMan.App.Settings.My20v2 = true;
                 }
 
@@ -368,8 +375,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
                         {
-                            if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
-                                LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")).ShowAsync()) == ContentDialogResult.Primary)
+                            if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
+                                LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")) == ContentDialogResult.Primary)
                             {
                                 AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
@@ -399,11 +406,15 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (NullReferenceException)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile"));
             }
             catch (XmlException)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")).ShowAsync());
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile"));
+            }
+            catch (InvalidOperationException)
+            {
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile"));
             }
 
             return new[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };
@@ -431,7 +442,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (TaskCanceledException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()).ShowAsync());
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
                 return;
             }
 
