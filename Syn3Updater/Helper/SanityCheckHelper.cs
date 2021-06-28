@@ -87,6 +87,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                         LM.GetValue("String.No"), LM.GetValue("String.Yes")) != ContentDialogResult.Primary)
                         return true;
             }
+            else
+            {
+                AppMan.App.DownloadToFolder = false;
+            }
 
             // If nothing above has returned true then download has not been cancelled and method will return false;
             return false;
