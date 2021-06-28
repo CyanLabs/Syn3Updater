@@ -772,6 +772,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 return;
             }
+            else
+            {
+                AppMan.App.DownloadOnly = false;
+            }
 
             await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
 
