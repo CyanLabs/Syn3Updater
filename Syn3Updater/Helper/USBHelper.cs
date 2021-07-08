@@ -44,6 +44,9 @@ namespace Cyanlabs.Syn3Updater.Helper
             public string VolumeName { get; set; }
             public string Model { get; set; }
             public bool Fake { get; set; }
+            public bool Encrypted { get; set; }
+            public string EncryptionStatus { get; set; }
+            
         }
 
         #endregion
@@ -77,17 +80,28 @@ namespace Cyanlabs.Syn3Updater.Helper
                     foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                     {
                         ManagementObject ld = (ManagementObject)managementBaseObject;
-                        drive.Letter = Convert.ToString(ld.Properties["DeviceId"].Value);
-                        drive.PartitionType = p.Properties["Type"].Value.ToString().Contains("GPT:") ? "GPT" : "MBR";
-                        drive.FileSystem += Convert.ToString(ld.Properties["FileSystem"].Value);
-                        drive.Name = d.Properties["Caption"].Value.ToString();
-                        if (string.IsNullOrWhiteSpace(ld.Properties["VolumeName"].Value.ToString()))
-                            drive.VolumeName = "";
-                        else
-                            drive.VolumeName = ld.Properties["VolumeName"].Value.ToString();
+                        ManagementObjectSearcher encryptedDriveQuery = new("\\\\.\\ROOT\\CIMV2\\Security\\MicrosoftVolumeEncryption",$"select * from Win32_EncryptableVolume Where DriveLetter = \"{ld.Properties["DeviceId"].Value}\"");
+                        foreach (ManagementBaseObject encryptedDriveObject in encryptedDriveQuery.Get())
+                        {
+                            uint encryptionStatus = (uint)encryptedDriveObject.GetPropertyValue("ProtectionStatus");
+                            drive.Encrypted = encryptionStatus != 0;
+                            if (drive.Encrypted) drive.EncryptionStatus = LM.GetValue("String.Encrypted");
+                        }
+
+                        if (!drive.Encrypted)
+                        {
+                            drive.FileSystem += p.GetPropertyValue("FileSystem").ToString();
+                            drive.VolumeName = string.IsNullOrWhiteSpace(ld.GetPropertyValue("VolumeName").ToString()) ? "" : ld.GetPropertyValue("VolumeName").ToString();
+                        }
+
+                        drive.Letter = ld.GetPropertyValue("DeviceId").ToString();
+                        drive.PartitionType = p.GetPropertyValue("Type").ToString().Contains("GPT:") ? "GPT" : "MBR";
+                        
+                        drive.Name = d.GetPropertyValue("Caption").ToString();
+                        
                         drive.Path = d.Path.RelativePath;
-                        drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.Properties["FreeSpace"].Value));
-                        drive.Model = d.Properties["Model"].Value.ToString();
+                        drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.GetPropertyValue("FreeSpace")));
+                        drive.Model = d.GetPropertyValue("Model").ToString();
                         drive.Size = friendlySize;
                         drive.Fake = false;
                         if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")

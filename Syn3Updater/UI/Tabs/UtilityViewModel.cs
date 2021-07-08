@@ -182,6 +182,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void UpdateDriveInfo()
         {
+            if (SelectedDrive?.Encrypted != null && SelectedDrive.Encrypted)
+            {
+                UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.EncryptedDrive"));
+                RefreshUsbAction();
+                return;
+            }
             if (SelectedDrive?.Name != null)
             {
                 // Update app level vars

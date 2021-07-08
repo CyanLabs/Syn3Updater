@@ -106,43 +106,56 @@
                           SelectedItem="{Binding SelectedDrive}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconVaadinIcons Kind="Folder" Height="18" Width="18" Foreground="White"
-                                                               Margin="1,0,10,0"
-                                                               VerticalAlignment="Center"
-                                                               Visibility="{Binding Fake, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                <iconPacks:PackIconVaadinIcons Kind="Harddrive" Height="18" Width="18"
-                                                               Foreground="White" Margin="0,0,10,0"
-                                                               VerticalAlignment="Center"
-                                                               Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
-                                <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
-                                        <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
-                                        <TextBlock Margin="0,3,0,3"
-                                                   Text="{Binding VolumeName , StringFormat='{}({0})'}"
-                                                   Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
-                                    </StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <iconPacks:PackIconVaadinIcons Kind="Folder" Height="18" Width="18" Foreground="White"
+                                                                   Margin="1,0,10,0"
+                                                                   VerticalAlignment="Center"
+                                                                   Visibility="{Binding Fake, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <iconPacks:PackIconVaadinIcons Kind="Harddrive" Height="18" Width="18"
+                                                                   Foreground="White" Margin="0,0,10,0"
+                                                                   VerticalAlignment="Center"
+                                                                   Visibility="{Binding Fake, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
+                                            <TextBlock Margin="0,3,0,3"
+                                                       Text="{Binding VolumeName , StringFormat='{}({0})'}"
+                                                       Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}" />
+                                        </StackPanel>
 
-                                    <StackPanel Orientation="Horizontal"
-                                                Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-                                        <TextBlock Margin="0,0,2,0"
-                                                   Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.DriveFreeSpace, ElementName=HomeTab, Converter={StaticResource LocConverter}}"
-                                                   FontSize="12" />
-                                        <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12" />
-                                        <TextBlock Margin="5,0,2,0"
-                                                   Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.DriveSize, ElementName=HomeTab, Converter={StaticResource LocConverter}}"
-                                                   FontSize="12" />
-                                        <TextBlock Margin="2,0" Text="{Binding Size}" FontSize="12" />
-                                        <TextBlock Margin="5,0,2,0"
-                                                   Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.DriveFileSystem, ElementName=HomeTab, Converter={StaticResource LocConverter}}"
-                                                   FontSize="12" />
-                                        <TextBlock Margin="2,0" Text="{Binding FileSystem}" FontSize="12" />
-                                        <TextBlock Margin="2,0" Text="{Binding PartitionType, StringFormat='({0})'}"
-                                                   FontSize="12" />
+                                        <StackPanel Orientation="Horizontal"
+                                                    Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                                            <TextBlock Margin="0,0,2,0"
+                                                       Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.DriveFreeSpace, ElementName=HomeTab, Converter={StaticResource LocConverter}}"
+                                                       FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12" />
+                                            <TextBlock Margin="5,0,2,0"
+                                                       Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.DriveSize, ElementName=HomeTab, Converter={StaticResource LocConverter}}"
+                                                       FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding Size}" FontSize="12" />
+                                            <TextBlock Margin="5,0,2,0"
+                                                       Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.DriveFileSystem, ElementName=HomeTab, Converter={StaticResource LocConverter}}"
+                                                       FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding FileSystem}" FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding PartitionType, StringFormat='({0})'}"
+                                                       FontSize="12" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
+                                <StackPanel Orientation="Vertical" Grid.Column="1" Background="DarkRed" Margin="0,0,0,0" >
+                                    <iconPacks:PackIconVaadinIcons Kind="Lock" Height="24" Width="24" Padding="0,2,0,0"
+                                                                   VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                                                                   Visibility="{Binding Encrypted, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock Padding="5,0,5,2" Text="{Binding EncryptionStatus}" FontSize="12" Visibility="{Binding Encrypted, ConverterParameter=null, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </StackPanel>
+                                
+                            </Grid>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

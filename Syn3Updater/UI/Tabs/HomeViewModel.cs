@@ -423,6 +423,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
             DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
+            if (SelectedDrive?.Encrypted != null && SelectedDrive.Encrypted)
+            {
+                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.EncryptedDrive"));
+                RefreshUsb();
+                return;
+            }
             if (SelectedDrive?.Name == LM.GetValue("Home.NoUSBDir"))
             {
                 VistaFolderBrowserDialog dialog = new();

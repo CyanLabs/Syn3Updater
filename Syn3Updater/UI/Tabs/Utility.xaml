@@ -12,6 +12,7 @@
     x:Name="UtilityTab"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
     <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertedStringMatchToVisibilityConverter x:Key="InvertedStringMatchToVisibilityConverter" />
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
     </UserControl.Resources>
@@ -66,20 +67,23 @@
                               SelectedItem="{Binding SelectedDrive}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconVaadinIcons Kind="Harddrive" Height="18" Width="18"
-                                                                   Foreground="White"
-                                                                   Margin="0,0,10,0" VerticalAlignment="Center" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <iconPacks:PackIconVaadinIcons Kind="Folder" Height="18" Width="18" Foreground="White"
+                                                                   Margin="1,0,10,0"
+                                                                   VerticalAlignment="Center" />
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
                                             <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
-                                            <TextBlock Margin="0,3,0,3"
-                                                       Text="{Binding VolumeName , StringFormat='{}({0})'}" />
+                                            <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName , StringFormat='{}({0})'}" />
                                         </StackPanel>
 
-                                        <StackPanel Orientation="Horizontal"
-                                                    Visibility="{Binding Fake, ConverterParameter=null, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                                        <StackPanel Orientation="Horizontal">
                                             <TextBlock Margin="0,0,2,0"
                                                        Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.DriveFreeSpace, ElementName=UtilityTab, Converter={StaticResource LocConverter}}"
                                                        FontSize="12" />
@@ -98,7 +102,15 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </DataTemplate>
+                                <StackPanel Orientation="Vertical" Grid.Column="1" Background="DarkRed" Margin="0,0,0,0" >
+                                    <iconPacks:PackIconVaadinIcons Kind="Lock" Height="24" Width="24" Padding="0,2,0,0"
+                                                                   VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                                                                   Visibility="{Binding Encrypted, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    <TextBlock Padding="5,0,5,2" Text="{Binding EncryptionStatus}" FontSize="12" Visibility="{Binding Encrypted, ConverterParameter=null, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </StackPanel>
+                                
+                            </Grid>
+                        </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Button Margin="2,-1,0,0" BorderThickness="0" Cursor="Hand"

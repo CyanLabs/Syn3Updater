@@ -166,5 +166,7 @@
     "String.AutoDetect": "Auto-Detect",
     "Utility.CopyAsBuilt": "Copy AsBuilt",
     "Profiles.RenameProfile": "Rename",
-    "Profiles.Save": "Save"
+    "Profiles.Save": "Save",
+    "String.Encrypted": "Encrypted",
+    "MessageBox.EncryptedDrive": "The USB drive you have selected has been detected as being encrypted, either by Bitlocker or some third party software. You will not be able to use this USB Drive until you disable the encryption.\n\nPlease disable the encryption and press OK to refresh the USB Drive list."
 }
