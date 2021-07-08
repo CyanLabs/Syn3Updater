@@ -37,7 +37,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     CloseButtonText = string.IsNullOrEmpty(cancel) ? LM.GetValue("String.OK") : cancel,
                     Background = Brushes.DarkRed
                 };
-                await Application.Current.Dispatcher.Invoke(() => DialogManager.OpenDialogAsync(contentDialog, true));
+                await DialogManager.OpenDialogAsync(contentDialog, true);
             }
             catch (InvalidOperationException)
             {
@@ -58,7 +58,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 };
                 if (!string.IsNullOrEmpty(primarybutton)) contentDialog.PrimaryButtonText = primarybutton;
                 if (!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
-                return await Application.Current.Dispatcher.Invoke(() => DialogManager.OpenDialogAsync(contentDialog, true));
+                return await DialogManager.OpenDialogAsync(contentDialog, true);
             }
             catch (InvalidOperationException)
             {
@@ -80,7 +80,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (!string.IsNullOrEmpty(primarybutton)) contentDialog.PrimaryButtonText = primarybutton;
             if (defaultbutton != ContentDialogButton.None) contentDialog.DefaultButton = defaultbutton;
             if (!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
-            return await Application.Current.Dispatcher.Invoke(() => DialogManager.OpenDialogAsync(contentDialog, true));
+            return await DialogManager.OpenDialogAsync(contentDialog, true);
         }
     }
 

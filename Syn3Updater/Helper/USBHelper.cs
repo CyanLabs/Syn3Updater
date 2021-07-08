@@ -176,7 +176,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (DirectoryNotFoundException e)
             {
-               await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
             }
 
             if (upload)
@@ -212,7 +212,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (Exception e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
             }
         }
 
@@ -375,8 +375,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
                         {
-                            if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
-                                LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes")) == ContentDialogResult.Primary)
+                            if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
+                                LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
                             {
                                 AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
@@ -406,15 +406,15 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (NullReferenceException)
             {
-                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile"));
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
             }
             catch (XmlException)
             {
-                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile"));
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
             }
             catch (InvalidOperationException)
             {
-                await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile"));
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
             }
 
             return new[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };
@@ -442,7 +442,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (TaskCanceledException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                 return;
             }
 

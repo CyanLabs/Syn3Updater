@@ -28,7 +28,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             if (!string.IsNullOrEmpty(driveLetter))
                 if (downloadPath.Contains(driveLetter))
                 {
-                    await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsDrive"));
+                    await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsDrive")));
                     return true;
                 }
 
@@ -37,8 +37,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (Directory.EnumerateFileSystemEntries(driveLetter, "*", SearchOption.AllDirectories).Any())
                 {
-                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
-                        LM.GetValue("String.Yes")) == ContentDialogResult.Primary)
+                    if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
+                        LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
                     {
                         AppMan.App.SkipFormat = false;
                     }
@@ -57,8 +57,8 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 if (selectedDrive?.FileSystem == "exFAT" && selectedDrive?.PartitionType == "MBR" && selectedDrive?.VolumeName == "CYANLABS")
                 {
-                    if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter), LM.GetValue("String.Notice"),
-                        LM.GetValue("String.No"), LM.GetValue("String.Yes")) == ContentDialogResult.Primary)
+                    if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormatUSB"), selectedDrive.Name, driveLetter), LM.GetValue("String.Notice"),
+                        LM.GetValue("String.No"), LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
                     {
                         AppMan.App.SkipFormat = false;
                     }
@@ -72,8 +72,8 @@ namespace Cyanlabs.Syn3Updater.Helper
 
             // Format USB Drive
             if (selectedDrive != null && !string.IsNullOrWhiteSpace(selectedDrive.Path) && !AppMan.App.SkipFormat)
-                if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), LM.GetValue("String.Warning") + "!",
-                    LM.GetValue("String.No"), LM.GetValue("String.Yes")) != ContentDialogResult.Primary)
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelFormatUSB"), selectedDrive.Name, driveLetter), LM.GetValue("String.Warning") + "!",
+                    LM.GetValue("String.No"), LM.GetValue("String.Yes"))) != ContentDialogResult.Primary)
                     return true;
 
             if (selectedDrive != null && selectedDrive?.Name == LM.GetValue("Home.NoUSBDir"))
@@ -83,8 +83,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 if (string.IsNullOrEmpty(driveLetter)) return true;
 
                 if (Directory.EnumerateFiles(driveLetter).Any() && !AppMan.App.SkipFormat)
-                    if (await UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), LM.GetValue("String.Warning") + "!",
-                        LM.GetValue("String.No"), LM.GetValue("String.Yes")) != ContentDialogResult.Primary)
+                    if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowWarningDialog(string.Format(LM.GetValue("MessageBox.CancelDeleteFiles"), driveLetter), LM.GetValue("String.Warning") + "!",
+                        LM.GetValue("String.No"), LM.GetValue("String.Yes"))) != ContentDialogResult.Primary)
                         return true;
             }
             else

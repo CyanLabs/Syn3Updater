@@ -98,7 +98,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException ioException)
             {
-                await UIHelper.ShowErrorDialog(ioException.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()));
                 AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }
@@ -203,19 +203,19 @@ namespace Cyanlabs.Syn3Updater.Helper
                         catch (OperationCanceledException e)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                             return false;
                         }
                         catch (IOException e)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                             return false;
                         }
                         catch (ObjectDisposedException  e)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                             return false;
                         }
 
@@ -226,7 +226,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             if (result.FilePath == "cancelled") return false;
                             if (result.Ex != null)
                             {
-                                await UIHelper.ShowErrorDialog(result.Ex.GetFullMessage());
+                                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(result.Ex.GetFullMessage()));
                                 return false;
                             }
 
@@ -248,7 +248,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             }
                             catch (IOException e)
                             {
-                                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                                 return false;
                             }
                         }
@@ -264,22 +264,22 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (WebException e)
             {
-                await UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()));
                 return false;
             }
             catch (HttpRequestException e)
             {
-                await UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()));
                 return false;
             }
             catch (IOException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage())));
                 return false;
             }
             catch (OutOfMemoryException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage())));
                 return false;
             }
             catch (TaskCanceledException e)
@@ -362,7 +362,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                 return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
             }
         }
@@ -484,7 +484,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }

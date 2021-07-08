@@ -31,7 +31,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (Exception e)
             {
-                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                 AppMan.Logger.Info("ERROR: fetching SpecialPackage - " + e.GetFullMessage());
                 return null;
             }
