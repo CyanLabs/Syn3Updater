@@ -165,7 +165,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             _ct = _tokenSource.Token;
 
             _fileHelper = new FileHelper(PercentageChanged);
-
+            
             DoDownloadCopyTask();
         }
 
@@ -173,6 +173,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             _doCopy = false;
             _doDownload = false;
+            
+            if (await FormatUSBAsync() != true) return;
+            
             try
             {
                 _doDownload = await Task.Run(DoDownload, _tokenSource.Token);
@@ -597,19 +600,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
         }
 
-        private async Task<bool> PrepareUsbAsync()
+        private async Task<bool> FormatUSBAsync()
         {
-            if (AppMan.App.DownloadToFolder)
-            {
-                Log += "[" + DateTime.Now + "] Preparing selected directory (No USB Drive Selected)" + Environment.NewLine;
-                AppMan.Logger.Info("Preparing selected directory  (No USB Drive Selected)");
-            }
-            else
-            {
-                Log += "[" + DateTime.Now + "] Preparing USB drive" + Environment.NewLine;
-                AppMan.Logger.Info("Preparing USB drive");
-            }
-
             if (!AppMan.App.SkipFormat)
             {
                 if (AppMan.App.DownloadToFolder)
@@ -658,7 +650,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     await Task.Delay(5000);
                 }
             }
+            return true;
+        }
 
+        private async Task<bool> PrepareUsbAsync()
+        {
+            if (AppMan.App.DownloadToFolder)
+            {
+                Log += "[" + DateTime.Now + "] Preparing selected directory (No USB Drive Selected)" + Environment.NewLine;
+                AppMan.Logger.Info("Preparing selected directory  (No USB Drive Selected)");
+            }
+            else
+            {
+                Log += "[" + DateTime.Now + "] Preparing USB drive" + Environment.NewLine;
+                AppMan.Logger.Info("Preparing USB drive");
+            }
+            
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
                 Application.Current.Dispatcher.Invoke(() => DownloadQueueList.Add(AppMan.App.DownloadPath + item.FileName));
 
