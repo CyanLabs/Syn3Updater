@@ -90,8 +90,8 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                         if (!drive.Encrypted)
                         {
-                            drive.FileSystem += ld.GetPropertyValue("FileSystem").ToString();
-                            drive.VolumeName = string.IsNullOrWhiteSpace(ld.GetPropertyValue("VolumeName").ToString()) ? "" : ld.GetPropertyValue("VolumeName").ToString();
+                            drive.FileSystem += ld.GetPropertyValue("FileSystem");
+                            drive.VolumeName = string.IsNullOrWhiteSpace((string)ld.GetPropertyValue("VolumeName")) ? "" : ld.GetPropertyValue("VolumeName").ToString();
                         }
 
                         drive.Letter = ld.GetPropertyValue("DeviceId").ToString();
