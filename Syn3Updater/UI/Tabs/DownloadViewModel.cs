@@ -173,9 +173,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             _doCopy = false;
             _doDownload = false;
-            
-            if (await FormatUSBAsync() != true) return;
-            
+
+            if (!AppMan.App.DownloadOnly)
+            {
+                if (await FormatUSBAsync() != true) return;
+            }
+
             try
             {
                 _doDownload = await Task.Run(DoDownload, _tokenSource.Token);
