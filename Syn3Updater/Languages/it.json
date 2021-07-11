@@ -163,5 +163,10 @@
     "MessageBox.DownloadOnlyMode": "Hai selezionato \"Solo download\" questo scaricherà tutti i file richiesti nella directory di download e li verificherà, ma NON preparerà alcun file di installazione, la semplice copia di questi file scaricati sull'unità USB  non funzionerà senza la creazione manuale dei file lst!\n\n Si prega di utilizzare 'Seleziona una cartella' dall'elenco Unità USB se si desidera preparare i file prima di copiarli su un'unità USB o selezionare un'unità USB per preparare direttamente l'unità USB!\n\n Una volta selezionata un'unità USB o una cartella, premere \"Avvia\" per iniziare il processo!\n\n Sei sicuro di voler scaricare solo i file senza preparare un'unità USB o una cartella?",
     "Home.FeedbackButton": "Sezione Feedback",
     "String.Notice": "Avviso",
-    "String.AutoDetect": "Auto-Detect"
+    "String.AutoDetect": "Auto-Detect",
+    "Utility.CopyAsBuilt": "Copy AsBuilt",
+    "Profiles.RenameProfile": "Rename",
+    "Profiles.Save": "Save",
+    "String.Encrypted": "Encrypted",
+    "MessageBox.EncryptedDrive": "The USB drive you have selected has been detected as being encrypted, either by Bitlocker or some third party software. You will not be able to use this USB Drive until you disable the encryption.\n\nPlease disable the encryption and press OK to refresh the USB Drive list."
 }
