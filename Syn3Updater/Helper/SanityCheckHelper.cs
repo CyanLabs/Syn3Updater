@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -35,23 +36,32 @@ namespace Cyanlabs.Syn3Updater.Helper
             // Optional Format
             if (string.IsNullOrWhiteSpace(selectedDrive?.Path) && driveLetter != null)
             {
-                if (Directory.EnumerateFileSystemEntries(driveLetter, "*", SearchOption.AllDirectories).Any())
+                try
                 {
-                    if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
-                        LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
+                    if (Directory.EnumerateFileSystemEntries(driveLetter, "*", SearchOption.AllDirectories).Any())
                     {
-                        AppMan.App.SkipFormat = false;
+                        if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.OptionalFormat"), driveLetter), LM.GetValue("String.Notice"), LM.GetValue("String.No"),
+                            LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
+                        {
+                            AppMan.App.SkipFormat = false;
+                        }
+                        else
+                        {
+                            AppMan.Logger.Info("Selected folder will not be cleared before being used");
+                            AppMan.App.SkipFormat = true;
+                        }
                     }
                     else
                     {
-                        AppMan.Logger.Info("Selected folder will not be cleared before being used");
                         AppMan.App.SkipFormat = true;
                     }
                 }
-                else
+                catch (DirectoryNotFoundException e)
                 {
-                    AppMan.App.SkipFormat = true;
+                    await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
+                    return true;
                 }
+                
             }
             else
             {
