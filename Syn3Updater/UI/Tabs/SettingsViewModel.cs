@@ -427,7 +427,6 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (LicenseKey?.Length < 10) LicenseKey = "";
             AppMan.App.FireHomeTabEvent();
             AppMan.App.SaveSettings();
-            AppMan.App.ChangedProfile = false;
         }
 
         private async Task SelectPathAction(string type)
