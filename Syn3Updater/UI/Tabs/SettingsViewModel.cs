@@ -395,6 +395,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             CurrentVersion = AppMan.App.SVersion;
             My20Mode = AppMan.App.Settings.My20v2;
+            CurrentInstallMode = AppMan.App.Settings.InstallMode.Replace("autodetect",LM.GetValue("String.AutoDetect"));
+            AdvancedModeToggle = CurrentInstallMode != LM.GetValue("String.AutoDetect");
         }
 
         private async void ApplySettingsAction()
@@ -425,6 +427,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (LicenseKey?.Length < 10) LicenseKey = "";
             AppMan.App.FireHomeTabEvent();
             AppMan.App.SaveSettings();
+            AppMan.App.ChangedProfile = false;
         }
 
         private async Task SelectPathAction(string type)
