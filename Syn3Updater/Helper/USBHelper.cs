@@ -192,6 +192,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
             }
+            catch (UnauthorizedAccessException e)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
+            }
 
             if (upload)
                 await UploadLog(complete);
