@@ -191,7 +191,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             Task t = Task.Run(async () =>
                             {
                                 DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
-                                AppMan.Logger.Debug($"DownloadFilePart: {i1} ({readRange.Start})");
+                                AppMan.Logger.Debug($"DownloadFilePart: {i1} ({readRange.Start}/{readRange.End} - {responseLength.ToString()})");
                                 results.Add(result);
                             }, ct);
                             i++;
