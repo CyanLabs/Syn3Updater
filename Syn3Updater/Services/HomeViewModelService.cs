@@ -44,13 +44,13 @@ namespace Cyanlabs.Syn3Updater.Services
             {
                 if (AppMan.App.DownloadOnly)
                 {
-                    AppMan.Logger.Info($"Starting download only of ({selectedRelease} - {selectedRegion.Code} - {selectedMapVersion})");
+                    AppMan.Logger.Info($"Starting download only of ({selectedRelease} - {selectedRegion?.Code} - {selectedMapVersion})");
                 }
                 else
                 {
                     AppMan.App.DriveNumber = selectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
                     AppMan.App.DriveLetter = driveLetter;
-                    AppMan.Logger.Info($"Starting process ({selectedRelease} - {selectedRegion.Code} - {selectedMapVersion})");
+                    AppMan.Logger.Info($"Starting process ({selectedRelease} - {selectedRegion?.Code} - {selectedMapVersion})");
                 }
 
                 AppMan.App.IsDownloading = true;

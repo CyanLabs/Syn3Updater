@@ -22,8 +22,11 @@ namespace Cyanlabs.Syn3Updater.Services
             {
                 autoinstalllst.Append($@"[SYNCGen3.0_3.0.1_PRODUCT]{Environment.NewLine}");
                 SModel.Ivsu mapLicense = ivsuList.Find(i => i.Type == "MAP_LICENSE");
-                autoinstalllst.Append($@"Item1 = {mapLicense.Type} - {mapLicense.FileName}\rOpen1 = SyncMyRide\{mapLicense.FileName}\r").Replace(@"\r", Environment.NewLine);
-                ivsuList.Remove(mapLicense);
+                if (mapLicense != null)
+                {
+                    autoinstalllst.Append($@"Item1 = {mapLicense.Type} - {mapLicense.FileName}\rOpen1 = SyncMyRide\{mapLicense.FileName}\r").Replace(@"\r", Environment.NewLine);
+                    ivsuList.Remove(mapLicense);
+                }
 
                 List<uint> vals = ivsuList.ConvertAll(ivsu => (uint) ivsu.FileSize);
                 //splits the ivsus into 3 evenly distibuted buckets 
@@ -37,19 +40,22 @@ namespace Cyanlabs.Syn3Updater.Services
                         int partIndex = j + 1;
                         //indexes returned by the partition code start at 1 
                         SModel.Ivsu item = ivsuList[subIndex - 1];
-                        if (i == 0) //since we added the MAP_LICENCE package above 
+                        if (i == 0 && mapLicense != null) //since we added the MAP_LICENCE package above 
                             partIndex++;
                         autoinstalllst.Append($@"Item{partIndex} = {item.Type} - {item.FileName}\rOpen{partIndex} = SyncMyRide\{item.FileName}\r")
                             .Replace(@"\r", Environment.NewLine);
                     }
 
                     if (i == 0)
-                        autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine)
-                            .Append($@"[SYNCGen3.0_3.0.1]{Environment.NewLine}");
-                    if (i == 1)
-                        autoinstalllst.Append("Options = AutoInstall, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine)
-                            .Append($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
-                    if (i == 2) autoinstalllst.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine);
+                        autoinstalllst.Append("Options = AutoInstall").Append(Environment.NewLine).Append(Environment.NewLine);
+                    if (i == 0 && ivsuList.Count > 1)
+                        autoinstalllst.Append($@"[SYNCGen3.0_3.0.1]{Environment.NewLine}");
+                    if (i == 1 && ivsuList.Count > 1)
+                        autoinstalllst.Append("Options = AutoInstall, Include, Transaction").Append(Environment.NewLine).Append(Environment.NewLine);
+                    if (i == 1 && ivsuList.Count > 2)
+                        autoinstalllst.Append($@"[SYNCGen3.0_ALL]{Environment.NewLine}");
+                    if (i == 2 && ivsuList.Count > 2) 
+                        autoinstalllst.Append("Options = Delay, Include, Transaction").Append(Environment.NewLine);
                 }
             }
             else
