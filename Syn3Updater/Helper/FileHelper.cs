@@ -192,6 +192,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             {
                                 DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
                                 results.Add(result);
+                                AppMan.Logger.Debug($"DownloadFilePart: {i1} ({readRange}");
                             }, ct);
                             i++;
                             tasks.Add(t);
@@ -199,6 +200,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         try
                         {
                             await Task.WhenAll(tasks);
+                            AppMan.Logger.Debug($"DownloadFilePart: All Tasks Completed {tasks.Count}");
                         }
                         catch (OperationCanceledException e)
                         {
