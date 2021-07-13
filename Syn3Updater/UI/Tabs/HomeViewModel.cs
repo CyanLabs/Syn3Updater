@@ -783,8 +783,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.DownloadOnly = false;
             }
 
-            await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive);
-
+            if (!await HomeViewModelService.Download(InstallMode, IvsuList, SelectedRegion, SelectedRelease, SelectedMapVersion, DriveLetter, SelectedDrive))
+            {
+                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
+                DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;  
+            }
         }
 
         public async Task VisitFeedbackThreadAction(string url)

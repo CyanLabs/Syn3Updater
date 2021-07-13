@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -11,19 +12,24 @@ namespace Cyanlabs.Syn3Updater.Services
 {
     public static class HomeViewModelService
     {
-        public static async Task Download(string installMode, ObservableCollection<SModel.Ivsu> ivsuList,
+        public static async Task<bool> Download(string installMode, ObservableCollection<SModel.Ivsu> ivsuList,
             SModel.SRegion selectedRegion, string selectedRelease, string selectedMapVersion, string driveLetter, USBHelper.Drive selectedDrive)
         {
-            await SetIvsuList(installMode, ivsuList, selectedRegion, selectedRelease, selectedMapVersion, driveLetter);
+            if (await SetIvsuList(installMode, ivsuList, selectedRegion, selectedRelease, selectedMapVersion, driveLetter) == false)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.NoPackagesSelected")));
+                return false;
+            }
 
             bool canceldownload = false;
+            
             //Install Mode is reformat or downgrade My20 warning
             if ((installMode == "reformat" || installMode == "downgrade") && !AppMan.App.DownloadOnly && AppMan.App.Settings.My20v2 == null)
                 if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.My20Check")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"),
                     LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed)) == ContentDialogResult.Primary)
                 {
                     await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
-                    return;
+                    return true;
                 }
 
             //Warn is users region is different to new selection
@@ -55,15 +61,20 @@ namespace Cyanlabs.Syn3Updater.Services
 
                 AppMan.App.IsDownloading = true;
                 AppMan.App.FireDownloadsTabEvent();
+                return true;
             }
+
+            return false;
         }
 
-        public static async Task SetIvsuList(string installMode, ObservableCollection<SModel.Ivsu> ivsuList, SModel.SRegion selectedRegion, string selectedRelease,
+        public static async Task<bool> SetIvsuList(string installMode, ObservableCollection<SModel.Ivsu> ivsuList, SModel.SRegion selectedRegion, string selectedRelease,
             string selectedMapVersion, string driveLetter)
         {
             AppMan.Logger.Info(
                 $"USB Drive selected - Name: {AppMan.App.DriveName} - FileSystem: {AppMan.App.DriveFileSystem} - PartitionType: {AppMan.App.DrivePartitionType} - Letter: {driveLetter}");
             AppMan.App.Ivsus.Clear();
+
+            if (!ivsuList.Any(i => i.Selected)) return false;
 
             if (installMode == "downgrade")
             {
@@ -93,6 +104,7 @@ namespace Cyanlabs.Syn3Updater.Services
             AppMan.App.SelectedRegion = selectedRegion.Code;
             AppMan.App.SelectedRelease = selectedRelease;
             AppMan.App.SelectedMapVersion = selectedMapVersion;
+            return true;
         }
     }
 }
