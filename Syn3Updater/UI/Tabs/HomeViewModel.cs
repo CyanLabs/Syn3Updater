@@ -400,7 +400,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 // ignored
             }
-            Process.Start(AppMan.App.MainSettings.Lang.Contains("en")
+            await SystemHelper.OpenWebPage(AppMan.App.MainSettings.Lang.Contains("en")
                 ? "https://api.cyanlabs.net/Syn3Updater/regioninfo"
                 : $"https://translate.google.co.uk/translate?hl=&sl=en&tl={AppMan.App.MainSettings.Lang}&u=https%3A%2F%2Fapi.cyanlabs.net%2FSyn3Updater%2Fregioninfo");
         }
@@ -793,7 +793,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         public async Task VisitFeedbackThreadAction(string url)
         {
             if (!string.IsNullOrEmpty(url))
-                Process.Start(url);
+                await SystemHelper.OpenWebPage(url);
         }
 
         #endregion

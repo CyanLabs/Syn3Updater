@@ -323,7 +323,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private static void TroubleshootingDetailsAction()
         {
-            Process.Start("https://community.cyanlabs.net/t/tutorial-sync-3-4-non-nav-apim-failure-to-update-to-newer-version-sync-3-4/1984");
+            SystemHelper.OpenWebPage("https://community.cyanlabs.net/t/tutorial-sync-3-4-non-nav-apim-failure-to-update-to-newer-version-sync-3-4/1984");
         }
 
         private void UploadLogAction()

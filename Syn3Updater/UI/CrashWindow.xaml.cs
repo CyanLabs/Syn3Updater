@@ -73,12 +73,12 @@ namespace Cyanlabs.Syn3Updater.UI
 
         private void ClickQRCode(object sender, RoutedEventArgs e)
         {
-            Process.Start(ErrorReportUrl);
+            SystemHelper.OpenWebPage(ErrorReportUrl);
         }
 
         private void ViewReport(object sender, RoutedEventArgs e)
         {
-            Process.Start(ErrorReportUrl);
+            SystemHelper.OpenWebPage(ErrorReportUrl);
         }
 
         private void ResetSettings_Click(object sender, RoutedEventArgs e)

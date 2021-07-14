@@ -226,7 +226,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
                 string responseString = await response.Content.ReadAsStringAsync();           
                 var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
-                Process.Start(Api.LogUrl + output.uuid);
+                await SystemHelper.OpenWebPage(Api.LogUrl + output.uuid);
             }
             catch (Exception e)
             {
@@ -262,7 +262,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
                 var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { filename = "", status = "" });
-                Process.Start(Api.AsBuiltOutput + output.filename);
+                await SystemHelper.OpenWebPage(Api.AsBuiltOutput + output.filename);
             }
         }
 

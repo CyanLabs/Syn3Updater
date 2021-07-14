@@ -57,27 +57,27 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private static void WebsiteAction()
         {
-            Process.Start("https://cyanlabs.net");
+            SystemHelper.OpenWebPage("https://cyanlabs.net");
         }
 
         private static void ForumAction()
         {
-            Process.Start("https://community.cyanlabs.net");
+            SystemHelper.OpenWebPage("https://community.cyanlabs.net");
         }
 
         private static void DonateAction()
         {
-            Process.Start("https://www.paypal.com/paypalme/cyanlabs");
+            SystemHelper.OpenWebPage("https://www.paypal.com/paypalme/cyanlabs");
         }
 
         private static void DocAction()
         {
-            Process.Start("https://cyanlabs.net/applications/syn3-updater/");
+            SystemHelper.OpenWebPage("https://cyanlabs.net/applications/syn3-updater/");
         }
 
         private static void FHubAction()
         {
-            Process.Start("https://cyanlabs.net/fhub");
+            SystemHelper.OpenWebPage("https://cyanlabs.net/fhub");
         }
 
         #endregion

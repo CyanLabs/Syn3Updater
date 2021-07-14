@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using Cyanlabs.Syn3Updater.Model;
 using Microsoft.Win32;
 
 namespace Cyanlabs.Syn3Updater.Helper
@@ -116,6 +121,19 @@ namespace Cyanlabs.Syn3Updater.Helper
         public static void DeleteRegistryHandler()
         {
             Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\syn3updater");
+        }
+
+        public static async Task OpenWebPage(string url)
+        {
+            try
+            {
+                Process.Start(url);
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                Clipboard.SetText(url);
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.NoBrowser"),LM.GetValue("String.Notice"),LM.GetValue("Download.CancelButton")));
+            }
         }
 
         #endregion

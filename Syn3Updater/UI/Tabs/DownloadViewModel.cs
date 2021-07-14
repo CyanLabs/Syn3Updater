@@ -510,12 +510,20 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (AppMan.App.DownloadToFolder)
                 {
                     await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.CompletedFolder"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")));
-                    Process.Start(AppMan.App.DriveLetter);
+                    try
+                    {
+                        Process.Start(AppMan.App.DriveLetter);
+                    }
+                    catch (Exception)
+                    {
+                        //ignored
+                    }
+                    
                 }
                 else
                 {
                     await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.Completed"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")));
-                    Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
+                    await SystemHelper.OpenWebPage($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
                 }
 
                 AppMan.App.FireHomeTabEvent();

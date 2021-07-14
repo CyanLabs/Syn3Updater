@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
+using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 using Nito.AsyncEx;
@@ -205,7 +206,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public async Task VisitGithubAction(string version)
         {
-            Process.Start($"https://github.com/CyanLabs/Syn3Updater/releases/tag/{version}");
+            await SystemHelper.OpenWebPage($"https://github.com/CyanLabs/Syn3Updater/releases/tag/{version}");
         }
 
         #endregion
