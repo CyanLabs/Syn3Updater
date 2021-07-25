@@ -102,6 +102,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                 AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }
+            catch (UnauthorizedAccessException exception)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(exception.GetFullMessage()));
+                AppMan.Logger.Info("ERROR: " + exception.GetFullMessage());
+                return false;
+            }
 
             return true;
         }
@@ -488,6 +494,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             {
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                 AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
+                return "error";
+            }
+            catch (UnauthorizedAccessException exception)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(exception.GetFullMessage()));
+                AppMan.Logger.Info("ERROR: " + exception.GetFullMessage());
                 return "error";
             }
         }
