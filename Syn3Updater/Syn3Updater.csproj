@@ -87,63 +87,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <None Remove="Languages\cz.json" />
-	  <None Remove="Languages\de.json" />
-	  <Content Include="Languages\de.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\en-US.json" />
-	  <Content Include="Languages\en-US.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\es.json" />
-	  <Content Include="Languages\es.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\it.json" />
-	  <Content Include="Languages\it.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\nl.json" />
-	  <Content Include="Languages\nl.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\sk.json" />
-	  <None Remove="Languages\vi.json" />
-	  <Content Include="Languages\vi.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\zh_CN.json" />
-	  <Content Include="Languages\zh_CN.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\zh_TW.json" />
-	  <Content Include="Languages\zh_TW.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\ro.json" />
-	  <None Remove="Languages\pt-PT.json" />
-	  <None Remove="Languages\pl.json" />
-	  <None Remove="Languages\el.json" />
-	  <None Remove="Languages\da.json" />
-	  <Content Include="Languages\da.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\cs.json" />
-	  <Content Include="Languages\cs.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\bg.json" />
-	  <None Remove="Languages\hr.json" />
-	  <Content Include="Languages\hr.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\ru.json" />
-	  <Content Include="Languages\ru.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	  <None Remove="Languages\tr.json" />
-	  <Content Include="Languages\tr.json">
+	  <Content Include="Languages\*.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
