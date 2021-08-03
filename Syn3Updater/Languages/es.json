@@ -168,5 +168,7 @@
     "Profiles.RenameProfile": "Renombrar",
     "Profiles.Save": "Guardar",
     "String.Encrypted": "Cifrada",
-    "MessageBox.EncryptedDrive": "La unidad USB seleccionada fue detectada como cifrada, ya sea por Bitlocker u otro programa de terceros. No podrá usar este USB hasta que deshabilite el cifrado.\n\nPor favor, deshabilite el cifrado y presione OK para refrescar la lista de unidades USB."
+    "MessageBox.EncryptedDrive": "La unidad USB seleccionada fue detectada como cifrada, ya sea por Bitlocker u otro programa de terceros. No podrá usar este USB hasta que deshabilite el cifrado.\n\nPor favor, deshabilite el cifrado y presione OK para refrescar la lista de unidades USB.",
+    "MessageBox.NoPackagesSelected": "No se ha seleccionado ningún paquete, por favor seleccione al menos un paquete antes de continuar",
+    "MessageBox.NoBrowser": "No se puede abrir la página web con el navegador por defecto, el vínculo ha sido copiado al portapapeles, por favor pegue el vínculo en su navegador para guía adicional."
 }
