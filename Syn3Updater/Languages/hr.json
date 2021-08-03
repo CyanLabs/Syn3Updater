@@ -103,8 +103,8 @@
     "Home.Nav": "Navigacija",
     "Home.MapVersion": "Verzija karte",
     "Home.NewVersion": "Nova verzija",
-    "Settings.FullVersion": "verzija",
-    "Settings.Region": "regija",
+    "Settings.FullVersion": "Verzija",
+    "Settings.Region": "Regija",
     "Settings.Navigation": "Navigacija",
     "MessageBox.NoVersionOrRegionSelected": "Niste postavili svoju trenutnu verzija ili regija!",
     "MessageBox.My20Detected": "Syn3 Updater otkrio je da pokušavate nametnuti način instaliranja ili onemogućiti 'My20 Mode', no prethodno je otkriven APIM proizveden 2020. ili noviji!\n\n(ili je zaštita MY20 uključena ručno)\n\nČineći to i koristeći stvoreni USB pogon na MY20 ili novijem APIM-u, CIGNAT ĆETE!!\n\nKlikom na 'Da' onemogućit ćete sve metode zaštite MY20 ugrađene u Syn3 Updater\n\nJeste li sigurni da želite poništiti ovu zaštitu?",
@@ -168,5 +168,7 @@
     "Profiles.RenameProfile": "Preimenovati",
     "Profiles.Save": "Spremi",
     "String.Encrypted": "Šifrirano",
-    "MessageBox.EncryptedDrive": "Bitlocker ili neki softver nezavisnih proizvođača otkrio je da je USB pogon koji ste odabrali kriptiran. Ovaj USB pogon nećete moći koristiti dok ne onemogućite šifriranje.\n\nOnemogućite šifriranje i pritisnite OK da biste osvježili popis USB pogona."
+    "MessageBox.EncryptedDrive": "Bitlocker ili neki softver nezavisnih proizvođača otkrio je da je USB pogon koji ste odabrali kriptiran. Ovaj USB pogon nećete moći koristiti dok ne onemogućite šifriranje.\n\nOnemogućite šifriranje i pritisnite OK da biste osvježili popis USB pogona.",
+    "MessageBox.NoPackagesSelected": "Nije odabran nijedan paket, prije nastavka odaberite najmanje jedan paket",
+    "MessageBox.NoBrowser": "Web stranicu nije moguće otvoriti pomoću zadanog web preglednika, veza je kopirana u međuspremnik, za dodatne upute zalijepite vezu u svoj preglednik."
 }
