@@ -177,7 +177,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (value == null) return;
                 AppMan.App.Settings.InstallMode = value;
                 SetProperty(ref _currentInstallMode, value);
-                AppMan.App.ModeForced = value != LM.GetValue("String.AutoDetect");
+                AppMan.App.ModeForced = value == "reformat" || value == "autoinstall" || value == "downgrade";
                 AppMan.App.ClearSelections = true;
             }
         }
@@ -355,7 +355,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 LM.GetValue("String.AutoDetect"), "autoinstall", "reformat", "downgrade"
             };
-            CurrentInstallMode = currentInstallModeTemp.Replace("autodetect",LM.GetValue("String.AutoDetect"));
+            CurrentInstallMode = AppMan.App.Settings.InstallMode.Replace("autodetect",LM.GetValue("String.AutoDetect")).Replace("Auto-Detect",LM.GetValue("String.AutoDetect"));
             Themes = new ObservableCollection<string>
             {
                 "Dark", "Light"
@@ -388,15 +388,15 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             DownloadLocation = AppMan.App.DownloadPath;
             CurrentNav = AppMan.App.Settings.CurrentNav;
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
-            AdvancedModeToggle = CurrentInstallMode != LM.GetValue("String.AutoDetect");
+            AdvancedModeToggle = CurrentInstallMode == "reformat" || CurrentInstallMode == "autoinstall" || CurrentInstallMode == "downgrade";
         }
 
         public void ReloadSettings()
         {
             CurrentVersion = AppMan.App.SVersion;
             My20Mode = AppMan.App.Settings.My20v2;
-            CurrentInstallMode = AppMan.App.Settings.InstallMode.Replace("autodetect",LM.GetValue("String.AutoDetect"));
-            AdvancedModeToggle = CurrentInstallMode != LM.GetValue("String.AutoDetect");
+            CurrentInstallMode = AppMan.App.Settings.InstallMode.Replace("autodetect",LM.GetValue("String.AutoDetect")).Replace("Auto-Detect",LM.GetValue("String.AutoDetect"));
+            AdvancedModeToggle = CurrentInstallMode == "reformat" || CurrentInstallMode == "autoinstall" || CurrentInstallMode == "downgrade";
         }
 
         private async void ApplySettingsAction()
