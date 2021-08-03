@@ -217,7 +217,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         catch (IOException e)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
+                            AppMan.Logger.CrashWindow(e);
                             return false;
                         }
                         catch (ObjectDisposedException  e)
@@ -282,7 +282,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage())));
+                AppMan.Logger.CrashWindow(e);
                 return false;
             }
             catch (OutOfMemoryException e)
@@ -370,7 +370,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
+                AppMan.Logger.CrashWindow(e);
                 return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
             }
         }
@@ -492,8 +492,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (IOException e)
             {
-                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
-                AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
+                AppMan.Logger.CrashWindow(e);
                 return "error";
             }
             catch (UnauthorizedAccessException exception)
