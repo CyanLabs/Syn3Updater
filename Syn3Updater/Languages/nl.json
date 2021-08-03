@@ -54,7 +54,7 @@
     "MessageBox.OptionalFormatUSB": "Deze USB-drive is al gebruikt door Syn3 Updater. \n\n{0}  \nSchijf Letter: {1}\n\nAls U bestaande bestanden op de USB-drive wilt gebruiken, klik dan op Nee  \nAls U de USB-drive wilt formatteren, klik dan op Ja\n\nWilt U de geselecteerde USB-drive formatteren?",
     "MessageBox.FailedToValidate3": "Kan {0} 3 keer niet verifiëren, PROCES WORDT AFGEBROKEN!",
     "MessageBox.UpdateCurrentversion": "Wilt U uw \"Huidige Versie\" in de app bijwerken van {0} naar {1} zodat deze correct is voor toekomstig gebruik?",
-    "MessageBox.Completed": "Het downloaden en kopiëren van de bestanden is nu voltooid.\nNeem deze USB uit uw computer en plaats deze in uw auto.\nZorg ervoor dat de motor draait, en wacht tot de installatie begint!\n\nSyn3 Updater gaat U nu rechtstreeks naar het relevante deel van de CyanLabs handleiding leiden om te volgen in uw auto.\n\nAls je problemen hebt ga dan naar onze discord of forum, de links kunnen op de website worden gevonden.\n\nAls U vindt dat Syn3 Updater nuttig voor U was, overweeg dan om te doneren via het tabblad \"Over\".",
+    "MessageBox.Completed": "Het downloaden en kopiëren van de bestanden is nu voltooid.\nNeem deze USB uit uw computer en plaats deze in uw auto.\nZorg ervoor dat de motor draait, en wacht tot de installatie begint!\n\nSyn3 Updater gaat U nu rechtstreeks naar het relevante deel van de CyanLabs handleiding leiden om te volgen in uw auto.\n\nAls je problemen hebt ga dan naar onze discord of forum, de links kunnen op de website worden gevonden.\n\nAls U vindt dat Syn3 Updater nuttig was voor U, overweeg dan om te doneren via het tabblad \"Over\".",
     "String.NonNavAPIM": "APIM zonder navigatie",
     "MessageBox.LogUtilityComplete": "De voorbereiding van de Interrogator (Logging) USB-stick is voltooid!\n\nVerwijder de USB-drive uit uw computer en plaats deze in uw auto, zorg ervoor dat het contact is ingeschakeld en wacht enkele ogenblikken na het plaatsen van de USB, de melding \"Installatie Voltooid\" verschijnt.\n\nPlaats de USB-drive opnieuw in uw pc en druk op \"Stap 3\"",
     "String.KeepExistingMaps": "Behoud bestaande kaarten",
@@ -168,5 +168,7 @@
     "Profiles.RenameProfile": "Hernoem",
     "Profiles.Save": "Opslaan",
     "String.Encrypted": "Versleuteld",
-    "MessageBox.EncryptedDrive": "Het USB-station dat u hebt geselecteerd, is versleuteld, hetzij door Bitlocker of software van derden. U kunt deze USB-drive pas gebruiken als u de encryptie uitschakelt.\n\nSchakel de encryptie uit en druk op OK om de lijst met USB-drives te vernieuwen."
+    "MessageBox.EncryptedDrive": "Het USB-station dat U hebt geselecteerd, is versleuteld, hetzij door Bitlocker of software van derden. U kunt deze USB-drive pas gebruiken als U de encryptie uitschakelt.\n\nSchakel de encryptie uit en druk op OK om de lijst met USB-drives te vernieuwen.",
+    "MessageBox.NoPackagesSelected": "Er zijn geen pakketten geselecteerd, selecteer ten minste één pakket voordat U verdergaat",
+    "MessageBox.NoBrowser": "Onmogelijk om de webpagina te openen in de standaard browser, link gekopieerd naar klembord, plak de link in je browser voor bijkomende begeleiding."
 }
