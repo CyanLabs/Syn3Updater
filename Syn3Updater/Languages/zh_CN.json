@@ -168,5 +168,7 @@
     "Profiles.RenameProfile": "重命名",
     "Profiles.Save": "保存",
     "String.Encrypted": "已加密",
-    "MessageBox.EncryptedDrive": "您所选择的USB驱动器已被检测到被加密，可能是被Bitlocker或一些第三方软件所加密。在你取消加密之前，你将不能使用这个USB驱动器。\n\n请禁用加密，然后点击 \"确定 \"来刷新USB驱动器列表。"
+    "MessageBox.EncryptedDrive": "您所选择的USB驱动器已被检测到被加密，可能是被Bitlocker或一些第三方软件所加密。在你取消加密之前，你将不能使用这个USB驱动器。\n\n请禁用加密，然后点击 \"确定 \"来刷新USB驱动器列表。",
+    "MessageBox.NoPackagesSelected": "未选择任何安装包文件，请至少选择一个安装包文件，然后再继续",
+    "MessageBox.NoBrowser": "无法使用默认的网络浏览器打开网页，链接已复制到剪贴板，请将链接粘贴到浏览器中打开以获得更多指导。"
 }
