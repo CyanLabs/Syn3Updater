@@ -1,7 +1,7 @@
 {
-    "Main.Home": "Start",
+    "Main.Home": "Startseite",
     "Main.About": "Über",
-    "Main.Downloads": "Downloads",
+    "Main.Downloads": "Heruntergeladene Dateien",
     "Main.News": "Neuigkeiten",
     "Main.Crashme": "Absturz",
     "Main.Settings": "Einstellungen",
@@ -165,8 +165,10 @@
     "String.Notice": "Hinweis",
     "String.AutoDetect": "Automatik",
     "Utility.CopyAsBuilt": "Copy AsBuilt",
-    "Profiles.RenameProfile": "Rename",
-    "Profiles.Save": "Save",
-    "String.Encrypted": "Encrypted",
-    "MessageBox.EncryptedDrive": "The USB drive you have selected has been detected as being encrypted, either by Bitlocker or some third party software. You will not be able to use this USB Drive until you disable the encryption.\n\nPlease disable the encryption and press OK to refresh the USB Drive list."
+    "Profiles.RenameProfile": "umbenennen",
+    "Profiles.Save": "speichern",
+    "String.Encrypted": "verschlüsselt",
+    "MessageBox.EncryptedDrive": "Das ausgewählte USB Medium ist als verschlüsselt erkannt (z.Bsp. Bitlokker u.ä.). Das Medium kann nicht genutzt werden, solange die Verschlüsselung nicht abgeschaltet ist.\n\nNach dem Abschalten der Verschlüsselung OK drücken umd die USB Medien-Liste zu aktualiiseren.",
+    "MessageBox.NoPackagesSelected": "Es muss mindestens ein Paket ausgewählt sein.",
+    "MessageBox.NoBrowser": "Seite kann mit dem Default-Browser nicht geöffnet werden. Der Link wurde in die Zwischenablage kopiert. Für weiterführende Informationen den Link in einem Browser öffnen."
 }
