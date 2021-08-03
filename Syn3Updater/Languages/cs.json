@@ -168,5 +168,7 @@
     "Profiles.RenameProfile": "Přejmenovat",
     "Profiles.Save": "Uložit",
     "String.Encrypted": "Zašifrováno",
-    "MessageBox.EncryptedDrive": "USB disk, který jste vybrali, byl detekován jako šifrovaný, buď Bitlockerem nebo jiným softwarem třetí strany. Nebudete schopni použít daný USB disk, dokud nevypnete šifrování.\n\nProsím vypněte šifrování a zmáčkněte OK pro obnovení zařízení USB."
+    "MessageBox.EncryptedDrive": "USB disk, který jste vybrali, byl detekován jako šifrovaný, buď Bitlockerem nebo jiným softwarem třetí strany. Nebudete schopni použít daný USB disk, dokud nevypnete šifrování.\n\nProsím vypněte šifrování a zmáčkněte OK pro obnovení zařízení USB.",
+    "MessageBox.NoPackagesSelected": "Nebyl vybrán žádný balíček, prosím vyberte alespoň jeden balíček než budete pokračovat.",
+    "MessageBox.NoBrowser": "Nelze otevřít webovou stránku pomocí výchozího webového prohlížeče, odkaz zkopírován do schránky, vložte odkaz do svého prohlížeče pro další pokyny."
 }
