@@ -367,7 +367,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SMapVersion = new ObservableCollection<string>();
                 IvsuList = new ObservableCollection<SModel.Ivsu>();
 
-                if (_magnetActions?.Count != 0)
+                if (_magnetActions != null && _magnetActions?.Count != 0 && _magnetActions.ContainsKey("Region"))
                 {
                     bool exists = SRegions.Any(x => x.Code == _magnetActions["Region"]);
                     if (exists) SelectedRegion = SRegions.FirstOrDefault(x => x.Code == _magnetActions["Region"]);
@@ -527,8 +527,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
                 DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
 
-                if (SVersion != null && _magnetActions?.Count != 0 && SVersion.Contains("Sync " + _magnetActions?["Release"]))
-                    SelectedRelease = "Sync " + _magnetActions?["Release"];
+                if (SVersion != null && _magnetActions != null && _magnetActions?.Count != 0 && _magnetActions.ContainsKey("Release") && _magnetActions.ContainsKey("Region"))
+                {
+                   if(SVersion.Contains("Sync " + _magnetActions?["Release"]))
+                       SelectedRelease = "Sync " + _magnetActions?["Release"];
+                }
             }
         }
 
@@ -609,9 +612,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
                 DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
 
-                string mapReleaseTmp = _magnetActions?["Maps"].Replace("_", " ");
-                if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp)) 
-                    SelectedMapVersion = mapReleaseTmp;
+                if (SVersion != null && _magnetActions != null && _magnetActions?.Count != 0 && _magnetActions.ContainsKey("Maps") && _magnetActions.ContainsKey("Region"))
+                {
+                    string mapReleaseTmp = _magnetActions?["Maps"].Replace("_", " ");
+                    if (SMapVersion != null && _magnetActions?.Count != 0 && SMapVersion.Any(x => x == mapReleaseTmp)) 
+                        SelectedMapVersion = mapReleaseTmp;
+                }
             }
         }
 
