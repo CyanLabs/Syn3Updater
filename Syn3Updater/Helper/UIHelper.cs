@@ -35,7 +35,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                     Title = LM.GetValue("String.Error"),
                     Content = content,
                     CloseButtonText = string.IsNullOrEmpty(cancel) ? LM.GetValue("String.OK") : cancel,
-                    Background = Brushes.DarkRed
+                    Background = Brushes.DarkRed,
+                    Foreground = Brushes.White
                 };
                 await DialogManager.OpenDialogAsync(contentDialog, true);
             }
@@ -54,7 +55,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     Title = title,
                     Content = content,
                     CloseButtonText = cancel,
-                    Background = Brushes.DarkOrange
+                    Background = Brushes.DarkGoldenrod
                 };
                 if (!string.IsNullOrEmpty(primarybutton)) contentDialog.PrimaryButtonText = primarybutton;
                 if (!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
@@ -76,7 +77,11 @@ namespace Cyanlabs.Syn3Updater.Helper
                 CloseButtonText = cancel,
                 
             };
-            if (bg != null) contentDialog.Background = bg;
+            if (bg != null)
+            {
+                contentDialog.Background = bg;
+                contentDialog.Foreground = Brushes.White;
+            }
             if (!string.IsNullOrEmpty(primarybutton)) contentDialog.PrimaryButtonText = primarybutton;
             if (defaultbutton != ContentDialogButton.None) contentDialog.DefaultButton = defaultbutton;
             if (!string.IsNullOrEmpty(secondarybutton)) contentDialog.SecondaryButtonText = secondarybutton;
