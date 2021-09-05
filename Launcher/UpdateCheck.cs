@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows;
 using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
 using Octokit;
@@ -76,6 +77,11 @@ namespace Cyanlabs.Launcher
                 Application.Current.Shutdown();
                 return false;
             }
+            catch (WebException)
+            {
+                MessageBox.Show("Unable to download latest version, please check your internet connection or try again later!");
+                return false;
+            }
 
             string version = releaseType == LauncherPrefs.ReleaseType.Alpha ? ciRelease?.Number : githubrelease?.TagName;
             // Use GitHub release tagname as version and parse in to an integer
@@ -97,12 +103,21 @@ namespace Cyanlabs.Launcher
                 wc.DownloadProgressChanged += client_DownloadProgressChanged;
 
                 // Do the actual file download of the first Asset in the chosen GitHub Release or the CI download link with the previously created WebClient
-                await wc.DownloadFileTaskAsync(
-                    releaseType == LauncherPrefs.ReleaseType.Alpha
-                        // ReSharper disable once PossibleNullReferenceException
-                        ? new Uri(ciRelease.Download)
-                        // ReSharper disable once PossibleNullReferenceException
-                        : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
+                try
+                {
+                    await wc.DownloadFileTaskAsync(
+                        releaseType == LauncherPrefs.ReleaseType.Alpha
+                            // ReSharper disable once PossibleNullReferenceException
+                            ? new Uri(ciRelease.Download)
+                            // ReSharper disable once PossibleNullReferenceException
+                            : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
+                }
+                catch (WebException)
+                {
+                    MessageBox.Show("Unable to download latest version, please check your internet connection or try again later!");
+                    return false;
+                }
+                
 
                 if (Directory.Exists(destFolder + "\\temp"))
                     Directory.Delete(destFolder + "\\temp", true);
