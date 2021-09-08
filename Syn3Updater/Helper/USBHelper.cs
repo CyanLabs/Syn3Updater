@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Cyanlabs.Syn3Updater.Converter;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 using ModernWpf.Controls;
@@ -363,6 +364,14 @@ namespace Cyanlabs.Syn3Updater.Helper
                 {
                     foreach (Interrogator.D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
                         LogXmlDetails2 += $"{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}{Environment.NewLine}";
+
+                    
+                    List<string> packages = SyncHexToAscii.ConvertPackages(d2P1Did.Where(x => x.DidValue == "8060").Select(x => x.D2P1Response).Single());
+                    List<string> packagescont = SyncHexToAscii.ConvertPackages(d2P1Did.Where(x => x.DidValue == "8061").Select(x => x.D2P1Response).Single()); 
+                    packages.AddRange(packagescont);
+                    
+                    LogXmlDetails2 += $"{Environment.NewLine}Installed Packages{Environment.NewLine}";
+                    LogXmlDetails2 = packages.Aggregate(LogXmlDetails2, (current, package) => current + (package + Environment.NewLine));
 
                     List<AsBuilt.DID> asBuiltValues = new();
 
