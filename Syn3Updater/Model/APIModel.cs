@@ -68,7 +68,7 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("id")] public int Id { get; set; }
             [JsonProperty("name")] public string Name { get; set; }
             [JsonProperty("type")] public string Type { get; set; }
-            [JsonProperty("regions")] public List<string> Regions { get; set; }
+            [JsonProperty("regions")] public IList<string> Regions { get; set; }
             [JsonProperty("md5")] public string Md5 { get; set; }
             [JsonProperty("url")] public string Url { get; set; }
             [JsonProperty("notes")] public string Notes { get; set; }
@@ -92,8 +92,8 @@ namespace Cyanlabs.Syn3Updater.Model
         
         public class JsonReleases2
         {
-            [JsonProperty("releases")] public List<Release> Releases { get; set; }
-            [JsonProperty("map_releases")] public List<Release> MapReleases { get; set; }
+            [JsonProperty("releases")] public IList<Release> Releases { get; set; }
+            [JsonProperty("map_releases")] public IList<Release> MapReleases { get; set; }
         }
 
 
