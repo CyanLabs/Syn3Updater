@@ -23,15 +23,15 @@ namespace Cyanlabs.Syn3Updater.Model
         #region Properties & Fields
 
         //private const string Syn3UpdaterBase = "https://syn3updater.cyanlabs.net/";
-        private const string Syn3UpdaterBase = "https://syn3updater-dev.cyanlabs.net/";
+        public const string Syn3UpdaterBase = "https://syn3updater-dev.cyanlabs.net/";
 
         public const string APIBase = "https://api.cyanlabs.net/";
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
 
-        public const string AppReleasesConst = Syn3UpdaterBase + "items/releases?fields=name,notes,regions,version,feedbackurl&sort=-name&limit=-1&[published]";
-        public const string MapReleasesConst = Syn3UpdaterBase + "items/map_releases?fields=name,regions,esn&sort=-name&limit=-1&[published]";
-        public const string AppReleaseSingle = Syn3UpdaterBase + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
-        public const string MapReleaseSingle = Syn3UpdaterBase + "items/map_releases?fields=*.*.*&filter[name]=";
+        //public const string AppReleasesConst = Syn3UpdaterBase + "items/releases?fields=name,notes,regions,version,feedbackurl&sort=-name&limit=-1&[published]";
+        //public const string MapReleasesConst = Syn3UpdaterBase + "items/map_releases?fields=name,regions,esn&sort=-name&limit=-1&[published]";
+        //public const string AppReleaseSingle = Syn3UpdaterBase + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
+        //public const string MapReleaseSingle = Syn3UpdaterBase + "items/map_releases?fields=*.*.*&filter[name]=";
         public const string IvsuSingle = Syn3UpdaterBase + "items/ivsu?limit=1&fields=version&filter[name]=";
         public const string NoticesURL = Syn3UpdaterBase + "items/notices?fields=*&limit=-1&filter[enabled]=true";
         public const string SyncVersions = Syn3UpdaterBase + "items/ivsu?limit=-1&fields=version&filter[type]=APPS";
@@ -63,29 +63,18 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string GetSmallVoice = SpecialPackageBase + "smallvoice";
         public const string GetReformat = SpecialPackageBase + "reformat";
 
-        public class Data
-        {
-            [JsonProperty("id")] public int Id { get; set; }
-            [JsonProperty("name")] public string Name { get; set; }
-            [JsonProperty("notes")] public string Notes { get; set; }
-            [JsonProperty("regions")] public IList<string> Regions { get; set; }
-            [JsonProperty("status")] public string Status { get; set; }
-            [JsonProperty("version")] public string Version { get; set; }
-            [JsonProperty("ivsus")] public IList<Ivsus> IvsusList { get; set; }
-            [JsonProperty("feedbackurl")] public string FeedbackUrl { get; set; }
-        }
-
         public class Ivsu
         {
             [JsonProperty("id")] public int Id { get; set; }
             [JsonProperty("name")] public string Name { get; set; }
             [JsonProperty("type")] public string Type { get; set; }
-            [JsonProperty("regions")] public IList<string> Regions { get; set; }
+            [JsonProperty("regions")] public List<string> Regions { get; set; }
             [JsonProperty("md5")] public string Md5 { get; set; }
             [JsonProperty("url")] public string Url { get; set; }
             [JsonProperty("notes")] public string Notes { get; set; }
             [JsonProperty("version")] public string Version { get; set; }
             [JsonProperty("filesize")] public long FileSize { get; set; }
+            [JsonProperty("source")] public string Source { get; set; }
         }
 
         public class Ivsus
@@ -98,8 +87,15 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public class JsonReleases
         {
-            [JsonProperty("data")] public IList<Data> Releases { get; set; }
+            [JsonProperty("data")] public IList<Release> Releases { get; set; }
         }
+        
+        public class JsonReleases2
+        {
+            [JsonProperty("releases")] public List<Release> Releases { get; set; }
+            [JsonProperty("map_releases")] public List<Release> MapReleases { get; set; }
+        }
+
 
         public class MapIvsu
         {
@@ -122,6 +118,10 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("map_version")] public string MapVersion { get; set; }
             [JsonProperty("notes")] public string Notes { get; set; }
             [JsonProperty("regions")] public IList<string> Regions { get; set; }
+            [JsonProperty("version")] public string Version { get; set; }
+            [JsonProperty("feedbackurl")] public string Feedbackurl { get; set; }
+            [JsonProperty("status")] public string Status { get; set; }
+            [JsonProperty("ivsus")] public IList<Ivsus> IvsusList { get; set; }
         }
 
         public class Header

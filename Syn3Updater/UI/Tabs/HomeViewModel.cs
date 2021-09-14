@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Markup;
-using System.Windows.Threading;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.Services;
 using Cyanlabs.Updater.Common;
+using GraphQL;
 using ModernWpf.Controls;
 using Nito.AsyncEx;
+using Nito.Disposables.Internals;
 using Ookii.Dialogs.Wpf;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
@@ -43,8 +39,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private string _apiAppReleases, _apiMapReleases;
         private string _stringCompatibility;
-        private Api.JsonReleases _jsonMapReleases, _jsonReleases;
-
+        private Api.JsonReleases2 _jsonReleases, _jsonMapReleases;
         private string _driveLetter;
 
         public string DriveLetter
@@ -489,39 +484,30 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 IvsuList?.Clear();
                 SelectedMapVersion = null;
                 SelectedRelease = null;
-                _apiAppReleases = Api.AppReleasesConst.Replace("[published]",
-                    $"filter[status][_in]=published,private&filter[key][_in]=public,v2,{AppMan.App.MainSettings.LicenseKey}");
-
-                Stream stringReleasesJson;
-                try
-                {
-                    // however don't call ConfigureAwait(false) here or on any of it's friends below as you need this code to run on the previous context (ie the UI context)
-                    // https://blog.stephencleary.com/2012/02/async-and-await.html#context
-                    HttpRequestMessage httpRequestMessage = new()
+                
+                GraphQLRequest releasesRequest = new() {
+                    Query = @"
                     {
-                        Method = HttpMethod.Get,
-                        RequestUri = new Uri(_apiAppReleases),
-                        Headers = { 
-                            { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                        },
-                    };
-                    HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-                    stringReleasesJson = await response.Content.ReadAsStreamAsync();
-                }
-                // ReSharper disable once RedundantCatchClause
-                catch (WebException)
-                {
-                    throw;
-                    //TODO Exception handling
-                }
-
+                        releases (
+                            sort: ""-name"",
+                            limit: -1,
+                            filter: { 
+                                status: { _in: [""published"", ""private""] },
+                                key: { _in: [""public"", ""v2"", """ + AppMan.App.MainSettings.LicenseKey+ @"""]},
+                                regions: {_contains: """ + SelectedRegion.Code + @"""},
+                            }
+                        ) {
+                            name, notes, regions, version, feedbackurl
+                        }
+                    }"
+                };
+                var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.JsonReleases2>(releasesRequest);
+                _jsonReleases = graphQlResponse.Data;
+                
                 if (AppMan.App.Settings.CurrentNav && AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion) SVersion?.Add(LM.GetValue("String.OnlyMaps"));
 
-                _jsonReleases = JsonHelpers.Deserialize<Api.JsonReleases>(stringReleasesJson);
-
-                foreach (Api.Data item in _jsonReleases.Releases)
-                    if (item.Regions.Contains(SelectedRegion.Code))
-                        SVersion?.Add(item.Name);
+                foreach (Api.Release item in _jsonReleases.Releases)
+                    SVersion?.Add(item.Name);
 
                 SVersionsEnabled = true;
                 StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
@@ -544,17 +530,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
 
             string license = string.Empty;
-            if (AppMan.App.MainSettings.LicenseKey?.Length > 10) license = "{\"licensekeys\":{\"_contains\":\"" + AppMan.App.MainSettings.LicenseKey + "\"}},";
-            _apiMapReleases = Api.MapReleasesConst.Replace("[published]",
-                "filter={\"_and\":[{\"_or\":[" + license +
-                "{\"licensekeys\":{\"_empty\":true}}]},{\"status\":{\"_in\":[\"private\",\"published\"]}},{\"regions\":{\"_in\":\"[regionplaceholder]\"}},[esn]{\"compatibility\":{\"_contains\":\"[compat]\"}}]}");
+            if (AppMan.App.MainSettings.LicenseKey?.Length > 10) license = @"{""licensekeys"":{""_contains"":""" + AppMan.App.MainSettings.LicenseKey + @"""}},";
 
-            if (!String.IsNullOrWhiteSpace(SelectedRelease))
+            if (!string.IsNullOrWhiteSpace(SelectedRelease))
             {
                 SelectedMapVersion = null;
                 IvsuList?.Clear();
 
-                foreach (Api.Data item in _jsonReleases.Releases)
+                foreach (Api.Release item in _jsonReleases.Releases)
                     if (item.Name == SelectedRelease)
                     {
                         _stringCompatibility = item.Version.Substring(0, 3);
@@ -567,44 +550,56 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         NotesVisibility = true;
                         Notes = item.Notes.Replace("\n", Environment.NewLine);
 
-                        if (item.FeedbackUrl == null)
+                        if (item.Feedbackurl == null)
                         {
                             FeedbackVisibility = false;
                             continue;
                         }
 
-                        FeedbackUrl = item.FeedbackUrl;
+                        FeedbackUrl = item.Feedbackurl;
                         FeedbackVisibility = true;
                     }
 
+                string compat;
+                string esn;
                 if (SelectedRelease == LM.GetValue("String.OnlyMaps") || AppMan.App.Settings.My20v2 == true)
                 {
                     if (SelectedRelease == LM.GetValue("String.OnlyMaps")) NotesVisibility = false;
-                    _apiMapReleases = _apiMapReleases.Replace("[compat]", "3.4");
-                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "{\"esn\": {\"_eq\": \"false\"}},");
+                    compat = "3.4";
+                    esn =@"esn: {_eq: false},";
                 }
                 else
                 {
-                    _apiMapReleases = _apiMapReleases.Replace("[compat]", _stringCompatibility);
-                    _apiMapReleases = _apiMapReleases.Replace("[esn]", "");
+                    compat = _stringCompatibility;
+                    esn = "";
                 }
-
-                _apiMapReleases = _apiMapReleases.Replace("[regionplaceholder]", SelectedRegion.Code);           
 
                 if (AppMan.App.Settings.CurrentNav)
                 {
-                    HttpRequestMessage httpRequestMessage = new()
-                    {
-                        Method = HttpMethod.Get,
-                        RequestUri = new Uri(_apiMapReleases),
-                        Headers = {
-                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                    },
+                    GraphQLRequest mapReleaseRequest = new() {
+                        Query = @"{
+                        map_releases(
+                            sort: ""-name"",
+                            limit: -1,
+                            filter: {_and: [{
+                              _or: [
+                                {licensekeys: { _null: true}},
+                                {licensekeys: { _empty: true}},
+                                " + license + @"
+                              ],
+                              status: { _in: [""published"", ""private""] },
+                              regions: {_in: """ + SelectedRegion.Code + @"""},
+                              " + esn + @"
+                              compatibility: {_contains: """+ compat +@"""}
+                            }]}
+                         ) {
+                            name, regions, esn
+                        }
+                    }"
                     };
-                    HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-                    Stream stringMapReleasesJson = await response.Content.ReadAsStreamAsync();
-                    _jsonMapReleases = JsonHelpers.Deserialize<Api.JsonReleases>(stringMapReleasesJson);
-                    foreach (Api.Data item in _jsonMapReleases.Releases)
+                    var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.JsonReleases2>(mapReleaseRequest);
+                    _jsonMapReleases = graphQlResponse.Data;
+                    foreach (Api.Release item in _jsonMapReleases.MapReleases)
                         SMapVersion.Add(item.Name);
                 }
 
@@ -628,26 +623,25 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 IvsuList?.Clear();
 
                 UpdateInstallMode();
-
-                string appReleaseSingle = AppMan.App.Settings.CurrentNav
-                    ? Api.AppReleaseSingle.Replace("[navplaceholder]", "nav") + SelectedRelease
-                    : Api.AppReleaseSingle.Replace("[navplaceholder]", "nonnav") + SelectedRelease;
-
+                
+                string navtype = AppMan.App.Settings.CurrentNav ? "nav" : "nonnav";
                 if (SelectedRelease != LM.GetValue("String.OnlyMaps"))
                 {
-                    HttpRequestMessage httpRequestMessage = new()
-                        {
-                            Method = HttpMethod.Get,
-                            RequestUri = new Uri(appReleaseSingle),
-                            Headers = { 
-                                { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                            },
-                        };
-                    HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-                    Stream stringDownloadJson = await response.Content.ReadAsStreamAsync();
-                    Api.JsonReleases jsonIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(stringDownloadJson);
+                    GraphQLRequest ivsuReleaseRequest = new() {
+                        Query = @"{
+                            releases(limit: -1, filter: {name: {_eq: """ + SelectedRelease + @"""}}) {
+                                name
+                                ivsus {
+                                    ivsu(filter: {navtype: { _in: [""" + navtype + @""",""all""]}}) { 
+                                        id, name, type, version, notes, url, md5, filesize, regions}
+                                    }
+                                }
+                            }"
+                    };
+                    var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.JsonReleases2>(ivsuReleaseRequest);
+                    Api.JsonReleases2 jsonIvsUs = graphQlResponse.Data;
 
-                    foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList)
+                    foreach (Api.Ivsus item in jsonIvsUs.Releases[0].IvsusList.Where(ivsus => ivsus.Ivsu != null))
                         if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(SelectedRegion.Code))
                             IvsuList?.Add(new SModel.Ivsu
                             {
@@ -669,21 +663,22 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.InstallMode = InstallMode;
                 }
 
-                HttpRequestMessage httpRequestMessage2 = new()
-                {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri(Api.MapReleaseSingle + SelectedMapVersion),
-                    Headers = { 
-                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                    },
+                GraphQLRequest mapivsuReleaseRequest = new() {
+                    Query = @"{
+                            map_releases(limit: -1, filter: {name: {_eq: """ + SelectedMapVersion + @"""}}) {
+                                name
+                                ivsus {
+                                  map_ivsu { id, name, type, version, notes, url, md5, filesize, regions, source}
+                                }
+                            }
+                        }"
                 };
-                HttpResponseMessage response2 = await AppMan.Client.SendAsync(httpRequestMessage2);
-                Stream stringMapDownloadJson = await response2.Content.ReadAsStreamAsync();
-                Api.JsonReleases jsonMapIvsUs = JsonHelpers.Deserialize<Api.JsonReleases>(stringMapDownloadJson);
+                var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<Api.JsonReleases2>(mapivsuReleaseRequest);
+                Api.JsonReleases2 jsonMapIvsUs = graphQlResponse2.Data;
 
                 if (SelectedMapVersion != LM.GetValue("String.NoMaps") && SelectedMapVersion != LM.GetValue("String.NonNavAPIM") &&
                     SelectedMapVersion != LM.GetValue("String.KeepExistingMaps"))
-                    foreach (Api.Ivsus item in jsonMapIvsUs.Releases[0].IvsusList)
+                    foreach (Api.Ivsus item in jsonMapIvsUs.MapReleases[0].IvsusList.Where(ivsus => ivsus.MapIvsu != null))
                         if (item.MapIvsu.Regions.Contains("ALL") || item.MapIvsu.Regions.Contains(SelectedRegion.Code))
                             IvsuList?.Add(new SModel.Ivsu
                             {
