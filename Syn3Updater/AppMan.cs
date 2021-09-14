@@ -19,6 +19,9 @@ using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Syn3Updater.UI;
 using Cyanlabs.Updater.Common;
 using Newtonsoft.Json;
+using GraphQL;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 
 namespace Cyanlabs.Syn3Updater
 {
@@ -119,6 +122,7 @@ namespace Cyanlabs.Syn3Updater
 
         public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, ClearSelections;
 
+        public GraphQLHttpClient GraphQlClient;
         public int AppUpdated = 0;
 
         #endregion
@@ -285,7 +289,10 @@ namespace Cyanlabs.Syn3Updater
                 MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
                 DownloadPath = App.MainSettings.DownloadPath;
             }
-
+            
+            // Initiate GraphQlClient
+            GraphQlClient = new GraphQLHttpClient(Api.Syn3UpdaterBase, new NewtonsoftJsonSerializer());
+            GraphQlClient.HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiSecret.Token}");
             Randomize();
             App.SaveSettings();
             Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
