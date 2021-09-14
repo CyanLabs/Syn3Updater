@@ -23,7 +23,8 @@ namespace Cyanlabs.Syn3Updater.Model
         #region Properties & Fields
 
         //private const string Syn3UpdaterBase = "https://syn3updater.cyanlabs.net/";
-        public const string Syn3UpdaterBase = "https://syn3updater-dev.cyanlabs.net/";
+        private const string Syn3UpdaterBase = "https://syn3updater-dev.cyanlabs.net/";
+        public const string Syn3UpdaterGraphQl = "https://syn3updater-dev.cyanlabs.net/graphql";
 
         public const string APIBase = "https://api.cyanlabs.net/";
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";

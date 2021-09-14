@@ -291,7 +291,7 @@ namespace Cyanlabs.Syn3Updater
             }
             
             // Initiate GraphQlClient
-            GraphQlClient = new GraphQLHttpClient(Api.Syn3UpdaterBase, new NewtonsoftJsonSerializer());
+            GraphQlClient = new GraphQLHttpClient(Api.Syn3UpdaterGraphQl, new NewtonsoftJsonSerializer());
             GraphQlClient.HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiSecret.Token}");
             Randomize();
             App.SaveSettings();
