@@ -384,16 +384,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                     try
                     {
-                        
-                        GraphQLRequest LookupIVSUVersionRequest = new() {
-                            Query = @" 
-                                {
-                                    ivsu(limit: 1, filter: {name: {_eq: """ + sappname + @"""}}) {
-                                        version
-                                    }
-                                }"
-                            };
-                        var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(LookupIVSUVersionRequest);
+                        var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.IvsuVersionLookup(sappname));
                         Api.IvsuRoot sversion = graphQlResponse.Data;
    
                         string convertedsversion = sversion.Ivsu[0].Version;

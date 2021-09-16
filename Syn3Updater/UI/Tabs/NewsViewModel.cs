@@ -141,15 +141,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             
             try
             {
-                GraphQLRequest fetchNoticesRequest = new() {
-                    Query = @" 
-                    {
-                        notices(limit: -1, filter: {enabled: {_eq: true}}) {
-                            id, title, notice, date_created, date_updated, important
-                        }
-                    }"
-                };
-                var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.NoticesRoot>(fetchNoticesRequest);
+                var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.NoticesRoot>(GraphQlRequests.GetNotices());
                 Api.NoticesRoot output = graphQlResponse.Data;
 
                 string updatedDate;

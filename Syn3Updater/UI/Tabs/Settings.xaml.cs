@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
 using GraphQL;
@@ -31,16 +32,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (SyncVersionsAutoSuggestBox.ItemsSource != null) return;
             try
             {
-                GraphQLRequest syncVersionsRequest = new() {
-                    Query = @" 
-                        {
-                            ivsu (sort: ""-name"",limit: -1,
-                              filter: {type: { _eq: ""APPS"" }}) {
-                                version
-                            }
-                        }"
-                    };
-                var graphQlResponse = Task.Run(async () => await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(syncVersionsRequest)).Result;
+                GraphQLResponse<Api.IvsuRoot> graphQlResponse = Task.Run(async () => await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.GetAppVersions())).Result;
                 _syncVersions = graphQlResponse.Data;
             }
             catch (Exception)

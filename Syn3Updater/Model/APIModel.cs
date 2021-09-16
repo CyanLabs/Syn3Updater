@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GraphQL;
 using Newtonsoft.Json;
 
 namespace Cyanlabs.Syn3Updater.Model
@@ -52,7 +53,10 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string GetGracenotesRemoval = SpecialPackageBase + "gracenotesremoval";
         public const string GetSmallVoice = SpecialPackageBase + "smallvoice";
         public const string GetReformat = SpecialPackageBase + "reformat";
-
+        #endregion
+        
+        #region JSONClasses
+        
         public class ReleasesRoot
         {
             [JsonProperty("releases")] public IList<Release> Releases { get; set; }
