@@ -310,12 +310,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                 string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMModel")}: {apimmodel}{Environment.NewLine}";
 
-                string result = AppMan.Client.GetStringAsync(Api.My20URL).Result;
-                Api.My20Models output = JsonConvert.DeserializeObject<Api.My20Models>(result);
-                foreach (string my20 in output.My20Model)
+                GraphQLResponse<Api.My20ModelsRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.My20ModelsRoot>(GraphQlRequests.GetMy20Models());
+                Api.My20ModelsRoot output = graphQlResponse.Data;
+                
+                foreach (Api.My20Models unused in output.My20Models.Where(my20 => apimmodel.Contains(my20.Model)))
                 {
-                    if ( apimmodel.Contains(my20))
-                        AppMan.App.Settings.My20v2 = true;
+                    AppMan.App.Settings.My20v2 = true;
                 }
 
                 if (AppMan.App.Settings.My20v2 != true) AppMan.App.Settings.My20v2 = false;
@@ -384,13 +384,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                     try
                     {
-                        var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.IvsuVersionLookup(sappname));
-                        Api.IvsuRoot sversion = graphQlResponse.Data;
+                        var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.IvsuVersionLookup(sappname));
+                        Api.IvsuRoot sversion = graphQlResponse2.Data;
    
-                        string convertedsversion = sversion.Ivsu[0].Version;
+                        string convertedsversion = sversion.Ivsus[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")
                         {
-                            AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsu[0].Version.Replace(".", ""));
+                            AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
                             AppMan.App.SVersion = convertedsversion;
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
@@ -398,7 +398,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
                                 LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
                             {
-                                AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsu[0].Version.Replace(".", ""));
+                                AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
                             }
                         }
@@ -452,13 +452,13 @@ namespace Cyanlabs.Syn3Updater.Helper
             try
             {
                 if (currentversion.StartsWith("3.4"))
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool34);
                 else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool32);
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool32);
                 else if (currentversion.StartsWith("3.0") || currentversion.StartsWith("2.") || currentversion.StartsWith("1."))
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool30);
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool30);
                 else
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.GetLogTool34);
+                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool34);
             }
             catch (TaskCanceledException e)
             {

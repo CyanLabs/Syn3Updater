@@ -18,16 +18,14 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <summary>
         ///     Get special IVSU package such as Downgrade or Reformat from our API and passes it to ConvertIvsu
         /// </summary>
-        /// <param name="url">URL of a valid 'SpecialPackage'</param>
-        public static async Task<SModel.Ivsu> GetSpecialIvsu(string url)
+        /// <param name="specialPackage">SpecialPackage type e.g downgradetool, logtool34 etc.</param>
+        public static async Task<SModel.Ivsu> GetSpecialIvsu(string specialPackage)
         {
-            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(nameof(url), "Url to download file is empty");
-
             try
             {
-                HttpResponseMessage response = await AppMan.Client.GetAsync(url);
-                Api.Ivsu ivsu = JsonHelpers.Deserialize<Api.Ivsu>(await response.Content.ReadAsStreamAsync());
-                return ConvertIvsu(ivsu);
+                var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.GetSpecialPackage(specialPackage));
+                Api.IvsuRoot ivsu = graphQlResponse2.Data;
+                return ConvertIvsu(ivsu.Ivsus[0]);
             }
             catch (Exception e)
             {

@@ -241,7 +241,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             //don't call ConfigureAwait(false) here either 
             try
             {
-                Api.GracenotesRemoval = await ApiHelper.GetSpecialIvsu(Api.GetGracenotesRemoval);
+                Api.GracenotesRemoval = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.GraceNotesRemoval);
             }
             catch (TaskCanceledException e)
             {
@@ -270,7 +270,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.Action = "voiceshrinker";
             AppMan.App.SelectedRelease = "Voice Package Shrinker";
 
-            Api.SmallVoicePackage = await ApiHelper.GetSpecialIvsu(Api.GetSmallVoice);
+            Api.SmallVoicePackage = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.SmallVoice);
             try
             {
                 AppMan.App.Ivsus.Add(Api.SmallVoicePackage);
@@ -300,7 +300,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.DriveLetter = DriveLetter;
             AppMan.App.Action = "downgrade";
             AppMan.App.SelectedRelease = "Enforced Downgrade";
-            Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.GetDowngradeApp);
+            Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.DowngradeApp);
             try
             {
                 AppMan.App.Ivsus.Add(Api.DowngradeApp);
