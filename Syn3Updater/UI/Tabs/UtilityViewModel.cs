@@ -300,10 +300,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             AppMan.App.DriveLetter = DriveLetter;
             AppMan.App.Action = "downgrade";
             AppMan.App.SelectedRelease = "Enforced Downgrade";
-            Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.DowngradeApp);
+            Api.DowngradeAppIvsu = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.DowngradeApp);
             try
             {
-                AppMan.App.Ivsus.Add(Api.DowngradeApp);
+                AppMan.App.Ivsus.Add(Api.DowngradeAppIvsu);
             }
             catch (TaskCanceledException e)
             {
@@ -312,7 +312,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
 
             AppMan.App.InstallMode = "autoinstall";
-            if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.DowngradeApp == null) return;
+            if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.DowngradeAppIvsu == null) return;
 
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;

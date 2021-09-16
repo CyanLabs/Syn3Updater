@@ -78,11 +78,11 @@ namespace Cyanlabs.Syn3Updater.Services
 
             if (installMode == "downgrade")
             {
-                Api.DowngradeApp = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.DowngradeApp);
-                AppMan.App.Ivsus.Add(Api.DowngradeApp);
+                Api.DowngradeAppIvsu = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.DowngradeApp);
+                AppMan.App.Ivsus.Add(Api.DowngradeAppIvsu);
 
-                Api.DowngradeTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.GraceNotesRemoval);
-                AppMan.App.Ivsus.Add(Api.DowngradeTool);
+                Api.DowngradeToolIvsu = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.DowngradeTool);
+                AppMan.App.Ivsus.Add(Api.DowngradeToolIvsu);
             }
 
             if (installMode == "reformat" || installMode == "downgrade")

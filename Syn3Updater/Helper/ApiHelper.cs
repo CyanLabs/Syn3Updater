@@ -23,8 +23,8 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
             try
             {
-                var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.GetSpecialPackage(specialPackage));
-                Api.IvsuRoot ivsu = graphQlResponse2.Data;
+                var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.GetSpecialPackage(specialPackage));
+                Api.IvsuRoot ivsu = graphQlResponse.Data;
                 return ConvertIvsu(ivsu.Ivsus[0]);
             }
             catch (Exception e)

@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -122,8 +123,13 @@ namespace Cyanlabs.Syn3Updater
 
 
         public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, ClearSelections;
-
-        public GraphQLHttpClient GraphQlClient;
+        
+                    
+        // Initiate GraphQlClient
+        public GraphQLHttpClient GraphQlClient = new(Api.Syn3UpdaterGraphQl, new NewtonsoftJsonSerializer())
+        {
+            HttpClient = { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("Bearer",ApiSecret.Token)}}
+        };
         public int AppUpdated = 0;
 
         #endregion
@@ -290,10 +296,7 @@ namespace Cyanlabs.Syn3Updater
                 MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
                 DownloadPath = App.MainSettings.DownloadPath;
             }
-            
-            // Initiate GraphQlClient
-            GraphQlClient = new GraphQLHttpClient(Api.Syn3UpdaterGraphQl, new NewtonsoftJsonSerializer());
-            GraphQlClient.HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiSecret.Token}");
+
             Randomize();
             App.SaveSettings();
             Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
