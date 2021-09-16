@@ -17,10 +17,9 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }"
             };
         }
-        
-        public static GraphQLRequest IvsuVersionLookup(string ivsuVersion)
-        {
-            return new GraphQLRequest
+
+        public static GraphQLRequest IvsuVersionLookup(string ivsuVersion) =>
+            new()
             {
                 Query = @" 
                 {
@@ -29,8 +28,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                 }"
             };
-        }
-        
+
         public static GraphQLRequest GetReleases(string selectedRegion)
         {
             return new GraphQLRequest
@@ -42,7 +40,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         limit: -1,
                         filter: { 
                             status: { _in: [""published"", ""private""] },
-                            key: { _in: [""public"", ""v2"", """ + AppMan.App.MainSettings.LicenseKey+ @"""]},
+                            key: { _in: [""public"", ""v2"", """ + AppMan.App.MainSettings.LicenseKey + @"""]},
                             regions: {_contains: """ + selectedRegion + @"""},
                         }
                     ) {
@@ -51,10 +49,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }"
             };
         }
-        
+
         public static GraphQLRequest GetMapReleases(string selectedRegion, string license, string esn, string compat)
         {
-            return new GraphQLRequest 
+            return new GraphQLRequest
             {
                 Query = @"
                 {
@@ -62,14 +60,15 @@ namespace Cyanlabs.Syn3Updater.Helper
                         filter: {_and: 
                             [{ _or: [ {licensekeys: { _null: true}}, {licensekeys: { _empty: true}}," + license + @"],
                             status: { _in: [""published"", ""private""] }, regions: {_in: """ + selectedRegion + @"""},
-                            " + esn + @"compatibility: {_contains: """+ compat +@"""} }]
+                            " + esn + @"compatibility: {_contains: """ + compat + @"""} }]
                         }){ name, regions, esn }
                 }"
             };
         }
+
         public static GraphQLRequest GetReleaseIvsus(string selectedRelease, string navtype)
         {
-            return new GraphQLRequest 
+            return new GraphQLRequest
             {
                 Query = @"
                 {
@@ -83,10 +82,10 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }"
             };
         }
-        
+
         public static GraphQLRequest GetMapReleaseIvsus(string selectedMapVersion)
         {
-            return new GraphQLRequest 
+            return new GraphQLRequest
             {
                 Query = @"
                 {
@@ -99,15 +98,54 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }"
             };
         }
-        
+
         public static GraphQLRequest GetNotices()
         {
-            return new GraphQLRequest 
+            return new GraphQLRequest
             {
                 Query = @" 
                 {
                     notices(limit: -1, filter: {enabled: {_eq: true}}) {
                         id, title, notice, date_created, date_updated, important
+                    }
+                }"
+            };
+        }
+
+        public static GraphQLRequest GetUserAgents()
+        {
+            return new GraphQLRequest
+            {
+                Query = @"
+                {
+                    useragents {
+                        useragent,min,max
+                    }
+                }"
+            };
+        }
+
+        public static GraphQLRequest GetMy20Models()
+        {
+            return new GraphQLRequest
+            {
+                Query = @"
+                {
+                    my20models {
+                        model
+                    }
+                }"
+            };
+        }
+        
+        public static GraphQLRequest GetSpecialPackage(string packageName)
+        {
+            return new GraphQLRequest
+            {
+                Query = @"
+                {
+                    ivsu(limit: 1, filter: {specialpackage: {_eq: """+ packageName + @"""}}) {
+                        id, name, type, regions, md5, url, version, filesize, notes, navtype, specialpackage
                     }
                 }"
             };

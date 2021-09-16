@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Cyanlabs.Syn3Updater.Helper;
@@ -307,10 +308,11 @@ namespace Cyanlabs.Syn3Updater
             try
             {
                 Random rand = new();
-                string result = Client.GetStringAsync(Api.HeaderURL).Result;
-                Api.Headers UAs = JsonConvert.DeserializeObject<Api.Headers>(result);
 
-                List<string> header = UAs.Header.Select(ua => ua.Ua.Replace("[PLACEHOLDER]", rand.Next(ua.Min, ua.Max).ToString())).ToList();
+                GraphQLResponse<Api.UseragentRoot> graphQlResponse = Task.Run(async () => await GraphQlClient.SendQueryAsync<Api.UseragentRoot>(GraphQlRequests.GetUserAgents())).Result;
+                Api.UseragentRoot UAs = graphQlResponse.Data;
+
+                List<string> header = UAs.UserAgents.Select(ua => ua.Useragent.Replace("[PLACEHOLDER]", rand.Next(ua.Min, ua.Max).ToString())).ToList();
 
                 int index = rand.Next(header.Count);
                 Header = header[index];

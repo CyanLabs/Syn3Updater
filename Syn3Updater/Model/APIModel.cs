@@ -29,13 +29,9 @@ namespace Cyanlabs.Syn3Updater.Model
 
         public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
         public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";
-
         public const string CrashLogPost = APIBase + "Syn3Updater/crash-logs/post.php";
         public const string LogPost = APIBase + "Syn3Updater/logs/post.php";
-        public const string HeaderURL = APIBase + "syn3updater/useragents";
-        public const string My20URL = APIBase + "syn3updater/my20";
         public const string ChangelogURL = APIBase + "app/syn3updater/githubchangelog/json";
-        public const string SpecialPackageBase = APIBase + "syn3updater/get/";
 
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
@@ -45,14 +41,17 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string AsBuiltPost = APIBase + "Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
 
-        public const string GetDowngradeApp = SpecialPackageBase + "downgradeapp";
-        public const string GetDowngradeTool = SpecialPackageBase + "downgradetool";
-        public const string GetLogTool34 = SpecialPackageBase + "logtool34";
-        public const string GetLogTool32 = SpecialPackageBase + "logtool32";
-        public const string GetLogTool30 = SpecialPackageBase + "logtool30";
-        public const string GetGracenotesRemoval = SpecialPackageBase + "gracenotesremoval";
-        public const string GetSmallVoice = SpecialPackageBase + "smallvoice";
-        public const string GetReformat = SpecialPackageBase + "reformat";
+        public static class SpecialPackages
+        {
+            public const string
+                DowngradeApp = "downgradeapp",
+                LogTool34 = "logtool34",
+                LogTool32 = "logtool34",
+                LogTool30 = "logtool30",
+                GraceNotesRemoval = "gracenotesremoval",
+                SmallVoice = "smallvoice",
+                Reformat = "reformat";
+        }
         #endregion
         
         #region JSONClasses
@@ -65,12 +64,17 @@ namespace Cyanlabs.Syn3Updater.Model
         
         public class IvsuRoot
         {
-            [JsonProperty("ivsu")] public IList<Ivsu> Ivsu { get; set; }
+            [JsonProperty("ivsu")] public IList<Ivsu> Ivsus { get; set; }
         }
 
         public class NoticesRoot
         {
-            [JsonProperty("notices")] public IList<Notice> Notice { get; set; }
+            [JsonProperty("notices")] public IList<Notice> Notices { get; set; }
+        }
+        
+        public class UseragentRoot
+        {
+            [JsonProperty("useragents")] public IList<UserAgent> UserAgents { get; set; }
         }
         
         public class Release
@@ -106,23 +110,25 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("version")] public string Version { get; set; }
             [JsonProperty("filesize")] public long FileSize { get; set; }
             [JsonProperty("source")] public string Source { get; set; }
+            [JsonProperty("specialpackage")] public string SpecialPackage { get; set; }
         }
 
-        public class Header
+        public class UserAgent
         {
-            [JsonProperty("ua")] public string Ua { get; set; }
+            [JsonProperty("useragent")] public string Useragent { get; set; }
             [JsonProperty("min")] public int Min { get; set; }
             [JsonProperty("max")] public int Max { get; set; }
         }
 
-        public class Headers
-        {
-            [JsonProperty("data")] public IList<Header> Header { get; set; }
-        }
-
+        
         public class My20Models
         {
-            [JsonProperty("data")] public IList<string> My20Model { get; set; }
+            [JsonProperty("model")] public string Model { get; set; }
+        }
+
+        public class My20ModelsRoot
+        {
+            [JsonProperty("my20models")] public List<My20Models> My20Models { get; set; }
         }
 
         public class Notice

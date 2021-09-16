@@ -147,7 +147,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 string updatedDate;
                 ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
                 OtherNotices = "";
-                foreach (Api.Notice notice in output.Notice)
+                foreach (Api.Notice notice in output.Notices)
                 {
                     DateTime utcCreatedDate = DateTime.SpecifyKind(DateTime.Parse(notice.DateCreated), DateTimeKind.Local);
                     string createdDate = $"Published: {utcCreatedDate.ToLocalTime():dddd, dd MMMM yyyy HH:mm:ss}";
