@@ -12,6 +12,7 @@ using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
+using GraphQL;
 using Nito.AsyncEx;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
@@ -140,17 +141,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             
             try
             {
-                HttpRequestMessage httpRequestMessage = new()
-                {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri(Api.NoticesURL),
-                    Headers = { 
-                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                    },
-                };
-                HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-                Api.Notices output = JsonHelpers.Deserialize<Api.Notices>(await response.Content.ReadAsStreamAsync());
-                
+                var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.NoticesRoot>(GraphQlRequests.GetNotices());
+                Api.NoticesRoot output = graphQlResponse.Data;
+
                 string updatedDate;
                 ImportantNotices = "<style>h4 { margin:0px; } div { padding-bottom:10px;}</style>";
                 OtherNotices = "";

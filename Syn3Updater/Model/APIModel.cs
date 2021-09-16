@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GraphQL;
 using Newtonsoft.Json;
 
 namespace Cyanlabs.Syn3Updater.Model
@@ -21,21 +22,10 @@ namespace Cyanlabs.Syn3Updater.Model
     public static class Api
     {
         #region Properties & Fields
-
-        //private const string Syn3UpdaterBase = "https://syn3updater.cyanlabs.net/";
-        private const string Syn3UpdaterBase = "https://syn3updater-dev.cyanlabs.net/";
-        public const string Syn3UpdaterGraphQl = "https://syn3updater-dev.cyanlabs.net/graphql";
+        public const string Syn3UpdaterGraphQl = "https://syn3updater.cyanlabs.net/graphql";
 
         public const string APIBase = "https://api.cyanlabs.net/";
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
-
-        //public const string AppReleasesConst = Syn3UpdaterBase + "items/releases?fields=name,notes,regions,version,feedbackurl&sort=-name&limit=-1&[published]";
-        //public const string MapReleasesConst = Syn3UpdaterBase + "items/map_releases?fields=name,regions,esn&sort=-name&limit=-1&[published]";
-        //public const string AppReleaseSingle = Syn3UpdaterBase + "items/releases?deep[ivsus][_filter][ivsu][navtype][_in]=[navplaceholder],all&fields=*.ivsu.*.&filter[name]=";
-        //public const string MapReleaseSingle = Syn3UpdaterBase + "items/map_releases?fields=*.*.*&filter[name]=";
-        public const string IvsuSingle = Syn3UpdaterBase + "items/ivsu?limit=1&fields=version&filter[name]=";
-        public const string NoticesURL = Syn3UpdaterBase + "items/notices?fields=*&limit=-1&filter[enabled]=true";
-        public const string SyncVersions = Syn3UpdaterBase + "items/ivsu?limit=-1&fields=version&filter[type]=APPS";
 
         public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
         public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";
@@ -63,7 +53,47 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string GetGracenotesRemoval = SpecialPackageBase + "gracenotesremoval";
         public const string GetSmallVoice = SpecialPackageBase + "smallvoice";
         public const string GetReformat = SpecialPackageBase + "reformat";
+        #endregion
+        
+        #region JSONClasses
+        
+        public class ReleasesRoot
+        {
+            [JsonProperty("releases")] public IList<Release> Releases { get; set; }
+            [JsonProperty("map_releases")] public IList<Release> MapReleases { get; set; }
+        }
+        
+        public class IvsuRoot
+        {
+            [JsonProperty("ivsu")] public IList<Ivsu> Ivsu { get; set; }
+        }
 
+        public class NoticesRoot
+        {
+            [JsonProperty("notices")] public IList<Notice> Notice { get; set; }
+        }
+        
+        public class Release
+        {
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("name")] public string Name { get; set; }
+            [JsonProperty("map_version")] public string MapVersion { get; set; }
+            [JsonProperty("notes")] public string Notes { get; set; }
+            [JsonProperty("regions")] public IList<string> Regions { get; set; }
+            [JsonProperty("version")] public string Version { get; set; }
+            [JsonProperty("feedbackurl")] public string Feedbackurl { get; set; }
+            [JsonProperty("status")] public string Status { get; set; }
+            [JsonProperty("ivsus")] public IList<ReleasesIvsus> IvsusList { get; set; }
+        }
+        
+        public class ReleasesIvsus
+        {
+            [JsonProperty("id")] public int Id { get; set; }
+            [JsonProperty("ivsu")] public Ivsu Ivsu { get; set; }
+            [JsonProperty("map_ivsu")] public Ivsu MapIvsu { get; set; }
+            [JsonProperty("release")] public Release Release { get; set; }
+        }
+        
         public class Ivsu
         {
             [JsonProperty("id")] public int Id { get; set; }
@@ -76,53 +106,6 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("version")] public string Version { get; set; }
             [JsonProperty("filesize")] public long FileSize { get; set; }
             [JsonProperty("source")] public string Source { get; set; }
-        }
-
-        public class Ivsus
-        {
-            [JsonProperty("id")] public int Id { get; set; }
-            [JsonProperty("ivsu")] public Ivsu Ivsu { get; set; }
-            [JsonProperty("map_ivsu")] public MapIvsu MapIvsu { get; set; }
-            [JsonProperty("release")] public Release Release { get; set; }
-        }
-
-        public class JsonReleases
-        {
-            [JsonProperty("data")] public IList<Release> Releases { get; set; }
-        }
-        
-        public class JsonReleases2
-        {
-            [JsonProperty("releases")] public IList<Release> Releases { get; set; }
-            [JsonProperty("map_releases")] public IList<Release> MapReleases { get; set; }
-        }
-
-
-        public class MapIvsu
-        {
-            [JsonProperty("id")] public int Id { get; set; }
-            [JsonProperty("name")] public string Name { get; set; }
-            [JsonProperty("type")] public string Type { get; set; }
-            [JsonProperty("regions")] public IList<string> Regions { get; set; }
-            [JsonProperty("md5")] public string Md5 { get; set; }
-            [JsonProperty("notes")] public string Notes { get; set; }
-            [JsonProperty("url")] public string Url { get; set; }
-            [JsonProperty("version")] public string Version { get; set; }
-            [JsonProperty("source")] public string Source { get; set; }
-            [JsonProperty("filesize")] public long FileSize { get; set; }
-        }
-
-        public class Release
-        {
-            [JsonProperty("id")] public int Id { get; set; }
-            [JsonProperty("name")] public string Name { get; set; }
-            [JsonProperty("map_version")] public string MapVersion { get; set; }
-            [JsonProperty("notes")] public string Notes { get; set; }
-            [JsonProperty("regions")] public IList<string> Regions { get; set; }
-            [JsonProperty("version")] public string Version { get; set; }
-            [JsonProperty("feedbackurl")] public string Feedbackurl { get; set; }
-            [JsonProperty("status")] public string Status { get; set; }
-            [JsonProperty("ivsus")] public IList<Ivsus> IvsusList { get; set; }
         }
 
         public class Header
@@ -140,11 +123,6 @@ namespace Cyanlabs.Syn3Updater.Model
         public class My20Models
         {
             [JsonProperty("data")] public IList<string> My20Model { get; set; }
-        }
-
-        public class Notices
-        {
-            [JsonProperty("data")] public IList<Notice> Notice { get; set; }
         }
 
         public class Notice
@@ -170,12 +148,6 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("changelog")] public string ReleaseNotes { get; set; }
             [JsonProperty("branch")] public string Branch { get; set; }
         }
-
-        public class Ivsus2
-        {
-            [JsonProperty("data")] public IList<Ivsu> Ivsu { get; set; }
-        }
-
         #endregion
     }
 }

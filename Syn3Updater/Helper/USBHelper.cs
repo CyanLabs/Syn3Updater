@@ -18,6 +18,7 @@ using System.Xml.Linq;
 using Cyanlabs.Syn3Updater.Converter;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
+using GraphQL;
 using ModernWpf.Controls;
 using Newtonsoft.Json;
 using Ookii.Dialogs.Wpf;
@@ -383,21 +384,13 @@ namespace Cyanlabs.Syn3Updater.Helper
                     }
                     try
                     {
-                        HttpRequestMessage httpRequestMessage = new()
-                        {
-                            Method = HttpMethod.Get,
-                            RequestUri = new Uri(Api.IvsuSingle + sappname),
-                            Headers = {
-                                { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                            },
-                        };
-                        HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
-
-                        Api.JsonReleases sversion = JsonHelpers.Deserialize<Api.JsonReleases>(await response.Content.ReadAsStreamAsync());
-                        string convertedsversion = sversion.Releases[0].Version;
+                        var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.IvsuVersionLookup(sappname));
+                        Api.IvsuRoot sversion = graphQlResponse.Data;
+   
+                        string convertedsversion = sversion.Ivsu[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")
                         {
-                            AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
+                            AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsu[0].Version.Replace(".", ""));
                             AppMan.App.SVersion = convertedsversion;
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
@@ -405,7 +398,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                             if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),
                                 LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
                             {
-                                AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Releases[0].Version.Replace(".", ""));
+                                AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsu[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
                             }
                         }

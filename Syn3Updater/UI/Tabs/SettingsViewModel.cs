@@ -314,9 +314,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             public string Code { get; set; }
         }
 
-        private Api.Ivsus2 _syncVersions;
+        private Api.IvsuRoot _syncVersions;
 
-        public Api.Ivsus2 SyncVersions
+        public Api.IvsuRoot SyncVersions
         {
             get => _syncVersions;
             set => SetProperty(ref _syncVersions, value);

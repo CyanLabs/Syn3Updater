@@ -3,10 +3,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
+using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
 using Cyanlabs.Updater.Common;
+using GraphQL;
 using ModernWpf.Controls;
+using Nito.AsyncEx;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
 {
@@ -15,7 +19,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
     /// </summary>
     public partial class Settings
     {
-        private Api.Ivsus2 _syncVersions;
+        private Api.IvsuRoot _syncVersions;
 
         public Settings()
         {
@@ -28,17 +32,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (SyncVersionsAutoSuggestBox.ItemsSource != null) return;
             try
             {
-                HttpRequestMessage httpRequestMessage = new()
-                {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri(Api.SyncVersions),
-                    Headers = { 
-                        { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
-                    },
-                };
-
-                HttpResponseMessage response = AppMan.Client.SendAsync(httpRequestMessage).GetAwaiter().GetResult();
-                _syncVersions = JsonHelpers.Deserialize<Api.Ivsus2>(response.Content.ReadAsStreamAsync().Result);
+                GraphQLResponse<Api.IvsuRoot> graphQlResponse = Task.Run(async () => await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.GetAppVersions())).Result;
+                _syncVersions = graphQlResponse.Data;
             }
             catch (Exception)
             {
