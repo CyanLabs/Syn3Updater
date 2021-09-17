@@ -1,0 +1,101 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Syn3Updater.ViewModels;assembly=Syn3Updater"
+             xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Syn3Updater.Pages.HomePage" >
+  <Design.DataContext>
+    <vm:HomePageViewModel></vm:HomePageViewModel>
+  </Design.DataContext>
+  <StackPanel HorizontalAlignment="Stretch" Margin="{StaticResource PageMargin}" Background="Transparent" Spacing="20">    
+    <Grid RowDefinitions="Auto, Auto">
+      <StackPanel Orientation="Vertical"
+                HorizontalAlignment="Stretch"
+                Spacing="16">
+        <TextBlock FontSize="18">1. Enter your current Sync 3 version!</TextBlock>
+        <StackPanel Orientation="Vertical">
+          <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
+                  BorderThickness="1" Padding="15">
+            <StackPanel Orientation="Horizontal">
+              <AutoCompleteBox Watermark="#.#.#####" Items="{Binding SyncVersions.Ivsus}" ValueMemberBinding="{Binding Version}"></AutoCompleteBox>
+              <Button IsVisible="False" Content="Save Current Version"></Button>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+
+        <TextBlock FontSize="18">2. Select a USB Drive</TextBlock>
+        <StackPanel Orientation="Vertical">
+          <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
+                  BorderThickness="1" Padding="15">
+           <ComboBox VerticalAlignment="Center" Margin="0,0,0,0" SelectedIndex="-1" HorizontalAlignment="Stretch"
+                          Items="{Binding DriveList}"
+                          SelectedItem="{Binding SelectedDrive}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,Auto">
+                              <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                  <i:Icon Value="fas fa-folder" Foreground="White" FontSize="24" Margin="1,0,10,0" VerticalAlignment="Center" IsVisible="{Binding Fake}" />
+                                  <i:Icon Value="fab fa-usb" Foreground="White" FontSize="24" Margin="1,0,10,0" VerticalAlignment="Center" IsVisible="{Binding !Fake}" />
+                                    <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
+                                            <TextBlock Margin="0,3,0,3"
+                                                       Text="{Binding VolumeName , StringFormat='{}({0})'}"
+                                                       IsVisible="{Binding !Fake}" />
+                                        </StackPanel>
+
+                                      <StackPanel Orientation="Horizontal" IsVisible="{Binding !Fake}">
+                                            <TextBlock Margin="0,0,2,0"
+                                                       Text="Free: "
+                                                       FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding FreeSpace}" FontSize="12" />
+                                            <TextBlock Margin="5,0,2,0"
+                                                       Text="Size: "
+                                                       FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding Size}" FontSize="12" />
+                                            <TextBlock Margin="5,0,2,0"
+                                                       Text="File System: "
+                                                       FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding FileSystem}" FontSize="12" />
+                                            <TextBlock Margin="2,0" Text="{Binding PartitionType, StringFormat='({0})'}"
+                                                       FontSize="12" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+          </Border>
+        </StackPanel>
+
+        <TextBlock FontSize="18">3. Prepare USB (Gather SYNC Details)</TextBlock>
+        <StackPanel Orientation="Vertical">
+          <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
+                  BorderThickness="1" Padding="15">
+            <Button Command="{Binding PrepareInterrogatorUSB}" Content="Create Interrogator USB" IsEnabled="{Binding CreateInterrogatorEnabled}"></Button>
+          </Border>
+       </StackPanel>
+        
+        <TextBlock FontSize="18">4. Open USB Drive Log File</TextBlock>
+        <StackPanel Orientation="Vertical">
+          <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
+                  BorderThickness="1" Padding="15">
+            <Button Content="Scan USB Drive for Sync_#####.xml" IsEnabled="{Binding ScanInterrogatorEnabled}"></Button>
+          </Border>
+        </StackPanel>
+        
+        <TextBlock FontSize="18">5. Prepare Update USB</TextBlock>
+        <StackPanel Orientation="Vertical">
+          <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
+                  BorderThickness="1" Padding="15">
+            <Button Content="Download, Verify and Copy update files" IsEnabled="{Binding StartEnabled}"></Button>
+          </Border>
+        </StackPanel>
+      </StackPanel>
+    </Grid>    
+  </StackPanel>
+</UserControl>

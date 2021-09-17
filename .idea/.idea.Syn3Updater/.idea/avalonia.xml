@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Syn3Updater/App.axaml" value="Syn3Updater/Syn3Updater.csproj" />
+        <entry key="Syn3Updater/Pages/DownloadPage.axaml" value="Syn3Updater/Syn3Updater.csproj" />
+        <entry key="Syn3Updater/Pages/HomePage.axaml" value="Syn3Updater/Syn3Updater.csproj" />
+        <entry key="Syn3Updater/Styles/SideBar.axaml" value="Syn3Updater/Syn3Updater.csproj" />
+        <entry key="Syn3Updater/Styles/Styles.axaml" value="Syn3Updater/Syn3Updater.csproj" />
+        <entry key="Syn3Updater/Views/MainView.axaml" value="Syn3Updater/Syn3Updater.csproj" />
+        <entry key="Syn3Updater/Views/MainWindow.axaml" value="Syn3Updater/Syn3Updater.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

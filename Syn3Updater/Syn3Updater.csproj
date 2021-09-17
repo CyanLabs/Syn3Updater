@@ -1,97 +1,149 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->		
-		<TargetFrameworks>net472;net5.0-windows10.0.18362.0</TargetFrameworks>
-		<OutputType>WinExe</OutputType>
-		<RootNamespace>Cyanlabs.Syn3Updater</RootNamespace>
-		<Deterministic>false</Deterministic>
-		<PublishUrl>publish\</PublishUrl>
-		<Install>true</Install>
-		<InstallFrom>Disk</InstallFrom>
-		<UpdateEnabled>false</UpdateEnabled>
-		<UpdateMode>Foreground</UpdateMode>
-		<UpdateInterval>7</UpdateInterval>
-		<UpdateIntervalUnits>Days</UpdateIntervalUnits>
-		<UpdatePeriodically>false</UpdatePeriodically>
-		<UpdateRequired>false</UpdateRequired>
-		<MapFileExtensions>true</MapFileExtensions>
-		<ApplicationRevision>0</ApplicationRevision>
-		<ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-		<IsWebBootstrapper>false</IsWebBootstrapper>
-		<UseApplicationTrust>false</UseApplicationTrust>
-		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<UseWPF>true</UseWPF>
-		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-		<StartupObject>Cyanlabs.Syn3Updater.App</StartupObject>
-		<ApplicationIcon>cyanlabs.ico</ApplicationIcon>
-		<ApplicationManifest>app.manifest</ApplicationManifest>		
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<OutputPath>..\bin\Debug\</OutputPath>
-		<LangVersion>latest</LangVersion>		
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">	
-		<OutputPath>..\bin\Release\</OutputPath>
-		<LangVersion>latest</LangVersion>		
-	</PropertyGroup>
-	<ItemGroup>
-		<None Include="$(SolutionDir)Syn3Updater\Languages\**" CopyToOutputDirectory="PreserveNewest" />
-		<Resource Include="cyanlabs.ico" />
-		<Resource Include="UI\Tabs\syncversion.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="FluentWPF" Version="0.9.0" />
-		<PackageReference Include="GraphQL.Client" Version="3.2.4" />
-		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.4" />
-		<PackageReference Include="HtmlToXamlConverter" Version="1.0.5727.24510">
-			<NoWarn>NU1701</NoWarn>
-		</PackageReference>
-		<PackageReference Include="MahApps.Metro.IconPacks.VaadinIcons" Version="4.8.0" />
-		<PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />		
-		<PackageReference Include="ModernWpfUI" Version="0.9.4" />
-		<PackageReference Include="SharpZipLib" Version="1.3.2" />
-		<PackageReference Include="System.Management" Version="5.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
-		<PackageReference Include="QRCoder" Version="1.4.1" />
-		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.1.0" />
-		<PackageReference Include="Nito.AsyncEx" Version="5.1.0" />
-	</ItemGroup>
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-	</ItemGroup>
-	
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows10.0.18362.0' ">
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.212405">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-	</ItemGroup>
-	
-	<ItemGroup>		
-		<BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
-			<Visible>False</Visible>
-			<ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
-			<Install>true</Install>
-		</BootstrapperPackage>
-		<BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-			<Visible>False</Visible>
-			<ProductName>.NET Framework 3.5 SP1</ProductName>
-			<Install>false</Install>
-		</BootstrapperPackage>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Page Update="UI\Tabs\About.xaml">
-	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-	  </Page>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Content Include="Languages\*.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Remove="Pages\DateTimePage.axaml" />
+    <AvaloniaXaml Remove="Pages\HomePage.axaml" />
+    <AvaloniaXaml Remove="Pages\LayoutPage.axaml" />
+    <AvaloniaXaml Remove="Pages\MenusPage.axaml" />
+    <AvaloniaXaml Remove="Pages\OverviewPage.axaml" />
+    <AvaloniaXaml Remove="Styles\SideBar.axaml" />
+    <AvaloniaXaml Remove="Styles\Styles.axaml" />
+    <AvaloniaXaml Remove="Views\MainView.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\avalonia-logo.ico" />
+    <None Remove="Assets\boards.png" />
+    <None Remove="Assets\Fonts\SourceCodePro-Black.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-BlackItalic.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-Bold.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-BoldItalic.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-ExtraLight.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-ExtraLightItalic.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-Italic.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-Light.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-LightItalic.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-Medium.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-MediumItalic.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-Regular.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-SemiBold.ttf" />
+    <None Remove="Assets\Fonts\SourceCodePro-SemiBoldItalic.ttf" />
+    <None Remove="Assets\github_icon.png" />
+    <None Remove="Assets\overview.png" />
+    <None Remove="Assets\teapot.bin" />
+    <None Remove="Assets\test_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Pages\HomePage.axaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Styles\SideBar.axaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Styles\Styles.axaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MainView.axaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
+    <PackageReference Include="DotNet.Bundle" Version="0.9.13" />
+    <PackageReference Include="GraphQL.Client" Version="3.2.4" />
+    <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Nito.AsyncEx" Version="5.1.0" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="3.1.2" />
+    <PackageReference Include="System.Management" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\HomePage.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\DownloadPage.axaml.cs">
+      <DependentUpon>DownloadPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-Black.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-BlackItalic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-Bold.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-BoldItalic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-ExtraLight.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-ExtraLightItalic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-Italic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-Light.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-LightItalic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-Medium.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-MediumItalic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-SemiBold.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-SemiBoldItalic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\overview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\github_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>C:\Program Files\dotnet\shared\Microsoft.NETCore.App\5.0.10\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup>
+    <CFBundleName>Syn3Updater</CFBundleName> <!-- Also defines .app file name -->
+    <CFBundleDisplayName>Syn3Updater</CFBundleDisplayName>
+    <CFBundleIdentifier>net.cyanlabs.Syn3Updater</CFBundleIdentifier>
+    <CFBundleVersion>1.0.0</CFBundleVersion>
+    <CFBundleShortVersionString>1.0.0</CFBundleShortVersionString>
+    <CFBundlePackageType>APPL</CFBundlePackageType>
+    <CFBundleExecutable>Syn3Updater</CFBundleExecutable>
+    <CFBundleIconFile>AppName.icns</CFBundleIconFile> <!-- Will be copied from output directory -->
+    <NSPrincipalClass>NSApplication</NSPrincipalClass>
+    <NSHighResolutionCapable>true</NSHighResolutionCapable>
+  </PropertyGroup>
 </Project>

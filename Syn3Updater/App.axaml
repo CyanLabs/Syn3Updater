@@ -1,0 +1,14 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Syn3Updater"
+             x:Class="Syn3Updater.App" Name="Syn3 Updater">
+  <Application.DataTemplates>
+    <local:ViewLocator/>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme Mode="Dark" />
+    <StyleInclude Source="/Styles/Styles.axaml" />
+    <StyleInclude Source="/Styles/SideBar.axaml" />
+  </Application.Styles>
+</Application>

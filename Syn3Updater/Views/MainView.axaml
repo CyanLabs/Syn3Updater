@@ -1,0 +1,36 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="640"
+        xmlns:pages="clr-namespace:Syn3Updater.Pages;assembly=Syn3Updater"
+        x:Class="Syn3Updater.Views.MainView"
+        FontSize="14"
+        Foreground="{StaticResource SystemBaseHighColor}">
+
+  <Panel>
+    <DockPanel HorizontalAlignment="Stretch">
+      <ExperimentalAcrylicBorder DockPanel.Dock="Left" Width="160">
+        <ExperimentalAcrylicBorder.Material>
+          <ExperimentalAcrylicMaterial TintColor="Black" MaterialOpacity="0.85" TintOpacity="1" />
+        </ExperimentalAcrylicBorder.Material>
+        <TextBlock FontSize="18" HorizontalAlignment="Stretch" Margin="20 40 20 0" Text="Syn3Updater" />
+      </ExperimentalAcrylicBorder>
+      <ExperimentalAcrylicBorder IsHitTestVisible="False">
+        <ExperimentalAcrylicBorder.Material>
+          <ExperimentalAcrylicMaterial TintColor="#222222" MaterialOpacity="0.85" TintOpacity="1" />
+        </ExperimentalAcrylicBorder.Material>
+        <TextBlock Text="{Binding #TabControl.SelectedItem.Header}" Margin="40 20" FontSize="32" FontWeight="Light" />
+      </ExperimentalAcrylicBorder>
+    </DockPanel>
+
+    <TabControl x:Name="TabControl" Classes="sidebar" Margin="0 40 0 20">
+      <TabItem Header="Home">
+        <pages:HomePage />
+      </TabItem> 
+      <TabItem Header="Downloads">
+        <pages:DownloadPage />
+      </TabItem>
+    </TabControl>
+  </Panel>
+</UserControl>
