@@ -19,7 +19,7 @@
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
             <StackPanel Orientation="Horizontal">
-              <AutoCompleteBox Watermark="#.#.#####" Items="{Binding SyncVersions.Ivsus}" ValueMemberBinding="{Binding Version}"></AutoCompleteBox>
+              <AutoCompleteBox Watermark="#.#.#####" Items="{Binding SyncVersions.Ivsus}" ValueMemberBinding="{Binding Version}" Text="{Binding CurrentVersion}"></AutoCompleteBox>
               <Button IsVisible="False" Content="Save Current Version"></Button>
             </StackPanel>
           </Border>

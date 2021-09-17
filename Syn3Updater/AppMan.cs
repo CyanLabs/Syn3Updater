@@ -82,14 +82,21 @@ namespace Syn3Updater
             DrivePartitionType,
             DriveFileSystem,
             DriveNumber,
-            DriveLetter,
-            SelectedMapVersion,
-            SelectedRelease,
-            SelectedRegion,
-            InstallMode,
-            SVersion,
-            Action,
-            MainConfigFile,
+            DriveLetter;
+
+        public string? SelectedMapVersion;
+
+        public string? SelectedRelease;
+
+        public string? SelectedRegion;
+
+        public string? InstallMode;
+
+        public string SVersion;
+
+        public string? Action;
+
+        public string MainConfigFile,
             ProfileFile,
             ProgramDataPath,
             LocalAppDataPath,

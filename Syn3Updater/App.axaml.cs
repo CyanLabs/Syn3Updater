@@ -29,14 +29,7 @@ namespace Syn3Updater
                     DataContext = new MainWindowViewModel(),
                 };
             }
-            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
-            {
-                singleViewLifetime.MainView = new MainView
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
-            }
-
+            
             var theme = new Avalonia.Themes.Default.DefaultTheme();
             theme.TryGetResource("Button", out _);
 

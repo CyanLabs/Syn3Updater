@@ -25,7 +25,7 @@
         public int? CurrentVersion { get; set; } = 0;
         public bool CurrentNav { get; set; } = false;
         public bool? My20v2 { get; set; } = null;
-        public string InstallMode { get; set; } = "autodetect";
+        public string? InstallMode { get; set; } = "autodetect";
         public int DownloadConnections { get; set; } = 1;
     }
 }

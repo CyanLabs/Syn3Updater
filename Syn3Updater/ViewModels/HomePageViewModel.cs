@@ -17,7 +17,15 @@ namespace Syn3Updater.ViewModels
                 get => _syncVersions;
                 set => this.RaiseAndSetIfChanged(ref _syncVersions, value);
             }
-            
+
+            private string _currentVersion;
+
+            public string CurrentVersion
+            {
+                get => _currentVersion;
+                set => this.RaiseAndSetIfChanged(ref _currentVersion, value);
+            }
+
             private ObservableCollection<USBDriveModel.Drive> _driveList;
 
             public ObservableCollection<USBDriveModel.Drive> DriveList
@@ -87,9 +95,9 @@ namespace Syn3Updater.ViewModels
                 CreateInterrogatorEnabled = SelectedDrive.Name != null;
             }
 
-            private void PrepareInterrogatorUSB()
+            private async void PrepareInterrogatorUSB()
             {
-                //await USBHelper.LogPrepareUSBAction(SelectedDrive, DriveLetter);
+                await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive?.Letter,CurrentVersion);
             }
         }
     }
