@@ -17,6 +17,7 @@
     <AvaloniaXaml Remove="Styles\SideBar.axaml" />
     <AvaloniaXaml Remove="Styles\Styles.axaml" />
     <AvaloniaXaml Remove="Views\MainView.axaml" />
+    <AvaloniaXaml Remove="Model\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\avalonia-logo.ico" />
@@ -39,6 +40,7 @@
     <None Remove="Assets\overview.png" />
     <None Remove="Assets\teapot.bin" />
     <None Remove="Assets\test_icon.ico" />
+    <None Remove="Model\**" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Include="Pages\HomePage.axaml">
@@ -76,6 +78,8 @@
       <DependentUpon>DownloadPage.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Remove="Model\APISecretModel.cs" />
+    <Compile Remove="Model\**" />
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Remove="Assets\Fonts\SourceCodePro-Black.ttf" />
@@ -129,6 +133,9 @@
     <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>C:\Program Files\dotnet\shared\Microsoft.NETCore.App\5.0.10\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="Model\**" />
   </ItemGroup>
   <PropertyGroup>
     <CFBundleName>Syn3Updater</CFBundleName> <!-- Also defines .app file name -->
