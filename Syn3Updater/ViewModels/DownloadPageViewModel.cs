@@ -19,7 +19,7 @@ namespace Syn3Updater.ViewModels
 {
     public class DownloadPageViewModel : ViewModelBase
     {
-         #region Events
+        #region Events
 
         public event EventHandler<EventArgs<int>> PercentageChanged;
 
@@ -130,48 +130,51 @@ namespace Syn3Updater.ViewModels
 
         public DownloadPageViewModel()
         {
-            DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
-            My20Mode = AppMan.App.Settings.My20v2 switch
+            AppMan.App.StartDownloadsTab += delegate
             {
-                null => "AutoDetect",
-                true => "Enabled",
-                false => "Disabled"
+                DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
+                My20Mode = AppMan.App.Settings.My20v2 switch
+                {
+                    null => "AutoDetect",
+                    true => "Enabled",
+                    false => "Disabled"
+                };
+                InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
+                InstallMode = AppMan.App.Settings.InstallMode;
+                if (!AppMan.App.IsDownloading) return;
+                InstallMode = AppMan.App.InstallMode;
+                Log = string.Empty;
+                _selectedRelease = AppMan.App.SelectedRelease;
+                _selectedRegion = AppMan.App.SelectedRegion;
+                _selectedMapVersion = AppMan.App.SelectedMapVersion;
+                string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
+                Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
+
+                _action = AppMan.App.Action;
+
+                text = $"Install Mode: {AppMan.App.Settings.InstallMode} ({InstallMode}) Forced: {AppMan.App.ModeForced}";
+                Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
+                // AppMan.Logger.Info(text);
+
+                text = $"MY20 Protection: {My20Mode}";
+                Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
+                //AppMan.Logger.Info(text);
+
+                CancelButtonEnabled = true;
+                CurrentProgress = 0;
+
+                PercentageChanged += DownloadPercentageChanged;
+
+                DownloadQueueList = new ObservableCollection<string>();
+                foreach (SModel.Ivsu item in AppMan.App.Ivsus)
+                    DownloadQueueList.Add(item.Url);
+
+                _ct = _tokenSource.Token;
+
+                _fileHelper = new FileHelper(PercentageChanged);
+
+                DoDownloadCopyTask();
             };
-            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
-            InstallMode = AppMan.App.Settings.InstallMode;
-            if (!AppMan.App.IsDownloading) return;
-            InstallMode = AppMan.App.InstallMode;
-            Log = string.Empty;
-            _selectedRelease = AppMan.App.SelectedRelease;
-            _selectedRegion = AppMan.App.SelectedRegion;
-            _selectedMapVersion = AppMan.App.SelectedMapVersion;
-            string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
-            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-
-            _action = AppMan.App.Action;
-
-            text = $"Install Mode: {AppMan.App.Settings.InstallMode} ({InstallMode}) Forced: {AppMan.App.ModeForced}";
-            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-           // AppMan.Logger.Info(text);
-
-            text = $"MY20 Protection: {My20Mode}";
-            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-            //AppMan.Logger.Info(text);
-
-            CancelButtonEnabled = true;
-            CurrentProgress = 0;
-
-            PercentageChanged += DownloadPercentageChanged;
-
-            DownloadQueueList = new ObservableCollection<string>();
-            foreach (SModel.Ivsu item in AppMan.App.Ivsus)
-                DownloadQueueList.Add(item.Url);
-
-            _ct = _tokenSource.Token;
-
-            _fileHelper = new FileHelper(PercentageChanged);
-            
-            DoDownloadCopyTask();
         }
 
         private async void DoDownloadCopyTask()

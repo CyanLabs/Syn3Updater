@@ -44,6 +44,11 @@ namespace Syn3Updater
         {
             ShowDownloadsTab?.Invoke(this, EventArgs.Empty);
         }
+        public void FireDownloadsStartEvent()
+        {
+            ShowDownloadsTab?.Invoke(this, EventArgs.Empty);
+            StartDownloadsTab?.Invoke(this, EventArgs.Empty);
+        }
 
         public void FireHomeTabEvent()
         {
@@ -66,6 +71,7 @@ namespace Syn3Updater
         }
 
         public event EventHandler ShowDownloadsTab;
+        public event EventHandler StartDownloadsTab;
         public event EventHandler ShowHomeTab;
         public event EventHandler ShowUtilityTab;
         public event EventHandler ShowSettingsTab;

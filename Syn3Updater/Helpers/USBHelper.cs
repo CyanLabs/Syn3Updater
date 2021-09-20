@@ -111,10 +111,10 @@ namespace Syn3Updater.Helpers
         {
             //Reset ApplicationManager variables
             
-            //AppMan.App.Ivsus.Clear();
-            //AppMan.App.DriveLetter = driveLetter;
-            //AppMan.App.Action = action;
-            //AppMan.App.SelectedRelease = "Interrogator Log Utility";
+            AppMan.App.Ivsus.Clear();
+            AppMan.App.DriveLetter = driveLetter;
+            AppMan.App.Action = action;
+            AppMan.App.SelectedRelease = "Interrogator Log Utility";
             
             if (currentversion.StartsWith("3.4"))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool34);
@@ -134,7 +134,7 @@ namespace Syn3Updater.Helpers
 
             AppMan.App.IsDownloading = true;
             //AppMan.Logger.Info("Starting process (Logging Utility");
-            AppMan.App.FireDownloadsTabEvent();
+            AppMan.App.FireDownloadsStartEvent();
         }
         
         /// <summary>

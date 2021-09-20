@@ -9,10 +9,7 @@ namespace Syn3Updater.ViewModels
         public int SelectedTab
         {
             get => _selectedTab;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _selectedTab, value);
-            }
+            set => this.RaiseAndSetIfChanged(ref _selectedTab, value);
         }
         public MainWindowViewModel()
         {
