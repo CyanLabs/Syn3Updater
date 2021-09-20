@@ -39,6 +39,7 @@
 		<None Include="$(SolutionDir)Syn3Updater\Languages\**" CopyToOutputDirectory="PreserveNewest" />
 		<Resource Include="cyanlabs.ico" />
 		<Resource Include="UI\Tabs\syncversion.png" />
+		<None Remove="Models\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FluentWPF" Version="0.9.0" />
@@ -86,12 +87,21 @@
 	  <Page Update="UI\Tabs\About.xaml">
 	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 	  </Page>
+	  <Page Remove="Models\**" />
 	</ItemGroup>
 	
 	<ItemGroup>
 	  <Content Include="Languages\*.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="Models\**" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <EmbeddedResource Remove="Models\**" />
 	</ItemGroup>
 	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
 </Project>

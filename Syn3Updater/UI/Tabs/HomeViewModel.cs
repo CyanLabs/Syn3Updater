@@ -514,7 +514,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 SMapVersion?.Add(LM.GetValue("String.KeepExistingMaps"));
 
             string license = string.Empty;
-            if (AppMan.App.MainSettings.LicenseKey?.Length > 10) license = @"{""licensekeys"":{""_contains"":""" + AppMan.App.MainSettings.LicenseKey + @"""}},";
+            if (AppMan.App.MainSettings.LicenseKey?.Length > 10) license = @"{licensekeys:{_contains:""" + AppMan.App.MainSettings.LicenseKey + @"""}},";
 
             if (!string.IsNullOrWhiteSpace(SelectedRelease))
             {
