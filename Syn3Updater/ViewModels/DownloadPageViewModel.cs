@@ -533,36 +533,8 @@ namespace Syn3Updater.ViewModels
             }
             else if (_action == "logutility")
             {
-                //TODO Display MessageBox.LogUtilityComplete Message 
-                AppMan.App.UtilityCreateLogStep1Complete = true;
-                AppMan.App.FireUtilityTabEvent();
-            }
-            else if (_action == "logutilitymy20")
-            {
-                //if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.LogUtilityCompleteMy20"), LM.GetValue("String.Notice"), LM.GetValue("String.OK"))) == ContentDialogResult.None)
-                //{
-                    USBHelper usbHelper = new();
-                    await usbHelper.LogParseXmlAction().ConfigureAwait(false);
-                    AppMan.App.UtilityCreateLogStep1Complete = true;
-                    if (!AppMan.App.Cancelled)
-                    {
-                        if (AppMan.App.Settings.My20v2 == true)
-                        {
-                            //TODO Display MessageBox.My20Found Message 
-                        }
-                        else
-                        {
-                            //TODO Display MessageBox.My20NotFound Message 
-                        }
-                    }
-                    else
-                    {
-                        //TODO Display MessageBox.My20CheckCancelled Message 
-                    }
-
-                    AppMan.App.ClearSelections = true;
-                    AppMan.App.FireHomeTabEvent();
-                //}
+                AppMan.App.FireHomeTabEvent();
+                AppMan.App.FireInterrogatorLogCompleted();
             }
             else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
             {

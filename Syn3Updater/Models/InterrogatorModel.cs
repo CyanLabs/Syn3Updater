@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Syn3Updater.Models
@@ -120,6 +121,21 @@ namespace Syn3Updater.Models
         {
             [JsonProperty("@version")] public string Version { get; set; }
             [JsonProperty("@encoding")] public string Encoding { get; set; }
+        }
+        
+        public class LogResult
+        {
+            public string VIN { get; set; }
+            public string Model { get; set; }
+            public string Version { get; set; }
+            public bool Navigation { get; set; }
+            public string Storage { get; set; }
+            public string Free { get; set; }
+            public string Partitions { get; set; }
+            public List<string> Packages { get; set; }
+            public string Time { get; set; }
+            public string AsBuilt { get; set; }
+            public string Region { get; set; }
         }
     }
 }

@@ -53,5 +53,12 @@ namespace Cyanlabs.Syn3Updater.Model
                 SmallVoice = "smallvoice",
                 Reformat = "reformat";
         }
+        
+        public class ReleaseDetails
+        {
+            public string Region { get; set; }
+            public string Release { get; set; }
+            public string Maps { get; set; }
+        }
     }
 }

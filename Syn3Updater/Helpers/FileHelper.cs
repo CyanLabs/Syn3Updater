@@ -571,6 +571,12 @@ namespace Syn3Updater.Helpers
 
             return Regex.Replace(name, invalidRegStr, "_");
         }
+        
+        public static string url_to_filename(string url)
+        {
+            return url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1, url.Length - url.LastIndexOf("/", StringComparison.Ordinal) - 1);
+        }
+
 
         #endregion
     }

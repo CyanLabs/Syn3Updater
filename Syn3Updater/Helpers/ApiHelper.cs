@@ -12,9 +12,9 @@ namespace Syn3Updater.Helpers
         ///     Gets All Sync APP versions from CyanLabs DB
         /// </summary>
         /// <returns>IvsuRoot with all retrieved APP versions</returns>
-        public static async Task<IvsuRoot> GetSyncVersions()
+        public static async Task<IvsuRoot?> GetSyncVersions()
         {
-            GraphQLResponse<IvsuRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetAppVersions());
+            GraphQLResponse<IvsuRoot?> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetAppVersions());
             return graphQlResponse.Data;
         }
 

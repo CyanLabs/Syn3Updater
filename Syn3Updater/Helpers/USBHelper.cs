@@ -43,9 +43,9 @@ namespace Syn3Updater.Helpers
         /// </summary>
         /// <param name="fakeusb">Set to true to add 'Download Only' option to the list</param>
         /// <returns>ObservableCollection of all USB Drives as type Drive</returns>
-        public static ObservableCollection<USBDriveModel.Drive> RefreshDevicesWindows(bool fakeusb)
+        public static ObservableCollection<USBDriveModel.Drive>? RefreshDevicesWindows(bool fakeusb)
         {
-            ObservableCollection<USBDriveModel.Drive> driveList = new();
+            ObservableCollection<USBDriveModel.Drive>? driveList = new();
             ManagementObjectSearcher driveQuery = new("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
             foreach (ManagementBaseObject n in driveQuery.Get())
             {
@@ -107,7 +107,7 @@ namespace Syn3Updater.Helpers
             return driveList;
         }
         
-        public static async Task LogPrepareUSBAction(USBDriveModel.Drive selectedDrive, string driveLetter, string currentversion, string action = "logutility")
+        public static async Task LogPrepareUSBAction(USBDriveModel.Drive? selectedDrive, string? driveLetter, string? currentversion, string action = "logutility")
         {
             //Reset ApplicationManager variables
             
@@ -116,11 +116,11 @@ namespace Syn3Updater.Helpers
             AppMan.App.Action = action;
             AppMan.App.SelectedRelease = "Interrogator Log Utility";
             
-            if (currentversion.StartsWith("3.4"))
+            if (currentversion != null && currentversion.StartsWith("3.4"))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool34);
-            else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
+            else if (currentversion != null && (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3")))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool32);
-            else if (currentversion.StartsWith("3.0") || currentversion.StartsWith("2.") || currentversion.StartsWith("1."))
+            else if (currentversion != null && (currentversion.StartsWith("3.0") || currentversion.StartsWith("2.") || currentversion.StartsWith("1.")))
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool30);
             else
                 Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool34);
@@ -171,7 +171,7 @@ namespace Syn3Updater.Helpers
                     .Append("FileSystem: ").Append(AppMan.App.DriveFileSystem).Append(Environment.NewLine)
                     .Append("Partition Type: ").Append(AppMan.App.DrivePartitionType).Append(Environment.NewLine);
 
-            string driveletter = AppMan.App.DriveLetter;
+            string? driveletter = AppMan.App.DriveLetter;
             if (File.Exists($@"{driveletter}\reformat.lst"))
                 data.Append(Environment.NewLine)
                     .Append("REFORMAT.LST").Append(Environment.NewLine)
@@ -245,18 +245,28 @@ namespace Syn3Updater.Helpers
             }
         }
 
-         public async Task<string[]> LogParseXmlAction()
-        {
-            string LogXmlDetails = "";
-            string LogXmlDetails2 = "";
-            string LogXmlDetails3 = "";
-            OpenFileDialog? dialog = new();
-            dialog.Filters.Add(new FileDialogFilter() { Name = "Interrogator Log XML Files", Extensions = { "*.xml" } });
-            var result = await dialog.ShowAsync(null);
-            if (result == null)
+         public async Task<Interrogator.LogResult> LogParseXmlAction(string? letter)
+         { 
+             string path;
+             Interrogator.LogResult logResult = new();
+            try
             {
-                AppMan.App.Cancelled = true;
-                return new[] { "" };
+                const string pattern = "*.xml";
+                DirectoryInfo? dirInfo = new(letter + @"\SyncMyRide\");
+                FileInfo? file = (from f in dirInfo.GetFiles(pattern) orderby f.LastWriteTime descending select f).First();
+                path = file.FullName;
+            }
+            catch (Exception e)
+            {
+                OpenFileDialog? dialog = new();
+                dialog.Filters.Add(new FileDialogFilter() { Name = "Interrogator Log XML Files", Extensions = { "xml" } });
+                string[]? result = await dialog.ShowAsync(new MainWindow());
+                if (result == null)
+                {
+                    AppMan.App.Cancelled = true;
+                    return new Interrogator.LogResult();
+                }
+                path = result.FirstOrDefault();
             }
 
             try
@@ -264,100 +274,110 @@ namespace Syn3Updater.Helpers
                 AppMan.App.Cancelled = false;
                 XmlDocument doc = new();
                 //TODO: swtich to Async once code moves to dotnet 5+ 
-                doc.Load(result.FirstOrDefault());
+                doc.Load(path);
                 string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
                 Interrogator.InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<Interrogator.InterrogatorModel>(json);
-                _apimDetails.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
-                LogXmlDetails = $"VIN: {interrogatorLog?.POtaModuleSnapShot.PVin}{Environment.NewLine}";
-
-                Interrogator.D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
-                string sappname = d2P1Did!.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
-                LogXmlDetails += $"Version: {sappname}{Environment.NewLine}";
-
-                string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
-                LogXmlDetails += $"APIM Model: {apimmodel}{Environment.NewLine}";
-
-                GraphQLResponse<My20ModelsRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<My20ModelsRoot>(GraphQlHelper.GetMy20Models());
-                My20ModelsRoot output = graphQlResponse.Data;
                 
-                foreach (My20Models unused in output.My20Models.Where(my20 => apimmodel.Contains(my20.Model)))
-                {
-                    AppMan.App.Settings.My20v2 = true;
-                }
-
-                if (AppMan.App.Settings.My20v2 != true) AppMan.App.Settings.My20v2 = false;
-                string? apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
-                    .Select(x => x.Total)
-                    .Single();
-                _apimDetails.PartNumber = apimmodel;
-                if (double.TryParse(apimsize?.Remove(apimsize.Length - 1), NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
-                {
-                    switch (apimsizeint)
-                    {
-                        case >= 0 and <= 8:
-                            _apimDetails.Nav = false;
-                            _apimDetails.Size = 8;
-                            break;
-                        case >= 9 and <= 16:
-                            _apimDetails.Nav = false;
-                            _apimDetails.Size = 16;
-                            break;
-                        case >= 17 and <= 32:
-                            _apimDetails.Nav = true;
-                            _apimDetails.Size = 32;
-                            break;
-                        case >= 33 and <= 64:
-                            _apimDetails.Nav = true;
-                            _apimDetails.Size = 64;
-                            break;
-                    }
-                }
-
-                if (_apimDetails.Nav)
-                    LogXmlDetails += $"APIM Type: Navigation {Environment.NewLine}";
-                else
-                    LogXmlDetails += $"APIM Type: Non-Navigation {Environment.NewLine}";
-
-                LogXmlDetails += $"APIM Size: {_apimDetails.Size}GB {Environment.NewLine}";
-
-                string? apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
-                    .Select(x => x.Available).Single();
-                LogXmlDetails += $"APIM Free Space: {apimfree} {Environment.NewLine}";
-
-                LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
-
-                LogXmlDetails2 += $"Partition Type = Free / Total{Environment.NewLine}";
                 if (interrogatorLog != null)
                 {
-                    foreach (Interrogator.D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
-                        LogXmlDetails2 += $"{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}{Environment.NewLine}";
+                    _apimDetails.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
+                    logResult.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
 
+                    Interrogator.D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
+                    string sappname = d2P1Did!.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
+                    logResult.Version += sappname;
+
+                    string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
+                    logResult.Model += apimmodel;
+
+                    GraphQLResponse<My20ModelsRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<My20ModelsRoot>(GraphQlHelper.GetMy20Models());
+                    My20ModelsRoot output = graphQlResponse.Data;
+                    
+                    foreach (My20Models unused in output.My20Models.Where(my20 => apimmodel.Contains(my20.Model)))
+                    {
+                        AppMan.App.Settings.My20v2 = true;
+                    }
+
+                    if (AppMan.App.Settings.My20v2 != true) AppMan.App.Settings.My20v2 = false;
+                    string? apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
+                        .Select(x => x.Total)
+                        .Single();
+                    bool apimnavpartition = interrogatorLog!.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Any(x => x.Type == "/fs/sd/MAP");
+                    _apimDetails.PartNumber = apimmodel;
+                    if (double.TryParse(apimsize?.Remove(apimsize.Length - 1), NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
+                    {
+                        switch (apimsizeint)
+                        {
+                            case >= 0 and <= 8:
+                                _apimDetails.Nav = false;
+                                _apimDetails.Size = 8;
+                                break;
+                            case >= 9 and <= 16:
+                                if(apimnavpartition) 
+                                _apimDetails.Nav = apimnavpartition;
+                                _apimDetails.Size = 16;
+                                break;
+                            case >= 17 and <= 32:
+                                _apimDetails.Nav = true;
+                                _apimDetails.Size = 32;
+                                break;
+                            case >= 33 and <= 64:
+                                _apimDetails.Nav = true;
+                                _apimDetails.Size = 64;
+                                break;
+                        }
+                    }
+                    string apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
+                        .Select(x => x.Available).Single();
+                    
+                    logResult.Navigation = _apimDetails.Nav;
+                    logResult.Storage = apimfree + " / " + _apimDetails.Size + "G";
+                    logResult.Time += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
+                    
+                    foreach (Interrogator.D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
+                        logResult.Partitions += $"{d2P1PartitionHealth.Type} = {d2P1PartitionHealth.Available} / {d2P1PartitionHealth.Total}{Environment.NewLine}";
                     
                     List<string> packages = SyncHexToAscii.ConvertPackages(d2P1Did.Where(x => x.DidValue == "8060").Select(x => x.D2P1Response).Single());
                     List<string> packagescont = SyncHexToAscii.ConvertPackages(d2P1Did.Where(x => x.DidValue == "8061").Select(x => x.D2P1Response).Single()); 
                     packages.AddRange(packagescont);
                     
-                    LogXmlDetails2 += $"{Environment.NewLine}Installed Packages{Environment.NewLine}";
-                    LogXmlDetails2 = packages.Aggregate(LogXmlDetails2, (current, package) => current + (package + Environment.NewLine));
+                    logResult.Packages = packages;
 
                     List<AsBuilt.DID> asBuiltValues = new();
 
-                    LogXmlDetails3 += "APIM AsBuilt";
+                    logResult.AsBuilt += "APIM AsBuilt";
                     foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType.Contains("Direct Configuraation DID DE")))
                     {
-                        LogXmlDetails3 += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
+                        logResult.AsBuilt += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
                         asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
                     }
+                    
+                    if (logResult.Packages.Any(x => x.Contains("14G421-A")) && logResult.Packages.Any(x => x.Contains("14G422-A")))
+                        logResult.Region = "CN";
+                    else if (logResult.Packages.Any(x => x.Contains("14G421-B")) && logResult.Packages.Any(x => x.Contains("14G422-B")))
+                        logResult.Region = "EU";
+                    else if (logResult.Packages.Any(x => x.Contains("14G421-C")) && logResult.Packages.Any(x => x.Contains("14G422-C")))
+                        logResult.Region = "NA";
+                    else if (logResult.Packages.Any(x => x.Contains("14G421-D")) && logResult.Packages.Any(x => x.Contains("14G422-D")))
+                        logResult.Region = "ANZ";
+                    else if (logResult.Packages.Any(x => x.Contains("14G421-F")) && logResult.Packages.Any(x => x.Contains("14G422-F")))
+                        logResult.Region = "ROW";
+                    else if (!logResult.Navigation)
+                        logResult.Region = "NON-NAV";
+                    else 
+                        logResult.Region = "???";
+                    
                     try
                     {
                         var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.IvsuVersionLookup(sappname));
                         IvsuRoot sversion = graphQlResponse2.Data;
-   
+
                         string convertedsversion = sversion.Ivsus[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")
                         {
                             AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
                             AppMan.App.SVersion = convertedsversion;
+                            logResult.Version = sversion.Ivsus[0].Version;
                         }
                         else if (convertedsversion != AppMan.App.SVersion)
                         {
@@ -366,7 +386,8 @@ namespace Syn3Updater.Helpers
                             //{
                                 AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
                                 AppMan.App.SVersion = convertedsversion;
-                            //}
+                                logResult.Version = sversion.Ivsus[0].Version;
+                                //}
                         }
                     }
                     catch (Exception)
@@ -402,9 +423,8 @@ namespace Syn3Updater.Helpers
             {
                 //await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
             }
-
-            return new[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };
-        }
+            return logResult;
+         }
 
 
     }

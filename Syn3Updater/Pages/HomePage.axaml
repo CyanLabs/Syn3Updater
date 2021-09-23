@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Syn3Updater.ViewModels;assembly=Syn3Updater"
              xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="800"
              x:Class="Syn3Updater.Pages.HomePage" >
   <Design.DataContext>
     <vm:HomePageViewModel></vm:HomePageViewModel>
@@ -14,24 +14,19 @@
       <StackPanel Orientation="Vertical"
                 HorizontalAlignment="Stretch"
                 Spacing="16">
-        <TextBlock FontSize="18">1. Enter your current Sync 3 version!</TextBlock>
+        <TextBlock FontSize="18">1. Enter your current Sync 3 version and select a USB Drive</TextBlock>
         <StackPanel Orientation="Vertical">
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
-            <StackPanel Orientation="Horizontal">
-              <AutoCompleteBox Watermark="#.#.#####" Items="{Binding SyncVersions.Ivsus}" ValueMemberBinding="{Binding Version}" Text="{Binding CurrentVersion}"></AutoCompleteBox>
-              <Button IsVisible="False" Content="Save Current Version"></Button>
-            </StackPanel>
-          </Border>
-        </StackPanel>
-
-        <TextBlock FontSize="18">2. Select a USB Drive</TextBlock>
-        <StackPanel Orientation="Vertical">
-          <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
-                  BorderThickness="1" Padding="15">
-           <ComboBox VerticalAlignment="Center" Margin="0,0,0,0" SelectedIndex="-1" HorizontalAlignment="Stretch"
-                          Items="{Binding DriveList}"
-                          SelectedItem="{Binding SelectedDrive}">
+            <Grid ColumnDefinitions="*,2*" RowDefinitions="50">
+                <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch">
+                  <TextBlock TextAlignment="Right" HorizontalAlignment="Center"  Grid.Column="0" Text="Sync Version:" VerticalAlignment="Center"></TextBlock>
+                  <AutoCompleteBox Width="115" Height="50" Margin="5,0,0,0" Grid.Column="1" VerticalAlignment="Stretch" FontSize="18" HorizontalAlignment="Center"  Name="SyncVersionsAutoComplete" Watermark="#.#.#####" Items="{Binding SyncVersions.Ivsus}" ValueMemberBinding="{Binding Version}" Text="{Binding CurrentVersion}"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*" HorizontalAlignment="Center">
+                  <ComboBox Height="50" VerticalAlignment="Center" Margin="5,0,0,0" SelectedIndex="-1" HorizontalAlignment="Center" MinWidth="300" PlaceholderText="Select a USB Drive"
+                            Items="{Binding DriveList}"
+                            SelectedItem="{Binding SelectedDrive}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <Grid ColumnDefinitions="*,Auto">
@@ -69,6 +64,8 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                </Grid>
+            </Grid>
           </Border>
         </StackPanel>
 
@@ -76,23 +73,73 @@
         <StackPanel Orientation="Vertical">
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
-            <Button Command="{Binding PrepareInterrogatorUSB}" Content="Create Interrogator USB" IsEnabled="{Binding CreateInterrogatorEnabled}"></Button>
-          </Border>
+            <StackPanel>
+              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Command="{Binding PrepareInterrogatorUSB}" Content="Create Interrogator USB" IsEnabled="{Binding CreateInterrogatorEnabled}"></Button>
+              <TextBlock IsVisible="{Binding InterrogatorDescriptionVisible}">
+USB Drive has been prepared successfully!
+
+- Remove the USB Drive from your computer.
+- Insert the USB Drive in to your car.
+- After a few minutes it will say 'Installation Complete'.
+- Remove the USB Drive from the car.
+- Insert the USB Drive back in to your computer and continue to step 4.
+              </TextBlock>
+            </StackPanel>
+            </Border>
        </StackPanel>
         
         <TextBlock FontSize="18">4. Open USB Drive Log File</TextBlock>
         <StackPanel Orientation="Vertical">
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
-            <Button Content="Scan USB Drive for Sync_#####.xml" IsEnabled="{Binding ScanInterrogatorEnabled}"></Button>
+            <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"  Content="Scan USB Drive for Sync_#####.xml" IsEnabled="{Binding CreateInterrogatorEnabled}" Command="{Binding ScanInterrogatorUSB}"></Button>
           </Border>
         </StackPanel>
         
-        <TextBlock FontSize="18">5. Prepare Update USB</TextBlock>
+        <TextBlock FontSize="18">5. Detected Information</TextBlock>
         <StackPanel Orientation="Vertical">
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
-            <Button Content="Download, Verify and Copy update files" IsEnabled="{Binding StartEnabled}"></Button>
+            <StackPanel>
+              <TextBlock HorizontalAlignment="Center" IsVisible="{Binding !InterrogatorOutputVisible}">No information available currently!</TextBlock>
+              <Grid ColumnDefinitions="*,*,*" IsVisible="{Binding InterrogatorOutputVisible}">
+                <Grid Grid.Column="0" ColumnDefinitions="*,Auto" RowDefinitions="*,*,*,*,*">
+                  <TextBlock TextAlignment="Right" Grid.Row="0" Grid.Column="0" Text="VIN:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" Grid.Row="0" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding LogResult.VIN}"></TextBox>
+                  <TextBlock TextAlignment="Right" Grid.Row="1" Grid.Column="0" Text="Model:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" Grid.Row="1" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding LogResult.Model}"></TextBox>
+                </Grid>
+                <Grid Grid.Column="1" ColumnDefinitions="*,Auto" RowDefinitions="*,*,*,*,*">
+                  <TextBlock TextAlignment="Right" Grid.Row="2" Grid.Column="0" Text="Version:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" Grid.Row="2" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding LogResult.Version}"></TextBox>
+                  <TextBlock TextAlignment="Right" Grid.Row="3" Grid.Column="0" Text="Navigation:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" Grid.Row="3" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding LogResult.Navigation}"> </TextBox>
+                </Grid>
+                <Grid Grid.Column="2" ColumnDefinitions="*,Auto" RowDefinitions="*,*,*,*,*">
+                  <TextBlock TextAlignment="Right" Grid.Row="2" Grid.Column="0" Text="Storage:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" Grid.Row="2" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding LogResult.Storage}"> </TextBox>
+                  <TextBlock TextAlignment="Right" Grid.Row="3" Grid.Column="0" Text="Region:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" Grid.Row="3" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding LogResult.Region}"> </TextBox>
+                </Grid>
+              </Grid>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+        
+        <TextBlock FontSize="18">6. Proposed Update</TextBlock>
+        <StackPanel Orientation="Vertical">
+          <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
+                  BorderThickness="1" Padding="15">
+            <StackPanel>
+              <TextBlock HorizontalAlignment="Center" IsVisible="{Binding !InterrogatorOutputVisible}">No information available currently!</TextBlock>
+              <Grid ColumnDefinitions="*,2*,2*" RowDefinitions="Auto,Auto" IsVisible="{Binding InterrogatorOutputVisible}">
+              <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
+                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Region:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding ReleaseDetails.Region}"></TextBox>
+              </Grid>
+              <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
+                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Sync:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding ReleaseDetails.Release}"></TextBox>
+              </Grid>
+              <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
+                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Maps:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding ReleaseDetails.Maps}"></TextBox>
+              </Grid>
+              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,10,0,0" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Download, Verify and Copy update files" IsEnabled="{Binding StartEnabled}" Command="{Binding Begin}">
+              </Button>
+            </Grid>
+            </StackPanel>
           </Border>
         </StackPanel>
       </StackPanel>

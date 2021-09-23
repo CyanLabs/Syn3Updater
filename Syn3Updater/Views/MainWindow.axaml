@@ -3,7 +3,7 @@
         xmlns:vm="clr-namespace:Syn3Updater.ViewModels;assembly=Syn3Updater"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="1120" d:DesignHeight="700" Height="700" Width="1120"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="800" Height="800" Width="900"
         xmlns:pages="clr-namespace:Syn3Updater.Pages;assembly=Syn3Updater"
         xmlns:controls="clr-namespace:Avalonia.Controls"
         x:Class="Syn3Updater.Views.MainWindow"
@@ -11,7 +11,7 @@
         x:Name="MainWindow"
         WindowStartupLocation="CenterScreen"
         Background="{x:Null}"
-        Title="Syn3Updater">
+        Title="Syn3Updater" Closing="Window_OnClosing">
   <controls:FluentWindow.Styles>
     <Style Selector="TitleBar:fullscreen">
       <Setter Property="Background" Value="#7f000000" />

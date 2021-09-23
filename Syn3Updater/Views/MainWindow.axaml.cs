@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -17,6 +18,11 @@ namespace Syn3Updater.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void Window_OnClosing(object? sender, CancelEventArgs e)
+        {
+            AppMan.Exit();
         }
     }
 }

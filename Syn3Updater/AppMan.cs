@@ -54,6 +54,11 @@ namespace Syn3Updater
         {
             ShowHomeTab?.Invoke(this, EventArgs.Empty);
         }
+        
+        public void FireInterrogatorLogCompleted()
+        {
+            ShowInterrogatorLogCompleted?.Invoke(this, EventArgs.Empty);
+        }
 
         public void FireUtilityTabEvent()
         {
@@ -73,6 +78,7 @@ namespace Syn3Updater
         public event EventHandler ShowDownloadsTab;
         public event EventHandler StartDownloadsTab;
         public event EventHandler ShowHomeTab;
+        public event EventHandler ShowInterrogatorLogCompleted;
         public event EventHandler ShowUtilityTab;
         public event EventHandler ShowSettingsTab;
         public event EventHandler ShowNewsTab;
@@ -87,8 +93,9 @@ namespace Syn3Updater
             DriveName,
             DrivePartitionType,
             DriveFileSystem,
-            DriveNumber,
-            DriveLetter;
+            DriveNumber;
+
+        public string? DriveLetter;
 
         public string? SelectedMapVersion;
 
@@ -240,7 +247,8 @@ namespace Syn3Updater
             }
 
             Randomize();
-            App.SaveSettings();
+            App.SaveMainSettings();
+            App.SaveProfileSettings();
             Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
         }
 
@@ -303,7 +311,7 @@ namespace Syn3Updater
             }
         }
 
-        private void SaveSettings()
+        public void SaveMainSettings()
         {
             try
             {
@@ -314,7 +322,10 @@ namespace Syn3Updater
             {
                 // ignored
             }
-
+        }
+        
+        public void SaveProfileSettings()
+        {
             try
             {
                 string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
@@ -339,9 +350,10 @@ namespace Syn3Updater
             }
         }
 
-        public void Exit()
+        public static void Exit()
         {
-            App.SaveSettings();
+            App.SaveMainSettings();
+            App.SaveProfileSettings();
         }
 
         #endregion

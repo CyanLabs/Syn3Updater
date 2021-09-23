@@ -24,7 +24,7 @@ namespace Syn3Updater.Converters
                     res += c.ToString();
                 }
             }
-            return Regex.Replace(res, "_*_", "_").Split('_').ToList();
+            return Regex.Replace(res, "_*_", "_").Split('_').Where(x => x != "").ToList();
         }
     }
 }

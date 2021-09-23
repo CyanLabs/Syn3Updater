@@ -12,11 +12,6 @@
         public string Theme { get; set; }
         public string LogPath { get; set; }
         public string Profile { get; set; }
-
-        // Old settings for migration purposes
-        public string CurrentRegion { get; set; }
-        public int CurrentVersion { get; set; } = 0;
-        public bool CurrentNav { get; set; } = false;
     }
 
     public class ProfileSettings
