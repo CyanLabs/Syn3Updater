@@ -41,8 +41,8 @@ namespace Syn3Updater.Models
         public class ReleasesIvsus
         {
             [JsonProperty("id")] public int Id { get; set; }
-            [JsonProperty("ivsu")] public Ivsu Ivsu { get; set; }
-            [JsonProperty("map_ivsu")] public Ivsu MapIvsu { get; set; }
+            [JsonProperty("ivsu")] public Ivsu? Ivsu { get; set; }
+            [JsonProperty("map_ivsu")] public Ivsu? MapIvsu { get; set; }
             [JsonProperty("release")] public Release Release { get; set; }
         }
         

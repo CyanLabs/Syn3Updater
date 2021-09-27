@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
-using Cyanlabs.Syn3Updater.Model;
 using ReactiveUI;
 using Syn3Updater.Helpers;
 using Syn3Updater.Models;

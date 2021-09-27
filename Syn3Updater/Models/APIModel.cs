@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using GraphQL;
-using Newtonsoft.Json;
-using Syn3Updater.Models;
-
-namespace Cyanlabs.Syn3Updater.Model
+﻿namespace Syn3Updater.Models
 {
     /*
         /// <summary>
@@ -52,13 +47,6 @@ namespace Cyanlabs.Syn3Updater.Model
                 GraceNotesRemoval = "gracenotesremoval",
                 SmallVoice = "smallvoice",
                 Reformat = "reformat";
-        }
-        
-        public class ReleaseDetails
-        {
-            public string Region { get; set; }
-            public string Release { get; set; }
-            public string Maps { get; set; }
         }
     }
 }

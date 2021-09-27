@@ -11,7 +11,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Cyanlabs.Syn3Updater.Model;
 using GraphQL;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;

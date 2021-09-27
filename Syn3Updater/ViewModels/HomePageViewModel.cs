@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using Cyanlabs.Syn3Updater.Model;
+using System.Threading.Tasks;
+using DynamicData;
 using GraphQL;
 using JetBrains.Annotations;
 using Nito.AsyncEx;
@@ -95,16 +95,77 @@ namespace Syn3Updater.ViewModels
             set => this.RaiseAndSetIfChanged(ref _interrogatorOutputVisible, value);
         }
 
-        private Api.ReleaseDetails? _releaseDetails;
+        private ObservableCollection<string> _regions;
 
-        public Api.ReleaseDetails? ReleaseDetails
+        public ObservableCollection<string> Regions
         {
-            get => _releaseDetails;
-            set => this.RaiseAndSetIfChanged(ref _releaseDetails, value);
+            get => _regions;
+            set => this.RaiseAndSetIfChanged(ref _regions, value);
         }
+
+        private ObservableCollection<string> _releases;
+
+        public ObservableCollection<string> Releases
+        {
+            get => _releases;
+            set => this.RaiseAndSetIfChanged(ref _releases, value);
+        }  
+        
+        private ObservableCollection<string> _mapreleases;
+
+        public ObservableCollection<string> MapReleases
+        {
+            get => _mapreleases;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _mapreleases, value);
+            }
+        }
+        
+        private string _selectedRegion;
+
+        public string SelectedRegion
+        {
+            get => _selectedRegion;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedRegion, value);
+                ResetMapReleaseInformation();
+                SelectedRelease = AsyncContext.Run(async () => await GetReleaseInformation(SelectedRegion));
+            }
+        }
+
+       
+        private string _selectedRelease;
+
+        public string SelectedRelease
+        {
+            get => _selectedRelease;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedRelease, value);
+                ResetMapReleaseInformation();
+                SelectedMapRelease = AsyncContext.Run(async () => await GetMapReleaseInformation(SelectedRegion,_compat));
+            }
+        }
+       
+        private string _selectedMapRelease;
+
+        public string SelectedMapRelease
+        {
+            get => _selectedMapRelease;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedMapRelease, value);
+                StartEnabled = SelectedMapRelease != string.Empty;
+            }
+        }
+        
+        private string _compat = "";
 
         public HomePageViewModel()
         {
+            Regions = new ObservableCollection<string> { "CN", "EU", "NA", "ANZ", "ROW" };
             CreateInterrogatorEnabled = false;
             InterrogatorDescriptionVisible = false;
             InterrogatorOutputVisible = false;
@@ -144,85 +205,94 @@ namespace Syn3Updater.ViewModels
         [UsedImplicitly]
         private async void ScanInterrogatorUSB()
         {
+            Releases = new ObservableCollection<string>();
+            MapReleases = new ObservableCollection<string>();
             USBHelper usbHelper = new();
             LogResult = await usbHelper.LogParseXmlAction(SelectedDrive?.Letter);
+            SelectedRegion = LogResult.Region;
             InterrogatorOutputVisible = true;
-            GetReleaseInformation();
         }
-
-        private async void GetReleaseInformation()
+        
+        private async Task<string> GetReleaseInformation(string region)
         {
-            if (LogResult?.Region is "" or "???" or "NON-NAV") return;
-
-            GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetLatestRelease(LogResult.Region));
+            if (region is "" or "???" or "NON-NAV") return string.Empty;
+            Releases.Clear();
+            GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetReleases(region));
             ReleasesRoot latestRelease = graphQlResponse.Data;
 
-            string compat = latestRelease.Releases.FirstOrDefault().Version[..3];
-
-            graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetLatestMapRelease(LogResult.Region, compat));
+            Releases.AddRange(latestRelease.Releases.Select(x => x.Name));
+            _compat = latestRelease.Releases.FirstOrDefault().Version[..3];
+            return latestRelease.Releases.FirstOrDefault().Name;
+        }
+        
+        private async Task<string> GetMapReleaseInformation(string region, string compat)
+        {
+            if (region is "" or "???" or "NON-NAV") return string.Empty;
+            MapReleases.Clear();
+            GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleases(region, compat));
             ReleasesRoot latestMapRelease = graphQlResponse.Data;
-
-            ReleaseDetails = new Api.ReleaseDetails
-            {
-                Region = LogResult.Region,
-                Release = latestRelease.Releases.FirstOrDefault().Name,
-                Maps = latestMapRelease.MapReleases.FirstOrDefault().Name
-            };
-            GetReleaseIVSUs();
+            
+            MapReleases.AddRange(latestMapRelease.MapReleases.Select(x => x.Name));
+            return latestMapRelease.MapReleases.FirstOrDefault().Name;
         }
 
-        private ObservableCollection<SModel.Ivsu> _ivsuList;
-        private async void GetReleaseIVSUs()
+        private void ResetMapReleaseInformation()
         {
-            _ivsuList = new ObservableCollection<SModel.Ivsu>();
+            MapReleases = new ObservableCollection<string>();
+            StartEnabled = false;
+        }
+        
+        private async Task<ObservableCollection<SModel.Ivsu>> GetReleaseIVSUs()
+        {
+            ObservableCollection<SModel.Ivsu> ivsuList = new();
             string navtype = LogResult.Navigation ? "nav" : "nonnav";
-            var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetReleaseIvsus(ReleaseDetails.Release,navtype));
-            ReleasesRoot jsonIvsUs = graphQlResponse.Data;
-
-            foreach (ReleasesIvsus item in jsonIvsUs.Releases[0].IvsusList.Where(ivsus => ivsus.Ivsu != null))
-                if (item.Ivsu.Regions.Contains("ALL") || item.Ivsu.Regions.Contains(ReleaseDetails.Region))
-                    _ivsuList?.Add(new SModel.Ivsu
-                    {
-                        Type = item.Ivsu.Type,
-                        Name = item.Ivsu.Name,
-                        Version = item.Ivsu.Version,
-                        Notes = item.Ivsu.Notes,
-                        Url = item.Ivsu.Url,
-                        Md5 = item.Ivsu.Md5,
-                        Selected = true,
-                        FileName = FileHelper.url_to_filename(item.Ivsu.Url),
-                        FileSize = item.Ivsu.FileSize
-                    });
-
-
-            var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleaseIvsus(ReleaseDetails.Maps));
-            ReleasesRoot jsonMapIvsUs = graphQlResponse2.Data;
             
-            foreach (ReleasesIvsus item in jsonMapIvsUs.MapReleases[0].IvsusList.Where(ivsus => ivsus.MapIvsu != null))
-                if (item.MapIvsu.Regions.Contains("ALL") || item.MapIvsu.Regions.Contains(ReleaseDetails.Region))
-                    _ivsuList?.Add(new SModel.Ivsu
-                    {
-                        Type = item.MapIvsu.Type,
-                        Name = item.MapIvsu.Name,
-                        Version = item.MapIvsu.Version,
-                        Notes = item.MapIvsu.Notes,
-                        Url = item.MapIvsu.Url,
-                        Md5 = item.MapIvsu.Md5,
-                        Selected = true,
-                        FileName = FileHelper.url_to_filename(item.MapIvsu.Url),
-                        FileSize = item.MapIvsu.FileSize,
-                        Source = item.MapIvsu.Source
-                    });
-            StartEnabled = true;
+            GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetReleaseIvsus(SelectedRelease,navtype));
+            ReleasesRoot jsonIvsUs = graphQlResponse.Data;
+            foreach (ReleasesIvsus item in jsonIvsUs.Releases[0].IvsusList.Where(x => x.Ivsu != null && (x.Ivsu.Regions.Contains("ALL") || x.Ivsu.Regions.Contains(SelectedRegion))))
+            {
+                ivsuList.Add(new SModel.Ivsu
+                {
+                    Type = item.Ivsu.Type,
+                    Name = item.Ivsu.Name,
+                    Version = item.Ivsu.Version,
+                    Notes = item.Ivsu.Notes,
+                    Url = item.Ivsu.Url,
+                    Md5 = item.Ivsu.Md5,
+                    Selected = true,
+                    FileName = FileHelper.url_to_filename(item.Ivsu.Url),
+                    FileSize = item.Ivsu.FileSize
+                });
+            }
+            
+            GraphQLResponse<ReleasesRoot> graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleaseIvsus(SelectedMapRelease));
+            ReleasesRoot jsonMapIvsUs = graphQlResponse2.Data;
+            foreach (ReleasesIvsus item in jsonMapIvsUs.MapReleases[0].IvsusList.Where(x => x.MapIvsu != null && (x.MapIvsu.Regions.Contains("ALL") || x.MapIvsu.Regions.Contains(SelectedRegion))))
+            {
+                ivsuList.Add(new SModel.Ivsu
+                {
+                    Type = item.MapIvsu.Type,
+                    Name = item.MapIvsu.Name,
+                    Version = item.MapIvsu.Version,
+                    Notes = item.MapIvsu.Notes,
+                    Url = item.MapIvsu.Url,
+                    Md5 = item.MapIvsu.Md5,
+                    Selected = true,
+                    FileName = FileHelper.url_to_filename(item.MapIvsu.Url),
+                    FileSize = item.MapIvsu.FileSize,
+                    Source = item.MapIvsu.Source
+                });
+            }
+            return ivsuList;
         }
 
         [UsedImplicitly]
         private async void Begin()
         {
-            AppMan.App.Ivsus = _ivsuList;
-            AppMan.App.SelectedRegion = ReleaseDetails.Region;
-            AppMan.App.SelectedRelease = ReleaseDetails.Release;
-            AppMan.App.SelectedMapVersion = ReleaseDetails.Maps;
+            AppMan.App.Ivsus = await GetReleaseIVSUs();
+            AppMan.App.SelectedRegion = SelectedRegion;
+            AppMan.App.SelectedRelease = SelectedRelease;
+            AppMan.App.SelectedMapVersion = SelectedMapRelease;
             AppMan.App.IsDownloading = true;
             AppMan.App.FireDownloadsStartEvent();
             AppMan.App.DriveLetter = SelectedDrive?.Letter;

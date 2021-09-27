@@ -48,51 +48,15 @@ namespace Syn3Updater.Helpers
                     }
                 }"
             };
-        } 
-        public static GraphQLRequest GetLatestRelease(string selectedRegion, string licensekey = "")
-        {
-            return new GraphQLRequest
-            {
-                Query = @"
-                {
-                    releases (
-                        sort: ""-date_created"",
-                        limit: 1,
-                        filter: { 
-                            status: { _in: [""published"", ""private""] },
-                            key: { _in: [""public"", ""v2"", """ + licensekey + @"""]},
-                            regions: {_contains: """ + selectedRegion + @"""},
-                        }
-                    ) {
-                        name, notes, regions, version, feedbackurl
-                    }
-                }"
-            };
-        }
-        
-        public static GraphQLRequest GetLatestMapRelease(string selectedRegion, string compat, string esn = "", string license = "")
-        {
-            return new GraphQLRequest
-            {
-                Query = @"
-                {
-                    map_releases(sort: ""-date_created"", limit: 1,
-                        filter: {_and: 
-                            [{ _or: [ {licensekeys: { _null: true}}, {licensekeys: { _empty: true}}," + license + @"],
-                            status: { _in: [""published"", ""private""] }, regions: {_in: """ + selectedRegion + @"""},
-                            " + esn + @"compatibility: {_contains: """ + compat + @"""} }]
-                        }){ name, regions, esn }
-                }"
-            };
         }
 
-        public static GraphQLRequest GetMapReleases(string selectedRegion, string license, string esn, string compat)
+        public static GraphQLRequest GetMapReleases(string selectedRegion, string compat, string license = "", string esn = "")
         {
             return new GraphQLRequest
             {
                 Query = @"
                 {
-                    map_releases(sort: ""-name"", limit: -1,
+                    map_releases(sort: ""-date_created"", limit: -1,
                         filter: {_and: 
                             [{ _or: [ {licensekeys: { _null: true}}, {licensekeys: { _empty: true}}," + license + @"],
                             status: { _in: [""published"", ""private""] }, regions: {_in: """ + selectedRegion + @"""},

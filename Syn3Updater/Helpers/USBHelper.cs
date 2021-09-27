@@ -15,7 +15,6 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Cyanlabs.Syn3Updater.Model;
 using GraphQL;
 using Newtonsoft.Json;
 using Syn3Updater.Converters;
@@ -373,22 +372,8 @@ namespace Syn3Updater.Helpers
                         IvsuRoot sversion = graphQlResponse2.Data;
 
                         string convertedsversion = sversion.Ivsus[0].Version;
-                        if (AppMan.App.Action == "logutilitymy20")
-                        {
-                            AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
-                            AppMan.App.SVersion = convertedsversion;
-                            logResult.Version = sversion.Ivsus[0].Version;
-                        }
-                        else if (convertedsversion != AppMan.App.SVersion)
-                        {
-                            //TODO Show Update Current Version Message
-                            //if (await UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentVersionUtility"), AppMan.App.SVersion, convertedsversion),LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Yes"))) == ContentDialogResult.Primary)
-                            //{
-                                AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
-                                AppMan.App.SVersion = convertedsversion;
-                                logResult.Version = sversion.Ivsus[0].Version;
-                                //}
-                        }
+                        //AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
+                        logResult.Version = convertedsversion;
                     }
                     catch (Exception)
                     {

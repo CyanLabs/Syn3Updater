@@ -69,7 +69,7 @@
           </Border>
         </StackPanel>
 
-        <TextBlock FontSize="18">3. Prepare USB (Gather SYNC Details)</TextBlock>
+        <TextBlock FontSize="18">2. Prepare USB (Gather SYNC Details)</TextBlock>
         <StackPanel Orientation="Vertical">
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
@@ -88,7 +88,7 @@ USB Drive has been prepared successfully!
             </Border>
        </StackPanel>
         
-        <TextBlock FontSize="18">4. Open USB Drive Log File</TextBlock>
+        <TextBlock FontSize="18">3. Open USB Drive Log File</TextBlock>
         <StackPanel Orientation="Vertical">
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
@@ -120,7 +120,7 @@ USB Drive has been prepared successfully!
           </Border>
         </StackPanel>
         
-        <TextBlock FontSize="18">6. Proposed Update</TextBlock>
+        <TextBlock FontSize="18">4. Proposed Update</TextBlock>
         <StackPanel Orientation="Vertical">
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
@@ -128,13 +128,16 @@ USB Drive has been prepared successfully!
               <TextBlock HorizontalAlignment="Center" IsVisible="{Binding !InterrogatorOutputVisible}">No information available currently!</TextBlock>
               <Grid ColumnDefinitions="*,2*,2*" RowDefinitions="Auto,Auto" IsVisible="{Binding InterrogatorOutputVisible}">
               <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
-                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Region:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding ReleaseDetails.Region}"></TextBox>
+                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Region:" VerticalAlignment="Center"></TextBlock>
+                <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedRegion}" Items="{Binding Regions}"/>
               </Grid>
               <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
-                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Sync:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding ReleaseDetails.Release}"></TextBox>
+                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Sync:" VerticalAlignment="Center"></TextBlock>
+                <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedRelease}" Items="{Binding Releases}"/>
               </Grid>
               <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
-                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Maps:" VerticalAlignment="Center"></TextBlock><TextBox Grid.Column="1" IsReadOnly="True" Margin="5,0,0,0" Text="{Binding ReleaseDetails.Maps}"></TextBox>
+                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Maps:" VerticalAlignment="Center"></TextBlock>
+                <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedMapRelease}" Items="{Binding MapReleases}"/>
               </Grid>
               <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,10,0,0" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Download, Verify and Copy update files" IsEnabled="{Binding StartEnabled}" Command="{Binding Begin}">
               </Button>
