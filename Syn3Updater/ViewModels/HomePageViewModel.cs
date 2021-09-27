@@ -9,17 +9,18 @@ using Nito.AsyncEx;
 using ReactiveUI;
 using Syn3Updater.Helpers;
 using Syn3Updater.Models;
+using Syn3Updater.Services;
 
 namespace Syn3Updater.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
-        private IvsuRoot? _syncVersions;
+        private readonly IvsuRoot? _syncVersions;
 
         public IvsuRoot? SyncVersions
         {
             get => _syncVersions;
-            set => this.RaiseAndSetIfChanged(ref _syncVersions, value);
+            private init => this.RaiseAndSetIfChanged(ref _syncVersions, value);
         }
 
         private string? _currentVersion;
@@ -60,7 +61,7 @@ namespace Syn3Updater.ViewModels
         public Interrogator.LogResult? LogResult
         {
             get => _logResult;
-            set => this.RaiseAndSetIfChanged(ref _logResult, value);
+            private set => this.RaiseAndSetIfChanged(ref _logResult, value);
         }
 
         private bool _createInterrogatorEnabled;
@@ -103,7 +104,7 @@ namespace Syn3Updater.ViewModels
             set => this.RaiseAndSetIfChanged(ref _regions, value);
         }
 
-        private ObservableCollection<string> _releases;
+        private ObservableCollection<string> _releases = new();
 
         public ObservableCollection<string> Releases
         {
@@ -111,15 +112,12 @@ namespace Syn3Updater.ViewModels
             set => this.RaiseAndSetIfChanged(ref _releases, value);
         }  
         
-        private ObservableCollection<string> _mapreleases;
+        private ObservableCollection<string> _mapReleases = new();
 
         public ObservableCollection<string> MapReleases
         {
-            get => _mapreleases;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _mapreleases, value);
-            }
+            get => _mapReleases;
+            set => this.RaiseAndSetIfChanged(ref _mapReleases, value);
         }
         
         private string _selectedRegion;
@@ -187,7 +185,6 @@ namespace Syn3Updater.ViewModels
                     }
                 };
             }
-
             AppMan.App.ShowInterrogatorLogCompleted += delegate { InterrogatorDescriptionVisible = true; };
         }
 
@@ -205,10 +202,7 @@ namespace Syn3Updater.ViewModels
         [UsedImplicitly]
         private async void ScanInterrogatorUSB()
         {
-            Releases = new ObservableCollection<string>();
-            MapReleases = new ObservableCollection<string>();
-            USBHelper usbHelper = new();
-            LogResult = await usbHelper.LogParseXmlAction(SelectedDrive?.Letter);
+            LogResult = await USBHelper.LogParseXmlAction(SelectedDrive?.Letter);
             SelectedRegion = LogResult.Region;
             InterrogatorOutputVisible = true;
         }
@@ -241,58 +235,11 @@ namespace Syn3Updater.ViewModels
             MapReleases = new ObservableCollection<string>();
             StartEnabled = false;
         }
-        
-        private async Task<ObservableCollection<SModel.Ivsu>> GetReleaseIVSUs()
-        {
-            ObservableCollection<SModel.Ivsu> ivsuList = new();
-            string navtype = LogResult.Navigation ? "nav" : "nonnav";
-            
-            GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetReleaseIvsus(SelectedRelease,navtype));
-            ReleasesRoot jsonIvsUs = graphQlResponse.Data;
-            foreach (ReleasesIvsus item in jsonIvsUs.Releases[0].IvsusList.Where(x => x.Ivsu != null && (x.Ivsu.Regions.Contains("ALL") || x.Ivsu.Regions.Contains(SelectedRegion))))
-            {
-                ivsuList.Add(new SModel.Ivsu
-                {
-                    Type = item.Ivsu.Type,
-                    Name = item.Ivsu.Name,
-                    Version = item.Ivsu.Version,
-                    Notes = item.Ivsu.Notes,
-                    Url = item.Ivsu.Url,
-                    Md5 = item.Ivsu.Md5,
-                    Selected = true,
-                    FileName = FileHelper.url_to_filename(item.Ivsu.Url),
-                    FileSize = item.Ivsu.FileSize
-                });
-            }
-            
-            GraphQLResponse<ReleasesRoot> graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleaseIvsus(SelectedMapRelease));
-            ReleasesRoot jsonMapIvsUs = graphQlResponse2.Data;
-            foreach (ReleasesIvsus item in jsonMapIvsUs.MapReleases[0].IvsusList.Where(x => x.MapIvsu != null && (x.MapIvsu.Regions.Contains("ALL") || x.MapIvsu.Regions.Contains(SelectedRegion))))
-            {
-                ivsuList.Add(new SModel.Ivsu
-                {
-                    Type = item.MapIvsu.Type,
-                    Name = item.MapIvsu.Name,
-                    Version = item.MapIvsu.Version,
-                    Notes = item.MapIvsu.Notes,
-                    Url = item.MapIvsu.Url,
-                    Md5 = item.MapIvsu.Md5,
-                    Selected = true,
-                    FileName = FileHelper.url_to_filename(item.MapIvsu.Url),
-                    FileSize = item.MapIvsu.FileSize,
-                    Source = item.MapIvsu.Source
-                });
-            }
-            return ivsuList;
-        }
 
         [UsedImplicitly]
         private async void Begin()
         {
-            AppMan.App.Ivsus = await GetReleaseIVSUs();
-            AppMan.App.SelectedRegion = SelectedRegion;
-            AppMan.App.SelectedRelease = SelectedRelease;
-            AppMan.App.SelectedMapVersion = SelectedMapRelease;
+            AppMan.App.Ivsus = await HomeViewModelService.GetReleaseIvsus(SelectedRegion,SelectedRelease,SelectedMapRelease,LogResult.Navigation);
             AppMan.App.IsDownloading = true;
             AppMan.App.FireDownloadsStartEvent();
             AppMan.App.DriveLetter = SelectedDrive?.Letter;

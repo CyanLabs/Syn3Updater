@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using GraphQL;
 using Newtonsoft.Json;
@@ -33,10 +32,7 @@ namespace Syn3Updater.Helpers
             public string PartNumber;
             public string VIN;
         }
-        
-        private ApimDetails _apimDetails;
-        private XDocument _node;
-        
+
         /// <summary>
         ///     Refreshes device list using WMI queries
         /// </summary>
@@ -244,9 +240,11 @@ namespace Syn3Updater.Helpers
             }
         }
 
-         public async Task<Interrogator.LogResult> LogParseXmlAction(string? letter)
+         public static async Task<Interrogator.LogResult> LogParseXmlAction(string? letter)
          { 
+             ApimDetails apimDetails = new ApimDetails();
              string path;
+             XDocument _node;
              Interrogator.LogResult logResult = new();
             try
             {
@@ -279,7 +277,7 @@ namespace Syn3Updater.Helpers
                 
                 if (interrogatorLog != null)
                 {
-                    _apimDetails.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
+                    apimDetails.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
                     logResult.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;
 
                     Interrogator.D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
@@ -302,35 +300,35 @@ namespace Syn3Updater.Helpers
                         .Select(x => x.Total)
                         .Single();
                     bool apimnavpartition = interrogatorLog!.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Any(x => x.Type == "/fs/sd/MAP");
-                    _apimDetails.PartNumber = apimmodel;
+                    apimDetails.PartNumber = apimmodel;
                     if (double.TryParse(apimsize?.Remove(apimsize.Length - 1), NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
                     {
                         switch (apimsizeint)
                         {
                             case >= 0 and <= 8:
-                                _apimDetails.Nav = false;
-                                _apimDetails.Size = 8;
+                                apimDetails.Nav = false;
+                                apimDetails.Size = 8;
                                 break;
                             case >= 9 and <= 16:
                                 if(apimnavpartition) 
-                                _apimDetails.Nav = apimnavpartition;
-                                _apimDetails.Size = 16;
+                                apimDetails.Nav = apimnavpartition;
+                                apimDetails.Size = 16;
                                 break;
                             case >= 17 and <= 32:
-                                _apimDetails.Nav = true;
-                                _apimDetails.Size = 32;
+                                apimDetails.Nav = true;
+                                apimDetails.Size = 32;
                                 break;
                             case >= 33 and <= 64:
-                                _apimDetails.Nav = true;
-                                _apimDetails.Size = 64;
+                                apimDetails.Nav = true;
+                                apimDetails.Size = 64;
                                 break;
                         }
                     }
                     string apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
                         .Select(x => x.Available).Single();
                     
-                    logResult.Navigation = _apimDetails.Nav;
-                    logResult.Storage = apimfree + " / " + _apimDetails.Size + "G";
+                    logResult.Navigation = apimDetails.Nav;
+                    logResult.Storage = apimfree + " / " + apimDetails.Size + "G";
                     logResult.Time += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
                     
                     foreach (Interrogator.D2P1PartitionHealth d2P1PartitionHealth in interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth)
