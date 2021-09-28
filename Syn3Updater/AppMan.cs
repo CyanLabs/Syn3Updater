@@ -201,7 +201,7 @@ namespace Syn3Updater
             Header = ApiHelper.GetGeneratedUserAgent();
             
             SettingsHelper.SaveMainSettings(App.MainConfigFile,App.MainSettings);
-            SettingsHelper.SaveProfileSettings(App.ProfilePath, App.Settings);
+            SettingsHelper.SaveProfileSettings(App.ProfileFile, App.Settings);
             
             Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
         }
@@ -251,7 +251,7 @@ namespace Syn3Updater
         public static void Exit()
         {
             SettingsHelper.SaveMainSettings(App.MainConfigFile,App.MainSettings);
-            SettingsHelper.SaveProfileSettings(App.ProfilePath, App.Settings);
+            SettingsHelper.SaveProfileSettings(App.ProfileFile, App.Settings);
         }
         #endregion
     }
