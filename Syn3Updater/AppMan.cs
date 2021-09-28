@@ -16,6 +16,7 @@ using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Newtonsoft.Json;
 using Syn3Updater.Helpers;
+using Syn3Updater.Helpers.Windows;
 using Syn3Updater.Models;
 using Syn3Updater.Views;
 
@@ -135,7 +136,10 @@ namespace Syn3Updater
         {
             if (OperatingSystem.IsWindows())
             {
-                SystemHelper.WriteRegistryHandler();
+                WindowsSystemHelper.WriteRegistryHandler();
+            } else if (OperatingSystem.IsMacOS())
+            {
+                //TODO MAC OSX Intent
             }
             
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -215,7 +219,7 @@ namespace Syn3Updater
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
+                    string downloads = WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads);
                     MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
                 } 
                 else if (OperatingSystem.IsMacOS())
@@ -237,7 +241,7 @@ namespace Syn3Updater
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
+                    string downloads = WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads);
                     MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
                 } 
                 else if (OperatingSystem.IsMacOS())
@@ -251,7 +255,7 @@ namespace Syn3Updater
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
+                    string downloads = WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads);
                     MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
                 } 
                 else if (OperatingSystem.IsMacOS())

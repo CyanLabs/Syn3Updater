@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using ReactiveUI;
 using Syn3Updater.Helpers;
+using Syn3Updater.Helpers.Windows;
 using Syn3Updater.Models;
 using Syn3Updater.Services;
 
@@ -525,7 +526,7 @@ namespace Syn3Updater.ViewModels
                 else
                 {
                    //TODO Display USB Drive Completion Message 
-                   await SystemHelper.OpenWebPage($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
+                   Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
                 }
 
                 AppMan.App.FireHomeTabEvent();

@@ -2,16 +2,18 @@
 using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
-namespace Syn3Updater.Helpers
+namespace Syn3Updater.Helpers.Windows
 {
     /// <summary>
     ///     Helper class containing methods to retrieve specific file system paths.
     ///     https://stackoverflow.com/a/21953690
     /// </summary>
-    public static class SystemHelper
+    [SupportedOSPlatform("windows")]
+    public static class WindowsSystemHelper
     {
         #region Properties & Fields
 
@@ -119,11 +121,7 @@ namespace Syn3Updater.Helpers
         {
             Registry.CurrentUser.DeleteSubKeyTree(@"Software\Classes\syn3updater");
         }
-
-        public static async Task OpenWebPage(string url)
-        {
-            Process.Start(url);
-        }
+        
 
         #endregion
     }

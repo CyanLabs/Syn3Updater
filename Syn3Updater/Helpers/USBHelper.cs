@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Management;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -17,6 +19,7 @@ using Avalonia.Controls;
 using GraphQL;
 using Newtonsoft.Json;
 using Syn3Updater.Converters;
+using Syn3Updater.Helpers.Windows;
 using Syn3Updater.Views;
 using Formatting = Newtonsoft.Json.Formatting;
 
@@ -38,6 +41,7 @@ namespace Syn3Updater.Helpers
         /// </summary>
         /// <param name="fakeusb">Set to true to add 'Download Only' option to the list</param>
         /// <returns>ObservableCollection of all USB Drives as type Drive</returns>
+        [SupportedOSPlatform("windows")]
         public static ObservableCollection<USBDriveModel.Drive>? RefreshDevicesWindows(bool fakeusb)
         {
             ObservableCollection<USBDriveModel.Drive>? driveList = new();
@@ -140,8 +144,15 @@ namespace Syn3Updater.Helpers
         public static async Task GenerateLog(string log, bool upload)
         {
             StringBuilder data = new($@"CYANLABS - SYN3 UPDATER - V{Assembly.GetExecutingAssembly().GetName().Version}{Environment.NewLine}");
-            data.Append(@"Operating System: ").Append(SystemHelper.GetOsFriendlyName()).Append(Environment.NewLine)
-                .Append(Environment.NewLine)
+            if (OperatingSystem.IsWindows())
+            {
+                data.Append(@"Operating System: ").Append(WindowsSystemHelper.GetOsFriendlyName()).Append(Environment.NewLine);
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                //TODO Add Operating System Check 
+            }
+            data.Append(Environment.NewLine)
                 .Append($@"PREVIOUS CONFIGURATION{Environment.NewLine}")
                 .Append($@"Version: {AppMan.App.SVersion}{Environment.NewLine}")
                 .Append($@"Region: {AppMan.App.Settings.CurrentRegion}{Environment.NewLine}")
@@ -232,7 +243,7 @@ namespace Syn3Updater.Helpers
                 HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
                 string responseString = await response.Content.ReadAsStringAsync();           
                 var output = JsonConvert.DeserializeAnonymousType(responseString, new { uuid = "", status = "" });
-                await SystemHelper.OpenWebPage(Api.LogUrl + output.uuid);
+                Process.Start(Api.LogUrl + output.uuid);
             }
             catch (Exception e)
             {

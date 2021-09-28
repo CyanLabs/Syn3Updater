@@ -176,6 +176,7 @@ namespace Syn3Updater.ViewModels
             }
             else if (OperatingSystem.IsMacOS())
             {
+                //TODO MAC OSX DRIVE CODE
                 DriveList = new ObservableCollection<USBDriveModel.Drive>
                 {
                     new()
