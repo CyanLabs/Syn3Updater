@@ -157,17 +157,17 @@ namespace Syn3Updater
 
             if (OperatingSystem.IsWindows())
             {
-                ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + $"{Path.DirectorySeparatorChar}CyanLabs{Path.DirectorySeparatorChar}Syn3Updater";
-                LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + $"{Path.DirectorySeparatorChar}CyanLabs{Path.DirectorySeparatorChar}Syn3Updater";
+                ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
+                LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater";
             } 
             else if (OperatingSystem.IsMacOS())
             {
-                ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + $"{Path.DirectorySeparatorChar}CyanLabs{Path.DirectorySeparatorChar}Syn3Updater";
-                LocalAppDataPath = ProgramDataPath;
+                ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Library/Application Support/Syn3Updater";
+                LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Library/Application Support/Syn3Updater";
             }
 
-            ProfilePath = $"{LocalAppDataPath}{Path.DirectorySeparatorChar}Profiles{Path.DirectorySeparatorChar}";
-            MainConfigFile = $"{LocalAppDataPath}{Path.DirectorySeparatorChar}settings.json";
+            ProfilePath = LocalAppDataPath + "\\Profiles\\";
+            MainConfigFile = LocalAppDataPath + "\\settings.json";
 
             if (!Directory.Exists(ProgramDataPath)) Directory.CreateDirectory(ProgramDataPath);
             if (!Directory.Exists(LocalAppDataPath)) Directory.CreateDirectory(LocalAppDataPath);
@@ -224,7 +224,7 @@ namespace Syn3Updater
                 } 
                 else if (OperatingSystem.IsMacOS())
                 {
-                    MainSettings.DownloadPath = @"~/Downloads/Syn3Updater/";
+                    MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
                 }
             }
             
