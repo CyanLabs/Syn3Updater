@@ -40,10 +40,6 @@ namespace Syn3Updater
         #endregion
 
         #region Events
-        public void FireDownloadsTabEvent()
-        {
-            ShowDownloadsTab?.Invoke(this, EventArgs.Empty);
-        }
         public void FireDownloadsStartEvent()
         {
             ShowDownloadsTab?.Invoke(this, EventArgs.Empty);
@@ -65,23 +61,11 @@ namespace Syn3Updater
             ShowUtilityTab?.Invoke(this, EventArgs.Empty);
         }
 
-        public void FireSettingsTabEvent()
-        {
-            ShowSettingsTab?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void FireNewsTabEvent()
-        {
-            ShowNewsTab?.Invoke(this, EventArgs.Empty);
-        }
-
         public event EventHandler ShowDownloadsTab;
         public event EventHandler StartDownloadsTab;
         public event EventHandler ShowHomeTab;
         public event EventHandler ShowInterrogatorLogCompleted;
         public event EventHandler ShowUtilityTab;
-        public event EventHandler ShowSettingsTab;
-        public event EventHandler ShowNewsTab;
 
         #endregion
 
@@ -111,22 +95,18 @@ namespace Syn3Updater
 
         public string MainConfigFile,
             ProfileFile,
-            ProgramDataPath,
-            LocalAppDataPath,
+            AppDataPath,
             ProfilePath,
             Header,
-            LauncherConfigFile,
-            Magnet,
-            Outdated;
+            Magnet;
 
-        public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, ClearSelections;
+        public bool SkipFormat, IsDownloading, DownloadToFolder, ModeForced, DownloadOnly;
         
         // Initiate GraphQlClient
         public readonly GraphQLHttpClient GraphQlClient = new(Api.Syn3UpdaterGraphQl, new NewtonsoftJsonSerializer())
         {
             HttpClient = { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("Bearer",ApiSecret.Token)}}
         };
-        public int AppUpdated = 0;
 
         #endregion
 
@@ -135,9 +115,8 @@ namespace Syn3Updater
         public void Initialize()
         {
             if (OperatingSystem.IsWindows())
-            {
                 WindowsSystemHelper.WriteRegistryHandler();
-            } else if (OperatingSystem.IsMacOS())
+            else if (OperatingSystem.IsMacOS())
             {
                 //TODO MAC OSX Intent
             }
@@ -156,38 +135,18 @@ namespace Syn3Updater
             //Logger.Debug($"URL Intent: {Magnet}");
 
             if (OperatingSystem.IsWindows())
-            {
-                ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater" + Path.DirectorySeparatorChar;
-                LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater" + Path.DirectorySeparatorChar;
-            } 
+                AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater\\";
             else if (OperatingSystem.IsMacOS())
-            {
-                ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Library/Application Support/Syn3Updater" + Path.DirectorySeparatorChar;
-                LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Library/Application Support/Syn3Updater" + Path.DirectorySeparatorChar;
-            }
+                AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Library/Application Support/Syn3Updater/";
 
-            ProfilePath = LocalAppDataPath + "Profiles" + Path.DirectorySeparatorChar;
-            MainConfigFile = LocalAppDataPath + "settings.json";
+            ProfilePath = AppDataPath + "Profiles" + Path.DirectorySeparatorChar;
+            MainConfigFile = AppDataPath + "settings.json";
 
-            if (!Directory.Exists(ProgramDataPath)) Directory.CreateDirectory(ProgramDataPath);
-            if (!Directory.Exists(LocalAppDataPath)) Directory.CreateDirectory(LocalAppDataPath);
+            if (!Directory.Exists(AppDataPath)) Directory.CreateDirectory(AppDataPath);
             if (!Directory.Exists(ProfilePath)) Directory.CreateDirectory(ProfilePath);
 
             if (File.Exists(MainConfigFile))
             {
-                try
-                {
-                    MainSettings = JsonConvert.DeserializeObject<MainSettings>(File.ReadAllText(MainConfigFile));
-                }
-                catch (JsonReaderException)
-                {
-                    File.Delete(MainConfigFile);
-                    MainSettings = new MainSettings();
-                }
-            }
-            else if (File.Exists(ProgramDataPath + "settings.json"))
-            {
-                File.Move(ProgramDataPath + "settings.json", MainConfigFile);
                 try
                 {
                     MainSettings = JsonConvert.DeserializeObject<MainSettings>(File.ReadAllText(MainConfigFile));
@@ -205,88 +164,46 @@ namespace Syn3Updater
 
             LoadProfile();
 
-            if (string.IsNullOrEmpty(MainSettings.LogPath)) MainSettings.LogPath = LocalAppDataPath + "Logs" + Path.DirectorySeparatorChar;
+            if (string.IsNullOrEmpty(MainSettings?.LogPath)) MainSettings.LogPath = AppDataPath + "Logs" + Path.DirectorySeparatorChar;
+            
             try
             {
                 if (!Directory.Exists(MainSettings.LogPath)) Directory.CreateDirectory(MainSettings.LogPath);
             }
             catch (DirectoryNotFoundException)
             {
-                MainSettings.LogPath = LocalAppDataPath + "Logs" + Path.DirectorySeparatorChar;
+                MainSettings.LogPath = AppDataPath + "Logs" + Path.DirectorySeparatorChar;
             }
 
             if (string.IsNullOrWhiteSpace(MainSettings.DownloadPath))
             {
-                if (OperatingSystem.IsWindows())
-                {
-                    string downloads = WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads);
-                    MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                } 
+                if (OperatingSystem.IsWindows()) 
+                    MainSettings.DownloadPath = $@"{WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads)}\Syn3Updater\";
                 else if (OperatingSystem.IsMacOS())
-                {
                     MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
-                }
             }
-            
             DownloadPath = App.MainSettings.DownloadPath;
 
             try
             {
-                if (!Directory.Exists(DownloadPath))
-                {
-                    Directory.CreateDirectory(DownloadPath);
-                }
-            }
-            catch (DirectoryNotFoundException)
-            {
-                if (OperatingSystem.IsWindows())
-                {
-                    string downloads = WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads);
-                    MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                } 
-                else if (OperatingSystem.IsMacOS())
-                {
-                    MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
-                }
-
-                DownloadPath = App.MainSettings.DownloadPath;
-            }
-            catch (IOException)
-            {
-                if (OperatingSystem.IsWindows())
-                {
-                    string downloads = WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads);
-                    MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
-                } 
-                else if (OperatingSystem.IsMacOS())
-                {
-                    MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
-                }
-
-                DownloadPath = App.MainSettings.DownloadPath;
-            }
-
-            Randomize();
-            App.SaveMainSettings();
-            App.SaveProfileSettings();
-            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
-        }
-
-        private void Randomize()
-        {
-            try
-            {
-                Random rand = new();
-                GraphQLResponse<UseragentRoot> graphQlResponse = Task.Run(async () => await GraphQlClient.SendQueryAsync<UseragentRoot>(GraphQlHelper.GetUserAgents())).Result;
-                UseragentRoot userAgents = graphQlResponse.Data;
-                List<string> header = userAgents.UserAgents.Select(ua => ua.Useragent.Replace("[PLACEHOLDER]", rand.Next(ua.Min, ua.Max).ToString())).ToList();
-                int index = rand.Next(header.Count);
-                Header = header[index];
+                if (!Directory.Exists(DownloadPath)) Directory.CreateDirectory(DownloadPath);
             }
             catch (Exception)
             {
-                Header = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/86.0";
+                if (OperatingSystem.IsWindows())
+                    MainSettings.DownloadPath = $@"{WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads)}\Syn3Updater\";
+                else if (OperatingSystem.IsMacOS())
+                    MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
+                    
+                DownloadPath = App.MainSettings.DownloadPath;
             }
+
+            Header = ApiHelper.GetGeneratedUserAgent();
+            
+            SettingsHelper.SaveMainSettings(App.MainConfigFile,App.MainSettings);
+            SettingsHelper.SaveProfileSettings(App.ProfilePath, App.Settings);
+            
+            Client.DefaultRequestHeaders.UserAgent.TryParseAdd(Header);
         }
 
         private void LoadProfile()
@@ -331,49 +248,10 @@ namespace Syn3Updater
             }
         }
 
-        public void SaveMainSettings()
-        {
-            try
-            {
-                string mainJson = JsonConvert.SerializeObject(MainSettings, Formatting.Indented);
-                File.WriteAllText(MainConfigFile, mainJson);
-            }
-            catch (IOException)
-            {
-                // ignored
-            }
-        }
-        
-        public void SaveProfileSettings()
-        {
-            try
-            {
-                string profileJson = JsonConvert.SerializeObject(Settings, Formatting.Indented);
-                File.WriteAllText(ProfileFile, profileJson);
-            }
-            catch (IOException)
-            {
-                // ignored
-            }
-        }
-
-        public void ResetSettings()
-        {
-            try
-            {
-                if (File.Exists(MainConfigFile)) File.Delete(MainConfigFile);
-                if (File.Exists(ProfileFile)) File.Delete(ProfileFile);
-            }
-            catch (Exception e)
-            {
-                // ignored
-            }
-        }
-
         public static void Exit()
         {
-            App.SaveMainSettings();
-            App.SaveProfileSettings();
+            SettingsHelper.SaveMainSettings(App.MainConfigFile,App.MainSettings);
+            SettingsHelper.SaveProfileSettings(App.ProfilePath, App.Settings);
         }
 
         #endregion

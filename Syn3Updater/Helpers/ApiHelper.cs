@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using GraphQL;
@@ -48,6 +50,26 @@ namespace Syn3Updater.Helpers
                 FileName = ivsu.Url.Substring(ivsu.Url.LastIndexOf("/", StringComparison.Ordinal) + 1, ivsu.Url.Length - ivsu.Url.LastIndexOf("/", StringComparison.Ordinal) - 1).Replace("?dl=1", ""),
                 FileSize = ivsu.FileSize
             };
+        }
+        
+        /// <summary>
+        /// Gets generated UserAgent from API
+        /// </summary>
+        public static string GetGeneratedUserAgent()
+        {
+            try
+            {
+                Random rand = new();
+                GraphQLResponse<UseragentRoot> graphQlResponse = Task.Run(async () => await AppMan.App.GraphQlClient.SendQueryAsync<UseragentRoot>(GraphQlHelper.GetUserAgents())).Result;
+                UseragentRoot userAgents = graphQlResponse.Data;
+                List<string> header = userAgents.UserAgents.Select(ua => ua.Useragent.Replace("[PLACEHOLDER]", rand.Next(ua.Min, ua.Max).ToString())).ToList();
+                int index = rand.Next(header.Count);
+                return header[index];
+            }
+            catch (Exception)
+            {
+                return "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/86.0";
+            }
         }
     }
 }
