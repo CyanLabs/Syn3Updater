@@ -100,7 +100,7 @@ namespace Syn3Updater
             Header,
             Magnet;
 
-        public bool SkipFormat, IsDownloading, DownloadToFolder, ModeForced, DownloadOnly;
+        public bool SkipFormat, IsDownloading, DownloadToFolder, ModeForced, DownloadOnly, Cancelled, AppsSelected;
         
         // Initiate GraphQlClient
         public readonly GraphQLHttpClient GraphQlClient = new(Api.Syn3UpdaterGraphQl, new NewtonsoftJsonSerializer())
@@ -253,7 +253,6 @@ namespace Syn3Updater
             SettingsHelper.SaveMainSettings(App.MainConfigFile,App.MainSettings);
             SettingsHelper.SaveProfileSettings(App.ProfilePath, App.Settings);
         }
-
         #endregion
     }
 }
