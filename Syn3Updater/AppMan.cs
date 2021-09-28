@@ -155,6 +155,11 @@ namespace Syn3Updater
             {
                 ProgramDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CyanLabs\\Syn3Updater";
                 LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater";
+            } 
+            else if (OperatingSystem.IsMacOS())
+            {
+                ProgramDataPath = @"~/Library/Application Support/Syn3Updater";
+                LocalAppDataPath = @"~/Library/Application Support/Syn3Updater";
             }
 
             ProfilePath = LocalAppDataPath + "\\Profiles\\";
@@ -212,6 +217,10 @@ namespace Syn3Updater
                 {
                     string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                     MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                } 
+                else if (OperatingSystem.IsMacOS())
+                {
+                    MainSettings.DownloadPath = @"~/Downloads/Syn3Updater/";
                 }
             }
             
@@ -230,6 +239,10 @@ namespace Syn3Updater
                 {
                     string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                     MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                } 
+                else if (OperatingSystem.IsMacOS())
+                {
+                    MainSettings.DownloadPath = @"~/Downloads/Syn3Updater/";
                 }
 
                 DownloadPath = App.MainSettings.DownloadPath;
@@ -240,6 +253,10 @@ namespace Syn3Updater
                 {
                     string downloads = SystemHelper.GetPath(SystemHelper.KnownFolder.Downloads);
                     MainSettings.DownloadPath = $@"{downloads}\Syn3Updater\";
+                } 
+                else if (OperatingSystem.IsMacOS())
+                {
+                    MainSettings.DownloadPath = @"~/Downloads/Syn3Updater/";
                 }
 
                 DownloadPath = App.MainSettings.DownloadPath;
