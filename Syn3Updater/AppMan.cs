@@ -166,7 +166,7 @@ namespace Syn3Updater
                 LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Library/Application Support/Syn3Updater" + Path.DirectorySeparatorChar;
             }
 
-            ProfilePath = LocalAppDataPath + "Profiles" +  + Path.DirectorySeparatorChar;
+            ProfilePath = LocalAppDataPath + "Profiles" + Path.DirectorySeparatorChar;
             MainConfigFile = LocalAppDataPath + "settings.json";
 
             if (!Directory.Exists(ProgramDataPath)) Directory.CreateDirectory(ProgramDataPath);
