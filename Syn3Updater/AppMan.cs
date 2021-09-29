@@ -109,8 +109,6 @@ namespace Syn3Updater
 
         public void Initialize()
         {
-            //TODO Check Administrator Level
-            
             if (OperatingSystem.IsWindows())
                 WindowsSystemHelper.WriteRegistryHandler();
             else if (OperatingSystem.IsMacOS())

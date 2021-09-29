@@ -24,7 +24,7 @@
 
   <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
     <Panel>
-      <DockPanel HorizontalAlignment="Stretch">
+      <DockPanel HorizontalAlignment="Stretch" IsVisible="{Binding !RunAsAdmin}">
         <ExperimentalAcrylicBorder DockPanel.Dock="Left" Width="160">
           <ExperimentalAcrylicBorder.Material>
             <ExperimentalAcrylicMaterial TintColor="Black" MaterialOpacity="0.85" TintOpacity="1" />
@@ -38,8 +38,14 @@
           <TextBlock Text="{Binding #TabControl.SelectedItem.Header}" Margin="40 20" FontSize="32" FontWeight="Light" />
         </ExperimentalAcrylicBorder>
       </DockPanel>
-
-      <TabControl x:Name="TabControl" Classes="sidebar" Margin="0 40 0 20" SelectedIndex="{Binding SelectedTab}">
+      <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="DarkRed" IsVisible="{Binding RunAsAdmin}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+          <TextBlock Text="APPLICATION IS NOT RUNNING AS ADMINISTRATOR" Margin="0 0" TextAlignment="Center" VerticalAlignment="Center" Padding="0, 20" FontSize="32" FontWeight="Light" />
+          <TextBlock Text="THIS APPLICATION REQUIRES ADMINISTRATIVE ACCESS TO BE ABLE TO FORMAT THE USB DRIVES" Margin="0 0" TextAlignment="Center" VerticalAlignment="Center" Padding="0, 20" FontSize="18" FontWeight="Light" />
+        </StackPanel>
+      </DockPanel>
+      
+      <TabControl x:Name="TabControl" Classes="sidebar" Margin="0 40 0 20" SelectedIndex="{Binding SelectedTab}" IsVisible="{Binding !RunAsAdmin}">
         <TabItem Header="Home">
           <pages:HomePage />
         </TabItem> 
