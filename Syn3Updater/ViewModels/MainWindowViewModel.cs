@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Security.Principal;
-using System.Threading;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 
 namespace Syn3Updater.ViewModels

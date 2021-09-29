@@ -1,9 +1,11 @@
-﻿using Avalonia.Styling;
-using System;
-using Avalonia.Platform;
+﻿using System;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Platform;
+using Avalonia.Styling;
 
-namespace Avalonia.Controls
+namespace Syn3Updater
 {
     public class FluentWindow : Window, IStyleable
     {

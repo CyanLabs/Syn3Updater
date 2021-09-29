@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-
+//TODO Sort Nullables
 namespace Syn3Updater.Models
 {
 

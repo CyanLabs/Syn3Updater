@@ -11,14 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-
-namespace Cyanlabs.Syn3Updater.Helper
+//TODO Remove
+namespace Syn3Updater.Helpers
 {
-    using numb_id = UInt32;
-    using numb_val = UInt32;
-    using ss_id = UInt16;
-    using ss_sum = UInt64;
-
     internal sealed class effPartition
     {
         /// <summary>largest possible sum</summary>

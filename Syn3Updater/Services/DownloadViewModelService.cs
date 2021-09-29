@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Cyanlabs.Syn3Updater.Helper;
+using Syn3Updater.Helpers;
 using Syn3Updater.Models;
 
 namespace Syn3Updater.Services
@@ -21,7 +21,7 @@ namespace Syn3Updater.Services
             if (ivsuList.Any(i => i.Type == "MAP"))
             {
                 autoinstalllst.Append($@"[SYNCGen3.0_3.0.1_PRODUCT]{Environment.NewLine}");
-                SModel.Ivsu mapLicense = ivsuList.Find(i => i.Type == "MAP_LICENSE");
+                SModel.Ivsu? mapLicense = ivsuList.Find(i => i.Type == "MAP_LICENSE");
                 if (mapLicense != null)
                 {
                     autoinstalllst.Append($@"Item1 = {mapLicense.Type} - {mapLicense.FileName}\rOpen1 = SyncMyRide\{mapLicense.FileName}\r").Replace(@"\r", Environment.NewLine);

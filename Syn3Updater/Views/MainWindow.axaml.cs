@@ -2,10 +2,11 @@ using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+// ReSharper disable UnusedParameter.Local
 
 namespace Syn3Updater.Views
 {
-    public partial class MainWindow : Window
+    public class MainWindow : Window
     {
         public MainWindow()
         {
@@ -20,7 +21,7 @@ namespace Syn3Updater.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void Window_OnClosing(object? sender, CancelEventArgs e)
+        private void Window_OnClosing(object? sender, CancelEventArgs cancelEventArgs)
         {
             AppMan.Exit();
         }

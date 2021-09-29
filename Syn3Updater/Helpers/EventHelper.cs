@@ -27,7 +27,7 @@ namespace Syn3Updater.Helpers
 
         public static void Raise<T>(this EventHandler<EventArgs<T>> handler, object sender, T value, int part)
         {
-            handler?.Invoke(sender, new EventArgs<T>(value, part));
+            handler.Invoke(sender, new EventArgs<T>(value, part));
         }
 
         #endregion

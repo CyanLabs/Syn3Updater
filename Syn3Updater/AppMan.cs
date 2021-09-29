@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using Syn3Updater.Helpers;
 using Syn3Updater.Helpers.Windows;
 using Syn3Updater.Models;
-using Syn3Updater.Views;
 
 namespace Syn3Updater
 {
@@ -22,13 +21,12 @@ namespace Syn3Updater
 
         private AppMan()
         {
-            MainSettings = new MainSettings();
         }
         
         public ObservableCollection<SModel.Ivsu> Ivsus = new();
         public ObservableCollection<SModel.Ivsu> ExtraIvsus = new();
         public static AppMan App { get; } = new();
-        public MainSettings? MainSettings { get; set; }
+        public MainSettings MainSettings { get; set; }
         public ProfileSettings Settings { get; set; }
         public static HttpClient Client = new();
         #endregion
@@ -36,64 +34,32 @@ namespace Syn3Updater
         #region Events
         public void FireDownloadsStartEvent()
         {
-            ShowDownloadsTab?.Invoke(this, EventArgs.Empty);
-            StartDownloadsTab?.Invoke(this, EventArgs.Empty);
+            ShowDownloadsTab.Invoke(this, EventArgs.Empty);
+            StartDownloadsTab.Invoke(this, EventArgs.Empty);
         }
 
         public void FireHomeTabEvent()
         {
-            ShowHomeTab?.Invoke(this, EventArgs.Empty);
+            ShowHomeTab.Invoke(this, EventArgs.Empty);
         }
         
         public void FireInterrogatorLogCompleted()
         {
-            ShowInterrogatorLogCompleted?.Invoke(this, EventArgs.Empty);
+            ShowInterrogatorLogCompleted.Invoke(this, EventArgs.Empty);
         }
-
-        public void FireUtilityTabEvent()
-        {
-            ShowUtilityTab?.Invoke(this, EventArgs.Empty);
-        }
-
+        
         public event EventHandler ShowDownloadsTab;
         public event EventHandler StartDownloadsTab;
         public event EventHandler ShowHomeTab;
         public event EventHandler ShowInterrogatorLogCompleted;
-        public event EventHandler ShowUtilityTab;
 
         #endregion
 
         #region Properties & Fields
 
-        private MainWindow _mainWindow;
-
         public string DownloadPath,
-            DriveName,
-            DrivePartitionType,
-            DriveFileSystem,
-            DriveNumber;
-
-        public string? DriveLetter;
-
-        public string? SelectedMapVersion;
-
-        public string? SelectedRelease;
-
-        public string? SelectedRegion;
-
-        public string? InstallMode;
-
-        public string SVersion;
-
-        public string? Action;
-
-        public string MainConfigFile,
-            ProfileFile,
-            AppDataPath,
-            ProfilePath,
-            Header,
-            Magnet,
-            AutoInstall;
+            DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DriveLetter, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode,
+            SVersion, Action, MainConfigFile, ProfileFile, AppDataPath, ProfilePath, Header, Magnet, AutoInstall;
 
         public bool SkipFormat, IsDownloading, DownloadToFolder, ModeForced, DownloadOnly, Cancelled, AppsSelected;
         
@@ -133,7 +99,10 @@ namespace Syn3Updater
                 AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater\\";
             else if (OperatingSystem.IsMacOS())
                 AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Library/Application Support/Syn3Updater/";
-
+            else
+                //TODO Linux?
+                AppDataPath = "";
+            
             ProfilePath = AppDataPath + "Profiles" + Path.DirectorySeparatorChar;
             MainConfigFile = AppDataPath + "settings.json";
 
@@ -144,7 +113,7 @@ namespace Syn3Updater
             {
                 try
                 {
-                    MainSettings = JsonConvert.DeserializeObject<MainSettings>(File.ReadAllText(MainConfigFile));
+                    MainSettings = JsonConvert.DeserializeObject<MainSettings>(File.ReadAllText(MainConfigFile)) ?? new MainSettings();
                 }
                 catch (JsonReaderException)
                 {
@@ -159,7 +128,7 @@ namespace Syn3Updater
 
             LoadProfile();
 
-            if (string.IsNullOrEmpty(MainSettings?.LogPath)) MainSettings.LogPath = AppDataPath + "Logs" + Path.DirectorySeparatorChar;
+            if (string.IsNullOrEmpty(MainSettings.LogPath)) MainSettings.LogPath = AppDataPath + "Logs" + Path.DirectorySeparatorChar;
             
             try
             {
@@ -176,9 +145,13 @@ namespace Syn3Updater
                     MainSettings.DownloadPath = $@"{WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads)}\Syn3Updater\";
                 else if (OperatingSystem.IsMacOS())
                     MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
+                else
+                    //TODO Linux?
+                    MainSettings.DownloadPath = "";
             }
-            DownloadPath = App.MainSettings.DownloadPath;
-
+            
+            DownloadPath = MainSettings.DownloadPath ?? string.Empty;
+            
             try
             {
                 if (!Directory.Exists(DownloadPath)) Directory.CreateDirectory(DownloadPath);
@@ -190,7 +163,7 @@ namespace Syn3Updater
                 else if (OperatingSystem.IsMacOS())
                     MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
                     
-                DownloadPath = App.MainSettings.DownloadPath;
+                DownloadPath = MainSettings.DownloadPath ?? string.Empty;
             }
 
             Header = ApiHelper.GetGeneratedUserAgent();
@@ -203,12 +176,12 @@ namespace Syn3Updater
 
         private void LoadProfile()
         {
-            if (MainSettings != null && string.IsNullOrEmpty(MainSettings.Profile))
+            if (string.IsNullOrEmpty(MainSettings.Profile))
             {
                 MainSettings.Profile = "default";
                 ProfileFile = ProfilePath + "default.json";
             }
-            else if (MainSettings != null)
+            else
             {
                 ProfileFile = ProfilePath + $"{MainSettings.Profile}.json";
             }
@@ -217,7 +190,7 @@ namespace Syn3Updater
             {
                 try
                 {
-                    Settings = JsonConvert.DeserializeObject<ProfileSettings>(File.ReadAllText(ProfileFile));
+                    Settings = JsonConvert.DeserializeObject<ProfileSettings>(File.ReadAllText(ProfileFile)) ?? new ProfileSettings();
                 }
                 catch (JsonReaderException)
                 {
@@ -237,7 +210,7 @@ namespace Syn3Updater
                     ? $"{version[0]}.{version[1]}.{version.Substring(2, version.Length - 2)}"
                     : "0.0.00000";
             }
-            catch (IndexOutOfRangeException e)
+            catch (IndexOutOfRangeException)
             {
                 // ignored
             }

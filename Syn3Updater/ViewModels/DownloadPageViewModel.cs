@@ -36,7 +36,6 @@ namespace Syn3Updater.ViewModels
         private string? _log;
         private string? _selectedRelease;
         private string? _selectedRegion;
-        private string? _selectedMapVersion;
         private string? _progressBarSuffix;
         private string? _installMode;
         private string? _action;
@@ -131,7 +130,7 @@ namespace Syn3Updater.ViewModels
             AppMan.App.StartDownloadsTab += delegate
             {
                 DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
-                My20Mode = AppMan.App.Settings.My20v2 switch
+                My20Mode = AppMan.App.Settings.My20V2 switch
                 {
                     null => "AutoDetect",
                     true => "Enabled",
@@ -144,8 +143,8 @@ namespace Syn3Updater.ViewModels
                 Log = string.Empty;
                 _selectedRelease = AppMan.App.SelectedRelease;
                 _selectedRegion = AppMan.App.SelectedRegion;
-                _selectedMapVersion = AppMan.App.SelectedMapVersion;
-                string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {_selectedMapVersion}";
+                string selectedMapVersion = AppMan.App.SelectedMapVersion;
+                string text = $"Selected Region: {_selectedRegion} - Release: {_selectedRelease} - Map Version: {selectedMapVersion}";
                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
 
                 _action = AppMan.App.Action;
@@ -161,7 +160,7 @@ namespace Syn3Updater.ViewModels
                 CancelButtonEnabled = true;
                 CurrentProgress = 0;
 
-                PercentageChanged += DownloadPercentageChanged;
+                PercentageChanged += DownloadPercentageChanged!;
 
                 DownloadQueueList = new ObservableCollection<string>();
                 foreach (SModel.Ivsu item in AppMan.App.Ivsus)
@@ -195,7 +194,7 @@ namespace Syn3Updater.ViewModels
                 AppMan.App.FireHomeTabEvent();
                 return;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                // AppMan.Logger.CrashWindow(e);
                 CancelAction();
@@ -222,7 +221,7 @@ namespace Syn3Updater.ViewModels
             }
             else if (!_ct.IsCancellationRequested)
             {
-                if (await PrepareUsbAsync() != true) return;
+                if (PrepareUsbAsync() != true) return;
                 try
                 {
                     _doCopy = await Task.Run(DoCopy, _tokenSource.Token);
@@ -233,7 +232,7 @@ namespace Syn3Updater.ViewModels
                     AppMan.App.FireHomeTabEvent();
                     return;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     //AppMan.Logger.CrashWindow(e);
                     CancelAction();
@@ -276,7 +275,7 @@ namespace Syn3Updater.ViewModels
 
                     if (item.Source == @"naviextras")
                     {
-                        FileHelper.OutputResult outputResult = await _fileHelper.ExtractMultiPackage(item, _ct);
+                        FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
 
                         text = $"Extracting: {item.FileName} (This may take some time!)";
                         Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -330,7 +329,7 @@ namespace Syn3Updater.ViewModels
                                 //AppMan.Logger.Info(text);
                                 if (item.Source == @"naviextras")
                                 {
-                                    FileHelper.OutputResult outputResult = await _fileHelper.ExtractMultiPackage(item, _ct);
+                                    FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
 
                                     text = $"Extracting: {item.FileName} (This may take some time!)";
                                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -362,10 +361,10 @@ namespace Syn3Updater.ViewModels
                     }
                 }
 
-                DownloadQueueList.Remove(item.Url);
+                DownloadQueueList?.Remove(item.Url);
             }
 
-            DownloadQueueList.Clear();
+            DownloadQueueList?.Clear();
             return true;
         }
 
@@ -448,7 +447,7 @@ namespace Syn3Updater.ViewModels
                     }
                 }
 
-                DownloadQueueList.Remove(AppMan.App.DownloadPath + item.FileName);
+                DownloadQueueList?.Remove(AppMan.App.DownloadPath + item.FileName);
                 PercentageChanged.Raise(this, 100, 0);
             }
 
@@ -537,7 +536,7 @@ namespace Syn3Updater.ViewModels
             else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
             {
                 //TODO Display MessageBox.GenericUtilityComplete Message 
-                AppMan.App.FireUtilityTabEvent();
+                //AppMan.App.FireUtilityTabEvent();
             }
 
            CancelAction();
@@ -552,7 +551,7 @@ namespace Syn3Updater.ViewModels
             CurrentProgress = 0;
             DownloadInfo = "";
             DownloadPercentage = "";
-            DownloadQueueList.Clear();
+            DownloadQueueList?.Clear();
             AppMan.App.AppsSelected = false;
             AppMan.App.SkipFormat = false;
             _tokenSource.Dispose();
@@ -636,7 +635,7 @@ namespace Syn3Updater.ViewModels
             return true;
         }
 
-        private async Task<bool> PrepareUsbAsync()
+        private bool PrepareUsbAsync()
         {
             if (AppMan.App.DownloadToFolder)
             {
@@ -650,17 +649,17 @@ namespace Syn3Updater.ViewModels
             }
             
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
-                DownloadQueueList.Add(AppMan.App.DownloadPath + item.FileName);
+                DownloadQueueList?.Add(AppMan.App.DownloadPath + item.FileName);
 
             try
             {
                 Directory.CreateDirectory($@"{AppMan.App.DriveLetter}\SyncMyRide\");
             }
-            catch (DirectoryNotFoundException e)
+            catch (DirectoryNotFoundException)
             {
                 return false;
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 return false;
             }
@@ -675,7 +674,7 @@ namespace Syn3Updater.ViewModels
             {
                 Log += "[" + DateTime.Now + "] Generating Autoinstall.lst" + Environment.NewLine;
                 //AppMan.Logger.Info("Generating Autoinstall.lst");
-                autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease, _selectedRegion).ToString();
+                autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease ?? throw new InvalidOperationException(), _selectedRegion ?? throw new InvalidOperationException()).ToString();
             }
             else
             {
@@ -687,7 +686,7 @@ namespace Syn3Updater.ViewModels
                 File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst);
                 File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
             }
-            catch (IOException e)
+            catch (IOException)
             {
             }
         }
@@ -722,7 +721,7 @@ namespace Syn3Updater.ViewModels
             {
                 File.WriteAllText($@"{AppMan.App.DriveLetter}\reformat.lst", reformatlst);
             }
-            catch (IOException e)
+            catch (IOException)
             {
                
             }
@@ -757,13 +756,13 @@ namespace Syn3Updater.ViewModels
                 File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
                 File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
             }
-            catch (IOException e)
+            catch (IOException)
             {
                
             }
         }
 
-        private async Task<bool> ValidateFile(string srcfile, string localfile, string md5, bool copy, bool existing = false)
+        private async Task<bool> ValidateFile(string srcfile, string localfile, string? md5, bool copy, bool existing = false)
         {
             if (existing)
             {

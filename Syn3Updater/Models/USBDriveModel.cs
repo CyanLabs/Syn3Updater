@@ -1,5 +1,6 @@
 ﻿namespace Syn3Updater.Models
 {
+    //TODO Sort Nullables
     public class USBDriveModel
     {
         public class Drive

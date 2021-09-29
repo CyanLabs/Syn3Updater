@@ -9,7 +9,7 @@
     <vm:DownloadPageViewModel></vm:DownloadPageViewModel>
     </Design.DataContext>
     <StackPanel HorizontalAlignment="Stretch" Margin="{StaticResource PageMargin}" Background="Transparent" Spacing="20"> 
-        <Grid Grid.Row="0" RowDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto">
+        <Grid RowDefinitions="Auto,*,Auto,Auto,Auto,Auto,Auto">
               <TextBlock Margin="5,0,0,5" Grid.Row="0" Text="Queue" />
                 <ListBox MinHeight="160" Items="{Binding DownloadQueueList}" Grid.Row="1"/>
                 <Grid Margin="0,5,0,5" Grid.Row="2">
@@ -65,7 +65,7 @@
                 </Grid>
             </Grid>
 
-            <Grid Background="#40000000" Margin="10,5,10,5" Grid.Row="1">
+            <Grid Background="#40000000" Margin="10,5,10,5">
                 <Grid Margin="5" RowDefinitions="Auto,*">
                     <TextBlock Margin="5,0,0,5" Grid.Row="0" Text="Log" />
                     <TextBox MinHeight="190" BorderThickness="1" Text="{Binding Log}"

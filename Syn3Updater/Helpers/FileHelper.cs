@@ -24,7 +24,7 @@ namespace Syn3Updater.Helpers
     {
         #region Events
 
-        private readonly EventHandler<Helpers.EventArgs<int>> _percentageChanged;
+        private readonly EventHandler<EventArgs<int>> _percentageChanged;
 
         #endregion
 
@@ -94,13 +94,13 @@ namespace Syn3Updater.Helpers
                     prevPercent = percent;
                 }
             }
-            catch (IOException ioException)
+            catch (IOException)
             {
                 //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()));
                 //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }
-            catch (UnauthorizedAccessException exception)
+            catch (UnauthorizedAccessException)
             {
                 //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(exception.GetFullMessage()));
                 //AppMan.Logger.Info("ERROR: " + exception.GetFullMessage());
@@ -119,8 +119,8 @@ namespace Syn3Updater.Helpers
         public class DownloadPartResult
         {
             public long RangeStart { get; set; }
-            public string FilePath { get; set; }
-            public Exception Ex { get; set; }
+            public string? FilePath { get; set; }
+            public Exception? Ex { get; set; }
         }
 
         /// <summary>
@@ -131,7 +131,6 @@ namespace Syn3Updater.Helpers
         ///         more
         ///     </see>
         /// </summary>
-        /// <param name="filename">Destination filename</param>
         /// <param name="fileUrl">Source URL</param>
         /// <param name="destinationFilePath"></param>
         /// <param name="ct">CancellationToken</param>
@@ -149,7 +148,7 @@ namespace Syn3Updater.Helpers
                 long responseLength;
                 using (WebResponse webResponse = webRequest.GetResponse())
                 {
-                    responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
+                    responseLength = long.Parse(webResponse.Headers.Get("Content-Length") ?? throw new InvalidOperationException());
                 }
 
                 #endregion
@@ -206,19 +205,19 @@ namespace Syn3Updater.Helpers
                             await Task.WhenAll(tasks);
                             //AppMan.Logger.Debug($"DownloadFilePart: All Tasks Completed {tasks.Count}");
                         }
-                        catch (OperationCanceledException e)
+                        catch (OperationCanceledException)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
                             //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                             return false;
                         }
-                        catch (IOException e)
+                        catch (IOException)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
                             //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                             return false;
                         }
-                        catch (ObjectDisposedException  e)
+                        catch (ObjectDisposedException)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
                             //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
@@ -228,7 +227,6 @@ namespace Syn3Updater.Helpers
                         foreach (DownloadPartResult result in results)
                         {
                             if (ct.IsCancellationRequested) return false;
-                            if (result == null) return false;
                             if (result.FilePath == "cancelled") return false;
                             if (result.Ex != null)
                             {
@@ -236,7 +234,7 @@ namespace Syn3Updater.Helpers
                                 return false;
                             }
 
-                            tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath);
+                            tempFilesDictionary.TryAdd(result.RangeStart, result.FilePath ?? throw new InvalidOperationException());
 
                         }
 
@@ -252,7 +250,7 @@ namespace Syn3Updater.Helpers
                                 destinationStream.Write(tempFileBytes, 0, tempFileBytes.Length);
                                 File.Delete(tempFile.Value);
                             }
-                            catch (IOException e)
+                            catch (IOException)
                             {
                                 //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                                 return false;
@@ -268,27 +266,27 @@ namespace Syn3Updater.Helpers
                 DownloadPartResult result2 = await DownloadFilePart(fileUrl, destinationFilePath, new Range {Start = 0, End = responseLength}, 0, ct);
                 return result2.FilePath != null;
             }
-            catch (WebException e)
+            catch (WebException)
             {
                 //await UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()));
                 return false;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 //await UIHelper.ShowErrorDialog(fileUrl.Contains("dropbox") ? "Unable to download the Reformat Tool from Dropbox!" + Environment.NewLine + "Dropbox may be blocked by your Internet Provider" + Environment.NewLine : null + e.GetFullMessage()));
                 return false;
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 //await UIHelper.ShowErrorDialog(e.GetFullMessage())));
                 return false;
             }
-            catch (OutOfMemoryException e)
+            catch (OutOfMemoryException)
             {
                 //await UIHelper.ShowErrorDialog(e.GetFullMessage())));
                 return false;
             }
-            catch (TaskCanceledException e)
+            catch (TaskCanceledException)
             {
                 return false;
             }
@@ -298,7 +296,7 @@ namespace Syn3Updater.Helpers
         {
             try
             {
-                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
+                foreach (string file in Directory.GetFiles(Path.GetDirectoryName(destinationFilePath) ?? throw new InvalidOperationException(), "*" + Path.GetFileName(destinationFilePath) + "-part*"))
                     File.Delete(file);
                 File.Delete(destinationFilePath);
             }
@@ -366,7 +364,7 @@ namespace Syn3Updater.Helpers
                     }
                 }
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 //await UIHelper.ShowErrorDialog(e.GetFullMessage()));
                 return new DownloadPartResult {FilePath = "cancelled", RangeStart = readRange.Start};
@@ -384,7 +382,7 @@ namespace Syn3Updater.Helpers
         /// <param name="localonly">Set to true if comparing to local sources else set to false</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>outputResult with Message and Result properties</returns>
-        public async Task<OutputResult> ValidateFile(string source, string localfile, string md5, bool localonly, CancellationToken ct)
+        public async Task<OutputResult> ValidateFile(string source, string localfile, string? md5, bool localonly, CancellationToken ct)
         {
             OutputResult outputResult = new();
             string filename = Path.GetFileName(localfile);
@@ -396,15 +394,15 @@ namespace Syn3Updater.Helpers
                 return outputResult;
             }
 
-            string localMd5 = await GenerateMd5(localfile, ct);
-            if (md5 == null)
+            string localMd5 = GenerateMd5(localfile, ct);
+            if (md5 == string.Empty)
             {
                 long filesize = new FileInfo(localfile).Length;
                 if (localonly)
                 {
                     long srcfilesize = new FileInfo(source).Length;
 
-                    if (srcfilesize == filesize && localMd5 == await GenerateMd5(source, ct))
+                    if (srcfilesize == filesize && localMd5 == GenerateMd5(source, ct))
                     {
                         outputResult.Message = $"{filename} checksum matches already verified local copy";
                         outputResult.Result = true;
@@ -413,7 +411,7 @@ namespace Syn3Updater.Helpers
                 }
                 else
                 {
-                    long newfilesize = -1;
+                    long newfilesize;
                     HttpRequestMessage request = new(HttpMethod.Head, new Uri(source));
 
                     long? len = (await AppMan.Client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)).Content.Headers.ContentLength;
@@ -456,7 +454,7 @@ namespace Syn3Updater.Helpers
         /// <param name="filename">Source File</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>MD5 hash as String</returns>
-        public async Task<string> GenerateMd5(string filename, CancellationToken ct)
+        public string GenerateMd5(string filename, CancellationToken ct)
         {
             long totalBytesRead = 0;
             try
@@ -473,7 +471,7 @@ namespace Syn3Updater.Helpers
                         {
                             file.Close();
                             file.Dispose();
-                            return null;
+                            return string.Empty;
                         }
 
                         buffer = new byte[4096];
@@ -485,16 +483,16 @@ namespace Syn3Updater.Helpers
                     } while (bytesRead != 0);
 
                     hasher.TransformFinalBlock(buffer, 0, 0);
-                    return BitConverter.ToString(hasher.Hash).Replace("-", string.Empty);
+                    return BitConverter.ToString(hasher.Hash ?? throw new InvalidOperationException()).Replace("-", string.Empty);
                 }
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 //await UIHelper.ShowErrorDialog(e.GetFullMessage()));
                 //AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
                 return "error";
             }
-            catch (UnauthorizedAccessException exception)
+            catch (UnauthorizedAccessException)
             {
                 //await UIHelper.ShowErrorDialog(exception.GetFullMessage()));
                 //AppMan.Logger.Info("ERROR: " + exception.GetFullMessage());
@@ -508,7 +506,7 @@ namespace Syn3Updater.Helpers
         /// <param name="item">The SModel.Ivsu of the item to extract</param>
         /// <param name="ct"></param>
         /// <returns>outputResult with Message and Result properties</returns>
-        public async Task<OutputResult> ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
+        public OutputResult ExtractMultiPackage(SModel.Ivsu item, CancellationToken ct)
         {
             OutputResult outputResult = new() {Message = ""};
             if (item.Source != "naviextras")
@@ -551,7 +549,7 @@ namespace Syn3Updater.Helpers
                     Version = "",
                     Notes = "",
                     Url = "",
-                    Md5 = await GenerateMd5(newpath, ct),
+                    Md5 = GenerateMd5(newpath, ct),
                     Selected = true,
                     FileName = filename,
                     FileSize = size

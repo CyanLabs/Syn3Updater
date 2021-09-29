@@ -15,7 +15,7 @@ namespace Syn3Updater.Helpers
         /// <returns>IvsuRoot with all retrieved APP versions</returns>
         public static async Task<IvsuRoot?> GetSyncVersions()
         {
-            GraphQLResponse<IvsuRoot?> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetAppVersions());
+            GraphQLResponse<IvsuRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetAppVersions());
             return graphQlResponse.Data;
         }
 
@@ -27,7 +27,7 @@ namespace Syn3Updater.Helpers
         {
             var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetSpecialPackage(specialPackage));
             IvsuRoot ivsu = graphQlResponse.Data;
-            return ConvertIvsu(ivsu.Ivsus[0]);
+            return ConvertIvsu(ivsu.Ivsus?[0] ?? throw new InvalidOperationException());
         }
 
         /// <summary>

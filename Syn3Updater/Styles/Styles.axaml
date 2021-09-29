@@ -3,6 +3,7 @@
   <Design.PreviewWith>
     <Border Padding="20">
       <StackPanel Spacing="5">        
+        <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
         <TextBlock Text="Code Font Family" FontFamily="{StaticResource CodeFontFamily}" />
       </StackPanel>
     </Border>

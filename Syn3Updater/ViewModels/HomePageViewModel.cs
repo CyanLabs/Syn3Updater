@@ -44,9 +44,9 @@ namespace Syn3Updater.ViewModels
             set => this.RaiseAndSetIfChanged(ref _driveList, value);
         }
 
-        private USBDriveModel.Drive? _selectedDrive;
+        private USBDriveModel.Drive _selectedDrive;
 
-        public USBDriveModel.Drive? SelectedDrive
+        public USBDriveModel.Drive SelectedDrive
         {
             get => _selectedDrive;
             set
@@ -56,9 +56,9 @@ namespace Syn3Updater.ViewModels
             }
         }
 
-        private Interrogator.LogResult? _logResult;
+        private Interrogator.LogResult _logResult;
 
-        public Interrogator.LogResult? LogResult
+        public Interrogator.LogResult LogResult
         {
             get => _logResult;
             private set => this.RaiseAndSetIfChanged(ref _logResult, value);
@@ -191,19 +191,19 @@ namespace Syn3Updater.ViewModels
 
         private void UpdateDriveInfo()
         {
-            CreateInterrogatorEnabled = SelectedDrive?.Name != null;
+            CreateInterrogatorEnabled = SelectedDrive.Name != null;
         }
 
         [UsedImplicitly]
         private async void PrepareInterrogatorUSB()
         {
-            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive?.Letter, CurrentVersion);
+            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive.Letter ?? throw new InvalidOperationException(), CurrentVersion ?? throw new InvalidOperationException());
         }
 
         [UsedImplicitly]
         private async void ScanInterrogatorUSB()
         {
-            LogResult = await USBHelper.LogParseXmlAction(SelectedDrive?.Letter);
+            LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.Letter);
             SelectedRegion = LogResult.Region;
             InterrogatorOutputVisible = true;
         }
@@ -216,8 +216,8 @@ namespace Syn3Updater.ViewModels
             ReleasesRoot latestRelease = graphQlResponse.Data;
 
             Releases.AddRange(latestRelease.Releases.Select(x => x.Name));
-            _compat = latestRelease.Releases.FirstOrDefault().Version[..3];
-            return latestRelease.Releases.FirstOrDefault().Name;
+            _compat = latestRelease.Releases.FirstOrDefault()?.Version[..3] ?? "3.4";
+            return latestRelease.Releases.FirstOrDefault()?.Name ?? throw new InvalidOperationException();
         }
         
         private async Task<string> GetMapReleaseInformation(string region, string compat)
@@ -228,7 +228,7 @@ namespace Syn3Updater.ViewModels
             ReleasesRoot latestMapRelease = graphQlResponse.Data;
             
             MapReleases.AddRange(latestMapRelease.MapReleases.Select(x => x.Name));
-            return latestMapRelease.MapReleases.FirstOrDefault().Name;
+            return latestMapRelease.MapReleases.FirstOrDefault()?.Name ?? throw new InvalidOperationException();
         }
 
         private void ResetMapReleaseInformation()
@@ -243,7 +243,7 @@ namespace Syn3Updater.ViewModels
             AppMan.App.Ivsus = await HomeViewModelService.GetReleaseIvsus(SelectedRegion,SelectedRelease,SelectedMapRelease,LogResult.Navigation);
             AppMan.App.IsDownloading = true;
             AppMan.App.FireDownloadsStartEvent();
-            AppMan.App.DriveLetter = SelectedDrive?.Letter;
+            AppMan.App.DriveLetter = SelectedDrive.Letter ?? throw new InvalidOperationException();
         }
     }
 }

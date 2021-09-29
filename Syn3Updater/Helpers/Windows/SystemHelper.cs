@@ -75,14 +75,11 @@ namespace Syn3Updater.Helpers.Windows
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags, bool defaultUser)
         {
             int result = SHGetKnownFolderPath(new Guid(KnownFolderGuids[(int) knownFolder]), (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
-            if (result >= 0)
-            {
-                string path = Marshal.PtrToStringUni(outPath);
-                Marshal.FreeCoTaskMem(outPath);
-                return path;
-            }
+            if (result < 0) throw new ExternalException("Unable to retrieve the known folder path. It may not be available on this system.", result);
+            string path = Marshal.PtrToStringUni(outPath) ?? throw new ExternalException("Unable to retrieve the known folder path. It may not be available on this system.", result);
+            Marshal.FreeCoTaskMem(outPath);
+            return path;
 
-            throw new ExternalException("Unable to retrieve the known folder path. It may not be available on this system.", result);
         }
 
         public static string GetOsFriendlyName()
@@ -92,7 +89,7 @@ namespace Syn3Updater.Helpers.Windows
             foreach (ManagementBaseObject o in searcher.Get())
             {
                 ManagementObject os = (ManagementObject) o;
-                result = os["Caption"].ToString();
+                result = os["Caption"].ToString() ?? "Unknown Operating System";
                 break;
             }
 

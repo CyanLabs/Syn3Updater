@@ -35,14 +35,14 @@ namespace Syn3Updater.Helpers
             }
         }
 
-        public static void ResetSettings(string mainConfigFile, string ProfileFile)
+        public static void ResetSettings(string mainConfigFile, string profileFile)
         {
             try
             {
                 if (File.Exists(mainConfigFile)) File.Delete(mainConfigFile);
-                if (File.Exists(ProfileFile)) File.Delete(ProfileFile);
+                if (File.Exists(profileFile)) File.Delete(profileFile);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }

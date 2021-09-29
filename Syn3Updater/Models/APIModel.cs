@@ -19,21 +19,21 @@
     {
         public const string Syn3UpdaterGraphQl = "https://syn3updater.cyanlabs.net/graphql";
 
-        public const string APIBase = "https://api.cyanlabs.net/";
+        public const string ApiBase = "https://api.cyanlabs.net/";
         private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
 
         public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
         public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";
-        public const string CrashLogPost = APIBase + "Syn3Updater/crash-logs/post.php";
-        public const string LogPost = APIBase + "Syn3Updater/logs/post.php";
-        public const string ChangelogURL = APIBase + "app/syn3updater/githubchangelog/json";
+        public const string CrashLogPost = ApiBase + "Syn3Updater/crash-logs/post.php";
+        public const string LogPost = ApiBase + "Syn3Updater/logs/post.php";
+        public const string ChangelogUrl = ApiBase + "app/syn3updater/githubchangelog/json";
 
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 
-        public static SModel.Ivsu? ReformatTool, DowngradeAppIvsu, DowngradeToolIvsu, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
+        public static SModel.Ivsu ReformatTool, DowngradeAppIvsu, DowngradeToolIvsu, InterrogatorTool, GracenotesRemoval, SmallVoicePackage;
 
-        public const string AsBuiltPost = APIBase + "Syn3Updater/apim-asbuilt-decode/";
+        public const string AsBuiltPost = ApiBase + "Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
 
         public static class SpecialPackages

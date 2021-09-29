@@ -1,22 +1,22 @@
-<controls:FluentWindow xmlns="https://github.com/avaloniaui"
+<syn3Updater:FluentWindow xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Syn3Updater.ViewModels;assembly=Syn3Updater"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="800" Height="800" Width="900"
         xmlns:pages="clr-namespace:Syn3Updater.Pages;assembly=Syn3Updater"
-        xmlns:controls="clr-namespace:Avalonia.Controls"
+        xmlns:syn3Updater="clr-namespace:Syn3Updater"
         x:Class="Syn3Updater.Views.MainWindow"
         Icon="{x:Null}"
         x:Name="MainWindow"
         WindowStartupLocation="CenterScreen"
         Background="{x:Null}"
         Title="Syn3Updater" Closing="Window_OnClosing">
-  <controls:FluentWindow.Styles>
+  <syn3Updater:FluentWindow.Styles>
     <Style Selector="TitleBar:fullscreen">
       <Setter Property="Background" Value="#7f000000" />
     </Style>
-  </controls:FluentWindow.Styles>
+  </syn3Updater:FluentWindow.Styles>
 
   <Design.DataContext>
     <vm:MainWindowViewModel/>
@@ -55,4 +55,4 @@
       </TabControl>
     </Panel>
   </Panel>
-</controls:FluentWindow>
+</syn3Updater:FluentWindow>
