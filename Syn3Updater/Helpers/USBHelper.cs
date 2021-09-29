@@ -15,12 +15,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using GraphQL;
 using Newtonsoft.Json;
 using Syn3Updater.Converters;
 using Syn3Updater.Helpers.Windows;
-using Syn3Updater.Views;
 using Formatting = Newtonsoft.Json.Formatting;
 
 
@@ -44,66 +45,74 @@ namespace Syn3Updater.Helpers
         [SupportedOSPlatform("windows")]
         public static ObservableCollection<USBDriveModel.Drive>? RefreshDevicesWindows(bool fakeusb)
         {
-            ObservableCollection<USBDriveModel.Drive>? driveList = new();
-            ManagementObjectSearcher driveQuery = new("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
-            foreach (ManagementBaseObject n in driveQuery.Get())
+            try
             {
-                ManagementObject d = (ManagementObject)n;
-                string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
-
-                if (friendlySize == "0B") continue;
-
-                USBDriveModel.Drive drive = new();
-                string partitionQueryText = $@"associators of {{{d.Path.RelativePath}}} where AssocClass = Win32_DiskDriveToDiskPartition";
-                ManagementObjectSearcher partitionQuery = new(partitionQueryText);
-                foreach (ManagementBaseObject o in partitionQuery.Get())
+                ObservableCollection<USBDriveModel.Drive>? driveList = new();
+                ManagementObjectSearcher driveQuery = new("select * from Win32_DiskDrive Where InterfaceType = \"USB\" OR MediaType = \"External hard disk media\"");
+                foreach (ManagementBaseObject n in driveQuery.Get())
                 {
-                    ManagementObject p = (ManagementObject)o;
-                    string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
-                    ManagementObjectSearcher logicalDriveQuery = new(logicalDriveQueryText);
-                    foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
+                    ManagementObject d = (ManagementObject)n;
+                    string friendlySize = MathHelper.BytesToString(Convert.ToInt64(d.Properties["Size"].Value));
+
+                    if (friendlySize == "0B") continue;
+
+                    USBDriveModel.Drive drive = new();
+                    string partitionQueryText = $@"associators of {{{d.Path.RelativePath}}} where AssocClass = Win32_DiskDriveToDiskPartition";
+                    ManagementObjectSearcher partitionQuery = new(partitionQueryText);
+                    foreach (ManagementBaseObject o in partitionQuery.Get())
                     {
-                        ManagementObject ld = (ManagementObject)managementBaseObject;
-                        ManagementObjectSearcher encryptedDriveQuery = new("\\\\.\\ROOT\\CIMV2\\Security\\MicrosoftVolumeEncryption",$"select * from Win32_EncryptableVolume Where DriveLetter = \"{ld.Properties["DeviceId"].Value}\"");
-                        foreach (ManagementBaseObject encryptedDriveObject in encryptedDriveQuery.Get())
+                        ManagementObject p = (ManagementObject)o;
+                        string logicalDriveQueryText = $@"associators of {{{p.Path.RelativePath}}} where AssocClass = Win32_LogicalDiskToPartition";
+                        ManagementObjectSearcher logicalDriveQuery = new(logicalDriveQueryText);
+                        foreach (ManagementBaseObject managementBaseObject in logicalDriveQuery.Get())
                         {
-                            uint encryptionStatus = (uint)encryptedDriveObject.GetPropertyValue("ProtectionStatus");
-                            drive.Encrypted = encryptionStatus != 0;
-                            if (drive.Encrypted) drive.EncryptionStatus = "Encrypted";
-                        }
+                            ManagementObject ld = (ManagementObject)managementBaseObject;
+                            ManagementObjectSearcher encryptedDriveQuery = new("\\\\.\\ROOT\\CIMV2\\Security\\MicrosoftVolumeEncryption",$"select * from Win32_EncryptableVolume Where DriveLetter = \"{ld.Properties["DeviceId"].Value}\"");
+                            foreach (ManagementBaseObject encryptedDriveObject in encryptedDriveQuery.Get())
+                            {
+                                uint encryptionStatus = (uint)encryptedDriveObject.GetPropertyValue("ProtectionStatus");
+                                drive.Encrypted = encryptionStatus != 0;
+                                if (drive.Encrypted) drive.EncryptionStatus = "Encrypted";
+                            }
 
-                        if (!drive.Encrypted)
-                        {
-                            drive.FileSystem += ld.GetPropertyValue("FileSystem");
-                            drive.VolumeName = string.IsNullOrWhiteSpace((string)ld.GetPropertyValue("VolumeName")) ? "" : ld.GetPropertyValue("VolumeName").ToString();
-                        }
+                            if (!drive.Encrypted)
+                            {
+                                drive.FileSystem += ld.GetPropertyValue("FileSystem");
+                                drive.VolumeName = string.IsNullOrWhiteSpace((string)ld.GetPropertyValue("VolumeName")) ? "" : ld.GetPropertyValue("VolumeName").ToString();
+                            }
 
-                        drive.Letter = ld.GetPropertyValue("DeviceId").ToString();
-                        drive.PartitionType = p.GetPropertyValue("Type").ToString()!.Contains("GPT:") ? "GPT" : "MBR";
-                        
-                        drive.Name = d.GetPropertyValue("Caption").ToString();
-                        
-                        drive.Path = d.Path.RelativePath;
-                        drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.GetPropertyValue("FreeSpace")));
-                        drive.Model = d.GetPropertyValue("Model").ToString();
-                        drive.Size = friendlySize;
-                        drive.Fake = false;
-                        if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")
-                            drive.SkipFormat = true;
-                        else
-                            drive.SkipFormat = false;
+                            drive.Letter = ld.GetPropertyValue("DeviceId").ToString();
+                            drive.PartitionType = p.GetPropertyValue("Type").ToString()!.Contains("GPT:") ? "GPT" : "MBR";
+                            
+                            drive.Name = d.GetPropertyValue("Caption").ToString();
+                            
+                            drive.Path = d.Path.RelativePath;
+                            drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.GetPropertyValue("FreeSpace")));
+                            drive.Model = d.GetPropertyValue("Model").ToString();
+                            drive.Size = friendlySize;
+                            drive.Fake = false;
+                            if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")
+                                drive.SkipFormat = true;
+                            else
+                                drive.SkipFormat = false;
+                        }
                     }
+
+                    // Add to array of drives
+                    driveList.Add(drive);
                 }
 
-                // Add to array of drives
-                driveList.Add(drive);
+                if (fakeusb)
+                    driveList.Add(new USBDriveModel.Drive { Path = "", Name = "Select A Directory", Fake = true });
+
+                // Return a list of drives
+                return driveList;
             }
-
-            if (fakeusb)
-                driveList.Add(new USBDriveModel.Drive { Path = "", Name = "Select A Directory", Fake = true });
-
-            // Return a list of drives
-            return driveList;
+            catch (ManagementException e)
+            {
+                //TODO Exception Handling
+                return new ObservableCollection<USBDriveModel.Drive>();
+            }
         }
         
         public static async Task LogPrepareUSBAction(USBDriveModel.Drive? selectedDrive, string? driveLetter, string? currentversion, string action = "logutility")
@@ -268,7 +277,8 @@ namespace Syn3Updater.Helpers
             {
                 OpenFileDialog? dialog = new();
                 dialog.Filters.Add(new FileDialogFilter() { Name = "Interrogator Log XML Files", Extensions = { "xml" } });
-                string[]? result = await dialog.ShowAsync(new MainWindow());
+                IClassicDesktopStyleApplicationLifetime? desktop = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
+                string[]? result = await dialog.ShowAsync(desktop.MainWindow);
                 if (result == null)
                 {
                     AppMan.App.Cancelled = true;

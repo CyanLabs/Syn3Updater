@@ -1,17 +1,11 @@
 ﻿//using DiscordRPC;
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using GraphQL;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Newtonsoft.Json;
@@ -114,6 +108,8 @@ namespace Syn3Updater
 
         public void Initialize()
         {
+            //TODO Check Administrator Level
+            
             if (OperatingSystem.IsWindows())
                 WindowsSystemHelper.WriteRegistryHandler();
             else if (OperatingSystem.IsMacOS())

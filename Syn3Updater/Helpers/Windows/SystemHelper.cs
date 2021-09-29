@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 using Microsoft.Win32;
 
 namespace Syn3Updater.Helpers.Windows

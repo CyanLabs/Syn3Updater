@@ -1,7 +1,5 @@
 ﻿using Avalonia.Styling;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Avalonia.Platform;
 using Avalonia.Controls.Primitives;
 

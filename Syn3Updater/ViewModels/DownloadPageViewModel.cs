@@ -8,10 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
 using ReactiveUI;
 using Syn3Updater.Helpers;
-using Syn3Updater.Helpers.Windows;
 using Syn3Updater.Models;
 using Syn3Updater.Services;
 
