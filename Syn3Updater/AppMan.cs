@@ -92,7 +92,8 @@ namespace Syn3Updater
             AppDataPath,
             ProfilePath,
             Header,
-            Magnet;
+            Magnet,
+            AutoInstall;
 
         public bool SkipFormat, IsDownloading, DownloadToFolder, ModeForced, DownloadOnly, Cancelled, AppsSelected;
         

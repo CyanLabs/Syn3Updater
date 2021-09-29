@@ -34,6 +34,9 @@ namespace Syn3Updater.Services
             
             GraphQLResponse<ReleasesRoot> graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleaseIvsus(selectedMapRelease));
             ReleasesRoot jsonMapIvsUs = graphQlResponse2.Data;
+            
+            AppMan.App.AutoInstall = jsonMapIvsUs.MapReleases[0].Autoinstall;
+
             foreach (ReleasesIvsus item in jsonMapIvsUs.MapReleases[0].IvsusList.Where(x => x.MapIvsu != null && (x.MapIvsu.Regions.Contains("ALL") || x.MapIvsu.Regions.Contains(selectedRegion))))
             {
                 ivsuList.Add(new SModel.Ivsu

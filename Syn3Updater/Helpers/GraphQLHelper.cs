@@ -72,7 +72,7 @@ namespace Syn3Updater.Helpers
             {
                 Query = @"
                 {
-                    releases(limit: -1, filter: {name: {_eq: """ + selectedRelease + @"""}}) {
+                    releases(limit: 1, filter: {name: {_eq: """ + selectedRelease + @"""}}) {
                         name
                         ivsus {
                             ivsu(filter: {navtype: { _in: [""" + navtype + @""",""all""]}}) { 
@@ -89,8 +89,8 @@ namespace Syn3Updater.Helpers
             {
                 Query = @"
                 {
-                    map_releases(limit: -1, filter: {name: {_eq: """ + selectedMapVersion + @"""}}) {
-                        name
+                    map_releases(limit: 1, filter: {name: {_eq: """ + selectedMapVersion + @"""}}) {
+                        name, autoinstall
                         ivsus {
                           map_ivsu { id, name, type, version, notes, url, md5, filesize, regions, source}
                         }

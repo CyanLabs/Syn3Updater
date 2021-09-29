@@ -35,6 +35,7 @@ namespace Syn3Updater.Models
             [JsonProperty("version")] public string Version { get; set; }
             [JsonProperty("feedbackurl")] public string Feedbackurl { get; set; }
             [JsonProperty("status")] public string Status { get; set; }
+            [JsonProperty("autoinstall")] public string Autoinstall { get; set; }
             [JsonProperty("ivsus")] public IList<ReleasesIvsus> IvsusList { get; set; }
         }
         

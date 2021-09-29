@@ -670,12 +670,21 @@ namespace Syn3Updater.ViewModels
 
         private void CreateAutoInstall()
         {
-            Log += "[" + DateTime.Now + "] Generating Autoinstall.lst" + Environment.NewLine;
-            //AppMan.Logger.Info("Generating Autoinstall.lst");
-            StringBuilder autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease, _selectedRegion);
+            string autoinstalllst; 
+            if (string.IsNullOrEmpty(AppMan.App.AutoInstall))
+            {
+                Log += "[" + DateTime.Now + "] Generating Autoinstall.lst" + Environment.NewLine;
+                //AppMan.Logger.Info("Generating Autoinstall.lst");
+                autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease, _selectedRegion).ToString();
+            }
+            else
+            {
+                Log += "[" + DateTime.Now + "] Using Autoinstall.lst Template" + Environment.NewLine;
+                autoinstalllst = AppMan.App.AutoInstall;
+            }
             try
             {
-                File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
+                File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst);
                 File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
             }
             catch (IOException e)
