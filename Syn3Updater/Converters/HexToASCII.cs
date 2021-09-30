@@ -19,9 +19,16 @@ namespace Syn3Updater.Converters
                 }
                 else
                 {
-                    int n = Convert.ToInt32(char2Convert, 16);
-                    char c = (char)n;
-                    res += c.ToString();
+                    try
+                    {
+                        int n = Convert.ToInt32(char2Convert, 16);
+                        char c = (char)n;
+                        res += c.ToString();
+                    }
+                    catch (FormatException e)
+                    {
+                        //TODO Catch
+                    }
                 }
             }
             return Regex.Replace(res, "_*_", "_").Split('_').Where(x => x != "").ToList();
