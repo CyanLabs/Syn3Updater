@@ -101,8 +101,7 @@ namespace Syn3Updater.Helpers
                     driveList.Add(drive);
                 }
 
-                if (fakeusb)
-                    driveList.Add(new USBDriveModel.Drive { Path = "", Name = "Select A Directory", Fake = true });
+                //TODO Reimplement folder function?
 
                 // Return a list of drives
                 return driveList;
@@ -298,10 +297,10 @@ namespace Syn3Updater.Helpers
                 logResult.Vin = apimDetails.Vin;
 
                 Interrogator.D2P1Did[] d2P1Did = interrogatorLog.POtaModuleSnapShot?.PNode?.D2P1EcuAcronym?.D2P1State?.D2P1Gateway?.D2P1Did ?? Array.Empty<Interrogator.D2P1Did>();
-                string sappname = d2P1Did.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single() ?? string.Empty;
+                string sappname = d2P1Did.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single() ?? "Unknown";
                 logResult.Version += sappname;
 
-                string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single() ?? string.Empty;
+                string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single() ?? "Unknown";
                 logResult.Model += apimmodel;
 
                 GraphQLResponse<My20ModelsRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<My20ModelsRoot>(GraphQlHelper.GetMy20Models());
@@ -377,21 +376,22 @@ namespace Syn3Updater.Helpers
                     logResult.Region = "ANZ";
                 else if (logResult.Packages.Any(x => x.Contains("14G421-F")) && logResult.Packages.Any(x => x.Contains("14G422-F")))
                     logResult.Region = "ROW";
-                else if (!logResult.Navigation)
-                    logResult.Region = "NON-NAV";
                 else 
                     logResult.Region = "???";
                 
                 try
                 {
-                    var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.IvsuVersionLookup(sappname));
-                    IvsuRoot sversion = graphQlResponse2.Data;
-
-                    if (sversion.Ivsus != null)
+                    if (sappname != "Unknown")
                     {
-                        string convertedsversion = sversion.Ivsus[0].Version;
-                        AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
-                        logResult.Version = convertedsversion;
+                        var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.IvsuVersionLookup(sappname));
+                        IvsuRoot sversion = graphQlResponse2.Data;
+
+                        if (sversion.Ivsus != null)
+                        {
+                            string convertedsversion = sversion.Ivsus[0].Version;
+                            AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
+                            logResult.Version = convertedsversion;
+                        }
                     }
                 }
                 catch (Exception)
