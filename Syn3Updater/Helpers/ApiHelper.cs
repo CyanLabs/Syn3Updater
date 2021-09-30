@@ -31,7 +31,7 @@ namespace Syn3Updater.Helpers
         /// <param name="specialPackage">SpecialPackage type e.g downgradetool, logtool34 etc.</param>
         public static async Task<SModel.Ivsu> GetSpecialIvsu(string specialPackage)
         {
-            var graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetSpecialPackage(specialPackage));
+            GraphQLResponse<IvsuRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetSpecialPackage(specialPackage));
             IvsuRoot ivsu = graphQlResponse.Data;
             return ConvertIvsu(ivsu.Ivsus?[0] ?? throw new InvalidOperationException());
         }
