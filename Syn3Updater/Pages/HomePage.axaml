@@ -125,6 +125,7 @@ USB Drive has been prepared successfully!
           <Border BorderBrush="{DynamicResource SystemControlHighlightBaseLowBrush}"
                   BorderThickness="1" Padding="15">
             <StackPanel>
+              <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="DarkRed" Padding="20" Margin="0,0,0,20" IsVisible="{Binding RegionUnknown}" >Unable to determine region from 'Interrogator Log'. Please specify your region below!</TextBlock>
               <TextBlock HorizontalAlignment="Center" IsVisible="{Binding !InterrogatorOutputVisible}">No information available currently!</TextBlock>
               <Grid ColumnDefinitions="*,2*,2*" RowDefinitions="Auto,Auto" IsVisible="{Binding InterrogatorOutputVisible}">
               <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
@@ -135,7 +136,7 @@ USB Drive has been prepared successfully!
                 <TextBlock TextAlignment="Right" Grid.Column="0" Text="Sync:" VerticalAlignment="Center"></TextBlock>
                 <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedRelease}" Items="{Binding Releases}"/>
               </Grid>
-              <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
+              <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
                 <TextBlock TextAlignment="Right" Grid.Column="0" Text="Maps:" VerticalAlignment="Center"></TextBlock>
                 <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedMapRelease}" Items="{Binding MapReleases}"/>
               </Grid>
