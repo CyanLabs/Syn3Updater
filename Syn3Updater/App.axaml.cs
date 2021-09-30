@@ -26,12 +26,7 @@ namespace Syn3Updater
                     DataContext = new MainWindowViewModel(),
                 };
             }
-            
-            var theme = new Avalonia.Themes.Default.DefaultTheme();
-            theme.TryGetResource("Button", out _);
 
-            //var theme1 = new Avalonia.Themes.Fluent.FluentTheme();
-            //theme1.TryGetResource("Button", out _);
             IconProvider.Register<FontAwesomeIconProvider>();
             base.OnFrameworkInitializationCompleted();
         }
