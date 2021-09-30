@@ -356,16 +356,6 @@ namespace Syn3Updater.Helpers
                 
                 logResult.Packages = packages;
 
-                List<AsBuilt.DID> asBuiltValues = new();
-
-                logResult.AsBuilt += "APIM AsBuilt";
-                foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType != null && x.DidType.Contains("Direct Configuraation DID DE")))
-                {
-                    if (d2P1Didchild.D2P1Response == null || d2P1Didchild.DidValue == null) continue;
-                    logResult.AsBuilt += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
-                    asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
-                }
-                
                 if (logResult.Packages.Any(x => x.Contains("14G421-A")) && logResult.Packages.Any(x => x.Contains("14G422-A")))
                     logResult.Region = "CN";
                 else if (logResult.Packages.Any(x => x.Contains("14G421-B")) && logResult.Packages.Any(x => x.Contains("14G422-B")))
@@ -378,6 +368,24 @@ namespace Syn3Updater.Helpers
                     logResult.Region = "ROW";
                 else 
                     logResult.Region = "???";
+
+                List<AsBuilt.DID> asBuiltValues = new();
+
+                logResult.AsBuilt += "APIM AsBuilt";
+                foreach (Interrogator.D2P1Did d2P1Didchild in d2P1Did.Where(x => x.DidType != null && x.DidType.Contains("Direct Configuraation DID DE")))
+                {
+                    if (d2P1Didchild.D2P1Response == null || d2P1Didchild.DidValue == null) continue;
+                    if (d2P1Didchild.DidValue == "DE01" && logResult.Region is "" or "???")
+                    {
+                        logResult.AsBuiltRegion = SyncHexToAscii.ConvertPackages(d2P1Didchild.D2P1Response[..4]).FirstOrDefault() ?? "???";
+                        GraphQLResponse<CountriesRoot> graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<CountriesRoot>(GraphQlHelper.GetRegionFromCountry(logResult.AsBuiltRegion));
+                        logResult.Region = graphQlResponse2.Data.Countries.FirstOrDefault().Region;
+                    }
+                    
+                    logResult.AsBuilt += $"{Environment.NewLine}{d2P1Didchild.DidValue}: {d2P1Didchild.D2P1Response.ToUpper()}";
+                    asBuiltValues.Add(new AsBuilt.DID { ID = d2P1Didchild.DidValue, Text = d2P1Didchild.D2P1Response.ToUpper() });
+                }
+
                 
                 try
                 {
