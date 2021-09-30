@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQL;
@@ -13,10 +14,15 @@ namespace Syn3Updater.Helpers
         ///     Gets All Sync APP versions from CyanLabs DB
         /// </summary>
         /// <returns>IvsuRoot with all retrieved APP versions</returns>
-        public static async Task<IvsuRoot?> GetSyncVersions()
+        public static async Task<ObservableCollection<string>> GetSyncVersions()
         {
             GraphQLResponse<IvsuRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.GetAppVersions());
-            return graphQlResponse.Data;
+            IvsuRoot response = graphQlResponse.Data;
+            ObservableCollection<string> versions = new();
+            if (response.Ivsus != null)
+                foreach (Ivsu ivsu in response.Ivsus)
+                    if (!versions.Contains(ivsu.Version)) versions.Add(ivsu.Version);
+            return versions;
         }
 
         /// <summary>

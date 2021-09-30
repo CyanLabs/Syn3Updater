@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,9 +16,9 @@ namespace Syn3Updater.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
-        private readonly IvsuRoot? _syncVersions;
+        private readonly ObservableCollection<string> _syncVersions;
 
-        public IvsuRoot? SyncVersions
+        public ObservableCollection<string> SyncVersions
         {
             get => _syncVersions;
             private init => this.RaiseAndSetIfChanged(ref _syncVersions, value);

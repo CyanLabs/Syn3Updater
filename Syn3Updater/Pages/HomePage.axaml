@@ -21,7 +21,7 @@
             <Grid ColumnDefinitions="*,2*" RowDefinitions="50">
                 <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch">
                   <TextBlock TextAlignment="Right" HorizontalAlignment="Center"  Grid.Column="0" Text="Sync Version:" VerticalAlignment="Center"></TextBlock>
-                  <AutoCompleteBox Width="115" Height="50" Margin="5,0,0,0" Grid.Column="1" VerticalAlignment="Stretch" FontSize="18" HorizontalAlignment="Center"  Name="SyncVersionsAutoComplete" Watermark="#.#.#####" Items="{Binding SyncVersions.Ivsus}" ValueMemberBinding="{Binding Version}" Text="{Binding CurrentVersion}"/>
+                  <AutoCompleteBox Width="115" Height="50" Margin="5,0,0,0" Grid.Column="1" VerticalAlignment="Stretch" FontSize="18" HorizontalAlignment="Center"  Name="SyncVersionsAutoComplete" Watermark="#.#.#####" Items="{Binding SyncVersions}" Text="{Binding CurrentVersion}"/>
                 </Grid>
                 <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*" HorizontalAlignment="Center">
                   <ComboBox Height="50" VerticalAlignment="Center" Margin="5,0,0,0" SelectedIndex="-1" HorizontalAlignment="Center" MinWidth="300" PlaceholderText="Select a USB Drive"
