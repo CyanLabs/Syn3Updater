@@ -7,10 +7,9 @@
     {
         public string? DownloadPath { get; set; }
         public string LicenseKey { get; set; } = "";
-        public bool? DisclaimerAccepted { get; set; } = false;
-        public string? Theme { get; set; }
+        public bool DisclaimerAccepted { get; set; } = false;
         public string? LogPath { get; set; }
-        public string? Profile { get; set; }
+        public string Profile { get; set; } = "default";
     }
 
     public class ProfileSettings

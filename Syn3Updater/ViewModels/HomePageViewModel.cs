@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -208,13 +207,13 @@ namespace Syn3Updater.ViewModels
 
         private void UpdateDriveInfo()
         {
-            CreateInterrogatorEnabled = CurrentVersion != null && SelectedDrive?.Letter != null;
+            CreateInterrogatorEnabled = CurrentVersion != null && SelectedDrive.Letter != null;
         }
 
         [UsedImplicitly]
         private async void PrepareInterrogatorUSB()
         {
-            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive.Letter, CurrentVersion);
+            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive.Letter!, CurrentVersion!);
         }
 
         [UsedImplicitly]
@@ -232,6 +231,7 @@ namespace Syn3Updater.ViewModels
                 RegionUnknown = true;
                 return string.Empty;
             }
+            RegionUnknown = false;
             Releases.Clear();
             GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetReleases(region));
             ReleasesRoot latestRelease = graphQlResponse.Data;
@@ -248,6 +248,7 @@ namespace Syn3Updater.ViewModels
                 RegionUnknown = true;
                 return string.Empty;
             }
+            RegionUnknown = false;
             MapReleases.Clear();
             GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleases(region, compat));
             ReleasesRoot latestMapRelease = graphQlResponse.Data;
