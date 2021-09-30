@@ -150,5 +150,19 @@ namespace Syn3Updater.Helpers
                 }"
             };
         }
+        
+        public static GraphQLRequest GetRegionFromCountry(string countryCode)
+        {
+            return new GraphQLRequest
+            {
+                Query = @" 
+                {
+                    countries (limit: 1,
+                      filter: {code: { _eq: """+ countryCode+ @""" }}) {
+                        region
+                    }
+                }"
+            };
+        }
     }
 }
