@@ -30,9 +30,14 @@ namespace Syn3Updater.ViewModels
             get => _currentVersion;
             set
             {
-                if (value == null || !value.Any(char.IsDigit)) return;
-                AppMan.App.Settings.CurrentVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
                 this.RaiseAndSetIfChanged(ref _currentVersion, value);
+                if (value == null || !value.Any(char.IsDigit) || value.Length < 9)
+                {
+                    CreateInterrogatorEnabled = false;
+                    return;
+                }
+                AppMan.App.Settings.CurrentVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
+                CreateInterrogatorEnabled = SelectedDrive?.Letter != null;
             }
         }
 
@@ -69,7 +74,10 @@ namespace Syn3Updater.ViewModels
         public bool CreateInterrogatorEnabled
         {
             get => _createInterrogatorEnabled;
-            set => this.RaiseAndSetIfChanged(ref _createInterrogatorEnabled, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _createInterrogatorEnabled, value);
+            }
         }
 
         private bool _startEnabled;
@@ -94,6 +102,14 @@ namespace Syn3Updater.ViewModels
         {
             get => _interrogatorOutputVisible;
             set => this.RaiseAndSetIfChanged(ref _interrogatorOutputVisible, value);
+        }
+        
+        private bool _regionUnknown;
+
+        public bool RegionUnknown
+        {
+            get => _regionUnknown;
+            set => this.RaiseAndSetIfChanged(ref _regionUnknown, value);
         }
 
         private ObservableCollection<string> _regions;
@@ -191,13 +207,13 @@ namespace Syn3Updater.ViewModels
 
         private void UpdateDriveInfo()
         {
-            CreateInterrogatorEnabled = SelectedDrive.Name != null;
+            CreateInterrogatorEnabled = CurrentVersion != null && SelectedDrive?.Letter != null;
         }
 
         [UsedImplicitly]
         private async void PrepareInterrogatorUSB()
         {
-            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive.Letter ?? throw new InvalidOperationException(), CurrentVersion ?? throw new InvalidOperationException());
+            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive.Letter, CurrentVersion);
         }
 
         [UsedImplicitly]
@@ -210,7 +226,11 @@ namespace Syn3Updater.ViewModels
         
         private async Task<string> GetReleaseInformation(string region)
         {
-            if (region is "" or "???" or "NON-NAV") return string.Empty;
+            if (region is "???" or null)
+            {
+                RegionUnknown = true;
+                return string.Empty;
+            }
             Releases.Clear();
             GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetReleases(region));
             ReleasesRoot latestRelease = graphQlResponse.Data;
@@ -222,13 +242,18 @@ namespace Syn3Updater.ViewModels
         
         private async Task<string> GetMapReleaseInformation(string region, string compat)
         {
-            if (region is "" or "???" or "NON-NAV") return string.Empty;
+            if (region is "???" or null)
+            {
+                RegionUnknown = true;
+                return string.Empty;
+            }
             MapReleases.Clear();
             GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleases(region, compat));
             ReleasesRoot latestMapRelease = graphQlResponse.Data;
             
             MapReleases.AddRange(latestMapRelease.MapReleases.Select(x => x.Name));
-            return latestMapRelease.MapReleases.FirstOrDefault()?.Name ?? throw new InvalidOperationException();
+            MapReleases.Add("No Maps");
+            return LogResult.Navigation == false ? "No Maps" : latestMapRelease.MapReleases.FirstOrDefault()?.Name ?? throw new InvalidOperationException();
         }
 
         private void ResetMapReleaseInformation()
@@ -242,8 +267,8 @@ namespace Syn3Updater.ViewModels
         {
             AppMan.App.Ivsus = await HomeViewModelService.GetReleaseIvsus(SelectedRegion,SelectedRelease,SelectedMapRelease,LogResult.Navigation);
             AppMan.App.IsDownloading = true;
-            AppMan.App.FireDownloadsStartEvent();
             AppMan.App.DriveLetter = SelectedDrive.Letter ?? throw new InvalidOperationException();
+            AppMan.App.FireDownloadsStartEvent();
         }
     }
 }
