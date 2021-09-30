@@ -27,6 +27,7 @@ namespace Syn3Updater.ViewModels
             AppMan.App.ShowDownloadsTab += delegate { SelectedTab = 1; };
             
             //TODO Close application if not administrator after X time
+            // ReSharper disable once InvertIf
             if (OperatingSystem.IsWindows()) {
                 using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
                 {
