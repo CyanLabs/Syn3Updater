@@ -35,32 +35,35 @@ namespace Syn3Updater.Services
                 }
                 
             }
-            
-            GraphQLResponse<ReleasesRoot> graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleaseIvsus(selectedMapRelease));
-            ReleasesRoot jsonMapIvsUs = graphQlResponse2.Data;
-            
-            AppMan.App.AutoInstall = jsonMapIvsUs.MapReleases[0].Autoinstall;
 
-            foreach (ReleasesIvsus item in jsonMapIvsUs.MapReleases[0].IvsusList.Where(x => x.MapIvsu != null && (x.MapIvsu.Regions.Contains("ALL") || x.MapIvsu.Regions.Contains(selectedRegion))))
+            if (selectedMapRelease != "No Maps")
             {
-                if (item.MapIvsu != null)
+                GraphQLResponse<ReleasesRoot> graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleaseIvsus(selectedMapRelease));
+                ReleasesRoot jsonMapIvsUs = graphQlResponse2.Data;
+            
+                AppMan.App.AutoInstall = jsonMapIvsUs.MapReleases[0].Autoinstall;
+
+                foreach (ReleasesIvsus item in jsonMapIvsUs.MapReleases[0].IvsusList.Where(x => x.MapIvsu != null && (x.MapIvsu.Regions.Contains("ALL") || x.MapIvsu.Regions.Contains(selectedRegion))))
                 {
-                    ivsuList.Add(new SModel.Ivsu
+                    if (item.MapIvsu != null)
                     {
-                        Type = item.MapIvsu.Type,
-                        Name = item.MapIvsu.Name,
-                        Version = item.MapIvsu.Version,
-                        Notes = item.MapIvsu.Notes,
-                        Url = item.MapIvsu.Url,
-                        Md5 = item.MapIvsu.Md5,
-                        Selected = true,
-                        FileName = FileHelper.url_to_filename(item.MapIvsu.Url),
-                        FileSize = item.MapIvsu.FileSize,
-                        Source = item.MapIvsu.Source
-                    });
+                        ivsuList.Add(new SModel.Ivsu
+                        {
+                            Type = item.MapIvsu.Type,
+                            Name = item.MapIvsu.Name,
+                            Version = item.MapIvsu.Version,
+                            Notes = item.MapIvsu.Notes,
+                            Url = item.MapIvsu.Url,
+                            Md5 = item.MapIvsu.Md5,
+                            Selected = true,
+                            FileName = FileHelper.url_to_filename(item.MapIvsu.Url),
+                            FileSize = item.MapIvsu.FileSize,
+                            Source = item.MapIvsu.Source
+                        });
+                    }
                 }
             }
-            
+
             AppMan.App.SelectedRegion = selectedRegion;
             AppMan.App.SelectedRelease = selectedRelease;
             AppMan.App.SelectedMapVersion = selectedMapRelease;
