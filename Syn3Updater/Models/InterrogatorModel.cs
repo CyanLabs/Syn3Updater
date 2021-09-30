@@ -138,6 +138,7 @@ namespace Syn3Updater.Models
             public string? Time { get; set; }
             public string? AsBuilt { get; set; }
             public string Region { get; set; }
+            public string AsBuiltRegion { get; set; } = "";
         }
     }
 }

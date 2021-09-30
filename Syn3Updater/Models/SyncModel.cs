@@ -103,4 +103,16 @@ namespace Syn3Updater.Models
             [JsonProperty("changelog")] public string ReleaseNotes { get; set; }
             [JsonProperty("branch")] public string Branch { get; set; }
         }
+        
+        public class CountriesRoot
+        {
+            [JsonProperty("countries")] public IList<Country> Countries { get; set; }
+        }
+        
+        public class Country
+        {
+            [JsonProperty("region")] public string Region { get; set; }
+            [JsonProperty("code")] public string Code { get; set; }
+            [JsonProperty("name")] public int Name { get; set; }
+        }
 }
