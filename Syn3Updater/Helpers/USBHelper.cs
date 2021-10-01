@@ -132,12 +132,36 @@ namespace Syn3Updater.Helpers
         public static ObservableCollection<USBDriveModel.Drive> RefreshDevicesMac(bool fakeusb)
         {
             ObservableCollection<USBDriveModel.Drive> driveList = new();
-            IEnumerable<DriveInfo> allDrives = DriveInfo.GetDrives().Where(x => x.DriveType == DriveType.Removable);
+            IEnumerable<DriveInfo> allDrives = DriveInfo.GetDrives();
             foreach (var driveInfo in allDrives)
             {
                 USBDriveModel.Drive drive = new();
                 DiskUtilModel.DiskUtilInfo diskUtilInfo = new();
-                string output = File.ReadAllText("D:\\diskutil.txt");
+                string output;
+                if (OperatingSystem.IsMacOS())
+                {
+                    using (Process p = new())
+                    {
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.RedirectStandardOutput = true;
+                        p.StartInfo.FileName = "diskutil";
+                        p.StartInfo.Arguments = $"info {driveInfo.RootDirectory}";
+                        p.StartInfo.CreateNoWindow = true;
+                        p.Start();
+                        output = p.StandardOutput.ReadToEnd();
+                        p.WaitForExit();
+                    }
+
+                    drive.Encrypted = false;
+                    drive.Fake = false;
+                    drive.FileSystem = driveInfo.DriveFormat;
+                    
+                }
+                else
+                {
+                    //TODO Remove Debug
+                    output = File.ReadAllText("D:\\diskutil.txt");
+                }
                 output = Regex.Replace(output, @"(\s)\s+", "$1");
                 try
                 {
@@ -190,6 +214,18 @@ namespace Syn3Updater.Helpers
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
+                }
+                
+                using (Process p = new())
+                {
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.RedirectStandardOutput = true;
+                    p.StartInfo.FileName = "diskutil";
+                    p.StartInfo.Arguments = $"info /dev/{diskUtilInfo.PartOfWhole}";
+                    p.StartInfo.CreateNoWindow = true;
+                    p.Start();
+                    output = p.StandardOutput.ReadToEnd();
+                    p.WaitForExit();
                 }
             }
 
