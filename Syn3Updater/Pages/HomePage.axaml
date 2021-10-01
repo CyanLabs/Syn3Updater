@@ -37,9 +37,7 @@
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
                                             <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
-                                            <TextBlock Margin="0,3,0,3"
-                                                       Text="{Binding VolumeName}"
-                                                       IsVisible="{Binding !Fake}" />
+                                            <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName}" IsVisible="{Binding !IsMac}" />
                                         </StackPanel>
 
                                       <StackPanel Orientation="Horizontal" IsVisible="{Binding !Fake}">
