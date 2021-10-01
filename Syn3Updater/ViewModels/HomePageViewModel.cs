@@ -207,7 +207,15 @@ namespace Syn3Updater.ViewModels
         [UsedImplicitly]
         private async void ScanInterrogatorUSB()
         {
-            LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.Path);
+            if (OperatingSystem.IsWindows())
+            {
+                LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.Path);
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.VolumeName);
+            }
+            
             SelectedRegion = LogResult.Region;
             InterrogatorOutputVisible = true;
         }

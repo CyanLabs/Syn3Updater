@@ -338,7 +338,7 @@ namespace Syn3Updater.ViewModels
                     continue;
                 }
 
-                if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DrivePath}\SyncMyRide\{item.FileName}", item.Md5,
+                if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}SyncMyRide{Path.DirectorySeparatorChar}{item.FileName}", item.Md5,
                     true, true), _ct))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
@@ -365,7 +365,7 @@ namespace Syn3Updater.ViewModels
                             Log += $"[{DateTime.Now}] Copying (Attempt #{i}): {item.FileName} {Environment.NewLine}";
                         }
 
-                        if (await _fileHelper.CopyFileAsync(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DrivePath}\SyncMyRide\{item.FileName}", _ct))
+                        if (await _fileHelper.CopyFileAsync(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}SyncMyRide{Path.DirectorySeparatorChar}{item.FileName}", _ct))
                         {
                             _count++;
                         }
@@ -375,7 +375,7 @@ namespace Syn3Updater.ViewModels
                         }
 
                         if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName,
-                            $@"{AppMan.App.DrivePath}\SyncMyRide\{item.FileName}", item.Md5, true), _ct))
+                            $@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}SyncMyRide{Path.DirectorySeparatorChar}{item.FileName}", item.Md5, true), _ct))
                         {
                             string text = $"Copied: {item.FileName}";
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
@@ -601,13 +601,39 @@ namespace Syn3Updater.ViewModels
                 {
                     p.StartInfo.UseShellExecute = false;
                     p.StartInfo.FileName = "diskutil";
+                    p.StartInfo.RedirectStandardOutput = true;
                     p.StartInfo.Arguments = $"eraseDisk ExFat CYANLABS MBR {AppMan.App.DrivePath}";
                     p.StartInfo.CreateNoWindow = true;
 
                     Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
 
                     p.Start();
-                    await p.WaitForExitAsync(_ct);
+                    while (!p.StandardOutput.EndOfStream)
+                    {
+                        Log += p.StandardOutput.ReadLine() + Environment.NewLine;
+                    }
+                    p.WaitForExit();
+                }
+
+                if (Log.Contains($"Could not mount {AppMan.App.DrivePath}s1 after erase"))
+                {
+                    using (Process p = new())
+                    {
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.FileName = "diskutil";
+                        p.StartInfo.RedirectStandardOutput = true;
+                        p.StartInfo.Arguments = $"mount {AppMan.App.DrivePath}s1";
+                        p.StartInfo.CreateNoWindow = true;
+
+                        Log += "[" + DateTime.Now + "] Mounting newly created partition on selected USB drive" + Environment.NewLine;
+
+                        p.Start();
+                        while (!p.StandardOutput.EndOfStream)
+                        {
+                            Log += p.StandardOutput.ReadLine() + Environment.NewLine;
+                        }
+                        p.WaitForExit();
+                    }
                 }
 
                 AppMan.App.DrivePath = "/Volumes/CYANLABS";
@@ -631,7 +657,7 @@ namespace Syn3Updater.ViewModels
 
             try
             {
-                Directory.CreateDirectory($@"{AppMan.App.DrivePath}\SyncMyRide\");
+                Directory.CreateDirectory($@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}SyncMyRide{Path.DirectorySeparatorChar}");
             }
             catch (DirectoryNotFoundException)
             {
@@ -660,8 +686,8 @@ namespace Syn3Updater.ViewModels
             }
             try
             {
-                File.WriteAllText($@"{AppMan.App.DrivePath}\autoinstall.lst", autoinstalllst);
-                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA").Close();
+                File.WriteAllText($@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}autoinstall.lst", autoinstalllst);
+                File.Create($@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}DONTINDX.MSA").Close();
             }
             catch (IOException)
             {
@@ -692,7 +718,7 @@ namespace Syn3Updater.ViewModels
 
             try
             {
-                File.WriteAllText($@"{AppMan.App.DrivePath}\reformat.lst", reformatlst);
+                File.WriteAllText($@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}reformat.lst", reformatlst);
             }
             catch (IOException)
             {
@@ -726,8 +752,8 @@ namespace Syn3Updater.ViewModels
 
             try
             {
-                File.WriteAllText($@"{AppMan.App.DrivePath}\autoinstall.lst", autoinstalllst.ToString());
-                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA").Close();
+                File.WriteAllText($@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}autoinstall.lst", autoinstalllst.ToString());
+                File.Create($@"{AppMan.App.DrivePath}{Path.DirectorySeparatorChar}DONTINDX.MSA").Close();
             }
             catch (IOException)
             {

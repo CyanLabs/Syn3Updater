@@ -126,33 +126,25 @@ namespace Syn3Updater.Helpers
                     USBDriveModel.Drive drive = new();
                     DiskUtilModel.DiskUtilInfo diskUtilInfo = new();
                     string output;
-                    if (OperatingSystem.IsMacOS())
+                    using (Process p = new())
                     {
-                        using (Process p = new())
-                        {
-                            p.StartInfo.UseShellExecute = false;
-                            p.StartInfo.RedirectStandardOutput = true;
-                            p.StartInfo.FileName = "diskutil";
-                            p.StartInfo.Arguments = $"info {driveInfo.Name}";
-                            p.StartInfo.CreateNoWindow = true;
-                            p.Start();
-                            output = p.StandardOutput.ReadToEnd();
-                            p.WaitForExit();
-                        }
+                        p.StartInfo.UseShellExecute = false;
+                        p.StartInfo.RedirectStandardOutput = true;
+                        p.StartInfo.FileName = "diskutil";
+                        p.StartInfo.Arguments = $"info {driveInfo.Name}";
+                        p.StartInfo.CreateNoWindow = true;
+                        p.Start();
+                        output = p.StandardOutput.ReadToEnd();
+                        p.WaitForExit();
+                    }
 
-                        drive.Encrypted = false;
-                        drive.Fake = false;
-                        drive.FileSystem = driveInfo.DriveFormat;
-                        drive.Size = MathHelper.BytesToString(Convert.ToInt64(driveInfo.TotalSize));
-                        drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(driveInfo.AvailableFreeSpace));
-                        drive.VolumeName = driveInfo.Name.Replace("/Volumes/","");
-                        drive.IsMac = true;
-                    }
-                    else
-                    {
-                        //TODO Remove Debug
-                        output = File.ReadAllText("D:\\diskutil.txt");
-                    }
+                    drive.Encrypted = false;
+                    drive.Fake = false;
+                    drive.FileSystem = driveInfo.DriveFormat;
+                    drive.Size = MathHelper.BytesToString(Convert.ToInt64(driveInfo.TotalSize));
+                    drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(driveInfo.AvailableFreeSpace));
+                    drive.VolumeName = driveInfo.Name;
+                    drive.IsMac = true;
                     output = Regex.Replace(output, @"(\s)\s+", "$1");
 
                     foreach (string line in output.Split(new[] { "\r\n", "\r", "\n" },StringSplitOptions.None))
@@ -237,7 +229,6 @@ namespace Syn3Updater.Helpers
             //Reset ApplicationManager variables
             
             AppMan.App.Ivsus.Clear();
-            AppMan.App.DrivePath = driveLetter;
             AppMan.App.Action = action;
             AppMan.App.SelectedRelease = "Interrogator Log Utility";
             
@@ -303,20 +294,20 @@ namespace Syn3Updater.Helpers
                     .Append("Partition Type: ").Append(AppMan.App.DrivePartitionType).Append(Environment.NewLine);
 
             string driveletter = AppMan.App.DrivePath;
-            if (File.Exists($@"{driveletter}\reformat.lst"))
+            if (File.Exists($@"{driveletter}{Path.DirectorySeparatorChar}reformat.lst"))
                 data.Append(Environment.NewLine)
                     .Append("REFORMAT.LST").Append(Environment.NewLine)
-                    .Append(File.ReadAllText($@"{driveletter}\reformat.lst")).Append(Environment.NewLine);
+                    .Append(File.ReadAllText($@"{driveletter}{Path.DirectorySeparatorChar}reformat.lst")).Append(Environment.NewLine);
 
-            if (File.Exists($@"{driveletter}\autoinstall.lst"))
+            if (File.Exists($@"{driveletter}{Path.DirectorySeparatorChar}autoinstall.lst"))
                 data.Append(Environment.NewLine)
                     .Append("AUTOINSTALL.LST").Append(Environment.NewLine)
-                    .Append(File.ReadAllText($@"{driveletter}\autoinstall.lst")).Append(Environment.NewLine);
+                    .Append(File.ReadAllText($@"{driveletter}{Path.DirectorySeparatorChar}autoinstall.lst")).Append(Environment.NewLine);
 
-            if (Directory.Exists($@"{driveletter}\SyncMyRide"))
+            if (Directory.Exists($@"{driveletter}{Path.DirectorySeparatorChar}SyncMyRide"))
             {
                 data.Append(Environment.NewLine);
-                DirectoryInfo di = new($@"{driveletter}\SyncMyRide");
+                DirectoryInfo di = new($@"{driveletter}{Path.DirectorySeparatorChar}SyncMyRide");
                 FileInfo[] allFiles = di.GetFiles("*", SearchOption.AllDirectories);
                 data.Append($"FILES ({allFiles.Length}){Environment.NewLine}");
                 foreach (FileInfo file in allFiles)
@@ -330,7 +321,7 @@ namespace Syn3Updater.Helpers
             string currentDate = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
             try
             {
-                File.WriteAllText($@"{driveletter}\log.txt", complete);
+                File.WriteAllText($@"{driveletter}{Path.DirectorySeparatorChar}log.txt", complete);
                 File.WriteAllText($@"{AppMan.App.MainSettings.LogPath}log-{currentDate}.txt", complete);
             }
             catch (DirectoryNotFoundException)
@@ -384,7 +375,7 @@ namespace Syn3Updater.Helpers
             try
             {
                 const string pattern = "*.xml";
-                DirectoryInfo dirInfo = new(letter + @"\SyncMyRide\");
+                DirectoryInfo dirInfo = new($"{letter}{Path.DirectorySeparatorChar}SyncMyRide{Path.DirectorySeparatorChar}");
                 FileInfo file = (from f in dirInfo.GetFiles(pattern) orderby f.LastWriteTime descending select f).First();
                 path = file.FullName;
             }
