@@ -158,7 +158,7 @@ namespace Syn3Updater
                 if (OperatingSystem.IsWindows())
                     MainSettings.DownloadPath = $@"{WindowsSystemHelper.GetPath(WindowsSystemHelper.KnownFolder.Downloads)}\Syn3Updater\";
                 else if (OperatingSystem.IsMacOS())
-                    MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater";
+                    MainSettings.DownloadPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/Downloads/Syn3Updater/";
                     
                 DownloadPath = MainSettings.DownloadPath ?? string.Empty;
             }
