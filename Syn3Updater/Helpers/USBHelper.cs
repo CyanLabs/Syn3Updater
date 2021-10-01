@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using Avalonia;
@@ -21,6 +22,7 @@ using GraphQL;
 using Newtonsoft.Json;
 using Syn3Updater.Converters;
 using Syn3Updater.Helpers.Windows;
+using Syn3Updater.Models.Mac;
 using Formatting = Newtonsoft.Json.Formatting;
 
 
@@ -111,6 +113,89 @@ namespace Syn3Updater.Helpers
                 //TODO Exception Handling
                 return new ObservableCollection<USBDriveModel.Drive>();
             }
+        }
+
+        /*public string Path { get; set; }
+        public string? Name { get; set; }
+        public string Size { get; set; }
+        public string? Letter { get; set; }
+        public string FileSystem { get; set; }
+        public string PartitionType { get; set; }
+        public string FreeSpace { get; set; }
+        public bool SkipFormat { get; set; }
+        public string? VolumeName { get; set; }
+        public string? Model { get; set; }
+        public bool Fake { get; set; }
+        public bool Encrypted { get; set; }
+        public string EncryptionStatus { get; set; }*/
+        
+        public static ObservableCollection<USBDriveModel.Drive> RefreshDevicesMac(bool fakeusb)
+        {
+            ObservableCollection<USBDriveModel.Drive> driveList = new();
+            IEnumerable<DriveInfo> allDrives = DriveInfo.GetDrives().Where(x => x.DriveType == DriveType.Removable);
+            foreach (var driveInfo in allDrives)
+            {
+                USBDriveModel.Drive drive = new();
+                DiskUtilModel.DiskUtilInfo diskUtilInfo = new();
+                string output = File.ReadAllText("D:\\diskutil.txt");
+                output = Regex.Replace(output, @"(\s)\s+", "$1");
+                try
+                {
+                    foreach (string line in output.Split("\r"))
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        string[] namevalue = line.Split(": ");
+                        string key = namevalue[0];
+                        string value = namevalue[1];
+                        if (key.Contains("Device Identifier")) diskUtilInfo.DeviceIdentifier = value;
+                        else if (key.Contains("Device Node")) diskUtilInfo.DeviceNode = value;
+                        else if (key.Contains("Whole")) diskUtilInfo.Whole = value == "Yes";
+                        else if(key.Contains("Part of Whole")) diskUtilInfo.PartOfWhole = value;
+                        
+                        else if(key.Contains("Volume Name")) diskUtilInfo.VolumeName = value;
+                        else if(key.Contains("Mounted")) diskUtilInfo.Mounted = value == "Yes";
+                        else if (key.Contains("Mount Point")) diskUtilInfo.MountPoint = value;
+
+                        else if(key.Contains("Partition Type")) diskUtilInfo.PartitionType = value;
+                        else if(key.Contains("File System Personality")) diskUtilInfo.FileSystemPersonality = value;
+                        else if(key.Contains("Type (Bundle)")) diskUtilInfo.TypeBundle = value;
+                        else if(key.Contains("Name (User Visible)")) diskUtilInfo.NameUserVisible = value;
+                        
+                        else if(key.Contains("OS Can Be Installed")) diskUtilInfo.OsCanBeInstalled = value == "Yes";
+                        else if(key.Contains("Media Type")) diskUtilInfo.MediaType = value;
+                        else if(key.Contains("Protocol")) diskUtilInfo.Protocol = value;
+                        else if(key.Contains("SMART Status")) diskUtilInfo.SmartStatus = value;
+                        else if(key.Contains("Volume UUID")) diskUtilInfo.VolumeUuid = value;
+                        else if(key.Contains("Partition Offset")) diskUtilInfo.PartitionOffset = value;
+                        
+                        else if(key.Contains("Disk Size")) diskUtilInfo.DiskSize = value;
+                        else if(key.Contains("Device Block Size")) diskUtilInfo.DeviceBlockSize = value;
+
+                        else if(key.Contains("Volume Total Space")) diskUtilInfo.VolumeTotalSpace = value;
+                        else if(key.Contains("Volume Used Space")) diskUtilInfo.VolumeUsedSpace = value;
+                        else if(key.Contains("Volume Free Space")) diskUtilInfo.VolumeFreeSpace = value;
+                        else if(key.Contains("Allocation Block Size")) diskUtilInfo.AllocationBlockSize = value;
+
+                        else if(key.Contains("Media OS Use Only")) diskUtilInfo.MediaOsUseOnly = value == "Yes";
+                        else if(key.Contains("Media Read-Only")) diskUtilInfo.MediaReadOnly = value == "Yes";
+                        else if(key.Contains("Volume Read-Only")) diskUtilInfo.VolumeReadOnly = value == "Yes";
+                        
+                        else if(key.Contains("Device Location")) diskUtilInfo.DeviceLocation = value;
+                        else if(key.Contains("Removable Media")) diskUtilInfo.RemovableMedia = value;
+                        else if(key.Contains("Media Removal")) diskUtilInfo.MediaRemoval = value;
+                        
+                        else if(key.Contains("Solid State")) diskUtilInfo.SolidState = value;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+
+            
+
+            return new ObservableCollection<USBDriveModel.Drive>();
         }
         
         public static async Task LogPrepareUSBAction(USBDriveModel.Drive? selectedDrive, string driveLetter, string currentversion, string action = "logutility")

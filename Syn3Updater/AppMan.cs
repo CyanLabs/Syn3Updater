@@ -75,6 +75,7 @@ namespace Syn3Updater
 
         public void Initialize()
         {
+           var blah = USBHelper.RefreshDevicesMac(false);
             if (OperatingSystem.IsWindows())
                 WindowsSystemHelper.WriteRegistryHandler();
             else if (OperatingSystem.IsMacOS())
