@@ -107,7 +107,7 @@ namespace Syn3Updater.ViewModels
             AppMan.App.StartDownloadsTab += delegate
             {
                 DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
-                My20Mode = AppMan.App.Settings.My20V2 switch
+                My20Mode = AppMan.App.Settings.My20 switch
                 {
                     null => "AutoDetect",
                     true => "Enabled",
@@ -610,7 +610,7 @@ namespace Syn3Updater.ViewModels
                     p.Start();
                     while (!p.StandardOutput.EndOfStream)
                     {
-                        Log += p.StandardOutput.ReadLine() + Environment.NewLine;
+                        Log += "[" + DateTime.Now + "] DiskUtil: " + p.StandardOutput.ReadLine() + Environment.NewLine;
                     }
                     p.WaitForExit();
                 }
@@ -630,7 +630,7 @@ namespace Syn3Updater.ViewModels
                         p.Start();
                         while (!p.StandardOutput.EndOfStream)
                         {
-                            Log += p.StandardOutput.ReadLine() + Environment.NewLine;
+                            Log += "[" + DateTime.Now + "] DiskUtil: " + p.StandardOutput.ReadLine() + Environment.NewLine;
                         }
                         p.WaitForExit();
                     }

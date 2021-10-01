@@ -126,21 +126,31 @@ USB Drive has been prepared successfully!
               <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="DarkRed" Padding="20" Margin="0,0,0,20" IsVisible="{Binding RegionUnknown}" >Unable to determine region from 'Interrogator Log'. Please specify your region below!</TextBlock>
               <TextBlock HorizontalAlignment="Center" IsVisible="{Binding !InterrogatorOutputVisible}">No information available currently!</TextBlock>
               <Grid ColumnDefinitions="*,2*,2*" RowDefinitions="Auto,Auto" IsVisible="{Binding InterrogatorOutputVisible}">
-              <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
-                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Region:" VerticalAlignment="Center"></TextBlock>
-                <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedRegion}" Items="{Binding Regions}"/>
+                <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
+                  <TextBlock TextAlignment="Right" Grid.Column="0" Text="Region:" VerticalAlignment="Center"></TextBlock>
+                  <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedRegion}" Items="{Binding Regions}"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
+                  <TextBlock TextAlignment="Right" Grid.Column="0" Text="Sync:" VerticalAlignment="Center"></TextBlock>
+                  <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedRelease}" Items="{Binding Releases}"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
+                  <TextBlock TextAlignment="Right" Grid.Column="0" Text="Maps:" VerticalAlignment="Center"></TextBlock>
+                  <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedMapRelease}" Items="{Binding MapReleases}"/>
+                </Grid>
+             </Grid>
+              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,10,0,0" Content="Download, Verify and Copy update files" IsEnabled="{Binding StartEnabled}" Command="{Binding Begin}"/>
+              <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto" Margin="0,10,0,0" IsVisible="{Binding InterrogatorOutputVisible}">
+                <Grid Grid.Column="0" ColumnDefinitions="*,Auto" HorizontalAlignment="Center" >
+                  <TextBlock Text="{Binding InstallMode, StringFormat='Install Mode: {0}'}"></TextBlock>
+                </Grid>
+                <Grid Grid.Column="1" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding My20Mode, StringFormat='My20 Protection: {0}'}"></TextBlock>
+                </Grid>
+                <Grid Grid.Column="2" ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding InstallModeForced, StringFormat='Forced: {0}'}"></TextBlock>
+                </Grid>
               </Grid>
-              <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto" HorizontalAlignment="Center">
-                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Sync:" VerticalAlignment="Center"></TextBlock>
-                <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedRelease}" Items="{Binding Releases}"/>
-              </Grid>
-              <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
-                <TextBlock TextAlignment="Right" Grid.Column="0" Text="Maps:" VerticalAlignment="Center"></TextBlock>
-                <ComboBox Grid.Column="1" Margin="5,0,0,0" SelectedItem="{Binding SelectedMapRelease}" Items="{Binding MapReleases}"/>
-              </Grid>
-              <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,10,0,0" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="Download, Verify and Copy update files" IsEnabled="{Binding StartEnabled}" Command="{Binding Begin}">
-              </Button>
-            </Grid>
             </StackPanel>
           </Border>
         </StackPanel>

@@ -276,11 +276,11 @@ namespace Syn3Updater.Helpers
                 .Append($@"Install Mode: {AppMan.App.Settings.InstallMode} ({AppMan.App.InstallMode}){Environment.NewLine}")
                 .Append($@"Install Mode Overridden: {AppMan.App.ModeForced}{Environment.NewLine}");
 
-            if (AppMan.App.Settings.My20V2 == null)
+            if (AppMan.App.Settings.My20 == null)
                 data.Append($@"My20 Protection Enabled: AutoDetect{Environment.NewLine}");
-            else if (AppMan.App.Settings.My20V2 == true)
+            else if (AppMan.App.Settings.My20 == true)
                 data.Append($@"My20 Protection Enabled: Enabled{Environment.NewLine}");
-            else if (AppMan.App.Settings.My20V2 == false)
+            else if (AppMan.App.Settings.My20 == false)
                 data.Append($@"My20 Protection Enabled: Disabled{Environment.NewLine}");
 
             data.Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
@@ -395,6 +395,7 @@ namespace Syn3Updater.Helpers
 
             try
             {
+                AppMan.App.Settings.My20 = null;
                 if (path == string.Empty) return new Interrogator.LogResult();
                 AppMan.App.Cancelled = false;
                 XmlDocument doc = new();
@@ -418,10 +419,10 @@ namespace Syn3Updater.Helpers
                 
                 foreach (My20Models unused in output.My20Models.Where(my20 => apimmodel.Contains(my20.Model)))
                 {
-                    AppMan.App.Settings.My20V2 = true;
+                    AppMan.App.Settings.My20 = true;
                 }
 
-                if (AppMan.App.Settings.My20V2 != true) AppMan.App.Settings.My20V2 = false;
+                if (AppMan.App.Settings.My20 != true) AppMan.App.Settings.My20 = false;
                 Interrogator.D2P1PartitionHealth[]? apimPartions = interrogatorLog.POtaModuleSnapShot?.PNode?.D2P1AdditionalAttributes?.D2P1PartitionHealth;
                 string apimsize = apimPartions?.Where(x => x.Type == "/fs/images/").Select(x => x.Total).Single() ?? string.Empty;
                 string apimfree = apimPartions?.Where(x => x.Type == "/fs/images/").Select(x => x.Available).Single() ?? string.Empty;

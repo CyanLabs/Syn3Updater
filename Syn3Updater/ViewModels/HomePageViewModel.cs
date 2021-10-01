@@ -41,6 +41,30 @@ namespace Syn3Updater.ViewModels
             }
         }
 
+        private string _installMode = string.Empty;
+
+        public string InstallMode
+        {
+            get => _installMode;
+            set => this.RaiseAndSetIfChanged(ref _installMode, value);
+        }
+        
+        private string? _installModeForced;
+
+        public string? InstallModeForced
+        {
+            get => _installModeForced;
+            set => this.RaiseAndSetIfChanged(ref _installModeForced, value);
+        }
+        
+        private string _my20Mode;
+
+        public string? My20Mode
+        {
+            get => _my20Mode;
+            set => this.RaiseAndSetIfChanged(ref _my20Mode, value);
+        }
+
         private ObservableCollection<USBDriveModel.Drive>? _driveList;
 
         public ObservableCollection<USBDriveModel.Drive>? DriveList
@@ -167,6 +191,7 @@ namespace Syn3Updater.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _selectedMapRelease, value);
+                UpdateInstallMode();
                 StartEnabled = SelectedMapRelease != string.Empty;
             }
         }
@@ -179,6 +204,7 @@ namespace Syn3Updater.ViewModels
             CreateInterrogatorEnabled = false;
             InterrogatorDescriptionVisible = false;
             InterrogatorOutputVisible = false;
+            InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
             StartEnabled = false;
             SyncVersions = AsyncContext.Run(async () => await ApiHelper.GetSyncVersions());
 
@@ -215,6 +241,13 @@ namespace Syn3Updater.ViewModels
             {
                 LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.VolumeName);
             }
+
+            My20Mode = AppMan.App.Settings.My20 switch
+            {
+                null => "AutoDetect",
+                true => "Enabled",
+                false => "Disabled"
+            };
             
             SelectedRegion = LogResult.Region;
             InterrogatorOutputVisible = true;
@@ -233,24 +266,29 @@ namespace Syn3Updater.ViewModels
             ReleasesRoot latestRelease = graphQlResponse.Data;
 
             Releases.AddRange(latestRelease.Releases.Select(x => x.Name));
+            if(AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion) Releases.Add("Only Update Maps");
             _compat = latestRelease.Releases.FirstOrDefault()?.Version[..3] ?? "3.4";
             return latestRelease.Releases.FirstOrDefault()?.Name ?? throw new InvalidOperationException();
         }
         
         private async Task<string> GetMapReleaseInformation(string region, string compat)
         {
-            if (region is "???" or null)
+            ReleasesRoot latestMapRelease = new();
+            if (LogResult.Navigation)
             {
-                RegionUnknown = true;
-                return string.Empty;
+                if (region is "???" or null)
+                {
+                    RegionUnknown = true;
+                    return string.Empty;
+                }
+                RegionUnknown = false;
+                MapReleases.Clear();
+                GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleases(region, compat));
+                latestMapRelease = graphQlResponse.Data;
+                MapReleases.AddRange(latestMapRelease.MapReleases.Select(x => x.Name));
             }
-            RegionUnknown = false;
-            MapReleases.Clear();
-            GraphQLResponse<ReleasesRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<ReleasesRoot>(GraphQlHelper.GetMapReleases(region, compat));
-            ReleasesRoot latestMapRelease = graphQlResponse.Data;
             
-            MapReleases.AddRange(latestMapRelease.MapReleases.Select(x => x.Name));
-            MapReleases.Add("No Maps");
+            if(AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion && SelectedRelease != "Only Update Maps") MapReleases.Add("No Maps");
             return LogResult.Navigation == false ? "No Maps" : latestMapRelease.MapReleases.FirstOrDefault()?.Name ?? throw new InvalidOperationException();
         }
 
@@ -267,6 +305,60 @@ namespace Syn3Updater.ViewModels
             AppMan.App.IsDownloading = true;
             AppMan.App.DrivePath = SelectedDrive.Path ?? throw new InvalidOperationException();
             AppMan.App.FireDownloadsStartEvent();
+        }
+
+        private void UpdateInstallMode()
+        {
+            if (string.IsNullOrWhiteSpace(SelectedMapRelease) || string.IsNullOrWhiteSpace(SelectedRelease)) return;
+            
+            //LESS THAN 3.2
+            if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
+            {
+                if (AppMan.App.Settings.My20 == true) InstallMode = "autoinstall";
+                if (!AppMan.App.ModeForced)
+                    InstallMode = "reformat";
+            }
+
+            //Above 3.2 and  Below 3.4.19274
+            else if (AppMan.App.Settings.CurrentVersion >= Api.ReformatVersion &&
+                     AppMan.App.Settings.CurrentVersion < Api.BlacklistedVersion)
+            {
+                //Update Nav?
+                if (SelectedMapRelease == "No Maps")
+                {
+                    if (!AppMan.App.ModeForced) InstallMode = "autoinstall";
+                }
+                else if (AppMan.App.Settings.My20 == true)
+                {
+                    InstallMode = "autoinstall";
+                }
+                else if (!AppMan.App.ModeForced)
+                {
+                    InstallMode = "reformat";
+                }
+            }
+
+            //3.4.19274 or above
+            else if (AppMan.App.Settings.CurrentVersion >= Api.BlacklistedVersion)
+            {
+                //Update Nav?
+                if (SelectedMapRelease == "No Maps" || SelectedRelease == "Only Update Maps")
+                {
+                    if (!AppMan.App.ModeForced)
+                        InstallMode = "autoinstall";
+                }
+                else if (AppMan.App.Settings.My20 == true)
+                {
+                    InstallMode = "autoinstall";
+                }
+                else if (!AppMan.App.ModeForced)
+                {
+                    InstallMode = "downgrade";
+                }
+            }
+
+            AppMan.App.Action = "main";
+            AppMan.App.InstallMode = InstallMode;
         }
     }
 }
