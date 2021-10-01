@@ -92,7 +92,7 @@ namespace Syn3Updater.Helpers
                             drive.Model = d.GetPropertyValue("Model").ToString();
                             drive.Size = friendlySize;
                             drive.Fake = false;
-                            if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")
+                            if (drive.FileSystem == "exFAT" && drive.PartitionType == "MBR" && drive.VolumeName == "CYANLABS")
                                 drive.SkipFormat = true;
                             else
                                 drive.SkipFormat = false;
@@ -146,9 +146,8 @@ namespace Syn3Updater.Helpers
                         drive.Size = MathHelper.BytesToString(Convert.ToInt64(driveInfo.TotalSize));
                         drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(driveInfo.AvailableFreeSpace));
                         drive.Letter = driveInfo.Name;
-                        drive.Name = driveInfo.Name.Replace("/Volumes/","");
+                        drive.VolumeName = driveInfo.Name.Replace("/Volumes/","");
                         drive.IsMac = true;
-                        drive.Model = "Unknown Model"; //TODO Try and figure out a way of getting USB model in OSX
                     }
                     else
                     {
@@ -163,47 +162,8 @@ namespace Syn3Updater.Helpers
                         {
                             if (string.IsNullOrWhiteSpace(line)) continue;
                             string[] namevalue = line.Split(": ");
-                            string key = namevalue[0];
-                            string value = namevalue[1];
-                            if (key.Contains("Device Identifier")) diskUtilInfo.DeviceIdentifier = value;
-                            else if (key.Contains("Device Node")) diskUtilInfo.DeviceNode = value;
-                            else if (key.Contains("Whole") && !key.Contains("Part of Whole")) diskUtilInfo.Whole = value == "Yes";
-                            else if (key.Contains("Part of Whole")) diskUtilInfo.PartOfWhole = value;
-
-                            else if (key.Contains("Volume Name")) diskUtilInfo.VolumeName = value;
-                            else if (key.Contains("Mounted")) diskUtilInfo.Mounted = value == "Yes";
-                            else if (key.Contains("Mount Point")) diskUtilInfo.MountPoint = value;
-
-                            else if (key.Contains("Partition Type")) diskUtilInfo.PartitionType = value;
-                            else if (key.Contains("File System Personality")) diskUtilInfo.FileSystemPersonality = value;
-                            else if (key.Contains("Type (Bundle)")) diskUtilInfo.TypeBundle = value;
-                            else if (key.Contains("Name (User Visible)")) diskUtilInfo.NameUserVisible = value;
-
-                            else if (key.Contains("OS Can Be Installed")) diskUtilInfo.OsCanBeInstalled = value == "Yes";
-                            else if (key.Contains("Media Type")) diskUtilInfo.MediaType = value;
-                            else if (key.Contains("Protocol")) diskUtilInfo.Protocol = value;
-                            else if (key.Contains("SMART Status")) diskUtilInfo.SmartStatus = value;
-                            else if (key.Contains("Volume UUID")) diskUtilInfo.VolumeUuid = value;
-                            else if (key.Contains("Partition Offset")) diskUtilInfo.PartitionOffset = value;
-
-                            else if (key.Contains("Disk Size")) diskUtilInfo.DiskSize = value;
-                            else if (key.Contains("Device Block Size")) diskUtilInfo.DeviceBlockSize = value;
-
-                            else if (key.Contains("Volume Total Space")) diskUtilInfo.VolumeTotalSpace = value;
-                            else if (key.Contains("Volume Used Space")) diskUtilInfo.VolumeUsedSpace = value;
-                            else if (key.Contains("Volume Free Space")) diskUtilInfo.VolumeFreeSpace = value;
-                            else if (key.Contains("Allocation Block Size")) diskUtilInfo.AllocationBlockSize = value;
-
-                            else if (key.Contains("Media OS Use Only")) diskUtilInfo.MediaOsUseOnly = value == "Yes";
-                            else if (key.Contains("Media Read-Only")) diskUtilInfo.MediaReadOnly = value == "Yes";
-                            else if (key.Contains("Volume Read-Only")) diskUtilInfo.VolumeReadOnly = value == "Yes";
-
-                            else if (key.Contains("Device Location")) diskUtilInfo.DeviceLocation = value;
-                            else if (key.Contains("Removable Media")) diskUtilInfo.RemovableMedia = value;
-                            else if (key.Contains("Media Removal")) diskUtilInfo.MediaRemoval = value;
-
-                            else if (key.Contains("Solid State")) diskUtilInfo.SolidState = value;
-
+                            if (namevalue[0].Contains("Part of Whole")) diskUtilInfo.PartOfWhole = namevalue[1];
+                            if (namevalue[0].Contains("Removable Media")) diskUtilInfo.RemovableMedia = namevalue[1];
                         }
                         catch (Exception e)
                         {
@@ -229,24 +189,38 @@ namespace Syn3Updater.Helpers
                                 output = p.StandardOutput.ReadToEnd();
                                 p.WaitForExit();
                             }
-
-                            if (output.Contains("FDisk_partition_scheme"))
-                            {
-                                drive.PartitionType = "MBR";
-                            }
-                            else if (output.Contains("GUID_partition_scheme"))
-                            {
-                                drive.PartitionType = "GPT";
-                            }
-                            else
-                            {
-                                drive.PartitionType = "???";
-                            }
                             
-                            if (drive.FileSystem == "exfat" && drive.PartitionType == "MBR" && drive.Name == "CYANLABS")
-                                drive.SkipFormat = true;
-                            else
-                                drive.SkipFormat = false;
+                            output = Regex.Replace(output, @"(\s)\s+", "$1");
+
+                            foreach (string line in output.Split(new[] { "\r\n", "\r", "\n" },StringSplitOptions.None))
+                            {
+                                try
+                                {
+                                    if (string.IsNullOrWhiteSpace(line)) continue;
+                                    string[] namevalue = line.Split(": ");
+                                    if (namevalue[0].Contains("Content (IOContent)")) diskUtilInfo.Content = namevalue[1];
+                                    if (namevalue[0].Contains("Device / Media")) diskUtilInfo.DeviceMediaName = namevalue[1];
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+                            }
+
+                            drive.PartitionType = diskUtilInfo.Content switch
+                            {
+                                "FDisk_partition_scheme" => "MBR",
+                                "GUID_partition_scheme" => "GPT",
+                                _ => "???"
+                            };
+
+                            drive.SkipFormat = drive.FileSystem switch
+                            {
+                                "exfat" when drive.PartitionType == "MBR" && drive.VolumeName == "CYANLABS" => true,
+                                _ => false
+                            };
+                            drive.Name = diskUtilInfo.DeviceMediaName;
+                            drive.Model = diskUtilInfo.DeviceMediaName; //TODO Get manufacturer somehow? 
                         }
                     }
                     driveList.Add(drive);

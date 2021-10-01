@@ -1,4 +1,5 @@
-﻿namespace Syn3Updater.Models.Mac
+﻿// ReSharper disable UnusedMember.Global
+namespace Syn3Updater.Models.Mac
 {
     public class DiskUtilModel
     {
@@ -34,6 +35,8 @@
             public string? RemovableMedia { get; set; }
             public string? MediaRemoval { get; set; }
             public string? SolidState { get; set; }
+            public string? Content { get; set; }
+            public string? DeviceMediaName { get; set; }
         }
     }
 }
