@@ -144,6 +144,7 @@ namespace Syn3Updater.Helpers
                         drive.Fake = false;
                         drive.FileSystem = driveInfo.DriveFormat;
                         drive.Size = MathHelper.BytesToString(Convert.ToInt64(driveInfo.TotalSize));
+                        drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(driveInfo.AvailableFreeSpace));
                         drive.Letter = driveInfo.Name;
                         drive.Name = driveInfo.Name.Replace("/Volumes/","");
                         drive.Model = "Unknown Model"; //TODO Try and figure out a way of getting USB model in OSX
@@ -165,7 +166,7 @@ namespace Syn3Updater.Helpers
                             string value = namevalue[1];
                             if (key.Contains("Device Identifier")) diskUtilInfo.DeviceIdentifier = value;
                             else if (key.Contains("Device Node")) diskUtilInfo.DeviceNode = value;
-                            else if (key.Contains("Whole")) diskUtilInfo.Whole = value == "Yes";
+                            else if (key.Contains("Whole") && !key.Contains("Part of Whole")) diskUtilInfo.Whole = value == "Yes";
                             else if (key.Contains("Part of Whole")) diskUtilInfo.PartOfWhole = value;
 
                             else if (key.Contains("Volume Name")) diskUtilInfo.VolumeName = value;
