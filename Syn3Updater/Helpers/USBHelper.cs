@@ -147,6 +147,7 @@ namespace Syn3Updater.Helpers
                         drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(driveInfo.AvailableFreeSpace));
                         drive.Letter = driveInfo.Name;
                         drive.Name = driveInfo.Name.Replace("/Volumes/","");
+                        drive.IsMac = true;
                         drive.Model = "Unknown Model"; //TODO Try and figure out a way of getting USB model in OSX
                     }
                     else

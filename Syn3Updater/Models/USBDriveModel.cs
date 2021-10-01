@@ -18,6 +18,7 @@
             public bool Fake { get; set; }
             public bool Encrypted { get; set; }
             public string EncryptionStatus { get; set; }
+            public bool IsMac { get; set; }
             
         }
     }
