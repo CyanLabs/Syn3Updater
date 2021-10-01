@@ -5,10 +5,10 @@
     {
         public class Drive
         {
-            public string Path { get; set; }
+            public string RelativePath { get; set; }
             public string? Name { get; set; }
             public string Size { get; set; }
-            public string? Letter { get; set; }
+            public string? Path { get; set; }
             public string FileSystem { get; set; }
             public string PartitionType { get; set; }
             public string FreeSpace { get; set; }

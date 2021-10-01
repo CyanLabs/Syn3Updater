@@ -37,7 +37,7 @@ namespace Syn3Updater.ViewModels
                     return;
                 }
                 AppMan.App.Settings.CurrentVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
-                CreateInterrogatorEnabled = SelectedDrive.Letter != null;
+                CreateInterrogatorEnabled = SelectedDrive?.Path != null;
             }
         }
 
@@ -195,19 +195,19 @@ namespace Syn3Updater.ViewModels
 
         private void UpdateDriveInfo()
         {
-            CreateInterrogatorEnabled = CurrentVersion != null && SelectedDrive.Letter != null;
+            CreateInterrogatorEnabled = CurrentVersion != string.Empty && SelectedDrive.Path != null;
         }
 
         [UsedImplicitly]
         private async void PrepareInterrogatorUSB()
         {
-            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive.Letter!, CurrentVersion!);
+            await USBHelper.LogPrepareUSBAction(SelectedDrive, SelectedDrive.Path!, CurrentVersion!);
         }
 
         [UsedImplicitly]
         private async void ScanInterrogatorUSB()
         {
-            LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.Letter);
+            LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.Path);
             SelectedRegion = LogResult.Region;
             InterrogatorOutputVisible = true;
         }
@@ -257,7 +257,7 @@ namespace Syn3Updater.ViewModels
         {
             AppMan.App.Ivsus = await HomeViewModelService.GetReleaseIvsus(SelectedRegion,SelectedRelease,SelectedMapRelease,LogResult.Navigation);
             AppMan.App.IsDownloading = true;
-            AppMan.App.DrivePath = SelectedDrive.Letter ?? throw new InvalidOperationException();
+            AppMan.App.DrivePath = SelectedDrive.Path ?? throw new InvalidOperationException();
             AppMan.App.FireDownloadsStartEvent();
         }
     }

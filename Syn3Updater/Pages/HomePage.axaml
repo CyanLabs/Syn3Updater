@@ -35,7 +35,7 @@
                                   <i:Icon Value="fab fa-usb" Foreground="White" FontSize="24" Margin="1,0,10,0" VerticalAlignment="Center" IsVisible="{Binding !Fake}" />
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Margin="0,3,5,3" Text="{Binding Letter}" />
+                                            <TextBlock Margin="0,3,5,3" Text="{Binding Path}" />
                                             <TextBlock Margin="0,3,5,3" Text="{Binding Name}" />
                                             <TextBlock Margin="0,3,0,3" Text="{Binding VolumeName}" IsVisible="{Binding !IsMac}" />
                                         </StackPanel>

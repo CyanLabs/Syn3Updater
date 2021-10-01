@@ -82,12 +82,12 @@ namespace Syn3Updater.Helpers
                                 drive.VolumeName = string.IsNullOrWhiteSpace((string)ld.GetPropertyValue("VolumeName")) ? "" : ld.GetPropertyValue("VolumeName").ToString();
                             }
 
-                            drive.Letter = ld.GetPropertyValue("DeviceId").ToString();
+                            drive.Path = ld.GetPropertyValue("DeviceId").ToString();
                             drive.PartitionType = p.GetPropertyValue("Type").ToString()!.Contains("GPT:") ? "GPT" : "MBR";
                             
                             drive.Name = d.GetPropertyValue("Caption").ToString();
                             
-                            drive.Path = d.Path.RelativePath;
+                            drive.RelativePath = d.Path.RelativePath;
                             drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(ld.GetPropertyValue("FreeSpace")));
                             drive.Model = d.GetPropertyValue("Model").ToString();
                             drive.Size = friendlySize;
@@ -145,7 +145,6 @@ namespace Syn3Updater.Helpers
                         drive.FileSystem = driveInfo.DriveFormat;
                         drive.Size = MathHelper.BytesToString(Convert.ToInt64(driveInfo.TotalSize));
                         drive.FreeSpace = MathHelper.BytesToString(Convert.ToInt64(driveInfo.AvailableFreeSpace));
-                        drive.Letter = driveInfo.Name;
                         drive.VolumeName = driveInfo.Name.Replace("/Volumes/","");
                         drive.IsMac = true;
                     }
@@ -170,9 +169,8 @@ namespace Syn3Updater.Helpers
                             Console.WriteLine(e);
                         }
                     }
-
+                    
                     drive.Path = $"/dev/{diskUtilInfo.PartOfWhole}";
-
                     //TODO remove uneeded check later
                     if (OperatingSystem.IsMacOS())
                     {
@@ -401,11 +399,12 @@ namespace Syn3Updater.Helpers
                     AppMan.App.Cancelled = true;
                     return new Interrogator.LogResult();
                 }
-                path = result.FirstOrDefault() ?? throw new InvalidOperationException();
+                path = result.FirstOrDefault() ?? string.Empty;
             }
 
             try
             {
+                if (path == string.Empty) return new Interrogator.LogResult();
                 AppMan.App.Cancelled = false;
                 XmlDocument doc = new();
                 //TODO: swtich to Async once code moves to dotnet 5+ 

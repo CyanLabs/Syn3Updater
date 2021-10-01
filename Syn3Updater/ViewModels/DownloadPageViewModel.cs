@@ -152,7 +152,16 @@ namespace Syn3Updater.ViewModels
             bool doDownload;
 
             if (!AppMan.App.DownloadOnly)
-                if (await FormatUSBAsync() != true) return;
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    if (await FormatUSBWindowsAsync() != true) return;
+                } else if (OperatingSystem.IsMacOS())
+                {
+                    if (await FormatUSBMacAsync() != true) return;
+                }
+            }
+                
 
             try
             {
@@ -518,7 +527,7 @@ namespace Syn3Updater.ViewModels
             }
         }
 
-        private async Task<bool> FormatUSBAsync()
+        private async Task<bool> FormatUSBWindowsAsync()
         {
             if (AppMan.App.SkipFormat) return true;
             if (AppMan.App.DownloadToFolder)
@@ -565,6 +574,46 @@ namespace Syn3Updater.ViewModels
             }
             return true;
         }
+        
+        private async Task<bool> FormatUSBMacAsync()
+        {
+            if (AppMan.App.SkipFormat) return true;
+            if (AppMan.App.DownloadToFolder)
+            {
+                Log += "[" + DateTime.Now + "] Clearing Selected Folder" + Environment.NewLine;
+                try
+                {
+                    foreach (string file in Directory.GetFiles(AppMan.App.DrivePath))
+                        File.Delete(file);
+                    foreach (string dir in Directory.GetDirectories(AppMan.App.DrivePath))
+                        Directory.Delete(dir, true);
+                }
+                catch (Exception)
+                {
+                    Log += "[" + DateTime.Now + "] Unable to clear folder, continuing anyway" + Environment.NewLine;
+                    return false;
+                }
+            }
+            else
+            {
+                Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
+                using (Process p = new())
+                {
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.FileName = "diskutil";
+                    p.StartInfo.Arguments = $"eraseDisk ExFat CYANLABS MBR {AppMan.App.DrivePath}";
+                    p.StartInfo.CreateNoWindow = true;
+
+                    Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
+
+                    p.Start();
+                    await p.WaitForExitAsync(_ct);
+                }
+
+                AppMan.App.DrivePath = "/Volumes/CYANLABS";
+            }
+            return true;
+        }
 
         private bool PrepareUsbAsync()
         {
@@ -602,7 +651,7 @@ namespace Syn3Updater.ViewModels
             if (string.IsNullOrEmpty(AppMan.App.AutoInstall))
             {
                 Log += "[" + DateTime.Now + "] Generating Autoinstall.lst" + Environment.NewLine;
-                autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease ?? throw new InvalidOperationException(), _selectedRegion ?? throw new InvalidOperationException()).ToString();
+                autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease, _selectedRegion).ToString();
             }
             else
             {
@@ -612,7 +661,7 @@ namespace Syn3Updater.ViewModels
             try
             {
                 File.WriteAllText($@"{AppMan.App.DrivePath}\autoinstall.lst", autoinstalllst);
-                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA");
+                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA").Close();
             }
             catch (IOException)
             {
@@ -678,7 +727,7 @@ namespace Syn3Updater.ViewModels
             try
             {
                 File.WriteAllText($@"{AppMan.App.DrivePath}\autoinstall.lst", autoinstalllst.ToString());
-                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA");
+                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA").Close();
             }
             catch (IOException)
             {
