@@ -58,7 +58,7 @@ namespace Syn3Updater
         #region Properties & Fields
 
         public string DownloadPath,
-            DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DriveLetter, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode,
+            DriveName, DrivePartitionType, DriveFileSystem, DriveNumber, DrivePath, SelectedMapVersion, SelectedRelease, SelectedRegion, InstallMode,
             SVersion, Action, MainConfigFile, ProfileFile, AppDataPath, ProfilePath, Header, Magnet, AutoInstall;
 
         public bool SkipFormat, IsDownloading, DownloadToFolder, ModeForced, DownloadOnly, Cancelled, AppsSelected;
@@ -87,13 +87,10 @@ namespace Syn3Updater
             ServicePointManager.Expect100Continue = false;
             string[] args = Environment.GetCommandLineArgs();
 
-            //Logger.Debug($"Syn3 Updater {Assembly.GetEntryAssembly()?.GetName().Version} is Starting");
-            
             foreach (string value in args)
                 if (value.Contains("syn3updater://"))
                     Magnet = value.Replace("syn3updater://", "").TrimEnd('/');
-
-            //Logger.Debug($"URL Intent: {Magnet}");
+            
 
             if (OperatingSystem.IsWindows())
                 AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\CyanLabs\\Syn3Updater\\";

@@ -94,19 +94,10 @@ namespace Syn3Updater.Helpers
                     prevPercent = percent;
                 }
             }
-            catch (IOException)
+            catch (Exception)
             {
-                //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(ioException.GetFullMessage()));
-                //AppMan.Logger.Info("ERROR: " + ioException.GetFullMessage());
                 return false;
             }
-            catch (UnauthorizedAccessException)
-            {
-                //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(exception.GetFullMessage()));
-                //AppMan.Logger.Info("ERROR: " + exception.GetFullMessage());
-                return false;
-            }
-
             return true;
         }
 
@@ -194,7 +185,6 @@ namespace Syn3Updater.Helpers
                             Task t = Task.Run(async () =>
                             {
                                 DownloadPartResult result = await DownloadFilePart(fileUrl, destinationFilePath, readRange, i1, ct);
-                                //AppMan.Logger.Debug($"DownloadFilePart: {i1} ({readRange.Start}/{readRange.End} - {responseLength.ToString()})");
                                 results.Add(result);
                             }, ct);
                             i++;
@@ -203,24 +193,10 @@ namespace Syn3Updater.Helpers
                         try
                         {
                             await Task.WhenAll(tasks);
-                            //AppMan.Logger.Debug($"DownloadFilePart: All Tasks Completed {tasks.Count}");
                         }
-                        catch (OperationCanceledException)
+                        catch (Exception)
                         {
                             AttemptDownloadFileDelete(destinationFilePath);
-                            //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
-                            return false;
-                        }
-                        catch (IOException)
-                        {
-                            AttemptDownloadFileDelete(destinationFilePath);
-                            //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
-                            return false;
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            AttemptDownloadFileDelete(destinationFilePath);
-                            //await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(e.GetFullMessage()));
                             return false;
                         }
 
@@ -486,16 +462,8 @@ namespace Syn3Updater.Helpers
                     return BitConverter.ToString(hasher.Hash ?? throw new InvalidOperationException()).Replace("-", string.Empty);
                 }
             }
-            catch (IOException)
+            catch (Exception)
             {
-                //await UIHelper.ShowErrorDialog(e.GetFullMessage()));
-                //AppMan.Logger.Info("ERROR: " + e.GetFullMessage());
-                return "error";
-            }
-            catch (UnauthorizedAccessException)
-            {
-                //await UIHelper.ShowErrorDialog(exception.GetFullMessage()));
-                //AppMan.Logger.Info("ERROR: " + exception.GetFullMessage());
                 return "error";
             }
         }

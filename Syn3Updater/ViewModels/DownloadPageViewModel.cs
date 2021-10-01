@@ -17,32 +17,13 @@ namespace Syn3Updater.ViewModels
 {
     public class DownloadPageViewModel : ViewModelBase
     {
-        #region Events
-
         public event EventHandler<EventArgs<int>> PercentageChanged;
-
-        #endregion
-
-        #region Constructors
         private CancellationTokenSource _tokenSource = new();
-
-        #endregion
-
-        #region Properties & Fields
-
-        private int _currentProgress, _totalPercentage, _totalPercentageMax, _count;
-        private string? _downloadInfo;
-        private string? _downloadPercentage;
-        private string? _log;
-        private string? _selectedRelease;
-        private string? _selectedRegion;
-        private string? _progressBarSuffix;
-        private string? _installMode;
-        private string? _action;
-        private string? _my20Mode;
-        private bool _cancelButtonEnabled, _doDownload, _doCopy;
-        private FileHelper _fileHelper;
         private CancellationToken _ct;
+        private int _currentProgress, _totalPercentage, _totalPercentageMax, _count;
+        private string? _downloadInfo, _downloadPercentage, _log, _selectedRelease, _selectedRegion, _progressBarSuffix, _installMode, _action, _my20Mode;
+        private bool _cancelButtonEnabled;
+        private FileHelper _fileHelper;
 
         private ObservableCollection<string>? _downloadQueueList;
 
@@ -121,10 +102,6 @@ namespace Syn3Updater.ViewModels
             set => this.RaiseAndSetIfChanged(ref _downloadConnections, value);
         }
 
-        #endregion
-
-        #region Methods
-
         public DownloadPageViewModel()
         {
             AppMan.App.StartDownloadsTab += delegate
@@ -137,8 +114,6 @@ namespace Syn3Updater.ViewModels
                     false => "Disabled"
                 };
                 InstallModeForced = AppMan.App.ModeForced ? "Yes" : "No";
-                InstallMode = AppMan.App.Settings.InstallMode;
-                if (!AppMan.App.IsDownloading) return;
                 InstallMode = AppMan.App.InstallMode;
                 Log = string.Empty;
                 _selectedRelease = AppMan.App.SelectedRelease;
@@ -151,11 +126,9 @@ namespace Syn3Updater.ViewModels
 
                 text = $"Install Mode: {AppMan.App.Settings.InstallMode} ({InstallMode}) Forced: {AppMan.App.ModeForced}";
                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                // AppMan.Logger.Info(text);
 
                 text = $"MY20 Protection: {My20Mode}";
                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                //AppMan.Logger.Info(text);
 
                 CancelButtonEnabled = true;
                 CurrentProgress = 0;
@@ -176,33 +149,23 @@ namespace Syn3Updater.ViewModels
 
         private async void DoDownloadCopyTask()
         {
-            _doCopy = false;
-            _doDownload = false;
+            bool doDownload;
 
             if (!AppMan.App.DownloadOnly)
-            {
                 if (await FormatUSBAsync() != true) return;
-            }
 
             try
             {
-                _doDownload = await Task.Run(DoDownload, _tokenSource.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                CancelAction();
-                AppMan.App.FireHomeTabEvent();
-                return;
+                doDownload = await Task.Run(DoDownload, _tokenSource.Token);
             }
             catch (Exception)
             {
-               // AppMan.Logger.CrashWindow(e);
                 CancelAction();
                 AppMan.App.FireHomeTabEvent();
                 return;
             }
 
-            if (!_doDownload)
+            if (!doDownload)
             {
                 CancelAction();
                 AppMan.App.FireHomeTabEvent();
@@ -222,35 +185,29 @@ namespace Syn3Updater.ViewModels
             else if (!_ct.IsCancellationRequested)
             {
                 if (PrepareUsbAsync() != true) return;
+                bool doCopy;
                 try
                 {
-                    _doCopy = await Task.Run(DoCopy, _tokenSource.Token);
-                }
-                catch (OperationCanceledException)
-                {
-                    CancelAction();
-                    AppMan.App.FireHomeTabEvent();
-                    return;
+                    doCopy = await Task.Run(DoCopy, _tokenSource.Token);
                 }
                 catch (Exception)
                 {
-                    //AppMan.Logger.CrashWindow(e);
                     CancelAction();
                     AppMan.App.FireHomeTabEvent();
                     return;
                 }
 
-                if (!_doCopy)
+                if (!doCopy)
                 {
                     CancelAction();
                     AppMan.App.FireHomeTabEvent();
                     return;
                 }
-
                 await CopyComplete();
             }
         }
 
+        //TODO Refactor DoDownload
         private async Task<bool> DoDownload()
         {
             _count = 0;
@@ -258,12 +215,9 @@ namespace Syn3Updater.ViewModels
             TotalPercentageMax = 100 * AppMan.App.Ivsus.Count * (AppMan.App.DownloadOnly ? 2 : 4);
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
             {
-                //debugging
-                //item.Url = item.Url.Replace("https://ivsubinaries.azureedge.net/", "http://127.0.0.1/").Replace("https://ivsu.binaries.ford.com/", "http://127.0.0.1/");
                 if (_ct.IsCancellationRequested)
                 {
                     Log += $"[{DateTime.Now}] Process cancelled by user{Environment.NewLine}";
-                    //AppMan.Logger.Info("Process cancelled by user");
                     return false;
                 }
 
@@ -271,7 +225,6 @@ namespace Syn3Updater.ViewModels
                 {
                     string text = $"Validated: {item.FileName} (Skipping Download)";
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                    //AppMan.Logger.Info(text);
 
                     if (item.Source == @"naviextras")
                     {
@@ -279,12 +232,10 @@ namespace Syn3Updater.ViewModels
 
                         text = $"Extracting: {item.FileName} (This may take some time!)";
                         Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                        //AppMan.Logger.Info(text);
 
                         if (outputResult.Result)
                         {
                             Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
-                            //AppMan.Logger.Info(outputResult.Message);
                         }
                     }
 
@@ -296,7 +247,6 @@ namespace Syn3Updater.ViewModels
                     DownloadInfo = $"Downloading: {item.FileName}";
 
                     Log += "[" + DateTime.Now + "] " + $"Downloading: {item.FileName}" + Environment.NewLine;
-                    //AppMan.Logger.Info($"Downloading: {item.FileName}");
 
                     _progressBarSuffix = "Downloaded";
                     try
@@ -309,7 +259,6 @@ namespace Syn3Updater.ViewModels
                             {
                                 DownloadInfo = $"Downloading (Attempt #{i}): {item.Url}";
                                 Log += "[" + DateTime.Now + "] " + $"Downloading (Attempt #{i}): {item.FileName}" + Environment.NewLine;
-                                //AppMan.Logger.Info($"Downloading (Attempt #{i}): {item.FileName}");
                             }
 
                             if (await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct, AppMan.App.Settings.DownloadConnections))
@@ -326,33 +275,27 @@ namespace Syn3Updater.ViewModels
                                 _count++;
                                 text = $"Downloaded: {item.FileName}";
                                 Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                                //AppMan.Logger.Info(text);
                                 if (item.Source == @"naviextras")
                                 {
                                     FileHelper.OutputResult outputResult = _fileHelper.ExtractMultiPackage(item, _ct);
 
                                     text = $"Extracting: {item.FileName} (This may take some time!)";
                                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                                    //AppMan.Logger.Info(text);
 
                                     if (outputResult.Result)
                                     {
                                         Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
-                                        //AppMan.Logger.Info(outputResult.Message);
                                     }
                                 }
 
                                 break;
                             }
 
-                            if (i == 3)
-                            {
-                                text = $"Unable to validate {item.FileName} after 3 attempts, ABORTING PROCESS!";
-                                Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                                //AppMan.Logger.Info(text);
-                                //TODO MessageBox.FailedToValidate3
-                                return false;
-                            }
+                            if (i != 3) continue;
+                            text = $"Unable to validate {item.FileName} after 3 attempts, ABORTING PROCESS!";
+                            Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
+                            //TODO MessageBox.FailedToValidate3
+                            return false;
                         }
                     }
                     catch (TaskCanceledException)
@@ -368,6 +311,7 @@ namespace Syn3Updater.ViewModels
             return true;
         }
 
+        //TODO Refactor DoCopy
         private async Task<bool> DoCopy()
         {
             foreach (SModel.Ivsu extraitem in AppMan.App.ExtraIvsus) AppMan.App.Ivsus.Add(extraitem);
@@ -376,7 +320,6 @@ namespace Syn3Updater.ViewModels
                 if (_ct.IsCancellationRequested)
                 {
                     Log += "[" + DateTime.Now + "] Process cancelled by user" + Environment.NewLine;
-                    //AppMan.Logger.Info("Process cancelled by user");
                     return false;
                 }
 
@@ -386,12 +329,11 @@ namespace Syn3Updater.ViewModels
                     continue;
                 }
 
-                if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5,
+                if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DrivePath}\SyncMyRide\{item.FileName}", item.Md5,
                     true, true), _ct))
                 {
                     string text = $"{item.FileName} exists and validated successfully, skipping copy";
                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                    //AppMan.Logger.Info(text);
 
                     _count += 2;
                 }
@@ -402,7 +344,6 @@ namespace Syn3Updater.ViewModels
                     DownloadInfo = $"Copying: {item.FileName}";
 
                     Log += $"[{DateTime.Now}] Copying: {item.FileName} {Environment.NewLine}";
-                    //AppMan.Logger.Info($"Copying: {item.FileName}");
 
                     _progressBarSuffix = "Copied";
 
@@ -413,10 +354,9 @@ namespace Syn3Updater.ViewModels
                         {
                             DownloadInfo = $"Copying (Attempt #{i}): {item.FileName}";
                             Log += $"[{DateTime.Now}] Copying (Attempt #{i}): {item.FileName} {Environment.NewLine}";
-                            //AppMan.Logger.Info($"Copying (Attempt #{i}): {item.FileName}");
                         }
 
-                        if (await _fileHelper.CopyFileAsync(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", _ct))
+                        if (await _fileHelper.CopyFileAsync(AppMan.App.DownloadPath + item.FileName, $@"{AppMan.App.DrivePath}\SyncMyRide\{item.FileName}", _ct))
                         {
                             _count++;
                         }
@@ -426,21 +366,19 @@ namespace Syn3Updater.ViewModels
                         }
 
                         if (await Task.Run(async () => await ValidateFile(AppMan.App.DownloadPath + item.FileName,
-                            $@"{AppMan.App.DriveLetter}\SyncMyRide\{item.FileName}", item.Md5, true)))
+                            $@"{AppMan.App.DrivePath}\SyncMyRide\{item.FileName}", item.Md5, true), _ct))
                         {
                             string text = $"Copied: {item.FileName}";
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                            //AppMan.Logger.Info(text);
                             _count++;
                             break;
                         }
 
-                        if (i == 3)
+                        if (i != 3) continue;
                         {
                             string text = $"unable to validate {item.FileName} after 3 tries, ABORTING PROCESS!";
                             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-                            //AppMan.Logger.Info(text);
-                            
+
                             //TODO MessageBox.FailedToValidate3
                             return false;
                         }
@@ -486,7 +424,6 @@ namespace Syn3Updater.ViewModels
                 : "ALL FILES DOWNLOADED AND COPIED TO THE USB DRIVE SUCCESSFULLY!";
 
             Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
-            //AppMan.Logger.Info(text);
 
             DownloadInfo = "Completed";
             AppMan.App.IsDownloading = false;
@@ -512,7 +449,7 @@ namespace Syn3Updater.ViewModels
                     //TODO Display Folder Completion Message 
                     try
                     {
-                        Process.Start(AppMan.App.DriveLetter);
+                        Process.Start(AppMan.App.DrivePath);
                     }
                     catch (Exception)
                     {
@@ -538,8 +475,7 @@ namespace Syn3Updater.ViewModels
                 //TODO Display MessageBox.GenericUtilityComplete Message 
                 //AppMan.App.FireUtilityTabEvent();
             }
-
-           CancelAction();
+            CancelAction();
         }
 
         private void CancelAction()
@@ -584,53 +520,48 @@ namespace Syn3Updater.ViewModels
 
         private async Task<bool> FormatUSBAsync()
         {
-            if (!AppMan.App.SkipFormat)
+            if (AppMan.App.SkipFormat) return true;
+            if (AppMan.App.DownloadToFolder)
             {
-                if (AppMan.App.DownloadToFolder)
+                Log += "[" + DateTime.Now + "] Clearing Selected Folder" + Environment.NewLine;
+                try
                 {
-                    Log += "[" + DateTime.Now + "] Clearing Selected Folder" + Environment.NewLine;
-                    try
-                    {
-                        foreach (string file in Directory.GetFiles(AppMan.App.DriveLetter))
-                            File.Delete(file);
-                        foreach (string dir in Directory.GetDirectories(AppMan.App.DriveLetter))
-                            Directory.Delete(dir, true);
-                    }
-                    catch (Exception)
-                    {
-                        Log += "[" + DateTime.Now + "] Unable to clear folder, continuing anyway" + Environment.NewLine;
-                        //AppMan.Logger.Info("Unable to clear folder, continuing anyway");
-                        return false;
-                    }
+                    foreach (string file in Directory.GetFiles(AppMan.App.DrivePath))
+                        File.Delete(file);
+                    foreach (string dir in Directory.GetDirectories(AppMan.App.DrivePath))
+                        Directory.Delete(dir, true);
                 }
-                else
+                catch (Exception)
                 {
-                    Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
-                    //AppMan.Logger.Info("Formatting USB drive");
-                    using (Process p = new())
-                    {
-                        p.StartInfo.UseShellExecute = false;
-                        p.StartInfo.RedirectStandardInput = true;
-                        p.StartInfo.FileName = "diskpart.exe";
-                        p.StartInfo.CreateNoWindow = true;
-
-                        Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
-                        //AppMan.Logger.Info("Re-creating partition table as MBR and formatting as ExFat on selected USB drive");
-
-                        p.Start();
-                        await p.StandardInput.WriteLineAsync($"SELECT DISK={AppMan.App.DriveNumber}");
-                        await p.StandardInput.WriteLineAsync("CLEAN");
-                        await p.StandardInput.WriteLineAsync("CONVERT MBR");
-                        await p.StandardInput.WriteLineAsync("CREATE PARTITION PRIMARY");
-                        await p.StandardInput.WriteLineAsync("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
-                        await p.StandardInput.WriteLineAsync($"ASSIGN LETTER={AppMan.App.DriveLetter.Replace(":", "")}");
-                        await p.StandardInput.WriteLineAsync("EXIT");
-
-                        p.WaitForExit();
-                    }
-
-                    await Task.Delay(5000);
+                    Log += "[" + DateTime.Now + "] Unable to clear folder, continuing anyway" + Environment.NewLine;
+                    return false;
                 }
+            }
+            else
+            {
+                Log += "[" + DateTime.Now + "] Formatting USB drive" + Environment.NewLine;
+                using (Process p = new())
+                {
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.RedirectStandardInput = true;
+                    p.StartInfo.FileName = "diskpart.exe";
+                    p.StartInfo.CreateNoWindow = true;
+
+                    Log += "[" + DateTime.Now + "] Re-creating partition table as MBR and formatting as ExFat on selected USB drive" + Environment.NewLine;
+
+                    p.Start();
+                    await p.StandardInput.WriteLineAsync($"SELECT DISK={AppMan.App.DriveNumber}");
+                    await p.StandardInput.WriteLineAsync("CLEAN");
+                    await p.StandardInput.WriteLineAsync("CONVERT MBR");
+                    await p.StandardInput.WriteLineAsync("CREATE PARTITION PRIMARY");
+                    await p.StandardInput.WriteLineAsync("FORMAT FS=EXFAT LABEL=\"CYANLABS\" QUICK");
+                    await p.StandardInput.WriteLineAsync($"ASSIGN LETTER={AppMan.App.DrivePath.Replace(":", "")}");
+                    await p.StandardInput.WriteLineAsync("EXIT");
+
+                    p.WaitForExit();
+                }
+
+                await Task.Delay(5000);
             }
             return true;
         }
@@ -640,12 +571,10 @@ namespace Syn3Updater.ViewModels
             if (AppMan.App.DownloadToFolder)
             {
                 Log += "[" + DateTime.Now + "] Preparing selected directory (No USB Drive Selected)" + Environment.NewLine;
-                //AppMan.Logger.Info("Preparing selected directory  (No USB Drive Selected)");
             }
             else
             {
                 Log += "[" + DateTime.Now + "] Preparing USB drive" + Environment.NewLine;
-                //AppMan.Logger.Info("Preparing USB drive");
             }
             
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
@@ -653,7 +582,7 @@ namespace Syn3Updater.ViewModels
 
             try
             {
-                Directory.CreateDirectory($@"{AppMan.App.DriveLetter}\SyncMyRide\");
+                Directory.CreateDirectory($@"{AppMan.App.DrivePath}\SyncMyRide\");
             }
             catch (DirectoryNotFoundException)
             {
@@ -673,7 +602,6 @@ namespace Syn3Updater.ViewModels
             if (string.IsNullOrEmpty(AppMan.App.AutoInstall))
             {
                 Log += "[" + DateTime.Now + "] Generating Autoinstall.lst" + Environment.NewLine;
-                //AppMan.Logger.Info("Generating Autoinstall.lst");
                 autoinstalllst = DownloadViewModelService.CreateAutoInstallFile(_selectedRelease ?? throw new InvalidOperationException(), _selectedRegion ?? throw new InvalidOperationException()).ToString();
             }
             else
@@ -683,8 +611,8 @@ namespace Syn3Updater.ViewModels
             }
             try
             {
-                File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst);
-                File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
+                File.WriteAllText($@"{AppMan.App.DrivePath}\autoinstall.lst", autoinstalllst);
+                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA");
             }
             catch (IOException)
             {
@@ -694,20 +622,16 @@ namespace Syn3Updater.ViewModels
         private void CreateReformat()
         {
             Log += "[" + DateTime.Now + "] Generating reformat.lst" + Environment.NewLine;
-            //AppMan.Logger.Info("Generating reformat.lst");
 
             string reformatlst = "";
             int i = 0;
             foreach (SModel.Ivsu item in AppMan.App.Ivsus)
             {
                 if (item.Source == "naviextras") continue;
-                if (InstallMode == "reformat")
+                switch (InstallMode)
                 {
-                    if (item.Md5 == Api.ReformatTool.Md5) continue;
-                }
-                else if (InstallMode == "downgrade")
-                {
-                    if (item.Md5 == Api.ReformatTool.Md5 || item.Md5 == Api.DowngradeAppIvsu.Md5 && _selectedRelease != "Sync 3.3.19052" || item.Md5 == Api.DowngradeToolIvsu.Md5)
+                    case "reformat" when item.Md5 == Api.ReformatTool.Md5:
+                    case "downgrade" when item.Md5 == Api.ReformatTool.Md5 || item.Md5 == Api.DowngradeAppIvsu.Md5 && _selectedRelease != "Sync 3.3.19052" || item.Md5 == Api.DowngradeToolIvsu.Md5:
                         continue;
                 }
 
@@ -719,7 +643,7 @@ namespace Syn3Updater.ViewModels
 
             try
             {
-                File.WriteAllText($@"{AppMan.App.DriveLetter}\reformat.lst", reformatlst);
+                File.WriteAllText($@"{AppMan.App.DrivePath}\reformat.lst", reformatlst);
             }
             catch (IOException)
             {
@@ -727,34 +651,34 @@ namespace Syn3Updater.ViewModels
             }
 
             Log += "[" + DateTime.Now + "] Generating autoinstall.lst" + Environment.NewLine;
-            //AppMan.Logger.Info("Generating autoinstall.lst");
 
             StringBuilder autoinstalllst = new(
                 $@"; CyanLabs Syn3Updater {Assembly.GetEntryAssembly()?.GetName().Version} - {InstallMode} {(AppMan.App.ModeForced ? "FORCED " : "")} Mode - {_selectedRelease} {_selectedRegion}{Environment.NewLine}{Environment.NewLine}[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
-            if (InstallMode == "downgrade")
+            switch (InstallMode)
             {
-                autoinstalllst.Append(
-                    $@"Item1 = TOOL - {Api.DowngradeToolIvsu.FileName}\rOpen1 = SyncMyRide\{Api.DowngradeToolIvsu.FileName}\r").Replace(@"\r",
-                    Environment.NewLine);
-                autoinstalllst.Append(
-                    $@"Item2 = APP - {Api.DowngradeAppIvsu.FileName}\rOpen2 = SyncMyRide\{Api.DowngradeAppIvsu.FileName}\r").Replace(@"\r",
-                    Environment.NewLine);
-                autoinstalllst.Append($@"Options = AutoInstall{Environment.NewLine}[SYNCGen3.0_ALL]{Environment.NewLine}");
-                autoinstalllst.Append($@"Item1 = REFORMAT TOOL - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r")
-                    .Replace(@"\r", Environment.NewLine);
-                autoinstalllst.Append("Options = AutoInstall,Include,Transaction").Append(Environment.NewLine);
-            }
-            else if (InstallMode == "reformat")
-            {
-                autoinstalllst.Append($@"Item1 = REFORMAT TOOL  - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r")
-                    .Replace(@"\r", Environment.NewLine);
-                autoinstalllst.Append("Options = AutoInstall");
+                case "downgrade":
+                    autoinstalllst.Append(
+                        $@"Item1 = TOOL - {Api.DowngradeToolIvsu.FileName}\rOpen1 = SyncMyRide\{Api.DowngradeToolIvsu.FileName}\r").Replace(@"\r",
+                        Environment.NewLine);
+                    autoinstalllst.Append(
+                        $@"Item2 = APP - {Api.DowngradeAppIvsu.FileName}\rOpen2 = SyncMyRide\{Api.DowngradeAppIvsu.FileName}\r").Replace(@"\r",
+                        Environment.NewLine);
+                    autoinstalllst.Append($@"Options = AutoInstall{Environment.NewLine}[SYNCGen3.0_ALL]{Environment.NewLine}");
+                    autoinstalllst.Append($@"Item1 = REFORMAT TOOL - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r")
+                        .Replace(@"\r", Environment.NewLine);
+                    autoinstalllst.Append("Options = AutoInstall,Include,Transaction").Append(Environment.NewLine);
+                    break;
+                case "reformat":
+                    autoinstalllst.Append($@"Item1 = REFORMAT TOOL  - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r")
+                        .Replace(@"\r", Environment.NewLine);
+                    autoinstalllst.Append("Options = AutoInstall");
+                    break;
             }
 
             try
             {
-                File.WriteAllText($@"{AppMan.App.DriveLetter}\autoinstall.lst", autoinstalllst.ToString());
-                File.Create($@"{AppMan.App.DriveLetter}\DONTINDX.MSA");
+                File.WriteAllText($@"{AppMan.App.DrivePath}\autoinstall.lst", autoinstalllst.ToString());
+                File.Create($@"{AppMan.App.DrivePath}\DONTINDX.MSA");
             }
             catch (IOException)
             {
@@ -768,13 +692,11 @@ namespace Syn3Updater.ViewModels
             {
                 DownloadInfo = $"Checking Existing File: {Path.GetFileName(localfile)}";
                 Log += $"[{DateTime.Now}] Checking Existing File: {Path.GetFileName(localfile)} {Environment.NewLine}";
-                //AppMan.Logger.Info($"Checking Existing File: {Path.GetFileName(localfile)}");
             }
             else
             {
                 DownloadInfo = $"Validating: {Path.GetFileName(localfile)}";
                 Log += $"[{DateTime.Now}] Validating: {Path.GetFileName(localfile)} {Environment.NewLine}";
-                //AppMan.Logger.Info($"Validating: {Path.GetFileName(localfile)}");
             }
 
             _progressBarSuffix = "Validated";
@@ -783,12 +705,9 @@ namespace Syn3Updater.ViewModels
             if (outputResult.Message != "")
             {
                 Log += "[" + DateTime.Now + "] " + outputResult.Message + Environment.NewLine;
-                //AppMan.Logger.Info(outputResult.Message);
             }
 
             return outputResult.Result;
         }
-
-        #endregion
     }
 }

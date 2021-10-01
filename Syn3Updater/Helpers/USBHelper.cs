@@ -118,7 +118,7 @@ namespace Syn3Updater.Helpers
             //Reset ApplicationManager variables
             
             AppMan.App.Ivsus.Clear();
-            AppMan.App.DriveLetter = driveLetter;
+            AppMan.App.DrivePath = driveLetter;
             AppMan.App.Action = action;
             AppMan.App.SelectedRelease = "Interrogator Log Utility";
             
@@ -139,7 +139,6 @@ namespace Syn3Updater.Helpers
             //     return;
 
             AppMan.App.IsDownloading = true;
-            //AppMan.Logger.Info("Starting process (Logging Utility");
             AppMan.App.FireDownloadsStartEvent();
         }
         
@@ -177,14 +176,14 @@ namespace Syn3Updater.Helpers
             data.Append(Environment.NewLine).Append("DESTINATION DETAILS").Append(Environment.NewLine);
             if (AppMan.App.DownloadToFolder)
                 data.Append("Mode: Directory").Append(Environment.NewLine)
-                    .Append(@"Path: ").Append(AppMan.App.DriveLetter).Append(Environment.NewLine);
+                    .Append(@"Path: ").Append(AppMan.App.DrivePath).Append(Environment.NewLine);
             else
                 data.Append("Mode: Drive").Append(Environment.NewLine)
                     .Append("Model: ").Append(AppMan.App.DriveName).Append(Environment.NewLine)
                     .Append("FileSystem: ").Append(AppMan.App.DriveFileSystem).Append(Environment.NewLine)
                     .Append("Partition Type: ").Append(AppMan.App.DrivePartitionType).Append(Environment.NewLine);
 
-            string driveletter = AppMan.App.DriveLetter;
+            string driveletter = AppMan.App.DrivePath;
             if (File.Exists($@"{driveletter}\reformat.lst"))
                 data.Append(Environment.NewLine)
                     .Append("REFORMAT.LST").Append(Environment.NewLine)

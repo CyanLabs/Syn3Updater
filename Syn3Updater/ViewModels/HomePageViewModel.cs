@@ -23,21 +23,21 @@ namespace Syn3Updater.ViewModels
             private init => this.RaiseAndSetIfChanged(ref _syncVersions, value);
         }
 
-        private string? _currentVersion;
+        private string _currentVersion = string.Empty;
 
-        public string? CurrentVersion
+        public string CurrentVersion
         {
             get => _currentVersion;
             set
             {
                 this.RaiseAndSetIfChanged(ref _currentVersion, value);
-                if (value == null || !value.Any(char.IsDigit) || value.Length < 9)
+                if (value == string.Empty|| !value.Any(char.IsDigit) || value.Length < 9)
                 {
                     CreateInterrogatorEnabled = false;
                     return;
                 }
                 AppMan.App.Settings.CurrentVersion = int.Parse(new string(value.Where(char.IsDigit).ToArray()));
-                CreateInterrogatorEnabled = SelectedDrive?.Letter != null;
+                CreateInterrogatorEnabled = SelectedDrive.Letter != null;
             }
         }
 
@@ -74,10 +74,7 @@ namespace Syn3Updater.ViewModels
         public bool CreateInterrogatorEnabled
         {
             get => _createInterrogatorEnabled;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _createInterrogatorEnabled, value);
-            }
+            set => this.RaiseAndSetIfChanged(ref _createInterrogatorEnabled, value);
         }
 
         private bool _startEnabled;
@@ -149,7 +146,6 @@ namespace Syn3Updater.ViewModels
             }
         }
 
-       
         private string _selectedRelease;
 
         public string SelectedRelease
@@ -269,7 +265,7 @@ namespace Syn3Updater.ViewModels
         {
             AppMan.App.Ivsus = await HomeViewModelService.GetReleaseIvsus(SelectedRegion,SelectedRelease,SelectedMapRelease,LogResult.Navigation);
             AppMan.App.IsDownloading = true;
-            AppMan.App.DriveLetter = SelectedDrive.Letter ?? throw new InvalidOperationException();
+            AppMan.App.DrivePath = SelectedDrive.Letter ?? throw new InvalidOperationException();
             AppMan.App.FireDownloadsStartEvent();
         }
     }

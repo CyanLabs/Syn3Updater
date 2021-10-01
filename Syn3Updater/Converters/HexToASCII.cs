@@ -25,7 +25,7 @@ namespace Syn3Updater.Converters
                         char c = (char)n;
                         res += c.ToString();
                     }
-                    catch (FormatException e)
+                    catch (FormatException)
                     {
                         //TODO Catch
                     }
