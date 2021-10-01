@@ -184,19 +184,11 @@ namespace Syn3Updater.ViewModels
 
             if (OperatingSystem.IsWindows())
             {
-                DriveList = USBHelper.RefreshDevicesWindows(true);
+                DriveList = USBHelper.RefreshDevicesWindows();
             }
             else if (OperatingSystem.IsMacOS())
             {
-                //TODO MAC OSX DRIVE CODE
-                DriveList = new ObservableCollection<USBDriveModel.Drive>
-                {
-                    new()
-                    {
-                        Encrypted = false, EncryptionStatus = "null", Fake = false, FileSystem = "MAC OSX LOL", FreeSpace = "999999PB WOW", Model = "CYANLABS AWESOMENESS",
-                        Letter = "Z", Name = "CYANLABS ROCKS", PartitionType = "GPT", Path = "NoPath"
-                    }
-                };
+                DriveList = USBHelper.RefreshDevicesMac();
             }
             AppMan.App.ShowInterrogatorLogCompleted += delegate { InterrogatorDescriptionVisible = true; };
         }
