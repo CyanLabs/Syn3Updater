@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -37,11 +38,13 @@ namespace Syn3Updater.Helpers
             public string PartNumber;
             public string Vin;
         }
-
+        
+        private ApimDetails _apimDetails;
+        private XDocument? _node;
+        
         /// <summary>
         ///     Refreshes device list using WMI queries
         /// </summary>
-        /// <param name="fakeusb">Set to true to add 'Download Only' option to the list</param>
         /// <returns>ObservableCollection of all USB Drives as type Drive</returns>
         [SupportedOSPlatform("windows")]
         public static ObservableCollection<USBDriveModel.Drive> RefreshDevicesWindows()
@@ -367,7 +370,7 @@ namespace Syn3Updater.Helpers
             }
         }
 
-         public static async Task<Interrogator.LogResult> LogParseXmlAction(string? letter)
+         public async Task<Interrogator.LogResult> LogParseXmlAction(string? letter)
          { 
              ApimDetails apimDetails = new();
              string path;
@@ -451,8 +454,7 @@ namespace Syn3Updater.Helpers
                             break;
                     }
                 }
-                
-                
+
                 logResult.Navigation = apimDetails.Nav;
                 logResult.Storage = apimfree + " / " + apimDetails.Size + "G";
                 logResult.Time += interrogatorLog.POtaModuleSnapShot?.PNode?.D2P1AdditionalAttributes?.LogGeneratedDateTime;
@@ -502,7 +504,7 @@ namespace Syn3Updater.Helpers
                 {
                     if (sappname != "Unknown")
                     {
-                        var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.IvsuVersionLookup(sappname));
+                        GraphQLResponse<IvsuRoot>? graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<IvsuRoot>(GraphQlHelper.IvsuVersionLookup(sappname));
                         IvsuRoot sversion = graphQlResponse2.Data;
 
                         if (sversion.Ivsus != null)
@@ -517,23 +519,60 @@ namespace Syn3Updater.Helpers
                 {
                     //likely no internet connection ignore
                 }
-
-                //TODO AsBuilt again!
                 
+                AsBuilt.DirectConfiguration asbult = new()
+                {
+                    VEHICLE = new AsBuilt.VEHICLE
+                    {
+                        MODULE = "Syn3Updater",
+                        VIN = "",
+                        VEHICLEID = apimmodel,
+                        VEHICLEYEAR = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime.ToString(),
+                        DID = asBuiltValues
+                    }
+                };
+                json = JsonConvert.SerializeObject(asbult, Formatting.Indented);
+
+                _node = JsonConvert.DeserializeXNode(json, "DirectConfiguration");
             }
-            catch (NullReferenceException)
+            catch (Exception)
             {
-                //await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
+                // ignored
             }
-            catch (XmlException)
-            {
-                //await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
-            }
-            catch (InvalidOperationException)
-            {
-                //await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
-            }
+
             return logResult;
          }
+         
+         //TODO implement caller for UploadFile, View Asbuilt Button???
+         public async Task UploadFile()
+         {
+            
+             if (_node != null)
+             {
+                 FormUrlEncodedContent formContent = new(new[]
+                 {
+                     new KeyValuePair<string, string>("xml", _node.ToString()),
+                     new KeyValuePair<string, string>("apim", _apimDetails.PartNumber),
+                     new KeyValuePair<string, string>("nav", _apimDetails.Nav.ToString()),
+                     new KeyValuePair<string, string>("size", _apimDetails.Size.ToString()),
+                     new KeyValuePair<string, string>("vin", _apimDetails.Vin)
+                 });
+
+                 HttpRequestMessage httpRequestMessage = new()
+                 {
+                     Method = HttpMethod.Post,
+                     RequestUri = new Uri(Api.AsBuiltPost),
+                     Headers = {
+                         { nameof(HttpRequestHeader.Authorization), $"Bearer {ApiSecret.Token}" },
+                     },
+                     Content = formContent
+                 };
+
+                 HttpResponseMessage response = await AppMan.Client.SendAsync(httpRequestMessage);
+                 var output = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { filename = "", status = "" });
+                 if (output != null) Process.Start(Api.AsBuiltOutput + output.filename);
+             }
+         }
+
     }
 }

@@ -439,8 +439,6 @@ namespace Syn3Updater.ViewModels
 
             if (_action != "logutilitymy20" && _action != "logutility")
             {
-                //TODO Confirm Log Upload
-                //ContentDialogResult result = await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.UploadLog"), LM.GetValue("String.Notice"), LM.GetValue("String.No"), LM.GetValue("String.Upload")));
                 await USBHelper.GenerateLog(Log, true);
             }
 
@@ -448,30 +446,12 @@ namespace Syn3Updater.ViewModels
             {
                 if (_selectedRelease != "Only Update Maps")
                 {
-                    //TODO Confirm Log Upload
                     AppMan.App.Settings.CurrentVersion = Convert.ToInt32(AppMan.App.SelectedRelease.Replace(".", "").Replace("Sync ", ""));
                     AppMan.App.SVersion = AppMan.App.SelectedRelease.Replace("Sync ", "");
                 }
 
-                if (AppMan.App.DownloadToFolder)
-                {
-                    //TODO Display Folder Completion Message 
-                    try
-                    {
-                        Process.Start(AppMan.App.DrivePath);
-                    }
-                    catch (Exception)
-                    {
-                        //ignored
-                    }
-                    
-                }
-                else
-                {
-                   //TODO Display USB Drive Completion Message 
-                   Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
-                }
-
+                //TODO Display USB Drive Completion Message 
+                Process.Start($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
                 AppMan.App.FireHomeTabEvent();
             }
             else if (_action == "logutility")
@@ -610,9 +590,9 @@ namespace Syn3Updater.ViewModels
                     p.Start();
                     while (!p.StandardOutput.EndOfStream)
                     {
-                        Log += "[" + DateTime.Now + "] DiskUtil: " + p.StandardOutput.ReadLine() + Environment.NewLine;
+                        Log += "[" + DateTime.Now + "] DiskUtil: " + await p.StandardOutput.ReadLineAsync() + Environment.NewLine;
                     }
-                    p.WaitForExit();
+                    await p.WaitForExitAsync(_ct);
                 }
 
                 if (Log.Contains($"Could not mount {AppMan.App.DrivePath}s1 after erase"))
@@ -630,9 +610,9 @@ namespace Syn3Updater.ViewModels
                         p.Start();
                         while (!p.StandardOutput.EndOfStream)
                         {
-                            Log += "[" + DateTime.Now + "] DiskUtil: " + p.StandardOutput.ReadLine() + Environment.NewLine;
+                            Log += "[" + DateTime.Now + "] DiskUtil: " + await p.StandardOutput.ReadLineAsync() + Environment.NewLine;
                         }
-                        p.WaitForExit();
+                        await p.WaitForExitAsync(_ct);
                     }
                 }
 

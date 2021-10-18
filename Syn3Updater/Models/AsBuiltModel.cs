@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 
@@ -21,6 +22,12 @@ namespace Syn3Updater.Models
             [JsonProperty("@VIN")] public string? VIN { get; set; }
             [JsonProperty("@VEHICLE_ID")] public string? VEHICLEID { get; set; }
             [JsonProperty("@VEHICLE_YEAR")] public string? VEHICLEYEAR { get; set; }
+            public List<DID> DID { get; set; }
+        }
+        
+        public class DirectConfiguration
+        {
+            public VEHICLE VEHICLE { get; set; }
         }
     }
 }

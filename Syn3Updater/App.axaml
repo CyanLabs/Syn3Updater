@@ -7,8 +7,14 @@
   </Application.DataTemplates>
 
   <Application.Styles>
-    <FluentTheme Mode="Dark" />
+    <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"></StyleInclude>
+    <StyleInclude Source="avares://Avalonia.Themes.Fluent/FluentLight.xaml"></StyleInclude>
     <StyleInclude Source="/Styles/Styles.axaml" />
     <StyleInclude Source="/Styles/SideBar.axaml" />
   </Application.Styles>
+  
+  <Application.Resources>
+    <Brush x:Key="MacOsWindowTitleColor">#4D4D4D</Brush>
+    <Brush x:Key="MacOsTitleBarBackground">#DEE1E6</Brush>
+  </Application.Resources>
 </Application>

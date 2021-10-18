@@ -9,50 +9,56 @@
         x:Class="Syn3Updater.Views.MainWindow"
         Icon="{x:Null}"
         x:Name="MainWindow"
+        xmlns:titlebars="clr-namespace:Syn3Updater.Views.CustomTitleBars"
         WindowStartupLocation="CenterScreen"
-        Background="{x:Null}"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
         Title="Syn3Updater" Closing="Window_OnClosing">
-  <syn3Updater:FluentWindow.Styles>
-    <Style Selector="TitleBar:fullscreen">
-      <Setter Property="Background" Value="#7f000000" />
-    </Style>
-  </syn3Updater:FluentWindow.Styles>
 
   <Design.DataContext>
+    <!-- ReSharper disable once Xaml.ConstructorWarning -->
     <vm:MainWindowViewModel/>
   </Design.DataContext>
+  <Window.KeyBindings>
+    <KeyBinding Gesture="CTRL+Q"
+                Command="{Binding QuitProgramCommand}"></KeyBinding>
+  </Window.KeyBindings>
 
-  <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
-    <Panel>
-      <DockPanel HorizontalAlignment="Stretch" IsVisible="{Binding !RunAsAdmin}">
-        <ExperimentalAcrylicBorder DockPanel.Dock="Left" Width="160">
-          <ExperimentalAcrylicBorder.Material>
-            <ExperimentalAcrylicMaterial TintColor="Black" MaterialOpacity="0.85" TintOpacity="1" />
-          </ExperimentalAcrylicBorder.Material>
-          <TextBlock FontSize="18" HorizontalAlignment="Stretch" Margin="20 40 20 0" Text="Syn3Updater" />
-        </ExperimentalAcrylicBorder>
-        <ExperimentalAcrylicBorder IsHitTestVisible="False">
-          <ExperimentalAcrylicBorder.Material>
-            <ExperimentalAcrylicMaterial TintColor="#222222" MaterialOpacity="0.85" TintOpacity="1" />
-          </ExperimentalAcrylicBorder.Material>
-          <TextBlock Text="{Binding #TabControl.SelectedItem.Header}" Margin="40 20" FontSize="32" FontWeight="Light" />
-        </ExperimentalAcrylicBorder>
-      </DockPanel>
-      <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="DarkRed" IsVisible="{Binding RunAsAdmin}">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-          <TextBlock Text="APPLICATION IS NOT RUNNING AS ADMINISTRATOR" Margin="0 0" TextAlignment="Center" VerticalAlignment="Center" Padding="0, 20" FontSize="32" FontWeight="Light" />
-          <TextBlock Text="THIS APPLICATION REQUIRES ADMINISTRATIVE ACCESS TO BE ABLE TO FORMAT THE USB DRIVES" Margin="0 0" TextAlignment="Center" VerticalAlignment="Center" Padding="0, 20" FontSize="18" FontWeight="Light" />
-        </StackPanel>
-      </DockPanel>
-      
-      <TabControl x:Name="TabControl" Classes="sidebar" Margin="0 40 0 20" SelectedIndex="{Binding SelectedTab}" IsVisible="{Binding !RunAsAdmin}">
-        <TabItem Header="Home">
-          <pages:HomePage />
-        </TabItem> 
-        <TabItem Header="Downloads">
-          <pages:DownloadPage />
-        </TabItem>
-      </TabControl>
-    </Panel>
-  </Panel>
+  <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="ContentWrapper">
+    <titlebars:WindowsTitleBar IsSeamless="True"></titlebars:WindowsTitleBar>
+    <titlebars:MacosTitleBar IsSeamless="False"></titlebars:MacosTitleBar>
+    <Panel Margin="{Binding #MainWindow.OffScreenMargin}" >
+        <DockPanel Background="Transparent" HorizontalAlignment="Stretch" IsVisible="{Binding !RunAsAdmin}">
+          <Border DockPanel.Dock="Left" Width="160" Background="Transparent">
+            <TextBlock FontSize="18" HorizontalAlignment="Stretch" Margin="20 40 20 0" Text="Syn3Updater" />
+          </Border>
+          <Border IsHitTestVisible="False" Background="{DynamicResource ButtonBackgroundDisabled}">
+            <TextBlock Text="{Binding #TabControl.SelectedItem.Header}" Margin="40 20" FontSize="32" FontWeight="Light" />
+          </Border>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="DarkRed" IsVisible="{Binding RunAsAdmin}">
+          <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="APPLICATION IS NOT RUNNING AS ADMINISTRATOR" Margin="0 0" TextAlignment="Center" VerticalAlignment="Center" Padding="0, 20" FontSize="32" FontWeight="Light" />
+            <TextBlock Text="THIS APPLICATION REQUIRES ADMINISTRATIVE ACCESS TO BE ABLE TO FORMAT THE USB DRIVES" Margin="0 0" TextAlignment="Center" VerticalAlignment="Center" Padding="0, 20" FontSize="18" FontWeight="Light" />
+          </StackPanel>
+        </DockPanel>
+        <TabControl x:Name="TabControl" Classes="sidebar" Margin="0 40 0 20" SelectedIndex="{Binding SelectedTab}" IsVisible="{Binding !RunAsAdmin}">
+          <TabItem Header="Home">
+            <pages:HomePage />
+          </TabItem> 
+          <TabItem Header="Downloads">
+            <pages:DownloadPage />
+          </TabItem>
+        </TabControl>
+      <StackPanel Orientation="Vertical">
+        <ToggleButton Name="DarkThemeToggleButton"
+                      HorizontalAlignment="Center"
+                      Content="Dark Theme"></ToggleButton>
+        <ToggleButton Name="DefaultStyleToggleButton"
+                      HorizontalAlignment="Center"
+                      Content="Default Style"></ToggleButton>
+      </StackPanel>
+      </Panel>
+  </DockPanel>
 </syn3Updater:FluentWindow>

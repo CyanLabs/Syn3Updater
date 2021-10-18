@@ -233,15 +233,15 @@ namespace Syn3Updater.ViewModels
         [UsedImplicitly]
         private async void ScanInterrogatorUSB()
         {
+            USBHelper usbHelper = new();
             if (OperatingSystem.IsWindows())
             {
-                LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.Path);
+                LogResult = await usbHelper.LogParseXmlAction(SelectedDrive.Path);
             }
             else if (OperatingSystem.IsMacOS())
             {
-                LogResult = await USBHelper.LogParseXmlAction(SelectedDrive.VolumeName);
+                LogResult = await usbHelper.LogParseXmlAction(SelectedDrive.VolumeName);
             }
-
             My20Mode = AppMan.App.Settings.My20 switch
             {
                 null => "AutoDetect",

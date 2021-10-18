@@ -77,6 +77,7 @@ namespace Syn3Updater
         {
             if (OperatingSystem.IsWindows())
                 WindowsSystemHelper.WriteRegistryHandler();
+                //TODO Reimplement Windows Intent
             else if (OperatingSystem.IsMacOS())
             {
                 //TODO MAC OSX Intent

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reactive;
 using System.Security.Principal;
+using Avalonia.Controls;
 using ReactiveUI;
 
 namespace Syn3Updater.ViewModels
@@ -21,8 +23,15 @@ namespace Syn3Updater.ViewModels
             get => _runAsAdmin;
             set => this.RaiseAndSetIfChanged(ref _runAsAdmin, value);
         }
-        public MainWindowViewModel()
+        
+        private Window hostWindow;
+        public ReactiveCommand<Unit, Unit> QuitProgramCommand { get; }
+        
+        public MainWindowViewModel (Window _hostWindow)
         {
+            hostWindow = _hostWindow;
+            QuitProgramCommand = ReactiveCommand.Create(() => { hostWindow.Close(); });
+            
             AppMan.App.ShowHomeTab += delegate { SelectedTab = 0; };
             AppMan.App.ShowDownloadsTab += delegate { SelectedTab = 1; };
             
