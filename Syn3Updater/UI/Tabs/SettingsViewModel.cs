@@ -109,7 +109,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             get => _downloadConnectionsValue;
             set
             {
-                if (double.IsNaN(value)) value = 8;
+                if (value != 1 && value != 4 && value != 6 && value != 8) value = 4;
                 SetProperty(ref _downloadConnectionsValue, Convert.ToInt16(value));
                 AppMan.App.Settings.DownloadConnections = Convert.ToInt16(value);
             }

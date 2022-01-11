@@ -6,6 +6,7 @@
     xmlns:controls="http://schemas.modernwpf.com/2019"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Settings"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" IsVisibleChanged="Settings_OnIsVisibleChanged" FontSize="12"
@@ -208,14 +209,14 @@
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="3" HorizontalAlignment="Right"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.DownloadConnections, Converter={StaticResource LocConverter}}" />
 
-
-                    <controls:NumberBox Grid.Row="3" Grid.Column="1" Margin="0,0,10,0"
-                                        FontSize="12" SpinButtonPlacementMode="Inline"
-                                        Value="{Binding DownloadConnectionsValue}"
-                                        VerticalContentAlignment="Center" Minimum="{Binding DownloadConnectionsMin}"
-                                        Maximum="16" ValidationMode="InvalidInputOverwritten"
-                                        VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Stretch"
-                                        PlaceholderText="8" />
+                    <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,0,10,0"
+                               VerticalContentAlignment="Center" SelectedValue="{Binding DownloadConnectionsValue}"
+                               HorizontalAlignment="Stretch">
+                        <system:Double>1</system:Double>
+                        <system:Double>4</system:Double>
+                        <system:Double>6</system:Double>
+                        <system:Double>8</system:Double>
+                    </ComboBox>
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="4"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.LicenseKey, Converter={StaticResource LocConverter}}" />
