@@ -151,7 +151,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 long responseLength;
                 using (WebResponse webResponse = webRequest.GetResponse())
                 {
-                    responseLength = long.Parse(webResponse.Headers.Get("Content-Length"));
+                    if(!long.TryParse(webResponse.Headers.Get("Content-Length"), out responseLength))
+                        responseLength = long.Parse(webResponse.Headers.Get("X-Dropbox-Content-Length"));
                 }
 
                 #endregion
