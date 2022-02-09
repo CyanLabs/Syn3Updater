@@ -646,9 +646,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 //LESS THAN 3.2
                 if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
                 {
-                    if (AppMan.App.Settings.My20v2 == true) InstallMode = "autoinstall";
-                    if (!AppMan.App.ModeForced)
+                    if (!AppMan.App.ModeForced) 
                         InstallMode = "reformat";
+                    if (AppMan.App.Settings.My20v2 == true) InstallMode = "autoinstall";
                 }
 
                 //Above 3.2 and  Below 3.4.19274
