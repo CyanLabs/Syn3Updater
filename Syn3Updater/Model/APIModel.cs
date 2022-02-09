@@ -46,9 +46,10 @@ namespace Cyanlabs.Syn3Updater.Model
             public const string
                 DowngradeApp = "downgradeapp",
                 DowngradeTool = "gracenotesremoval",
-                LogTool34 = "logtool34",
-                LogTool32 = "logtool34",
-                LogTool30 = "logtool30",
+                LogToolAD = "logtool34-2",
+                LogToolAC = "logtool34",
+                LogToolAB = "logtool32",
+                LogToolAA = "logtool30",
                 GraceNotesRemoval = "gracenotesremoval",
                 SmallVoice = "smallvoice",
                 Reformat = "reformat";

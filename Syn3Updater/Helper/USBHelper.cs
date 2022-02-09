@@ -448,17 +448,31 @@ namespace Cyanlabs.Syn3Updater.Helper
             AppMan.App.Action = action;
             AppMan.App.SelectedRelease = "Interrogator Log Utility";
 
-            string currentversion = AppMan.App.SVersion;
+            int? currentversion = AppMan.App.Settings.CurrentVersion;
             try
             {
-                if (currentversion.StartsWith("3.4"))
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool34);
-                else if (currentversion.StartsWith("3.2") || currentversion.StartsWith("3.3"))
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool32);
-                else if (currentversion.StartsWith("3.0") || currentversion.StartsWith("2.") || currentversion.StartsWith("1."))
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool30);
-                else
-                    Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogTool34);
+                switch (AppMan.App.Settings.CurrentVersion)
+                {
+                    //3.0
+                    case < 3200000:
+                        Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogToolAA);
+                        break;
+                    
+                    //3.2 and 3.3
+                    case >= 3200000 and < 3400000:
+                        Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogToolAB);
+                        break;
+                    
+                    //3.4.18437 to 3.4.20237
+                    case >= 3418347 and <= 3420237:
+                        Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogToolAC);
+                        break;
+                    
+                    //3.4.20282+
+                    case >= 3420282:
+                        Api.InterrogatorTool = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.LogToolAD);
+                        break;
+                }
             }
             catch (TaskCanceledException e)
             {
