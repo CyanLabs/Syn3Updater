@@ -1,107 +1,110 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
 	<PropertyGroup>
-		<!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->		
-		<TargetFrameworks>net472;net5.0-windows10.0.18362.0</TargetFrameworks>
+		<!-- iOS, Android, MacCatalyst -->
+		<TargetFrameworks>net6.0-ios;net6.0-android;net6.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<RootNamespace>Syn3Updater</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
+
+		<!-- Display name -->
+		<ApplicationTitle>Syn3Updater</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.Syn3Updater</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<!-- Required for C# Hot Reload -->
+		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
+
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
+		<Platforms>AnyCPU;x86</Platforms>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\appicon.svg" ForegroundFile="Resources\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
+		<!-- Required - WinUI does not yet have buildTransitive for everything -->
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
+		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.30" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="PInvoke.User32" Version="0.7.104" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\NewsPage.xaml.cs">
+	    <DependentUpon>NewsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\LogsPage.xaml.cs">
+	    <DependentUpon>LogsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\ProfilesPage.xaml.cs">
+	    <DependentUpon>ProfilesPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\DownloadPage.xaml.cs">
+	    <DependentUpon>DownloadPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\UtilitiesPage.xaml.cs">
+	    <DependentUpon>UtilitiesPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiXaml Update="Pages\NewsPage.xaml">
+		  <SubType>Designer</SubType>
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\LogsPage.xaml">
+		  <SubType>Designer</SubType>
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\ProfilesPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\UtilitiesPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="AppShell.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\HomePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Pages\DownloadPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="SearchPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+	</ItemGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
-		<RootNamespace>Cyanlabs.Syn3Updater</RootNamespace>
-		<Deterministic>false</Deterministic>
-		<PublishUrl>publish\</PublishUrl>
-		<Install>true</Install>
-		<InstallFrom>Disk</InstallFrom>
-		<UpdateEnabled>false</UpdateEnabled>
-		<UpdateMode>Foreground</UpdateMode>
-		<UpdateInterval>7</UpdateInterval>
-		<UpdateIntervalUnits>Days</UpdateIntervalUnits>
-		<UpdatePeriodically>false</UpdatePeriodically>
-		<UpdateRequired>false</UpdateRequired>
-		<MapFileExtensions>true</MapFileExtensions>
-		<ApplicationRevision>0</ApplicationRevision>
-		<ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-		<IsWebBootstrapper>false</IsWebBootstrapper>
-		<UseApplicationTrust>false</UseApplicationTrust>
-		<BootstrapperEnabled>true</BootstrapperEnabled>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<UseWPF>true</UseWPF>
-		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-		<StartupObject>Cyanlabs.Syn3Updater.App</StartupObject>
-		<ApplicationIcon>cyanlabs.ico</ApplicationIcon>
-		<ApplicationManifest>app.manifest</ApplicationManifest>		
+		<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<OutputPath>..\bin\Debug\</OutputPath>
-		<LangVersion>latest</LangVersion>		
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">	
-		<OutputPath>..\bin\Release\</OutputPath>
-		<LangVersion>latest</LangVersion>		
-	</PropertyGroup>
-	<ItemGroup>
-		<None Include="$(SolutionDir)Syn3Updater\Languages\**" CopyToOutputDirectory="PreserveNewest" />
-		<Resource Include="cyanlabs.ico" />
-		<Resource Include="UI\Tabs\syncversion.png" />
-		<None Remove="Models\**" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="FluentWPF" Version="0.9.0" />
-		<PackageReference Include="GraphQL.Client" Version="3.2.4" />
-		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.4" />
-		<PackageReference Include="HtmlToXamlConverter" Version="1.0.5727.24510">
-			<NoWarn>NU1701</NoWarn>
-		</PackageReference>
-		<PackageReference Include="MahApps.Metro.IconPacks.VaadinIcons" Version="4.8.0" />
-		<PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />		
-		<PackageReference Include="ModernWpfUI" Version="0.9.4" />
-		<PackageReference Include="SharpZipLib" Version="1.3.3" />
-		<PackageReference Include="System.Management" Version="5.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
-		<PackageReference Include="QRCoder" Version="1.4.1" />
-		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.1.0" />
-		<PackageReference Include="Nito.AsyncEx" Version="5.1.0" />
-	</ItemGroup>
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-	</ItemGroup>
-	
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows10.0.18362.0' ">
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.212405">
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-	</ItemGroup>
-	
-	<ItemGroup>		
-		<BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
-			<Visible>False</Visible>
-			<ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
-			<Install>true</Install>
-		</BootstrapperPackage>
-		<BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-			<Visible>False</Visible>
-			<ProductName>.NET Framework 3.5 SP1</ProductName>
-			<Install>false</Install>
-		</BootstrapperPackage>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Page Update="UI\Tabs\About.xaml">
-	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-	  </Page>
-	  <Page Remove="Models\**" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Content Include="Languages\*.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <Compile Remove="Models\**" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <EmbeddedResource Remove="Models\**" />
-	</ItemGroup>
-	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
+
 </Project>

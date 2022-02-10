@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "0a3f08dd-2b7b-40a9-a740-7c3bfe4bc2c1": {
+      "ProjectGuid": "0a3f08dd-2b7b-40a9-a740-7c3bfe4bc2c1",
+      "DisplayName": "Syn3Updater",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
