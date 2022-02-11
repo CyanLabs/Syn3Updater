@@ -24,7 +24,7 @@ namespace Syn3Updater
                             //appSettings.WindowsSettings.AppWindow.Height = rect1.bottom - rect1.top;
                         }
                         PInvoke.User32.SetWindowPos(hwnd, PInvoke.User32.SpecialWindowHandles.HWND_TOP,
-                        (Int32)rect1.left, (Int32)rect1.top, (Int32)800, (Int32)640,
+                        (Int32)rect1.left, (Int32)rect1.top, (Int32)800, (Int32)940,
                         PInvoke.User32.SetWindowPosFlags.SWP_SHOWWINDOW);
                     });
                 });

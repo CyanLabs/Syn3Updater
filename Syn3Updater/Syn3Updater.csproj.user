@@ -7,6 +7,7 @@
     <SelectedPlatformGroup>PhysicalDevice</SelectedPlatformGroup>
     <SelectedDevice>Google Pixel 6</SelectedDevice>
     <DefaultDevice>pixel_5_-_api_30</DefaultDevice>
+    <_LastSelectedProfileId>D:\GitHub\Syn3Updater\Syn3Updater\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>

@@ -7,7 +7,7 @@ namespace Syn3Updater
         public App()
         {
             InitializeComponent();
-
+            AppMan.App.Initialize();
             MainPage = new AppShell();
         }
     }

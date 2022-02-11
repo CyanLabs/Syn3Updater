@@ -3,21 +3,74 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Syn3Updater"
+             xmlns:vm="clr-namespace:Syn3Updater.ViewModels;assembly=Syn3Updater"
              Title="Home">
-
+    <ContentPage.BindingContext>
+        <vm:HomePageViewModel></vm:HomePageViewModel>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Picker Title="Select a monkey">
-                <Picker.Items>
-                    <x:String>Baboon</x:String>
-                    <x:String>Capuchin Monkey</x:String>
-                    <x:String>Blue Monkey</x:String>
-                    <x:String>Squirrel Monkey</x:String>
-                    <x:String>Golden Lion Tamarin</x:String>
-                    <x:String>Howler Monkey</x:String>
-                    <x:String>Japanese Macaque</x:String>
-                </Picker.Items>
-            </Picker>
+        <StackLayout Padding="10" Background="Transparent" Spacing="20" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+            <Label FontSize="18">1. Enter your current Sync 3 version and select a USB Drive</Label>
+            <StackLayout Orientation="Horizontal" Spacing="10" Padding="0 20 0 20">
+                <Picker ItemsSource="{Binding SyncVersions}" SelectedItem="{Binding CurrentVersion}" Title="Sync Version:" />
+                <Picker SelectedIndex="-1" ItemsSource="{Binding DriveList}" SelectedItem="{Binding SelectedDrive}" Title="Select a USB Drive:" />
+            </StackLayout>
+
+            <Label FontSize="18">2. Prepare USB (Gather SYNC Details)</Label>
+            <StackLayout Orientation="Vertical" Spacing="10" Padding="0 20 0 20">
+                <Button Command="{Binding PrepareInterrogatorUSB}" Text="Create Interrogator USB" IsEnabled="{Binding CreateInterrogatorEnabled}" HorizontalOptions="Start" />
+                <Label IsVisible="{Binding InterrogatorDescriptionVisible}" Padding="10 0 0 0">
+                    USB Drive has been prepared successfully!
+
+Remove the USB Drive from your computer and insert the USB Drive in to your car.
+Once 'Installation Complete' shows, remove the USB Drive from your car and re-insert it in to your computer.
+                </Label>
+            </StackLayout>
+
+            <Label FontSize="18">3. Open USB Drive Log File</Label>
+            <Button Margin="0 0 0 20" Text="Scan USB Drive for Sync_#####.xml" IsEnabled="{Binding CreateInterrogatorEnabled}" Command="{Binding ScanInterrogatorUSB}" HorizontalOptions="Start" />
+
+            <Label FontSize="18">4. Detected Information</Label>
+            <StackLayout Orientation="Vertical" Spacing="10" Padding="0 20 0 20">
+                <Label IsVisible="{Binding !InterrogatorOutputVisible}">No information available currently!</Label>
+                <StackLayout Orientation="Horizontal" IsVisible="{Binding InterrogatorOutputVisible}" Spacing="20">
+                    <StackLayout Orientation="Vertical">
+                        <Label Text="VIN:" ></Label>
+                        <Entry MinimumWidthRequest="150" IsReadOnly="True" Text="{Binding LogResult.Vin}"></Entry>
+                        <Label Text="Model:" ></Label>
+                        <Entry MinimumWidthRequest="150" IsReadOnly="True" Text="{Binding LogResult.Model}"></Entry>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" >
+                        <Label Text="Version:" ></Label>
+                        <Entry MinimumWidthRequest="150" IsReadOnly="True" Text="{Binding LogResult.Version}"></Entry>
+                        <Label Text="Navigation:" ></Label>
+                        <Entry MinimumWidthRequest="150" IsReadOnly="True" Text="{Binding LogResult.Navigation}"></Entry>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" >
+                        <Label Text="Storage:" ></Label>
+                        <Entry MinimumWidthRequest="150" IsReadOnly="True" Text="{Binding LogResult.Storage}"></Entry>
+                        <Label Text="Region:" ></Label>
+                        <Entry MinimumWidthRequest="150" IsReadOnly="True" Text="{Binding LogResult.Region}"></Entry>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+            <Label FontSize="18">5. Proposed Update</Label>
+            <StackLayout Orientation="Vertical" Spacing="10" Padding="0 20 0 20"  HorizontalOptions="FillAndExpand">
+                <Label Background="DarkRed" HorizontalTextAlignment="Center" Padding="20" IsVisible="{Binding RegionUnknown}" >Unable to determine region from 'Interrogator Log'. Please specify your region below!</Label>
+                <Label IsVisible="{Binding !InterrogatorOutputVisible}">No information available currently!</Label>
+                <StackLayout Orientation="Horizontal" IsVisible="{Binding InterrogatorOutputVisible}" Spacing="20">
+                    <Picker MinimumWidthRequest="150" SelectedItem="{Binding SelectedRegion}" ItemsSource="{Binding Regions}" Title="Region:" HorizontalOptions="Center"/>
+                    <Picker MinimumWidthRequest="150" SelectedItem="{Binding SelectedRelease}" ItemsSource="{Binding Releases}" Title="Sync:" HorizontalOptions="Center"/>
+                    <Picker MinimumWidthRequest="150" SelectedItem="{Binding SelectedMapRelease}" ItemsSource="{Binding MapReleases}" Title="Maps:" HorizontalOptions="Center"/>
+                </StackLayout>
+                <Button Text="Download, Verify and Copy update files" IsEnabled="{Binding StartEnabled}" Command="{Binding Begin}" Padding="10 0"/>
+                <StackLayout Orientation="Horizontal" IsVisible="{Binding InterrogatorOutputVisible}" Spacing="20">
+                    <Label Text="{Binding InstallMode, StringFormat='Install Mode: {0}'}"></Label>
+                    <Label Text="{Binding My20Mode, StringFormat='My20 Protection: {0}'}"></Label>
+                    <Label Text="{Binding InstallModeForced, StringFormat='Forced: {0}'}"></Label>
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
