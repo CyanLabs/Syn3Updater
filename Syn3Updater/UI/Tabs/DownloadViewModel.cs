@@ -494,7 +494,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
             if (_action == "main")
             {
-                if (_selectedRelease != LM.GetValue("String.OnlyMaps"))
+                if (_selectedRelease != LM.GetValue("String.OnlyMaps") && AppMan.App.SVersion != AppMan.App.SelectedRelease.Replace("Sync ", ""))
                 {
                     ContentDialogResult result = await UIHelper
                         .ShowDialog(string.Format(LM.GetValue("MessageBox.UpdateCurrentversion"), AppMan.App.SVersion, AppMan.App.SelectedRelease.Replace("Sync ", "")),
@@ -523,7 +523,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                 {
                     await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.Completed"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")));
-                    await SystemHelper.OpenWebPage($"https://cyanlabs.net/tutorials/windows-automated-method-update-to-3-4/#{InstallMode}");
+                    await SystemHelper.OpenWebPage($"https://cyanlabs.net/tutorials/sync-3-automated-method-update-to-3-4/#{InstallMode}");
                 }
 
                 AppMan.App.FireHomeTabEvent();
