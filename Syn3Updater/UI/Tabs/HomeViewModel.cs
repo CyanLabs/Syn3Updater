@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
@@ -641,6 +642,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void UpdateInstallMode()
         {
+            bool cancelled = false;
             if (!string.IsNullOrWhiteSpace(SelectedMapVersion) && !string.IsNullOrWhiteSpace(SelectedRelease) && !string.IsNullOrWhiteSpace(SelectedRegion.Code))
             {
                 //LESS THAN 3.2
@@ -648,7 +650,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 {
                     if (!AppMan.App.ModeForced) 
                         InstallMode = "reformat";
-                    if (AppMan.App.Settings.My20v2 == true) InstallMode = "autoinstall";
+                    if (AppMan.App.Settings.My20v2 == true)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.MY20InvalidConfiguration")));
+                        cancelled = true;
+                    };
                 }
 
                 //Above 3.2 and  Below 3.4.19274
@@ -693,7 +699,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                 AppMan.App.Action = "main";
                 AppMan.App.InstallMode = InstallMode;
-                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null;
+                StartEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null && SelectedDrive != null && !cancelled;
                 DownloadOnlyEnabled = SelectedRelease != null && SelectedRegion != null && SelectedMapVersion != null;
             }
         }
