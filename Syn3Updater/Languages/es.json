@@ -170,5 +170,6 @@
     "String.Encrypted": "Cifrada",
     "MessageBox.EncryptedDrive": "La unidad USB seleccionada fue detectada como cifrada, ya sea por Bitlocker u otro programa de terceros. No podrá usar este USB hasta que deshabilite el cifrado.\n\nPor favor, deshabilite el cifrado y presione OK para refrescar la lista de unidades USB.",
     "MessageBox.NoPackagesSelected": "No se ha seleccionado ningún paquete, por favor seleccione al menos un paquete antes de continuar",
-    "MessageBox.NoBrowser": "No se puede abrir la página web con el navegador por defecto, el vínculo ha sido copiado al portapapeles, por favor pegue el vínculo en su navegador para guía adicional."
+    "MessageBox.NoBrowser": "No se puede abrir la página web con el navegador por defecto, el vínculo ha sido copiado al portapapeles, por favor pegue el vínculo en su navegador para guía adicional.",
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
 }
