@@ -170,5 +170,6 @@
     "String.Encrypted": "Šifrované",
     "MessageBox.EncryptedDrive": "Disk USB, ktorý ste vybrali, bol detekovaný ako zašifrovaný, a to buď nástrojom Bitlocker, alebo niektorým softvérom tretích strán. Tento USB disk nebudete môcť používať, kým nezakážete šifrovanie.\n\nVypnite šifrovanie a stlačením tlačidla OK obnovte zoznam jednotiek USB.",
     "MessageBox.NoPackagesSelected": "Neboli vybrané žiadne balíky. Pred pokračovaním vyberte aspoň jeden balíček",
-    "MessageBox.NoBrowser": "Nie je možné otvoriť webovú stránku pomocou predvoleného webového prehliadača, odkaz bol skopírovaný do schránky. Vložte odkaz do svojho prehliadača, aby ste získali ďalšie pokyny."
+    "MessageBox.NoBrowser": "Nie je možné otvoriť webovú stránku pomocou predvoleného webového prehliadača, odkaz bol skopírovaný do schránky. Vložte odkaz do svojho prehliadača, aby ste získali ďalšie pokyny.",
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
 }
