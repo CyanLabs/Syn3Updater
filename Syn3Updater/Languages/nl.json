@@ -79,9 +79,9 @@
     "Utility.GracenotesButton": "USB voorbereiden",
     "MessageBox.GenericUtilityComplete": "De voorbereiding van de USB-Stick is voltooid!\n\nVerwijder de USB-stick uit uw computer en plaats deze in uw auto, zorg ervoor dat het contact aan staat en wacht een paar momenten tot hij zegt \"Installatie voltooid\"",
     "Utility.VoiceShrinkerTitle": "Maak een vervangende USB voor Small Voice-pakket",
-    "Utility.VoiceShrinkerDesc": "Gebruik deze functie als U na het verwijderen van Gracenotes nog steeds MEM_ERR's heeft.",
+    "Utility.VoiceShrinkerDesc": "Gebruik deze functie als U na het verwijderen van Gracenotes nog steeds MEM_ERR's krijgt.",
     "Utility.DowngradeTitle": "Maak een downgrade USB",
-    "Utility.DowngradeDesc": "Gebruik deze functie als U na het verwijderen van Gracenotes en het verkleinen van uw spraakpakket nog steeds MEM_ERR's krijgt",
+    "Utility.DowngradeDesc": "Gebruik deze functie als U na het verwijderen van Gracenotes en het verkleinen van uw spraakpakket nog steeds MEM_ERR's krijgt.",
     "Utility.TroubleshootTitle": "Stappen voor Probleemoplossing",
     "Utility.TroubleshootDesc": "Gebruik de onderstaande functies om problemen op te lossen, evenals de verschillende MEM_ERR's die U mogelijk ontvangt.",
     "Utility.TroubleshootMoreDetails": "Meer details!",
@@ -170,5 +170,6 @@
     "String.Encrypted": "Versleuteld",
     "MessageBox.EncryptedDrive": "Het USB-station dat U hebt geselecteerd, is versleuteld, hetzij door Bitlocker of software van derden. U kunt deze USB-drive pas gebruiken als U de encryptie uitschakelt.\n\nSchakel de encryptie uit en druk op OK om de lijst met USB-drives te vernieuwen.",
     "MessageBox.NoPackagesSelected": "Er zijn geen pakketten geselecteerd, selecteer ten minste één pakket voordat U verdergaat",
-    "MessageBox.NoBrowser": "Onmogelijk om de webpagina te openen in de standaard browser, link gekopieerd naar klembord, plak de link in je browser voor bijkomende begeleiding."
+    "MessageBox.NoBrowser": "Onmogelijk om de webpagina te openen in de standaard browser, link gekopieerd naar klembord, plak de link in je browser voor bijkomende begeleiding.",
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
 }
