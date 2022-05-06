@@ -170,5 +170,6 @@
     "String.Encrypted": "加密",
     "MessageBox.EncryptedDrive": "您選擇的 USB 驅動器已被 Bitlocker 或某些第三方軟件檢測為已加密。 在禁用加密之前，您將無法使用此 USB 驅動器。\n\n請禁用加密，然後按 OK 刷新 USB 列表。",
     "MessageBox.NoPackagesSelected": "未選擇任何套件，請至少選擇一個套件後再繼續",
-    "MessageBox.NoBrowser": "無法使用默認網路瀏覽器打開網頁,連結已複製到剪貼簿,請將連結粘貼到您的瀏覽器以獲取更多指導。"
+    "MessageBox.NoBrowser": "無法使用默認網路瀏覽器打開網頁,連結已複製到剪貼簿,請將連結粘貼到您的瀏覽器以獲取更多指導。",
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
 }
