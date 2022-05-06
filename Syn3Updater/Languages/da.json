@@ -170,5 +170,6 @@
     "String.Encrypted": "Encrypted",
     "MessageBox.EncryptedDrive": "The USB drive you have selected has been detected as being encrypted, either by Bitlocker or some third party software. You will not be able to use this USB Drive until you disable the encryption.\n\nPlease disable the encryption and press OK to refresh the USB Drive list.",
     "MessageBox.NoPackagesSelected": "No packages have been selected, please select atleast one package before continuing",
-    "MessageBox.NoBrowser": "Unable to open webpage using default web browser, link copied to clipboard, please paste the link in to your browser for additional guidance."
+    "MessageBox.NoBrowser": "Unable to open webpage using default web browser, link copied to clipboard, please paste the link in to your browser for additional guidance.",
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
 }
