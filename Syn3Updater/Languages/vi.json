@@ -170,5 +170,6 @@
     "String.Encrypted": "Được mã hóa",
     "MessageBox.EncryptedDrive": "Ổ USB bạn đã chọn đã được phát hiện là đang được mã hóa bởi Bitlocker hoặc một số phần mềm của bên thứ ba. Bạn sẽ không thể sử dụng Ổ USB này cho đến khi bạn tắt mã hóa.\n\nVui lòng tắt mã hóa và nhấn OK để làm mới danh sách Ổ USB.",
     "MessageBox.NoPackagesSelected": "Không có gói nào được chọn, vui lòng chọn ít nhất một gói trước khi tiếp tục",
-    "MessageBox.NoBrowser": "Không thể mở trang web bằng trình duyệt web mặc định, liên kết được sao chép vào khay nhớ tạm, vui lòng dán liên kết vào trình duyệt của bạn để được hướng dẫn thêm."
+    "MessageBox.NoBrowser": "Không thể mở trang web bằng trình duyệt web mặc định, liên kết được sao chép vào khay nhớ tạm, vui lòng dán liên kết vào trình duyệt của bạn để được hướng dẫn thêm.",
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
 }
