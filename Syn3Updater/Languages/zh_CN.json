@@ -5,10 +5,10 @@
     "Main.News": "新闻",
     "Main.Crashme": "崩溃",
     "Main.Settings": "设置",
-    "Main.Utility": "实用工具",
+    "Main.Utility": "工具",
     "Home.Refresh": "刷新",
-    "Home.CurrentConfiguration": "当前配置",
-    "Home.DownloadPath": "下载路径",
+    "Home.CurrentConfiguration": "下载路径",
+    "Home.DownloadPath": "下载路",
     "Home.SelectUSBDrive": "选择一个U盘或目录",
     "Home.DriveName": "目标",
     "Home.RecommendedUSBFlashDriveTitle": "推荐的U盘大小",
@@ -170,5 +170,6 @@
     "String.Encrypted": "已加密",
     "MessageBox.EncryptedDrive": "您所选择的USB驱动器已被检测到被加密，可能是被Bitlocker或一些第三方软件所加密。在你取消加密之前，你将不能使用这个USB驱动器。\n\n请禁用加密，然后点击 \"确定 \"来刷新USB驱动器列表。",
     "MessageBox.NoPackagesSelected": "未选择任何安装包文件，请至少选择一个安装包文件，然后再继续",
-    "MessageBox.NoBrowser": "无法使用默认的网络浏览器打开网页，链接已复制到剪贴板，请将链接粘贴到浏览器中打开以获得更多指导。"
+    "MessageBox.NoBrowser": "无法使用默认的网络浏览器打开网页，链接已复制到剪贴板，请将链接粘贴到浏览器中打开以获得更多指导。",
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
 }
