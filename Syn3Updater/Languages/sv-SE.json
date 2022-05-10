@@ -171,5 +171,5 @@
     "MessageBox.EncryptedDrive": "USB -enheten du har valt har upptäckts som krypterad, antingen av Bitlocker eller någon tredjepartsprogramvara. Du kommer inte att kunna använda den här USB-enheten förrän du inaktiverar krypteringen.\n\nInaktivera krypteringen och tryck på OK för att uppdatera listan över USB-enheter.",
     "MessageBox.NoPackagesSelected": "Inga paket har valts, välj minst ett paket innan du fortsätter",
     "MessageBox.NoBrowser": "Det gick inte att öppna webbsidan med standardwebbläsare, länk kopierad till Urklipp, klistra in länken i din webbläsare för ytterligare vägledning.",
-    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
+    "MessageBox.MY20InvalidConfiguration": "Du har specificerat att du har en MY20 SYNC-enhet. Du kan inte skapa en uppdaterings-USB för att gå från 3.0 eller lägre till 3.4 medan My20 Protection är aktiverat.\n\n Vänligen kontrollera dina inställningar igen och om du behöver ytterligare hjälp besök vårt forum på https://community.cyanlabs.net\\n\\n AVAKTIVERA INTE MY20-SKYDD OM DU ÄR OSÄKER!"
 }
