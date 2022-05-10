@@ -171,5 +171,5 @@
     "MessageBox.EncryptedDrive": "Wykryto, że wybrany nośnik USB jest zaszyfrowany, możliwe że przez Bitlocker lub inne oprogramowanie. Nie będzie możliwe używanie nośnika USB, dopóki nie zablokujesz szyfrowania.\n\nProszę zablokuj szyfrowanie i wciśnij OK by odświeżyć listę nośników USB.",
     "MessageBox.NoPackagesSelected": "Żadne paczki nie zostały wybrane, proszę wybrać co najmniej jedna paczkę by kontynuować",
     "MessageBox.NoBrowser": "Nie można otworzyć strony używając domyślnej przeglądarki. Proszę skopiować link do swojej przeglądarki.",
-    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\\n\\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
+    "MessageBox.MY20InvalidConfiguration": "Określiłeś, że masz jednostkę MY20 SYNC. Nie możesz utworzyć aktualizacji USB, aby przejść z wersji 3.0 lub niższej na 3.4, gdy włączona jest ochrona My20.\nSprawdź ustawienia, a jeśli potrzebujesz dalszej pomocy, odwiedź nasze forum pod adresem https://community.cyanlabs.net\nNIE WYŁĄCZAJ OCHRONY MY20, JEŚLI NIE MASZ PEWNOŚCI!"
 }
