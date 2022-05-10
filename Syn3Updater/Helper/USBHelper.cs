@@ -12,12 +12,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Cyanlabs.Syn3Updater.Converter;
 using Cyanlabs.Syn3Updater.Model;
-using Cyanlabs.Updater.Common;
 using GraphQL;
 using ModernWpf.Controls;
 using Newtonsoft.Json;
@@ -156,6 +154,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             else
                 data.Append("Mode: Drive").Append(Environment.NewLine)
                     .Append("Model: ").Append(AppMan.App.DriveName).Append(Environment.NewLine)
+                    .Append("Size: ").Append(AppMan.App.DriveSize).Append(Environment.NewLine)
                     .Append("FileSystem: ").Append(AppMan.App.DriveFileSystem).Append(Environment.NewLine)
                     .Append("Partition Type: ").Append(AppMan.App.DrivePartitionType).Append(Environment.NewLine);
 

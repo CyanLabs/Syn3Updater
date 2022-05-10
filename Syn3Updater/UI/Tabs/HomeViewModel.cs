@@ -467,6 +467,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 AppMan.App.DrivePartitionType = SelectedDrive?.PartitionType;
                 AppMan.App.DriveName = SelectedDrive?.Name;
                 AppMan.App.SkipFormat = SelectedDrive.SkipFormat;
+                AppMan.App.DriveSize = SelectedDrive.Size;
 
                 // Update local level vars
                 DriveFileSystem = SelectedDrive?.PartitionType + " " + SelectedDrive?.FileSystem;

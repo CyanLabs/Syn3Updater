@@ -119,7 +119,8 @@ namespace Cyanlabs.Syn3Updater
             Header,
             LauncherConfigFile,
             Magnet,
-            Outdated;
+            Outdated,
+            DriveSize;
 
 
         public bool SkipFormat, IsDownloading, UtilityCreateLogStep1Complete, AppsSelected, DownloadToFolder, ModeForced, Cancelled, DownloadOnly, ClearSelections;
