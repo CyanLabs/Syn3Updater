@@ -72,7 +72,7 @@ namespace Cyanlabs.UpdateLanguages
 
             [JsonProperty("percentage")] public double Percentage { get; set; }
 
-            [JsonProperty("updated")] public DateTime Updated { get; set; }
+            [JsonProperty("updated")] public DateTime? Updated { get; set; }
         }
 
         public class Result
