@@ -523,7 +523,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 else
                 {
                     await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.Completed"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")));
-                    await SystemHelper.OpenWebPage($"https://cyanlabs.net/tutorials/sync-3-automated-method-update-to-3-4/#{InstallMode}");
+                    await SystemHelper.OpenWebPage($"https://cyanlabs.net/docs/syn3updater/installmodes/{InstallMode}");
                 }
 
                 AppMan.App.FireHomeTabEvent();
