@@ -32,7 +32,7 @@
                     <TextBlock Margin="10,0,5,0"
                                Text="EN: This software nor CyanLabs is licensed or endorsed by Ford/FoMoCo"
                                Visibility="{Binding EnglishEndorsement}" TextWrapping="WrapWithOverflow" />
-                    <TextBlock TextAlignment="Right" Margin="10,0,10,10" Text="Copyright © 2021 CyanLabs."
+                    <TextBlock TextAlignment="Right" Margin="10,0,10,10" Text="Copyright © 2022 CyanLabs."
                                TextWrapping="WrapWithOverflow" />
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
