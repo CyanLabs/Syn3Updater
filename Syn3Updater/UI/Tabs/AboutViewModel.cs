@@ -72,7 +72,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private static void DocAction()
         {
-            SystemHelper.OpenWebPage("https://cyanlabs.net/applications/syn3-updater/");
+            SystemHelper.OpenWebPage("https://cyanlabs.net/docs/syn3updater/");
         }
 
         private static void FHubAction()
