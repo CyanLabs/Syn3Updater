@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->		
-		<TargetFrameworks>net472;net5.0-windows10.0.18362.0</TargetFrameworks>
+		<TargetFrameworks>net472;net6.0-windows10.0.18362</TargetFrameworks>
 		<OutputType>WinExe</OutputType>
 		<RootNamespace>Cyanlabs.Syn3Updater</RootNamespace>
 		<Deterministic>false</Deterministic>
@@ -48,24 +48,24 @@
 		<PackageReference Include="HtmlToXamlConverter" Version="1.0.5727.24510">
 			<NoWarn>NU1701</NoWarn>
 		</PackageReference>
-		<PackageReference Include="MahApps.Metro.IconPacks.VaadinIcons" Version="4.8.0" />
+		<PackageReference Include="MahApps.Metro.IconPacks.VaadinIcons" Version="4.11.0" />
 		<PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />		
 		<PackageReference Include="ModernWpfUI" Version="0.9.4" />
 		<PackageReference Include="SharpZipLib" Version="1.3.3" />
-		<PackageReference Include="System.Management" Version="5.0.0" />
+		<PackageReference Include="System.Management" Version="6.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
 		<PackageReference Include="QRCoder" Version="1.4.1" />
-		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.1.0" />
-		<PackageReference Include="Nito.AsyncEx" Version="5.1.0" />
+		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.4" />
+		<PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
 	</ItemGroup>
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
 	
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows10.0.18362.0' ">
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.212405">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-windows10.0.18362' ">
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.326103">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
@@ -102,6 +102,13 @@
 	
 	<ItemGroup>
 	  <EmbeddedResource Remove="Models\**" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
 	</ItemGroup>
 	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
 </Project>
