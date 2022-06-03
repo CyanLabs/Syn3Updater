@@ -171,5 +171,6 @@
     "MessageBox.EncryptedDrive": "O pen drive selecionado foi detectado como encriptado por Bitlocker ou outro programa. Você não conseguirá usar o pen drive até que desligue a criptografia.\n\nFavor desligar a criptografia e clique OK para recarregar a lista de pen drives.",
     "MessageBox.NoPackagesSelected": "Nenhum pacote selecionado, favor selecionar ao menos um pacote para continuar",
     "MessageBox.NoBrowser": "A página não pôde ser aberta no navegador padrão, link copiado para a área de transferência, favor copiar o link no navegador para mais informações.",
-    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\n\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!"
+    "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\n\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!",
+    "Settings.MapKey": "Cutdown Map Package Key"
 }
