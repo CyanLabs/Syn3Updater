@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Threading;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
@@ -35,6 +34,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private ActionCommand _updateLanguages;
         public ActionCommand UpdateLanguages => _updateLanguages ??= new ActionCommand(UpdateLanguagesAction);
+
+        private ActionCommand _mapGenerator;
+        public ActionCommand MapGenerator => _mapGenerator ??= new ActionCommand(MapGeneratorAction);
 
         #endregion
 
@@ -504,6 +506,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             var process = Process.Start(apppath + @"\UpdateLanguages.exe");
             process.WaitForExit();
             AppMan.App.RestartApp();
+        }
+        private async void MapGeneratorAction()
+        {
+            SystemHelper.OpenWebPage("https://cyanlabs.net/fhub/sync3/maps-generator/");
         }
 
         #endregion

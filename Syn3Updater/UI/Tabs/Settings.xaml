@@ -202,10 +202,10 @@
                         <ComboBox VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Languages}" 
                               SelectedValuePath="Code" DisplayMemberPath="Name" VerticalContentAlignment="Center"
                               SelectedValue="{Binding CurrentLanguage}" 
-                              HorizontalAlignment="Stretch" Margin="0,0,10,0" />
+                              HorizontalAlignment="Stretch" Margin="0,0,5,0" />
                         <Button BorderThickness="0" Cursor="Hand" 
                         Style="{DynamicResource AccentButtonStyle}" Background="Gray"
-                        ToolTip="{Binding Language, ConverterParameter=Settings.UpdateLanguages, Converter={StaticResource LocConverter}}"
+                        ToolTip="{Binding Language, ConverterParameter=Home.Refresh, Converter={StaticResource LocConverter}}"
                         Grid.Row="0" Grid.Column="1" Command="{Binding UpdateLanguages}">
                             <iconPacks:PackIconVaadinIcons Kind="Refresh" Height="18" Width="18" Foreground="White"
                                                    VerticalAlignment="Center" />
@@ -234,11 +234,24 @@
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="4"
                                Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Settings.MapKey, Converter={StaticResource LocConverter}}" />
-                    <TextBox Grid.Row="4" Grid.Column="1"
+                    
+                    <Grid Grid.Row="4" Grid.Column="1" Margin="0,0,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Row="0" Grid.Column="0"
                              Text="{Binding LicenseKey, UpdateSourceTrigger=PropertyChanged}"
                              HorizontalAlignment="Stretch"
-                             VerticalContentAlignment="Center" VerticalAlignment="Center" AcceptsReturn="True"
-                             Margin="0,0,10,0" />
+                             VerticalContentAlignment="Center" VerticalAlignment="Center"
+                             Margin="0,0,5,0" />
+                        <Button BorderThickness="0" Cursor="Hand" 
+                        Style="{DynamicResource AccentButtonStyle}" Background="Gray"
+                        Grid.Row="0" Grid.Column="1" Command="{Binding MapGenerator}">
+                            <iconPacks:PackIconVaadinIcons Kind="Globe" Height="18" Width="18" Foreground="White"
+                                                   VerticalAlignment="Center" />
+                        </Button>
+                    </Grid>
 
                     <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" Grid.Row="5" HorizontalAlignment="Right"
                                Grid.Column="0"
