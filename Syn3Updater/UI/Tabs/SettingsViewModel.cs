@@ -389,6 +389,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             CurrentNav = AppMan.App.Settings.CurrentNav;
             ReleaseType = AppMan.App.LauncherPrefs.ReleaseBranch;
             AdvancedModeToggle = CurrentInstallMode == "reformat" || CurrentInstallMode == "autoinstall" || CurrentInstallMode == "downgrade";
+
+            if (ReleaseType == LauncherPrefs.ReleaseType.Alpha) ReleaseType = LauncherPrefs.ReleaseType.Beta; //Alpha is currently not functional
         }
 
         public void ReloadSettings()
