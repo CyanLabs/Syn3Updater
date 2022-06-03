@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
@@ -296,7 +297,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 AppMan.App.Cancelled = false;
                 XmlDocument doc = new();
                 //TODO: swtich to Async once code moves to dotnet 5+ 
-                doc.Load(dialog.FileName);
+                string xml = FileHelper.RemoveInvalidXmlChars(File.ReadAllText(dialog.FileName));
+                doc.Load(new StringReader(xml));
                 string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
                 Interrogator.InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<Interrogator.InterrogatorModel>(json);
                 _apimDetails.VIN = interrogatorLog?.POtaModuleSnapShot.PVin;

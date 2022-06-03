@@ -585,6 +585,12 @@ namespace Cyanlabs.Syn3Updater.Helper
             return Regex.Replace(name, invalidRegStr, "_");
         }
 
+        public static string RemoveInvalidXmlChars(string text)
+        {
+            var validChars = text.Where(ch => System.Xml.XmlConvert.IsXmlChar(ch)).ToArray();
+            return new string(validChars);
+        }
+
         #endregion
     }
 }
