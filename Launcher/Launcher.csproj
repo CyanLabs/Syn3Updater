@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->		
-		<TargetFrameworks>net472;net5.0-windows10.0.18362.0</TargetFrameworks>
+		<!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->
+		<TargetFrameworks>net472;net6.0-windows10.0.18362</TargetFrameworks>
 		<OutputType>WinExe</OutputType>
 		<RootNamespace>Cyanlabs.Launcher</RootNamespace>
 		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
@@ -9,15 +9,15 @@
 		<UseWPF>true</UseWPF>
 		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 		<ApplicationIcon>cyanlabs.ico</ApplicationIcon>
-		<ApplicationManifest>app.manifest</ApplicationManifest>		
+		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<OutputPath>..\bin\Debug\</OutputPath>
-		<LangVersion>latest</LangVersion>		
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<OutputPath>..\bin\Release\</OutputPath>
-		<LangVersion>latest</LangVersion>		
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<Resource Include="Syn3Updater Logo Cropped.png" />
@@ -25,16 +25,16 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FluentWPF" Version="0.9.0" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.2.227701" />
+		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.326103" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Octokit" Version="0.50.0" />		
-	</ItemGroup>	
+		<PackageReference Include="Octokit" Version="0.50.0" />
+	</ItemGroup>
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
-	
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0-windows10.0.18362.0' ">
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-windows10.0.18362' ">
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
 	</ItemGroup>
 	<Import Project="..\SharedCode\SharedCode.projitems" Label="Shared" />
 </Project>

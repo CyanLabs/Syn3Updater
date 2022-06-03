@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<!-- The required TFM when using net5.0+ due to ModernWPF https://github.com/Kinnara/ModernWpf/issues/187, doesn't restrict to W10 only -->		
-		<TargetFrameworks>net472;net5.0-windows10.0.18362.0</TargetFrameworks>
+		<TargetFrameworks>net472;net6.0-windows10.0.18362</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Cyanlabs.UpdateLanguages</RootNamespace>
 		<ApplicationIcon>cyanlabs.ico</ApplicationIcon>	
