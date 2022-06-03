@@ -172,6 +172,6 @@
     "MessageBox.NoPackagesSelected": "Không có gói nào được chọn, vui lòng chọn ít nhất một gói trước khi tiếp tục",
     "MessageBox.NoBrowser": "Không thể mở trang web bằng trình duyệt web mặc định, liên kết được sao chép vào khay nhớ tạm, vui lòng dán liên kết vào trình duyệt của bạn để được hướng dẫn thêm.",
     "MessageBox.MY20InvalidConfiguration": "Bạn đã chỉ định rằng bạn có thiết bị MY20 SYNC, Bạn không thể tạo USB cập nhật để chuyển từ 3.0 trở xuống lên 3.4 trong khi My20 Protection được bật.\n\nVui lòng kiểm tra lại cài đặt của bạn và nếu bạn cần hỗ trợ thêm, hãy truy cập diễn đàn của chúng tôi tại https://community.cyanlabs.net\n\nĐỪNG TẮT BẢO VỆ MY20 NẾU BẠN KHÔNG CHẮC CHẮN!",
-    "Settings.MapKey": "Cutdown Map Package Key",
+    "Settings.MapKey": "Generator Key",
     "Settings.UpdateLanguages": "Download Latest Localizations"
 }
