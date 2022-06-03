@@ -173,5 +173,6 @@
     "MessageBox.NoBrowser": "無法使用默認網路瀏覽器打開網頁,連結已複製到剪貼簿,請將連結粘貼到您的瀏覽器以獲取更多指導。",
     "MessageBox.MY20InvalidConfiguration": "你已經指定你有MY20 SYNC, 當MY20保護被啟用時，你不能產生更新用USB(update USB)來進行從3.0或以下的版本升級到3.4\n\n請再次確認你的設定，並且假使你需要進一步協助, 請訪問我們的論壇，網址https://community.cyanlabs.net\n\n假使你不確定，不要取消MY20的保護",
     "Settings.MapKey": "Generator Key",
-    "Settings.UpdateLanguages": "Download Latest Localizations"
+    "Settings.UpdateLanguages": "Download Latest Localizations",
+    "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!"
 }

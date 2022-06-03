@@ -310,6 +310,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMModel")}: {apimmodel}{Environment.NewLine}";
+                if (apimmodel == "") throw new AssemblyModelNotFound();
 
                 GraphQLResponse<Api.My20ModelsRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.My20ModelsRoot>(GraphQlRequests.GetMy20Models());
                 Api.My20ModelsRoot output = graphQlResponse.Data;
@@ -436,6 +437,10 @@ namespace Cyanlabs.Syn3Updater.Helper
             catch (InvalidOperationException)
             {
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
+            }
+            catch (AssemblyModelNotFound)
+            {
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityNoModelFound")));
             }
 
             return new[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };

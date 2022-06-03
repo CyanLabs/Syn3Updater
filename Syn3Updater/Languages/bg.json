@@ -173,5 +173,6 @@
     "MessageBox.NoBrowser": "Невъзможност за отваряне на уебстраницата с помощта на уеб браузъра по подразбиране, връзката е копирана в клипборда, моля, поставете връзката в браузъра си за допълнителни указания.",
     "MessageBox.MY20InvalidConfiguration": "Посочили сте, че имате устройство MY20 SYNC, Не можете да създадете USB устройство за актуализация, с цел да преминете от версия 3.0 или по-стара,  към версия 3.4, докато My20 Защита е активирано.\n\nМоля, проверете отново настройките си и ако се нуждаете от допълнителна помощ, посетете нашия форум на адрес https://community.cyanlabs.net\n\nНЕ ИЗКЛЮЧВАЙТЕ MY20 ЗАЩИТАТА, АКО НЕ СТЕ СИГУРНИ!",
     "Settings.MapKey": "Generator Key",
-    "Settings.UpdateLanguages": "Download Latest Localizations"
+    "Settings.UpdateLanguages": "Download Latest Localizations",
+    "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!"
 }

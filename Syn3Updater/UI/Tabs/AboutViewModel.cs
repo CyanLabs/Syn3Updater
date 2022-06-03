@@ -67,7 +67,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private static void DonateAction()
         {
-            SystemHelper.OpenWebPage("https://www.paypal.com/paypalme/cyanlabs");
+            SystemHelper.OpenWebPage("https://www.paypal.com/donate/?hosted_button_id=C9CZ5YU9396X2");
         }
 
         private static void DocAction()

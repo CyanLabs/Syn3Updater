@@ -29,4 +29,21 @@ namespace Cyanlabs.Syn3Updater.Helper
 
         #endregion
     }
+
+    public class AssemblyModelNotFound : Exception
+    {
+        public AssemblyModelNotFound()
+        {
+        }
+
+        public AssemblyModelNotFound(string message)
+            : base(message)
+        {
+        }
+
+        public AssemblyModelNotFound(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+    }
 }
