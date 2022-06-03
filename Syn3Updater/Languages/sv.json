@@ -172,5 +172,6 @@
     "MessageBox.NoPackagesSelected": "Inga paket har valts, välj minst ett paket innan du fortsätter",
     "MessageBox.NoBrowser": "Det gick inte att öppna webbsidan med standardwebbläsare, länk kopierad till Urklipp, klistra in länken i din webbläsare för ytterligare vägledning.",
     "MessageBox.MY20InvalidConfiguration": "Du har specificerat att du har en MY20 SYNC-enhet. Du kan inte skapa en uppdaterings-USB för att gå från 3.0 eller lägre till 3.4 medan My20 Protection är aktiverat.\n\n Vänligen kontrollera dina inställningar igen och om du behöver ytterligare hjälp besök vårt forum på https://community.cyanlabs.net\n\nAVAKTIVERA INTE MY20-SKYDD OM DU ÄR OSÄKER!",
-    "Settings.MapKey": "Cutdown Map Package Key"
+    "Settings.MapKey": "Cutdown Map Package Key",
+    "Settings.UpdateLanguages": "Download Latest Localizations"
 }

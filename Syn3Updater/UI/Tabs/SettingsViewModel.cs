@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -31,6 +32,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private ActionCommand _applySettings;
         public AsyncCommand<string> PathSelector => _pathSelector ??= new AsyncCommand<string>(SelectPathAction);
         public ActionCommand ApplySettings => _applySettings ??= new ActionCommand(ApplySettingsAction);
+
+        private ActionCommand _updateLanguages;
+        public ActionCommand UpdateLanguages => _updateLanguages ??= new ActionCommand(UpdateLanguagesAction);
 
         #endregion
 
@@ -492,6 +496,14 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 CurrentInstallMode = LM.GetValue("String.AutoDetect");
                 My20Mode = null;
             }
+        }
+
+        private async void UpdateLanguagesAction()
+        {
+            string apppath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var process = Process.Start(apppath + @"\UpdateLanguages.exe");
+            process.WaitForExit();
+            AppMan.App.RestartApp();
         }
 
         #endregion

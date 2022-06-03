@@ -172,5 +172,6 @@
     "MessageBox.NoPackagesSelected": "Nebyl vybrán žádný balíček, prosím vyberte alespoň jeden balíček než budete pokračovat.",
     "MessageBox.NoBrowser": "Nelze otevřít webovou stránku pomocí výchozího webového prohlížeče, odkaz zkopírován do schránky, vložte odkaz do svého prohlížeče pro další pokyny.",
     "MessageBox.MY20InvalidConfiguration": "Zadali jste, že máte jednotku MY20 SYNC, nemůžete vytvořit aktualizační USB pro přechod z 3.0 nebo nižší na 3.4, když je povolena ochrana My20.\n\nProsím znovu zkontrolujte svá nastavení a pokud potřebujete další pomoc, navštivte naše fórum na https://community.cyanlabs.net\n\nNEVYPÍNEJTE OCHRANU MY20, POKUD SI NEJSTE JISTI!",
-    "Settings.MapKey": "Cutdown Map Package Key"
+    "Settings.MapKey": "Cutdown Map Package Key",
+    "Settings.UpdateLanguages": "Download Latest Localizations"
 }

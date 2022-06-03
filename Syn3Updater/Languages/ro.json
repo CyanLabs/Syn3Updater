@@ -172,5 +172,6 @@
     "MessageBox.NoPackagesSelected": "Nu au fost selectate pachete, vă rugăm să selectați cel puțin un pachet înainte de a continua",
     "MessageBox.NoBrowser": "Imposibil de deschis pagina web utilizând browserul web implicit, linkul copiat în clipboard, lipiți linkul în browser-ul dvs. pentru îndrumări suplimentare.",
     "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\n\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!",
-    "Settings.MapKey": "Cutdown Map Package Key"
+    "Settings.MapKey": "Cutdown Map Package Key",
+    "Settings.UpdateLanguages": "Download Latest Localizations"
 }
