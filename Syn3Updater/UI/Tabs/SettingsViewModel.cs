@@ -380,7 +380,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 LauncherPrefs.ReleaseType.Stable,
                 LauncherPrefs.ReleaseType.Beta,
-                LauncherPrefs.ReleaseType.Alpha
+                //LauncherPrefs.ReleaseType.Alpha
             };
 
             LogLocation = AppMan.App.MainSettings.LogPath;
