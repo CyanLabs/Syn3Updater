@@ -553,7 +553,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                             await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20NotFound"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")));
                         }
                     }
-                    else
+                    else if(!AppMan.App.InvalidLog)
                     {
                         await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.My20CheckCancelled"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")));
                     }

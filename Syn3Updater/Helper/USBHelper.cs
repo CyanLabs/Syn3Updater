@@ -435,18 +435,26 @@ namespace Cyanlabs.Syn3Updater.Helper
             }
             catch (NullReferenceException)
             {
+                AppMan.App.Cancelled = true;
+                AppMan.App.InvalidLog = true;
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
             }
             catch (XmlException)
             {
+                AppMan.App.Cancelled = true;
+                AppMan.App.InvalidLog = true;
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
             }
             catch (InvalidOperationException)
             {
+                AppMan.App.Cancelled = true;
+                AppMan.App.InvalidLog = true;
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityInvalidFile")));
             }
             catch (AssemblyModelNotFound)
             {
+                AppMan.App.Cancelled = true;
+                AppMan.App.InvalidLog = true;
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityNoModelFound")));
             }
 
