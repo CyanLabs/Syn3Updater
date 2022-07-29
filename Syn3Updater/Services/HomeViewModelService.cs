@@ -25,7 +25,7 @@ namespace Cyanlabs.Syn3Updater.Services
             
             //Install Mode is reformat or downgrade My20 warning
             if ((installMode == "reformat" || installMode == "downgrade") && !AppMan.App.DownloadOnly && AppMan.App.Settings.My20v2 == null)
-                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.My20Check")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"),
+                if (await Application.Current.Dispatcher.Invoke(() => UIHelper.ShowDialog(string.Format(LM.GetValue("MessageBox.My20CheckV2")), LM.GetValue("String.Warning") + "!", LM.GetValue("String.No"),
                     LM.GetValue("String.Yes"), null, ContentDialogButton.None, Brushes.DarkRed)) == ContentDialogResult.Primary)
                 {
                     await USBHelper.LogPrepareUSBAction(selectedDrive, driveLetter, "logutilitymy20");
