@@ -41,7 +41,6 @@
     "Settings.Language": "Jezik",
     "Settings.AdvancedOptions": "Napredne opcije",
     "Settings.InstallMode": "Način instalacije",
-    "Settings.LicenseKey": "Licencni ključ",
     "Settings.Apply": "Primijeni postavke",
     "Settings.Theme": "Tema",
     "MessageBox.DisclaimerNotAccepted": "Prije nastavka pročitajte i prihvatite izjavu o odricanju odgovornosti. Nećete moći nastaviti ako se ne složite s uvjetima.",
@@ -53,7 +52,6 @@
     "MessageBox.DownloadInProgress": "Preuzimanje ili kopija je već u tijeku, prvo pričekajte ili otkažite preuzimanje.",
     "MessageBox.OptionalFormatUSB": "Ovaj USB pogon već je koristio Syn3 Updater.\n\n{0} \nPogonsko slovo: {1}\n\nDa biste koristili postojeće datoteke na USB pogonu, kliknite Ne\nDa biste formatirali USB pogon, pritisnite Da\n\nŽelite formatirati odabrani USB pogon?",
     "MessageBox.FailedToValidate3": "Provjera {0} nije uspjela 3 puta, PREKIDANJE PROCESA!",
-    "MessageBox.UpdateCurrentversion": "Želite li ažurirati \"Trenutnu verziju\" s {0} na {1} tako da bude ispravna za buduću upotrebu?",
     "MessageBox.Completed": "Preuzimanje i kopiranje datoteka je sada završeno, jednostavno izvadite ovaj USB s računala i umetnite ga u svoj automobil, provjerite radi li motor!  \n\nSyn3Updater će vam sada otvoriti izravno odgovarajući dio vodiča za CyanLabs da pratite u vašem automobilu. \n\nAko vam je Syn3 Updater bio koristan, razmislite o doniranju s kartice \"Oko\".",
     "String.NonNavAPIM": "Ne-navigacija APIM",
     "MessageBox.LogUtilityComplete": "Priprema dnevnika USB je gotova, izvadite USB pogon iz računala i umetnite ga u svoj automobil, provjerite je li kontakt uključen. Nekoliko trenutaka nakon umetanja USB-a reći će da je instalacija dovršena. Ponovo umetnite USB pogon u računalo i pritisnite \"Korak 3\"",
@@ -174,5 +172,5 @@
     "Settings.MapKey": "Generator Key",
     "Settings.UpdateLanguages": "Download Latest Localizations",
     "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",
-    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREENE MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
+    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREEN MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
 }

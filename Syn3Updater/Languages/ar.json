@@ -41,7 +41,6 @@
     "Settings.Language": "اللغة",
     "Settings.AdvancedOptions": "خيارات متقدمة",
     "Settings.InstallMode": "وضع التثبيت",
-    "Settings.LicenseKey": "مفتاح الترخيص (المميزات المدفوعة)",
     "Settings.Apply": "تطبيق الإعدادات",
     "Settings.Theme": "المنظر",
     "MessageBox.DisclaimerNotAccepted": "يرجى قراءة وقبول إخلاء المسؤولية قبل المتابعة. لن تتمكن من المتابعة ما لم توافق على الشروط.",
@@ -53,7 +52,6 @@
     "MessageBox.DownloadInProgress": "يوجد عملية اخرى تعمل بالفعل، يرجى الانتظار حين انتهائها قبل المتابعة",
     "MessageBox.OptionalFormatUSB": "تم استخدام محرك أقراص USB هذا من قبل محدث Syn3.  n  n {0}  n Drive Letter: {1}  n  n لاستخدام الملفات الموجودة على محرك أقراص USB ، انقر فوق \"لا\"  n لتهيئة محرك أقراص USB ، انقر فوق \"نعم\"  n  n هل تريد تهيئة محرك USB المحدد؟",
     "MessageBox.FailedToValidate3": "فشل التحقق من الصحة {0} 3 مرات ، عملية الإيقاف!",
-    "MessageBox.UpdateCurrentversion": "هل ترغب في تحديث إصدار المزامنة الحالي في التطبيق بحيث يكون صحيحًا للاستخدام في المستقبل؟",
     "MessageBox.Completed": "اكتمل الآن تنزيل الملفات ونسخها ، ما عليك سوى إخراج USB هذا من جهاز الكمبيوتر الخاص بك وإدخاله في سيارتك ، وتأكد من تشغيل المحرك!  n سيفتح لك Syn3Updater الآن مباشرة إلى الجزء ذي الصلة من برنامج CyanLabs التعليمي لك للمتابعة في سيارتك.  n  n إذا كان Syn3 Updater مفيدًا لك ، فيرجى التفكير في التبرع من علامة التبويب \"حول\".",
     "String.NonNavAPIM": "غير نافذ APIM",
     "MessageBox.LogUtilityComplete": "اكتمل إعداد سجل USB ، قم بإزالة محرك أقراص USB من جهاز الكمبيوتر الخاص بك وأدخله في سيارتك ، وتأكد من تشغيل الإشعال. بعد لحظات قليلة من إدخال USB ، ستظهر رسالة اكتمال التثبيت. أعد إدخال محرك أقراص USB في جهاز الكمبيوتر واضغط على \"الخطوة 3\"",
@@ -174,5 +172,5 @@
     "Settings.MapKey": "Generator Key",
     "Settings.UpdateLanguages": "Download Latest Localizations",
     "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",
-    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREENE MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
+    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREEN MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
 }

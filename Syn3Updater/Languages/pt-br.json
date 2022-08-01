@@ -41,7 +41,6 @@
     "Settings.Language": "Idioma",
     "Settings.AdvancedOptions": "Opções Avançadas",
     "Settings.InstallMode": "Modo de Instalação",
-    "Settings.LicenseKey": "Chave de Licença (Itens Pagos)",
     "Settings.Apply": "Aplicar Configurações",
     "Settings.Theme": "Tema",
     "MessageBox.DisclaimerNotAccepted": "Favor ler e aceitar a responsabilidade antes de continuar. Você não poderá continuar se não aceitar os termos.",
@@ -53,7 +52,6 @@
     "MessageBox.DownloadInProgress": "Outra operação já está sendo executada, favor aguardar o fim desta antes de continuar.",
     "MessageBox.OptionalFormatUSB": "Este pen-drive já foi utilizado pelo Syn3 Updater.\n\n{0}\nLetra do Drive: {1}\n\nPara usar os arquivos que já estão no pen drive clique Não\nPara formatar o pen drive clique Sim\n\nVocê deseja formatar este pen drive?",
     "MessageBox.FailedToValidate3": "Falha ao validar {0} por 3 vezes, ABORTANDO!",
-    "MessageBox.UpdateCurrentversion": "Você deseja atualizar a \"Versão Atual\" de {0} para {1} para corrigir a informção para uso futuro?",
     "MessageBox.Completed": "O download e a cópia dos arquivos terminou.\nEjete o pen-drive do computador e insira no carro.\nLigue o motor e espere a instalação começar!\n\nSyn3Updater irá abrir o tutorial da CyanLabs que você deve seguir no carro.\n\nSe você estiver tendo problemas, junte-se ao nosso discord ou fórum da comunidade, os links estão no nosso website.\n\nSe Syn3 Updater foi útil para você, considere uma doação na aba \"Sobre\".",
     "String.NonNavAPIM": "APIM sem GPS",
     "MessageBox.LogUtilityComplete": "Preparação do log de interrogatório, pen drive USB completado com sucesso!\n\nRemova o pen drive USB do computador e o insira na porta USB do carro, se certifique de que a ignição esteja ligada e aguarde alguns minutos até que apareça a mensagem  \"Instalação  completa\" \n\nRe-insira o pen drive USB no seu PC e pressione \"passo 3\"",
@@ -174,5 +172,5 @@
     "Settings.MapKey": "Generator Key",
     "Settings.UpdateLanguages": "Download Latest Localizations",
     "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",
-    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREENE MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
+    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREEN MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
 }

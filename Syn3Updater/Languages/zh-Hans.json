@@ -41,7 +41,6 @@
     "Settings.Language": "语言",
     "Settings.AdvancedOptions": "高级设置",
     "Settings.InstallMode": "安装模式",
-    "Settings.LicenseKey": "授权秘钥（付费功能）",
     "Settings.Apply": "应用设置",
     "Settings.Theme": "主题",
     "MessageBox.DisclaimerNotAccepted": "请在继续之前阅读并接受免责声明。除非您同意这些条款，否则您将无法继续。",
@@ -53,7 +52,6 @@
     "MessageBox.DownloadInProgress": "另一个操作正在进行，请等待当前操作完成后再继续。",
     "MessageBox.OptionalFormatUSB": "这个U盘已经被 Syn3 Updater 使用过。\n\n{0}\n盘符:{1}\n\n要使用USB驱动器上的现有文件，请单击 \"否\"\n要格式化USB驱动器，请点击 \"是\"\n\n您是否要格式化所选的U盘？",
     "MessageBox.FailedToValidate3": "3次验证 {0} 失败，已经终止操作！",
-    "MessageBox.UpdateCurrentversion": "您是否想要将 \"当前版本 \"从 {0} 更新为 {1} ，以便于将来使用？",
     "MessageBox.Completed": "所有所需文件的下载和复制现在已经完成。\n只需将U盘从您的电脑中弹出，并将其插入您的汽车。\n打开点火开关启动引擎，等待安装过程开始！\n\nSyn3Updater 现在会打开CyanLabs教程的相关部分，让您在您的车上进行操作。\n\n如果您有问题，请加入我们的discord或社区论坛，链接可以在我们的网站上找到。\n\n如果Syn3Updater对您有用，请考虑从 \"关于 \"标签中进行捐赠。",
     "String.NonNavAPIM": "无导航主机",
     "MessageBox.LogUtilityComplete": "侦测(日志)U盘的准备工作已制作完成!\n\n从电脑中取出U盘，并将其插入车内，确保点火开关打开，等待片刻后显示 \"安装完成\"。\n\n重新将U盘插入电脑，然后按 \"步骤3\"。",
@@ -174,5 +172,5 @@
     "Settings.MapKey": "Generator Key",
     "Settings.UpdateLanguages": "Download Latest Localizations",
     "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",
-    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREENE MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
+    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREEN MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
 }

@@ -41,7 +41,6 @@
     "Settings.Language": "Språk:",
     "Settings.AdvancedOptions": "Avancerade alternativ",
     "Settings.InstallMode": "Installationsläge:",
-    "Settings.LicenseKey": "Licensnyckel:",
     "Settings.Apply": "Tillämpa inställningar",
     "Settings.Theme": "Tema",
     "MessageBox.DisclaimerNotAccepted": "Läs och godkänn ansvarsfriskrivningen innan du fortsätter. Du kommer inte att kunna fortsätta om du inte godkänner villkoren.",
@@ -53,7 +52,6 @@
     "MessageBox.DownloadInProgress": "En nedladdning eller kopia pågår redan, vänta eller avbryt nedladdningen först.",
     "MessageBox.OptionalFormatUSB": "Denna USB-enhet har redan använts av Syn3 Updater.  N  n {0}  nDrive Letter: {1}  n  nFör att använda befintliga filer på USB-enheten klickar du på Nej  nFör att formatera USB-enheten klickar du på Ja  n  nGör vill du formatera den valda USB-enheten?",
     "MessageBox.FailedToValidate3": "Det gick inte att validera {0} tre gånger, ABORTING PROCESS!",
-    "MessageBox.UpdateCurrentversion": "Vill du uppdatera din \"Nuvarande version\" från {0} till  {1} så  att den visas korrekt i framtiden?",
     "MessageBox.Completed": "Nedladdningen och kopieringen av filerna är nu klar, mata bara ut den här USB: n från din dator och sätt in den i din bil, se till att motorn är igång!  NSyn3Updater öppnar dig nu direkt till den relevanta delen av CyanLabs handledning för dig att följa i din bil.  n  nOm Syn3 Updater har varit till nytta för dig, kan du överväga att donera från fliken \"Om\".",
     "String.NonNavAPIM": "Icke Nav APIM",
     "MessageBox.LogUtilityComplete": "Förberedelsen av USB-loggen är klar, ta bort USB-enheten från din dator och sätt in den i din bil, se till att tändningen är på. Några ögonblick efter att USB har satts i kommer det att sägas att installationen är klar. Sätt tillbaka USB-enheten i din dator och tryck på \"Steg 3\"",
@@ -171,8 +169,8 @@
     "MessageBox.NoPackagesSelected": "Inga paket har valts, välj minst ett paket innan du fortsätter",
     "MessageBox.NoBrowser": "Det gick inte att öppna webbsidan med standardwebbläsare, länk kopierad till Urklipp, klistra in länken i din webbläsare för ytterligare vägledning.",
     "MessageBox.MY20InvalidConfiguration": "Du har specificerat att du har en MY20 SYNC-enhet. Du kan inte skapa en uppdaterings-USB för att gå från 3.0 eller lägre till 3.4 medan My20 Protection är aktiverat.\n\n Vänligen kontrollera dina inställningar igen och om du behöver ytterligare hjälp besök vårt forum på https://community.cyanlabs.net\n\nAVAKTIVERA INTE MY20-SKYDD OM DU ÄR OSÄKER!",
-    "Settings.MapKey": "Generator Key",
-    "Settings.UpdateLanguages": "Download Latest Localizations",
-    "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",
-    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREENE MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
+    "Settings.MapKey": "Generatornyckel",
+    "Settings.UpdateLanguages": "Ladda ner de senaste lokaliseringarna\n",
+    "MessageBox.LogUtilityNoModelFound": "XML-filen du har valt innehåller inte ett giltigt 'ECU Delivery Assembly Number', därför kan Syn3 Updater inte avgöra om detta är en MY20+ APIM eller inte!\n\n Skriv på vårt communityforum eller vår Discord-server för att se hur du går vidare härifrån!\n\n FORTSÄTT INTE UTAN ATT FÅ HJÄLP AV EN EXPERT!7",
+    "MessageBox.My20CheckV2": "!!!  FEL SVAR KOMMER ATT RESULTERA ATT DIN APIM BLICKAS!!!\n\nÄR DIN BIL TILLVERKAD 2020 ELLER NYARE?\n eller\n ÄR DIN SYNC 3 UNIT (APIM) TILLVERKAD 2020 ELLER NYARE?\n (garantireparation, utbytesenhet, etc)\n eller\n ÄR DIN SYNC 3-SKÄRM TILLVERKAD 2020 ELLER NYARE?\n (garantireparation, utbytesenhet, etc)\n\n Om du är osäker klickar du på \"Ja\" och Syn3 Updater guidar dig genom att köra det officiella \"förhörsverktyget\" för att verifiera om du har en MY20 APIM eller inte, den här processen är inte 100% korrekt, det enda sättet att säga till 100% säker  är att ta ut din APIM och kontrollera tillverkarens år\n\nCyanLabs ansvarar inte om du svarar fel!8"
 }

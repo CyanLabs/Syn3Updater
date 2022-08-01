@@ -41,7 +41,6 @@
     "Settings.Language": "语言",
     "Settings.AdvancedOptions": "高级设置",
     "Settings.InstallMode": "安装模式",
-    "Settings.LicenseKey": "授权码（付费功能）：",
     "Settings.Apply": "应用设置",
     "Settings.Theme": "主题",
     "MessageBox.DisclaimerNotAccepted": "请认真阅读并确认声明。请接受条款后继续。",
@@ -53,8 +52,7 @@
     "MessageBox.DownloadInProgress": "Another operation is already running, please wait for the existing operation to finish before continuing.",
     "MessageBox.OptionalFormatUSB": "This USB drive has already been used by Syn3 Updater.\n\n{0}\nDrive Letter: {1}\n\nTo use existing files on the USB drive click No\nTo format the USB drive click Yes\n\nDo you want to format the selected USB drive?",
     "MessageBox.FailedToValidate3": "Failed to validate {0} 3 times, ABORTING PROCESS!",
-    "MessageBox.UpdateCurrentversion": "Would you like to update the \"Current Version\" from {0} to {1} so that it is correct for future use?",
-    "MessageBox.Completed": "The Download and Copying of all required files is now complete.\nSimply eject the USB from your computer insert it in to your car.\nTurn the engine on, and wait for the install process to begin!\n\nSyn3Updater will now open you directly to the documentation relevant to the InstallMode Syn3Updater used.\n\nIf you have found Syn3 Updater useful considering donating at https://cyanlabs.net/support-us/\n\nIf you are having issues join our discord or community forum, links can be found in the \"About\" tab and on our website.",
+    "MessageBox.Completed": "The Download and Copying of all required files is now complete.\nSimply eject the USB from your computer insert it in to your car.\nTurn the engine on, and wait for the install process to begin!\n\nSyn3Updater will now open you directly to the documentation relevant to the InstallMode Syn3Updater used.\n\nIf you have found Syn3 Updater useful considering donating at https://cyanlabs.net/support-us/\n\nPlease note Syn3 Updater no longer updates your Current Version in the configuration so make sure to update this manually once you verify SYNC 3 has updated correctly\n\nIf you are having issues join our discord or community forum, links can be found in the \"About\" tab and on our website.",
     "String.NonNavAPIM": "Non Nav APIM",
     "MessageBox.LogUtilityComplete": "Preparation of the Interrogator (Logging) USB Drive completed successfully!\n\nRemove the USB drive from your computer and insert it in to your car, ensure the ignition is on and wait a few moments for it to say \"Installation Complete\" \n\nRe-insert the USB drive in to your pc and press \"Step 3\"",
     "String.KeepExistingMaps": "保留现有地图",
@@ -174,5 +172,5 @@
     "Settings.MapKey": "Generator Key",
     "Settings.UpdateLanguages": "Download Latest Localizations",
     "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",
-    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREENE MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
+    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREEN MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
 }

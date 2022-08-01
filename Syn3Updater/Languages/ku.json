@@ -41,7 +41,6 @@
     "Settings.Language": "زمان",
     "Settings.AdvancedOptions": "هەڵبژاردنە پێشکەوتووەکان",
     "Settings.InstallMode": "مۆدی دامەزراندن:",
-    "Settings.LicenseKey": "کلیلی مۆڵەت:",
     "Settings.Apply": "کارپێکردنی ڕێکبەندەکان",
     "Settings.Theme": "ڕووکار:\n",
     "MessageBox.DisclaimerNotAccepted": "تکایە پێش بەردەوام بوون، داواکارەکە بخوێنەوە و قبوڵی بکە. ناتوانیت بەردەوام بیت مەگەر ڕازی بیت بە مەرجەکان.",
@@ -53,7 +52,6 @@
     "MessageBox.DownloadInProgress": "‎کردارێکی تر لە ئێستاوە لە کاردایە، تکایە چاوەڕێ بە بۆ ئەم ئۆپەراسیۆنەی ئێستا بۆ تەواو بوون پێش بەردەوام بوون.‎",
     "MessageBox.OptionalFormatUSB": "‎ئەم درایڤەی USB پێشتر بەکارهێنراوە لەلایەن Updater Syn3. {0} درایڤ: {1} فایلەکانی بەردەست لەسەر درایڤی USB بەکاربێنە کلیک لەسەر No بکە بۆ فۆرماتکردنی درایڤی USB کلیک لەسەر Yes بکە ئایا دەتەوێت درایڤی USB ی دیاریکراو فۆرمات بکەیت؟‎",
     "MessageBox.FailedToValidate3": "‎سەرکەوتوو نەبوو لە کاراکردن {0} 3 جار، لەباربردن پرۆسەی!‎",
-    "MessageBox.UpdateCurrentversion": "‎دەتەوێت \"وەشانی ئێستا\" نوێ بکەیتەوە لە {0} بۆ {1} بۆ ئەوەی دروست بێت بۆ بەکارهێنانی داهاتوو؟‎",
     "MessageBox.Completed": "‎داگرتن و کۆپیکردنی هەموو فایلە پێویستەکان ئێستا تەواو بووە. بە سادەیی USB لە کۆمپیوتەرەکەت دەربکە کە تێکردنی لەناو ئۆتۆمبێلەکەت. بزوێنەرەکە هەڵبکە، و چاوەڕێ بە بۆ دەستپێکردنی پرۆسەی دامەزراندن! Syn3Updater ئێستا ڕاستەوخۆ تۆ بۆ بەشی پەیوەندیدار ی فێرکاری سیانلاب بۆ تۆ بۆ ئەوەی بە دوادا بڕۆیت لە ئۆتۆمبێلەکەت. ئەگەر کێشەت هەیە پەیوەندی بە ناڕاسەکەمان یان سەکۆ کەیمان بکەیت، دەکرێت لینکەکان لە وێب سایتەکەمان دا بدۆزرێتەوە. ئەگەر نوێکردنەوەی Syn3 بەسوود بووە بۆتۆ تکایە بیر لە بەخشین بکەوە لە خشتەبەندی \"About\" .‎",
     "String.NonNavAPIM": "ناڤیگەیشن نییە لە  APIM",
     "MessageBox.LogUtilityComplete": "‎ئامادەکردنی لێدەر (تۆمارکردن) USB Drive بە سەرکەوتوویی تەواو بوو! درایڤی USB لە کۆمپیوتەرەکەت لابدە و بیکە ناو ئۆتۆمبێلەکەت، دڵنیابە لە داگیرساندنەکە و چەند ساتێک چاوەڕێبکە بۆ ئەوەی بڵێت \"تەواوکردنی دامەزراندن\" دووبارە درایڤی USB تێبکە ناو کۆمپیوتەرەکەت و دەست بنێ بە \"هەنگاوی 3\"‎",
@@ -174,5 +172,5 @@
     "Settings.MapKey": "Generator Key",
     "Settings.UpdateLanguages": "Download Latest Localizations",
     "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",
-    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREENE MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
+    "MessageBox.My20CheckV2": "!!! ANSWERING INCORRECTLY WILL RESULT IN YOUR APIM BEING BRICKED !!!\n\nIS YOUR CAR MANUFACTURED IN 2020 OR NEWER?\nor\nIS YOUR SYNC 3 UNIT (APIM) MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \nor\nIS YOUR SYNC 3 SCREEN MANUFACTURED IN 2020 OR NEWER? \n(warranty repair, replacement unit, etc) \n\nIf you are unsure click 'Yes' and Syn3 Updater will guide you through running the official 'interrogator tool' to validate if you have a MY20 APIM or not, this process is not 100% accurate, the only way to tell for 100% sure is to take your APIM out and check the manufacturer year\n\nCyanLabs are not responsible if you answer incorrectly!"
 }
