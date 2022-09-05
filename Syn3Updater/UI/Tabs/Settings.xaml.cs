@@ -65,7 +65,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
                 SyncVersionsAutoSuggestBox.ItemsSource =
-                    _syncVersions.Ivsus.OrderByDescending(u => u.Version).Where(u => u.Version.StartsWith(SyncVersionsAutoSuggestBox.Text)).GroupBy(u => u.Version).Select(u => u.First()).ToList();
+                    _syncVersions.Ivsus.OrderByDescending(u => u.Version).Where(u => u.Version != null && u.Version.StartsWith(SyncVersionsAutoSuggestBox.Text)).GroupBy(u => u.Version).Select(u => u.First()).ToList();
         }
 
         #endregion
