@@ -20,10 +20,10 @@
             </Viewbox>
         </DockPanel>
         <TextBlock Cursor="Wait" x:Name="LoadingText" HorizontalAlignment="Left" Foreground="Black"
-                   VerticalAlignment="Top" Margin="418,222,0,0" Text="{Binding Message}" Width="360" TextAlignment="Center" FontSize="17" FontWeight="Bold" />
+                   VerticalAlignment="Bottom" Margin="418,0,0,182" Text="{Binding Message}" Width="360" TextAlignment="Center" FontSize="17" FontWeight="Bold" />
         <ProgressBar x:Name="ProgressBar" Foreground="White"
                      Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" BorderBrush="{x:Null}"
-                     Margin="431,246,35,166" Value="{Binding Percentage}" RenderTransformOrigin="0.5,0.5">
+                     Margin="431,254,35,158" Value="{Binding Percentage}" RenderTransformOrigin="0.5,0.5">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />

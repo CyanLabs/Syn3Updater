@@ -48,13 +48,6 @@ namespace Cyanlabs.Launcher
                 // Get Correct Release
                 switch (releaseType)
                 {
-                    // Continuous Intergration, 
-                    case LauncherPrefs.ReleaseType.Alpha:
-                        // Gets latest build via API at Cyanlabs.net
-                        WebClient wc = new();
-                        ciRelease = JsonConvert.DeserializeObject<CIRelease>(wc.DownloadString(new Uri("https://api.cyanlabs.net/ci/Syn3Updater/latest")));
-                        break;
-
                     // Beta
                     case LauncherPrefs.ReleaseType.Beta:
                         // Get all GitHub releases for Syn3Updater and sets the value of 'latest' to the first (newest) retrieved
@@ -73,7 +66,9 @@ namespace Cyanlabs.Launcher
             // Catch RateLimitExceededException exception, bypasses update check and launches Syn3Updater.exe
             catch (RateLimitExceededException)
             {
+                UpgradingWindow.Vm.Message = "GitHub Request Limit Exceeded!\nSkipping Update Check";
                 if (File.Exists("Syn3Updater.exe")) Process.Start("Syn3Updater.exe", "/launcher");
+                await Task.Delay(5000);
                 Application.Current.Shutdown();
                 return false;
             }
@@ -105,12 +100,7 @@ namespace Cyanlabs.Launcher
                 // Do the actual file download of the first Asset in the chosen GitHub Release or the CI download link with the previously created WebClient
                 try
                 {
-                    await wc.DownloadFileTaskAsync(
-                        releaseType == LauncherPrefs.ReleaseType.Alpha
-                            // ReSharper disable once PossibleNullReferenceException
-                            ? new Uri(ciRelease.Download)
-                            // ReSharper disable once PossibleNullReferenceException
-                            : new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
+                    await wc.DownloadFileTaskAsync(new Uri(githubrelease.Assets.First(x => x.ContentType == "application/x-zip-compressed").BrowserDownloadUrl), zipPath);
                 }
                 catch (WebException)
                 {
