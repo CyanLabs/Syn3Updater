@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CyanLabs")]
 [assembly: AssemblyProduct("Syn3Updater")]
-[assembly: AssemblyCopyright("Copyright © CyanLabs 2021")]
+[assembly: AssemblyCopyright("Copyright © CyanLabs 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

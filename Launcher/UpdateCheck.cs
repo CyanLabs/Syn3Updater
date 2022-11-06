@@ -226,7 +226,7 @@ namespace Cyanlabs.Launcher
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
 
-            Vm.Message = $"Downloaded {e.BytesReceived / 1000000}  MB of {e.TotalBytesToReceive / 1000000} MB.";
+            Vm.Message = $"Downloaded {e.BytesReceived / 1000000}MB of {e.TotalBytesToReceive / 1000000}MB";
 
             Vm.Percentage = 100 - (int) percentage;
         }

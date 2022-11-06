@@ -6,19 +6,24 @@
                          xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
                          xmlns:launcher="clr-namespace:Cyanlabs.Launcher"
                          mc:Ignorable="d"
-                         Title="" Height="300" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+                         Title="" Height="430" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
                          WindowStyle="None" Focusable="True"
                          Background="#40000000" Loaded="AcrylicWindow_Loaded" fluentWpf:AcrylicWindow.Enabled="True"
-                         AcrylicWindowStyle="NoIcon">
+                         AcrylicWindowStyle="None">
     <Window.DataContext>
         <launcher:UpgradingViewModel />
     </Window.DataContext>
     <Grid>
-        <TextBlock Cursor="Wait" x:Name="LoadingText" HorizontalAlignment="Center" Foreground="White"
-                   VerticalAlignment="Center" Margin="0,0,0,-90" Text="{Binding Message}" />
-        <ProgressBar x:Name="ProgressBar" Width="350" Height="10" Foreground="Black"
+        <DockPanel Dock="Top">
+            <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Source="Splash.png" />
+            </Viewbox>
+        </DockPanel>
+        <TextBlock Cursor="Wait" x:Name="LoadingText" HorizontalAlignment="Left" Foreground="Black"
+                   VerticalAlignment="Top" Margin="418,222,0,0" Text="{Binding Message}" Width="360" TextAlignment="Center" FontSize="17" FontWeight="Bold" />
+        <ProgressBar x:Name="ProgressBar" Foreground="White"
                      Background="{x:Static fluentWpf:AccentColors.ImmersiveSystemAccentBrush}" BorderBrush="{x:Null}"
-                     Margin="0,0,0,-150" Value="{Binding Percentage}" RenderTransformOrigin="0.5,0.5">
+                     Margin="431,246,35,166" Value="{Binding Percentage}" RenderTransformOrigin="0.5,0.5">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -28,10 +33,5 @@
                 </TransformGroup>
             </ProgressBar.RenderTransform>
         </ProgressBar>
-        <DockPanel Dock="Top" Margin="0,-80,0,0">
-            <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="400">
-                <Image Source="Syn3Updater Logo Cropped.png" OpacityMask="Black" />
-            </Viewbox>
-        </DockPanel>
     </Grid>
 </fluentWpf:AcrylicWindow>

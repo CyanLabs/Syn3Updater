@@ -20,8 +20,11 @@
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<Resource Include="Syn3Updater Logo Cropped.png" />
+	  <None Remove="Splash.png" />
+	</ItemGroup>
+	<ItemGroup>
 		<Resource Include="cyanlabs.ico" />
+		<Resource Include="Splash.png" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FluentWPF" Version="0.9.0" />
