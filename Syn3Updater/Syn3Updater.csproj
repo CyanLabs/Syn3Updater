@@ -42,7 +42,7 @@
 		<None Remove="Models\**" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="FluentWPF" Version="0.9.0" />
+		<PackageReference Include="FluentWPF" Version="0.10.2" />
 		<PackageReference Include="GraphQL.Client" Version="3.2.4" />
 		<PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="3.2.4" />
 		<PackageReference Include="HtmlToXamlConverter" Version="1.0.5727.24510">

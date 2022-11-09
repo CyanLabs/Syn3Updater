@@ -27,7 +27,7 @@
 		<Resource Include="Splash.png" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="FluentWPF" Version="0.9.0" />
+		<PackageReference Include="FluentWPF" Version="0.10.2" />
 		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.326103" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="Octokit" Version="0.50.0" />
