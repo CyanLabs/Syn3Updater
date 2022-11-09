@@ -41,7 +41,6 @@ namespace Cyanlabs.Launcher
             // Sets up Octokit API with a UserAgent and assigns latest to a new Release();
             Release githubrelease = null;
             GitHubClient githubclient = new(new ProductHeaderValue("CyanLabs-Launcher"));
-            CIRelease ciRelease = null;
             // Attempt to get latest GitHub release
             try
             {
@@ -78,14 +77,12 @@ namespace Cyanlabs.Launcher
                 return false;
             }
 
-            string version = releaseType == LauncherPrefs.ReleaseType.Alpha ? ciRelease?.Number : githubrelease?.TagName;
+            string version = githubrelease?.TagName;
             // Use GitHub release tagname as version and parse in to an integer
-
-            bool norelease = ciRelease == null && githubrelease == null;
             
             if (!Core.LauncherPrefs.ReleaseInstalled.Contains(".")) Core.LauncherPrefs.ReleaseInstalled = "0.0.0.0";
             // Current version is less than new version OR current branch is different to new branch OR Syn3Updater.exe is missing
-            if (version != null && norelease != true && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) != Version.Parse(version) ||
+            if (version != null && githubrelease != null && Version.Parse(Core.LauncherPrefs.ReleaseInstalled) != Version.Parse(version) ||
                 Core.LauncherPrefs.ReleaseTypeInstalled != releaseType || !File.Exists(destFolder + "\\Syn3Updater.exe"))
             {
                 Vm.Message = "Installing " + releaseType + " release " + version;
