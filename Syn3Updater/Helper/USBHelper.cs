@@ -468,6 +468,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             AppMan.App.DriveLetter = driveLetter;
             AppMan.App.Action = action;
             AppMan.App.SelectedRelease = "Interrogator Log Utility";
+            AppMan.App.DriveNumber = selectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
 
             int? currentversion = AppMan.App.Settings.CurrentVersion;
             try
