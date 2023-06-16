@@ -363,3 +363,12 @@ references/ModernWpf.Controls.dll
 Syn3Updater/PullLanguages.ps1
 /Syn3Updater/Properties/launchSettings.json
 Syn3Updater/Models/APISecretModel.cs
+
+refs/
+hooks/
+HEAD
+FETCH_HEAD
+config
+description
+info/exclude
+objects/

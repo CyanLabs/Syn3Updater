@@ -25,7 +25,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const string Syn3UpdaterGraphQl = "https://syn3updater.cyanlabs.net/graphql";
 
         public const string APIBase = "https://api.cyanlabs.net/";
-        private const string AsBuiltBase = "https://asbuilt.cyanlabs.net/";
+        private const string AsBuiltBase = "https://cyanlabs.net/fhub/sync3/apim-asbuilt-decoder/";
 
         public const string CrashLogUrl = "https://cyanlabs.net/syn3-updater-crash-log/?uuid=";
         public const string LogUrl = "https://cyanlabs.net/syn3-updater-log/?uuid=";

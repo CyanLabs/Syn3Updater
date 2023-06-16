@@ -328,32 +328,37 @@ namespace Cyanlabs.Syn3Updater.Helper
                 }
 
                 if (AppMan.App.Settings.My20v2 != true) AppMan.App.Settings.My20v2 = false;
-                string apimsize = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
-                    .Select(x => x.Total)
-                    .Single();
-                _apimDetails.PartNumber = apimmodel;
-                if (double.TryParse(apimsize?.Remove(apimsize.Length - 1), NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
+                string apimsize = "Unknown", apimfree = "Unknown";
+                if (interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/").Any())
                 {
-                    if (apimsizeint >= 0 && apimsizeint <= 8)
+                    apimsize = interrogatorLog.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/").Select(x => x.Total).Single();
+
+                    _apimDetails.PartNumber = apimmodel;
+                    if (double.TryParse(apimsize.Remove(apimsize.Length - 1), NumberStyles.Any, CultureInfo.InvariantCulture, out double apimsizeint))
                     {
-                        _apimDetails.Nav = false;
-                        _apimDetails.Size = 8;
+                        if (apimsizeint >= 0 && apimsizeint <= 8)
+                        {
+                            _apimDetails.Nav = false;
+                            _apimDetails.Size = 8;
+                        }
+                        else if (apimsizeint >= 9 && apimsizeint <= 16)
+                        {
+                            _apimDetails.Nav = false;
+                            _apimDetails.Size = 16;
+                        }
+                        else if (apimsizeint >= 17 && apimsizeint <= 32)
+                        {
+                            _apimDetails.Nav = true;
+                            _apimDetails.Size = 32;
+                        }
+                        else if (apimsizeint >= 33 && apimsizeint <= 64)
+                        {
+                            _apimDetails.Nav = true;
+                            _apimDetails.Size = 64;
+                        }
                     }
-                    else if (apimsizeint >= 9 && apimsizeint <= 16)
-                    {
-                        _apimDetails.Nav = false;
-                        _apimDetails.Size = 16;
-                    }
-                    else if (apimsizeint >= 17 && apimsizeint <= 32)
-                    {
-                        _apimDetails.Nav = true;
-                        _apimDetails.Size = 32;
-                    }
-                    else if (apimsizeint >= 33 && apimsizeint <= 64)
-                    {
-                        _apimDetails.Nav = true;
-                        _apimDetails.Size = 64;
-                    }
+
+                    apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/").Select(x => x.Available).Single();
                 }
 
                 if (_apimDetails.Nav)
@@ -363,8 +368,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMSize")}: {_apimDetails.Size}GB {Environment.NewLine}";
 
-                string apimfree = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.D2P1PartitionHealth.Where(x => x.Type == "/fs/images/")
-                    .Select(x => x.Available).Single();
+                
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMFree")}: {apimfree} {Environment.NewLine}";
 
                 LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
