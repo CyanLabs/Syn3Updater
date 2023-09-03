@@ -54,7 +54,7 @@
                 </Grid.RowDefinitions>
                 <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                 <TextBlock Margin="5,0,0,5" Style="{StaticResource TitleTextBlockStyle}"
-                           Text="{Binding Language, ConverterParameter=Home.SelectUSBDrive, Converter={StaticResource LocConverter}}" />
+                           Text="{Binding Language, ConverterParameter=Utility.SelectUSBDrive, Converter={StaticResource LocConverter}}" />
 
                 <Grid Grid.Row="1" Grid.Column="0">
                     <Grid.ColumnDefinitions>
@@ -303,6 +303,24 @@
                         IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding DowngradeUSB}"
                         Margin="15,10" Padding="5,15" Foreground="White"
                         Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}" />
+            </Grid>
+
+            <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center" Margin="0">
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+                    <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
+                               Text="{Binding Language, ConverterParameter=Utility.RWDataCleanerTitle, Converter={StaticResource LocConverter}}" />
+                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
+                               Text="{Binding Language, ConverterParameter=Utility.RWDataCleanerDesc, Converter={StaticResource LocConverter}}" />
+                </StackPanel>
+                <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right"
+                        IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding RWDataCleanerUSB}"
+                        Margin="15,10" Padding="5,15" Foreground="White"
+                        Content="{Binding Language, ConverterParameter=Utility.RWDataCleanerButton, Converter={StaticResource LocConverter}}" />
             </Grid>
         </StackPanel>
     </ScrollViewer>

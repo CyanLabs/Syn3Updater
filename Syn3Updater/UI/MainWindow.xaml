@@ -12,7 +12,7 @@
     x:Class="Cyanlabs.Syn3Updater.UI.MainWindow"
     mc:Ignorable="d"
     Title="{Binding AppTitle}"
-    Height="640"
+    Height="675"
     Width="800"
     MinHeight="640"
     MinWidth="800"
