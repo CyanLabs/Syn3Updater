@@ -471,6 +471,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 case "gracenotesremoval":
                 case "voiceshrinker":
                 case "downgrade":
+                case "rwdatacleaner":
                     CreateAutoInstall();
                     break;
             }
@@ -550,7 +551,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     AppMan.App.FireHomeTabEvent();
                 }
             }
-            else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade")
+            else if (_action == "gracenotesremoval" || _action == "voiceshrinker" || _action == "downgrade" || _action == "rwdatacleaner")
             {
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowDialog(LM.GetValue("MessageBox.GenericUtilityComplete"), LM.GetValue("String.Notice"), LM.GetValue("String.OK")));
                 AppMan.App.FireUtilityTabEvent();
