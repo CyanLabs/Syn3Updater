@@ -513,6 +513,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     await SystemHelper.OpenWebPage($"https://cyanlabs.net/docs/syn3updater/installmodes/{InstallMode}");
                 }
 
+                AppMan.App.ClearSelections = true;
                 AppMan.App.FireHomeTabEvent();
             }
             else if (_action == "logutility")
@@ -713,11 +714,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 if (item.Source == "naviextras") continue;
                 if (InstallMode == "reformat")
                 {
-                    if (item.Md5 == Api.ReformatTool.Md5) continue;
+                    if (item.Md5 == Api.ReformatTool.Md5 || item.Md5 == Api.RWDataCleaner.Md5) continue;
                 }
                 else if (InstallMode == "downgrade")
                 {
-                    if (item.Md5 == Api.ReformatTool.Md5 || item.Md5 == Api.DowngradeAppIvsu.Md5 && _selectedRelease != "Sync 3.3.19052" || item.Md5 == Api.DowngradeToolIvsu.Md5)
+                    if (item.Md5 == Api.ReformatTool.Md5 || item.Md5 == Api.DowngradeAppIvsu.Md5 && _selectedRelease != "Sync 3.3.19052" || item.Md5 == Api.DowngradeToolIvsu.Md5 || item.Md5 == Api.RWDataCleaner.Md5)
                         continue;
                 }
 
@@ -744,10 +745,13 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             if (InstallMode == "downgrade")
             {
                 autoinstalllst.Append(
-                    $@"Item1 = TOOL - {Api.DowngradeToolIvsu.FileName}\rOpen1 = SyncMyRide\{Api.DowngradeToolIvsu.FileName}\r").Replace(@"\r",
+                    $@"Item1 = RWDataCleaner TOOL - {Api.RWDataCleaner.FileName}\rOpen1 = SyncMyRide\{Api.RWDataCleaner.FileName}\r").Replace(@"\r",
                     Environment.NewLine);
                 autoinstalllst.Append(
-                    $@"Item2 = APP - {Api.DowngradeAppIvsu.FileName}\rOpen2 = SyncMyRide\{Api.DowngradeAppIvsu.FileName}\r").Replace(@"\r",
+                    $@"Item2 = TOOL - {Api.DowngradeToolIvsu.FileName}\rOpen2 = SyncMyRide\{Api.DowngradeToolIvsu.FileName}\r").Replace(@"\r",
+                    Environment.NewLine);
+                autoinstalllst.Append(
+                    $@"Item3 = APP - {Api.DowngradeAppIvsu.FileName}\rOpen3 = SyncMyRide\{Api.DowngradeAppIvsu.FileName}\r").Replace(@"\r",
                     Environment.NewLine);
                 autoinstalllst.Append($@"Options = AutoInstall{Environment.NewLine}[SYNCGen3.0_ALL]{Environment.NewLine}");
                 autoinstalllst.Append($@"Item1 = REFORMAT TOOL - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r")
@@ -756,7 +760,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             }
             else if (InstallMode == "reformat")
             {
-                autoinstalllst.Append($@"Item1 = REFORMAT TOOL  - {Api.ReformatTool.FileName}\rOpen1 = SyncMyRide\{Api.ReformatTool.FileName}\r")
+                autoinstalllst.Append($@"Item1 = RWDataCleaner TOOL - {Api.RWDataCleaner.FileName}\rOpen1 = SyncMyRide\{Api.RWDataCleaner.FileName}\r")
+                    .Replace(@"\r", Environment.NewLine);
+                autoinstalllst.Append($@"Item2 = REFORMAT TOOL  - {Api.ReformatTool.FileName}\rOpen2 = SyncMyRide\{Api.ReformatTool.FileName}\r")
                     .Replace(@"\r", Environment.NewLine);
                 autoinstalllst.Append("Options = AutoInstall");
             }

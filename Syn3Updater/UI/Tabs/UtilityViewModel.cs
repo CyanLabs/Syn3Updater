@@ -41,6 +41,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private AsyncCommand _downgradeUSB;
         public AsyncCommand DowngradeUSB => _downgradeUSB ??= new AsyncCommand(DowngradeAction);
 
+        private AsyncCommand _rwdatacleanerUSB;
+        public AsyncCommand RWDataCleanerUSB => _rwdatacleanerUSB ??= new AsyncCommand(RWDataCleanerAction);
+
         private ActionCommand _troubleshootingDetails;
         public ActionCommand TroubleshootingDetails => _troubleshootingDetails ??= new ActionCommand(TroubleshootingDetailsAction);
 
@@ -317,6 +320,34 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;
             AppMan.Logger.Info("Starting process (Enforced Downgrade");
+            AppMan.App.FireDownloadsTabEvent();
+            UtiltyButtonStatus = true;
+        }
+
+        private async Task RWDataCleanerAction()
+        {
+            UtiltyButtonStatus = false;
+            //Reset ApplicationManager variables
+            AppMan.App.Ivsus.Clear();
+            AppMan.App.DriveLetter = DriveLetter;
+            AppMan.App.Action = "rwdatacleaner";
+            AppMan.App.SelectedRelease = "RWData Cleaner";
+            Api.RWDataCleaner = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.RWDataCleaner);
+            try
+            {
+                AppMan.App.Ivsus.Add(Api.RWDataCleaner);
+            }
+            catch (TaskCanceledException e)
+            {
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                return;
+            }
+
+            AppMan.App.InstallMode = "autoinstall";
+            if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.RWDataCleaner == null) return;
+
+            AppMan.App.IsDownloading = true;
+            AppMan.Logger.Info("Starting process (RWData Cleaner");
             AppMan.App.FireDownloadsTabEvent();
             UtiltyButtonStatus = true;
         }

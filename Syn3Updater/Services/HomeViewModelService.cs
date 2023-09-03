@@ -91,6 +91,10 @@ namespace Cyanlabs.Syn3Updater.Services
                 AppMan.App.Ivsus.Add(Api.ReformatTool);
             }
 
+            // Add RWDataCleaner
+            Api.RWDataCleaner = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.RWDataCleaner);
+            AppMan.App.Ivsus.Add(Api.RWDataCleaner);
+
             AppMan.App.DriveLetter = driveLetter;
             foreach (SModel.Ivsu item in ivsuList)
                 if (item.Selected)
