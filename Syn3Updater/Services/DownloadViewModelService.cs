@@ -69,8 +69,15 @@ namespace Cyanlabs.Syn3Updater.Services
             else
             {
                 autoinstalllst.Append($@"[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
-                autoinstalllst.Append($@"Item1 = RWDataCleaner TOOL - {Api.RWDataCleaner.FileName}\rOpen1 = SyncMyRide\{Api.RWDataCleaner.FileName}\r").Replace(@"\r", Environment.NewLine);
-                for (int i = 1; i < ivsuList.Count; i++)
+
+                int itemstart = 0;
+                if (AppMan.App.Action != "logutility" && AppMan.App.Action != "logutilitymy20" && AppMan.App.Action != "gracenotesremoval" && AppMan.App.Action != "voiceshrinker" && AppMan.App.Action != "downgrade")
+                {
+                    autoinstalllst.Append($@"Item1 = RWDataCleaner TOOL - {Api.RWDataCleaner.FileName}\rOpen1 = SyncMyRide\{Api.RWDataCleaner.FileName}\r").Replace(@"\r", Environment.NewLine);
+                    itemstart = 1;
+                } 
+
+                for (int i = itemstart; i < ivsuList.Count; i++)
                 {
                     SModel.Ivsu item = ivsuList[i];
                     autoinstalllst.Append($@"Item{i + 1} = {item.Type} - {item.FileName}\rOpen{i + 1} = SyncMyRide\{item.FileName}\r").Replace(@"\r", Environment.NewLine);
