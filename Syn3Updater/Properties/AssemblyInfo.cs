@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CyanLabs")]
 [assembly: AssemblyProduct("Syn3Updater")]
-[assembly: AssemblyCopyright("Copyright © CyanLabs 2022")]
+[assembly: AssemblyCopyright("Copyright © CyanLabs 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -46,5 +46,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build a nd Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.12.1.0")]
-[assembly: AssemblyFileVersion("2.12.1.0")]
+[assembly: AssemblyVersion("2.12.2.0")]
+[assembly: AssemblyFileVersion("2.12.2.0")]
