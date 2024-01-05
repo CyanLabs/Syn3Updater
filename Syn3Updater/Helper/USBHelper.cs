@@ -295,6 +295,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             try
             {
                 AppMan.App.Cancelled = false;
+                _apimDetails = new();
                 XmlDocument doc = new();
                 //TODO: swtich to Async once code moves to dotnet 5+ 
                 string xml = FileHelper.RemoveInvalidXmlChars(File.ReadAllText(dialog.FileName));
