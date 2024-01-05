@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Cyanlabs.Syn3Updater.Model
 {
@@ -50,7 +52,8 @@ namespace Cyanlabs.Syn3Updater.Model
 
             [JsonProperty("@RAM")] public long Ram { get; set; }
             [JsonProperty("@vmcuVersion")] public string VmcuVersion { get; set; }
-            [JsonProperty("d2p1:PartitionHealth")] public D2P1PartitionHealth[] D2P1PartitionHealth { get; set; }
+
+            [JsonProperty("d2p1:PartitionHealth")][JsonConverter(typeof(SingleOrArrayConverter<D2P1PartitionHealth>))] public List<D2P1PartitionHealth> D2P1PartitionHealth { get; set; }
             [JsonProperty("d2p1:InstallationLog")] public object D2P1InstallationLog { get; set; }
             [JsonProperty("d2p1:SyncData")] public string D2P1SData { get; set; }
         }
@@ -120,6 +123,35 @@ namespace Cyanlabs.Syn3Updater.Model
         {
             [JsonProperty("@version")] public string Version { get; set; }
             [JsonProperty("@encoding")] public string Encoding { get; set; }
+        }
+    }
+
+    public class SingleOrArrayConverter<T> : JsonConverter
+    {
+        public override bool CanConvert(Type objecType)
+        {
+            return (objecType == typeof(List<T>));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objecType, object existingValue,
+            JsonSerializer serializer)
+        {
+            JToken token = JToken.Load(reader);
+            if (token.Type == JTokenType.Array)
+            {
+                return token.ToObject<List<T>>();
+            }
+            return new List<T> { token.ToObject<T>() };
+        }
+
+        public override bool CanWrite
+        {
+            get { return false; }
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
         }
     }
 }
