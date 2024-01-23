@@ -323,7 +323,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                 GraphQLResponse<Api.My20ModelsRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.My20ModelsRoot>(GraphQlRequests.GetMy20Models());
                 Api.My20ModelsRoot output = graphQlResponse.Data;
                 
-                foreach (Api.My20Models unused in output.My20Models.Where(my20 => apimmodel.Contains(my20.Model)))
+                foreach (Api.My20Models unused in output.My20Models.Where(my20 => apimmodel.StartsWith(my20.Model)))
                 {
                     AppMan.App.Settings.My20v2 = true;
                 }
