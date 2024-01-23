@@ -2,13 +2,17 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Threading;
 using AsyncAwaitBestPractices.MVVM;
 using Cyanlabs.Syn3Updater.Helper;
 using Cyanlabs.Syn3Updater.Model;
+using GraphQL;
 using Ookii.Dialogs.Wpf;
 
 namespace Cyanlabs.Syn3Updater.UI.Tabs
@@ -49,6 +53,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private ActionCommand _uploadLog;
         public ActionCommand UploadLog => _uploadLog ??= new ActionCommand(UploadLogAction);
+
+        private AsyncCommand<string> _my20Checker;
+        public AsyncCommand<string> MY20Checker => _my20Checker ??= new AsyncCommand<string>(MY20CheckerAction);
 
         #endregion
 
@@ -383,6 +390,33 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private void CopyAsBuiltAction()
         {
             Clipboard.SetText($"{LogXmlDetails1}{Environment.NewLine}{Environment.NewLine}{LogXmlDetails2}{Environment.NewLine}{LogXmlDetails3}");
+        }
+
+        private async Task MY20CheckerAction(string apimmodel)
+        {
+            if (!Regex.IsMatch(apimmodel, "[a-zA-Z0-9]{4}-14G371-[a-zA-Z0-9]{2,3}"))
+            {
+                await UIHelper.ShowErrorDialog("Invalid APIM Model Specified" + Environment.NewLine + "Please enter the ####-14G371-### model number");
+                return;
+            }
+
+            GraphQLResponse<Api.My20ModelsRoot> graphQlResponse = await AppMan.App.GraphQlClient.SendQueryAsync<Api.My20ModelsRoot>(GraphQlRequests.GetMy20Models());
+            Api.My20ModelsRoot output = graphQlResponse.Data;
+
+            string matches = "";
+            foreach (Api.My20Models unused in output.My20Models.Where(my20 => apimmodel.StartsWith(my20.Model)))
+            {
+                matches += unused.Model + Environment.NewLine;
+            }
+
+            if (matches != "")
+            {
+                await UIHelper.ShowDialog(apimmodel + " has been detected as MY20" + Environment.NewLine + Environment.NewLine + "This model matches the following MY20 model checks: " + Environment.NewLine +  matches, "MY20 Detection", "OK", bg: Brushes.DarkGoldenrod);
+            }
+            else
+            {
+                await UIHelper.ShowDialog(apimmodel + " has been detected as NOT MY20" + Environment.NewLine + "If this is a newer APIM this may not be accurate!" + Environment.NewLine + Environment.NewLine + "Ask for assistance on our forum if unsure.", "MY20 Detection", "OK");
+            }
         }
         #endregion
     }

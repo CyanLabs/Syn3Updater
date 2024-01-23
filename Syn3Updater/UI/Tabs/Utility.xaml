@@ -21,6 +21,7 @@
     </UserControl.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
+
             <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -40,6 +41,29 @@
                         Text="{Binding Language, ConverterParameter=Utility.TroubleshootMoreDetails, Converter={StaticResource LocConverter}}"
                         TextWrapping="Wrap" TextAlignment="Center" />
                 </Button>
+            </Grid>
+
+            <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center" Margin="0">
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+
+                    <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
+       Text="Manually check if APIM model is MY20" />
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
+       Text="Enter Model Number" />
+                        <TextBox Width="200" Text="" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"
+                     VerticalAlignment="Center" Margin="0,0,5,0" x:Name="tbMy20Model" />
+                    </StackPanel>
+                </StackPanel>
+                <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right"
+Cursor="Hand" Command="{Binding MY20Checker}" CommandParameter="{Binding Text, ElementName=tbMy20Model}"
+Margin="15,10" Padding="5,15" Foreground="White"
+Content="Check Model" />
             </Grid>
 
             <Grid Background="#40000000" Margin="10,5">
