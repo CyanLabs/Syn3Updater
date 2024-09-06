@@ -441,8 +441,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                     LM.GetValue("String.Yes")) == ContentDialogResult.None)
                                 return;
                     }
-                    
-                    if (AppMan.App.DownloadPath.Contains(destination))
+                    if ((AppMan.App.DownloadPath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar).Contains(destination.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar))
                     {
                         await UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.CancelDownloadIsFolder"));
                         ReloadSettings();
