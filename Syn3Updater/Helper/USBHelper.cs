@@ -285,6 +285,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             string LogXmlDetails = "";
             string LogXmlDetails2 = "";
             string LogXmlDetails3 = "";
+            string convertedsversion = "";
             VistaFileDialog dialog = new VistaOpenFileDialog { Filter = "Interrogator Log XML Files|*.xml" };
             if (!dialog.ShowDialog().GetValueOrDefault())
             {
@@ -307,8 +308,7 @@ namespace Cyanlabs.Syn3Updater.Helper
 
                 Interrogator.D2P1Did[] d2P1Did = interrogatorLog?.POtaModuleSnapShot.PNode.D2P1EcuAcronym.D2P1State.D2P1Gateway.D2P1Did;
                 string sappname = d2P1Did!.Where(x => x.DidType == "Embedded Consumer Operating System Part Number").Select(x => x.D2P1Response).Single();
-                LogXmlDetails += $"{LM.GetValue("Home.Version")} {sappname}{Environment.NewLine}";
-
+                
                 string apimmodel = d2P1Did.Where(x => x.DidType == "ECU Delivery Assembly Number").Select(x => x.D2P1Response).Single();
                 if (apimmodel == "" && AppMan.App.Action == "logutilitymy20")
                 {
@@ -372,8 +372,6 @@ namespace Cyanlabs.Syn3Updater.Helper
                 
                 LogXmlDetails += $"{LM.GetValue("Utility.APIMFree")}: {apimfree} {Environment.NewLine}";
 
-                LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
-
                 LogXmlDetails2 += $"Partition Type = Free / Total{Environment.NewLine}";
                 if (interrogatorLog != null)
                 {
@@ -401,7 +399,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         var graphQlResponse2 = await AppMan.App.GraphQlClient.SendQueryAsync<Api.IvsuRoot>(GraphQlRequests.IvsuVersionLookup(sappname));
                         Api.IvsuRoot sversion = graphQlResponse2.Data;
    
-                        string convertedsversion = sversion.Ivsus[0].Version;
+                        convertedsversion = sversion.Ivsus[0].Version;
                         if (AppMan.App.Action == "logutilitymy20")
                         {
                             AppMan.App.Settings.CurrentVersion = Convert.ToInt32(sversion.Ivsus[0].Version.Replace(".", ""));
@@ -416,11 +414,16 @@ namespace Cyanlabs.Syn3Updater.Helper
                                 AppMan.App.SVersion = convertedsversion;
                             }
                         }
+                        LogXmlDetails += $"{LM.GetValue("Home.Version")} {convertedsversion} ({sappname}){Environment.NewLine}{Environment.NewLine}";
+
+                        LogXmlDetails += interrogatorLog?.POtaModuleSnapShot.PNode.D2P1AdditionalAttributes.LogGeneratedDateTime;
                     }
                     catch (Exception)
                     {
                         //likely no internet connection ignore
                     }
+
+                    if (_apimDetails.Size == 0) throw new AssemblyVersionIncompatible();
 
                     AsBuilt.DirectConfiguration asbult = new()
                     {
@@ -461,6 +464,12 @@ namespace Cyanlabs.Syn3Updater.Helper
                 AppMan.App.Cancelled = true;
                 AppMan.App.InvalidLog = true;
                 await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.LogUtilityNoModelFound")));
+            }
+            catch (AssemblyVersionIncompatible)
+            {
+                AppMan.App.Cancelled = true;
+                AppMan.App.InvalidLog = true;
+                await Application.Current.Dispatcher.BeginInvoke(() => UIHelper.ShowErrorDialog(string.Format(LM.GetValue("MessageBox.LogUtilityIncompatibleVersion"), convertedsversion)));
             }
 
             return new[] { LogXmlDetails, LogXmlDetails2, LogXmlDetails3 };

@@ -176,5 +176,6 @@
   "Utility.RWDataCleanerTitle": "Crear USB para limpiar RWData",
   "Utility.RWDataCleanerDesc": "Use esta función para crear un USB para limpiar manualmente la partición RWData en su unidad",
   "Utility.RWDataCleanerButton": "Preparar USB",
-  "Utility.SelectUSBDrive": "Seleccione una unidad USB"
+  "Utility.SelectUSBDrive": "Seleccione una unidad USB",
+  "MessageBox.LogUtilityIncompatibleVersion": "El archivo XML que especificó no contiene el resultado esperado\n\nSyn3 Updater ha determinado que está en {0} y puede estar usando capas\n\nSyn3 Updater no puede determinar la configuración de su APIM\n\nPor favor solicite asistencia en nuestro foro en https://community.cyanlabs.net"
 }

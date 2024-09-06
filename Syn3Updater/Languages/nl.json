@@ -176,5 +176,6 @@
   "Utility.RWDataCleanerTitle": "Create RW Data Cleaner USB",
   "Utility.RWDataCleanerDesc": "Use this function to create a USB to manually cleanup RWData from your unit.",
   "Utility.RWDataCleanerButton": "Prepare USB",
-  "Utility.SelectUSBDrive": "Select A USB Drive"
+  "Utility.SelectUSBDrive": "Select A USB Drive",
+  "MessageBox.LogUtilityIncompatibleVersion": "Het XML-bestand dat U heeft geselecteerd bevat niet de verwachte uitvoer\n\nSyn3 Updater heeft vastgesteld dat U op {0} zit en gebruikt mogelijk overlays\n\nSyn3 Updater kan de configuratie van uw APIM niet bepalen\n\nVraag om hulp op ons forum op https://community.cyanlabs.net/"
 }

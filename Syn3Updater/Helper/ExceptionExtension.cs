@@ -46,4 +46,21 @@ namespace Cyanlabs.Syn3Updater.Helper
         {
         }
     }
+
+    public class AssemblyVersionIncompatible : Exception
+    {
+        public AssemblyVersionIncompatible()
+        {
+        }
+
+        public AssemblyVersionIncompatible(string message)
+            : base(message)
+        {
+        }
+
+        public AssemblyVersionIncompatible(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+    }
 }
