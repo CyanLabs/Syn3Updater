@@ -71,7 +71,7 @@ namespace Cyanlabs.Syn3Updater.Services
                 autoinstalllst.Append($@"[SYNCGen3.0_ALL_PRODUCT]{Environment.NewLine}");
 
                 int currentitem = 1;
-                if (AppMan.App.Action != "logutility" && AppMan.App.Action != "logutilitymy20" && AppMan.App.Action != "gracenotesremoval" && AppMan.App.Action != "voiceshrinker" && AppMan.App.Action != "downgrade")
+                if (AppMan.App.Action != "logutility" && AppMan.App.Action != "logutilitymy20" && AppMan.App.Action != "gracenotesremoval" && AppMan.App.Action != "voiceshrinker" && AppMan.App.Action != "downgrade" && AppMan.App.Action != "upgrade22")
                 {
                     autoinstalllst.Append($@"Item{currentitem} = RWDataCleaner TOOL - {Api.RWDataCleaner.FileName}\rOpen{currentitem}= SyncMyRide\{Api.RWDataCleaner.FileName}\r").Replace(@"\r", Environment.NewLine);
                     currentitem = 2;

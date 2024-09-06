@@ -472,6 +472,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                 case "voiceshrinker":
                 case "downgrade":
                 case "rwdatacleaner":
+                case "upgrade22":
                     CreateAutoInstall();
                     break;
             }

@@ -45,6 +45,9 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         private AsyncCommand _downgradeUSB;
         public AsyncCommand DowngradeUSB => _downgradeUSB ??= new AsyncCommand(DowngradeAction);
 
+        private AsyncCommand _upgrade22USB;
+        public AsyncCommand Upgrade22USB => _upgrade22USB ??= new AsyncCommand(Upgrade22Action);
+
         private AsyncCommand _rwdatacleanerUSB;
         public AsyncCommand RWDataCleanerUSB => _rwdatacleanerUSB ??= new AsyncCommand(RWDataCleanerAction);
 
@@ -327,6 +330,35 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
             AppMan.App.IsDownloading = true;
             AppMan.Logger.Info("Starting process (Enforced Downgrade");
+            AppMan.App.FireDownloadsTabEvent();
+            UtiltyButtonStatus = true;
+        }
+
+        private async Task Upgrade22Action()
+        {
+            UtiltyButtonStatus = false;
+            //Reset ApplicationManager variables
+            AppMan.App.Ivsus.Clear();
+            AppMan.App.DriveLetter = DriveLetter;
+            AppMan.App.Action = "upgrade22";
+            AppMan.App.SelectedRelease = "Upgrade to 2.2";
+            Api.Upgrade22App = await ApiHelper.GetSpecialIvsu(Api.SpecialPackages.Upgrade22App);
+            try
+            {
+                AppMan.App.Ivsus.Add(Api.Upgrade22App);
+            }
+            catch (TaskCanceledException e)
+            {
+                await UIHelper.ShowErrorDialog(e.GetFullMessage());
+                return;
+            }
+
+            AppMan.App.InstallMode = "autoinstall";
+            if (await SanityCheckHelper.CancelDownloadCheck(SelectedDrive) || Api.Upgrade22App == null) return;
+
+            //ApplicationManager.Instance.DriveNumber = SelectedDrive.Path.Replace("Win32_DiskDrive.DeviceID=\"\\\\\\\\.\\\\PHYSICALDRIVE", "").Replace("\"", "");
+            AppMan.App.IsDownloading = true;
+            AppMan.Logger.Info("Starting process (Upgrade to 2.2");
             AppMan.App.FireDownloadsTabEvent();
             UtiltyButtonStatus = true;
         }

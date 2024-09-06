@@ -337,6 +337,24 @@ Content="Check Model" />
                 <StackPanel VerticalAlignment="Center" Margin="0">
                     <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
+                   Text="Create 2.2 Upgrade USB" />
+                    <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
+                   Text="Use this function if you are on a version below 2.2 and are having issues going directly to 3.4" />
+                </StackPanel>
+                <Button Grid.Column="1" Style="{DynamicResource AccentButtonStyle}" HorizontalAlignment="Right"
+            IsEnabled="{Binding UtiltyButtonStatus}" Cursor="Hand" Command="{Binding Upgrade22USB}"
+            Margin="15,10" Padding="5,15" Foreground="White"
+            Content="{Binding Language, ConverterParameter=Utility.GracenotesButton, Converter={StaticResource LocConverter}}" />
+            </Grid>
+
+            <Grid Background="#40000000" Margin="10,5" IsEnabled="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center" Margin="0">
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
+                    <TextBlock Margin="5" Style="{StaticResource TitleTextBlockStyle}"
                                Text="{Binding Language, ConverterParameter=Utility.RWDataCleanerTitle, Converter={StaticResource LocConverter}}" />
                     <TextBlock Margin="10,5" TextWrapping="WrapWithOverflow" HorizontalAlignment="Left"
                                Text="{Binding Language, ConverterParameter=Utility.RWDataCleanerDesc, Converter={StaticResource LocConverter}}" />

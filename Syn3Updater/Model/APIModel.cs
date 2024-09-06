@@ -36,7 +36,7 @@ namespace Cyanlabs.Syn3Updater.Model
         public const int BlacklistedVersion = 3419274;
         public const int ReformatVersion = 3200000;
 
-        public static SModel.Ivsu ReformatTool, DowngradeAppIvsu, DowngradeToolIvsu, InterrogatorTool, GracenotesRemoval, SmallVoicePackage, RWDataCleaner;
+        public static SModel.Ivsu ReformatTool, DowngradeAppIvsu, DowngradeToolIvsu, InterrogatorTool, GracenotesRemoval, SmallVoicePackage, RWDataCleaner, Upgrade22App;
 
         public const string AsBuiltPost = APIBase + "Syn3Updater/apim-asbuilt-decode/";
         public const string AsBuiltOutput = AsBuiltBase + "?filename=";
@@ -53,7 +53,8 @@ namespace Cyanlabs.Syn3Updater.Model
                 GraceNotesRemoval = "gracenotesremoval",
                 SmallVoice = "smallvoice",
                 Reformat = "reformat",
-                RWDataCleaner = "rwdatacleaner";
+                RWDataCleaner = "rwdatacleaner",
+                Upgrade22App = "upgrade22";
         }
         #endregion
         
