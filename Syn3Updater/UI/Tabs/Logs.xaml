@@ -4,12 +4,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="http://schemas.modernwpf.com/2019"
+    xmlns:converter="clr-namespace:Cyanlabs.Syn3Updater.Converter"
     xmlns:tabs="clr-namespace:Cyanlabs.Syn3Updater.UI.Tabs"
     x:Class="Cyanlabs.Syn3Updater.UI.Tabs.Logs"
     mc:Ignorable="d"
     d:DesignHeight="610" d:DesignWidth="750" FontSize="12"
     Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" Name="LogsTab"
     IsVisibleChanged="Logs_OnIsVisibleChanged">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
+        <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
+        <converter:InvertedStringMatchToVisibilityConverter x:Key="InvertedStringMatchToVisibilityConverter" />
+    </UserControl.Resources>
     <UserControl.DataContext>
         <tabs:LogsViewModel />
     </UserControl.DataContext>
@@ -44,7 +51,7 @@
 
         <Grid Background="#40000000" Margin="10,5" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="260" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -62,32 +69,50 @@
                      Margin="5,0,5,5" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
                      TextWrapping="WrapWithOverflow" TextAlignment="Left" />
             <controls:ListView Margin="5,0" MinHeight="420" Focusable="True" HorizontalContentAlignment="Stretch"
-                               ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedLog}" Grid.Row="1"
-                               Grid.RowSpan="2"
-                               Grid.Column="0"
-                               HorizontalAlignment="Left"
-                               Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}">
+                               ItemsSource="{Binding LogFiles}" SelectedItem="{Binding SelectedLog}" Grid.Row="0" Grid.RowSpan="2"
+                               Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}" AlternationCount="2">
                 <controls:ListView.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Style.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="{DynamicResource SystemAltMediumLowColorBrush}"></Setter>
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="{DynamicResource SytemAltMediumColorBrush}"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
+                    
                 </controls:ListView.ItemContainerStyle>
                 <controls:ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,2.5,0,2.5">
-                                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Left" Width="165"
-                                          Margin="0" IsChecked="{Binding Selected}" Content="{Binding Date}" />
-                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                                           TextAlignment="Center" Margin="5,0"
-                                           Text="{Binding Profile}" Visibility="Collapsed" />
-                                <Button Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
+                        <Grid Margin="0 5 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="60"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <CheckBox Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Center" IsChecked="{Binding Selected}" />
+                            <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" FontWeight="Bold" Text="{Binding FileName}" HorizontalAlignment="Stretch" />
+                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Date}" HorizontalAlignment="Left"/>
+                            <TextBlock Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Text="{Binding Profile}" Visibility="Collapsed" />
+                            <TextBlock Grid.Column="2" Grid.Row="1" FontWeight="Bold" Foreground="DarkCyan" HorizontalAlignment="Right" Text="{Binding Type}" Visibility="{Binding Type, ConverterParameter=Interrogator, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <TextBlock Grid.Column="2" Grid.Row="1" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Right" Text="{Binding Type}" Visibility="{Binding Type, ConverterParameter=Log, Converter={StaticResource StringMatchToVisibilityConverter}}" />
+                            <Button Grid.Column="3" Grid.RowSpan="2" Style="{DynamicResource AccentButtonStyle}" Height="40" Cursor="Hand"
                                         Command="{Binding Path=DataContext.OpenLogFile, ElementName=LogsTab}"
                                         CommandParameter="{Binding FileName}"
-                                        Margin="10,0,0,0" HorizontalAlignment="Right" Padding="5" Width="50"
+                                        HorizontalAlignment="Right" Padding="5"
                                         Content="{Binding Language, ConverterParameter=Logs.ViewLog, ElementName=LogsTab, Converter={StaticResource LocConverter}}" />
-                            </StackPanel>
-                        </StackPanel>
+                            <Rectangle HorizontalAlignment="Stretch" Height="1" Grid.Row="2" Grid.ColumnSpan="4"/>
+                        </Grid>
+                        
                     </DataTemplate>
                 </controls:ListView.ItemTemplate>
             </controls:ListView>

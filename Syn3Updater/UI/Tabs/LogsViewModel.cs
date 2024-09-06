@@ -83,8 +83,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         {
             try
             {
-                DateTime date = File.GetLastWriteTime(AppMan.App.MainSettings.LogPath + path);
-                LogTitle = date.ToString(CultureInfo.CurrentCulture);
+                LogTitle = Path.GetFileName(path);
                 LogDetails = File.ReadAllText(AppMan.App.MainSettings.LogPath + path);
             }
             catch (Exception e)
@@ -119,7 +118,10 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             {
                 DirectoryInfo dir = new(AppMan.App.MainSettings.LogPath);
                 foreach (FileInfo file in dir.GetFiles("*.txt"))
-                    LogFiles.Add(new LogModel.Log {Selected = false, FileName = file.Name, Date = file.LastWriteTime, Profile = "Default"});
+                    LogFiles.Add(new LogModel.Log {Selected = false, FileName = file.Name, Date = file.LastWriteTime, Profile = "Default", Type = "Log" });
+
+                foreach (FileInfo file in dir.GetFiles("*.xml"))
+                    LogFiles.Add(new LogModel.Log { Selected = false, FileName = file.Name, Date = file.LastWriteTime, Profile = "Default", Type = "Interrogator" });
             }
         }
 

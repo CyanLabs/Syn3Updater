@@ -64,7 +64,7 @@
 	</ItemGroup>
 	
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0-windows10.0.18362' ">
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.8" />
 		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.326103">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>

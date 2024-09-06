@@ -15,6 +15,7 @@ namespace Cyanlabs.Syn3Updater.Model
             public string FileName { get; set; }
             public string Profile { get; set; }
             public DateTime Date { get; set; }
+            public string Type { get; set; }
         }
 
         #endregion

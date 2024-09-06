@@ -300,6 +300,8 @@ namespace Cyanlabs.Syn3Updater.Helper
                 XmlDocument doc = new();
                 //TODO: swtich to Async once code moves to dotnet 5+ 
                 string xml = FileHelper.RemoveInvalidXmlChars(File.ReadAllText(dialog.FileName));
+                if (dialog.FileName != null)
+                    File.Copy(dialog.FileName, AppMan.App.MainSettings.LogPath + "\\" + Path.GetFileName(dialog.FileName), true);
                 doc.Load(new StringReader(xml));
                 string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented);
                 Interrogator.InterrogatorModel interrogatorLog = JsonConvert.DeserializeObject<Interrogator.InterrogatorModel>(json);
