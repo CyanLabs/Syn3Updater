@@ -320,6 +320,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
         #endregion
 
         #region Methods
+        public void ReloadUSB()
+        {
+            AppMan.App.DriveLetter = "";
+            RefreshUsb();
+        }
 
         public void ReloadSettings()
         {

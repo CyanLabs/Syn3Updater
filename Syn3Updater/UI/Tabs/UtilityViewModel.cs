@@ -173,7 +173,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             ToggleLogXmlDetails = false;
             UtiltyButtonStatus = !string.IsNullOrWhiteSpace(SelectedDrive?.Path);
         }
-
+        public void ReloadUSB()
+        {
+            AppMan.App.DriveLetter = "";
+            RefreshUsbAction();
+        }
         public void Init()
         {
             RefreshUsbAction();

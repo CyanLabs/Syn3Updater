@@ -15,6 +15,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void Home_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if(AppMan.App.DriveLetter == "invalid") (DataContext as HomeViewModel)?.ReloadUSB();
             if ((bool) e.NewValue && !(bool) e.OldValue) (DataContext as HomeViewModel)?.ReloadSettings();
         }
     }

@@ -603,6 +603,26 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private async Task<bool> FormatUSBAsync()
         {
+            if(!AppMan.App.DownloadToFolder)
+            {
+                DriveInfo driveInfo = new(AppMan.App.DriveLetter.Replace(":", ""));
+                if (!driveInfo.IsReady)
+                {
+                    Log += "[" + DateTime.Now + "] USB drive not ready, aborting!" + Environment.NewLine;
+                    AppMan.Logger.Info("USB drive not ready, aborting!");
+                    await UIHelper.ShowErrorDialog("The selected USB drive is not ready, has been disconnected or has changed drive letter. Aborting!");
+                    CancelAction();
+                    AppMan.App.DriveLetter = "invalid";
+
+                    if (AppMan.App.Action == "main")
+                        AppMan.App.FireHomeTabEvent();
+                    else
+                        AppMan.App.FireUtilityTabEvent();
+                    
+                    return false;
+                }
+            }
+            
             if (!AppMan.App.SkipFormat)
             {
                 if (AppMan.App.DownloadToFolder)

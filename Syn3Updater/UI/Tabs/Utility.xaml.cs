@@ -16,6 +16,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         private void Utility_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (AppMan.App.DriveLetter == "invalid") (DataContext as UtilityViewModel)?.ReloadUSB();
             if ((bool) e.NewValue && !(bool) e.OldValue) (DataContext as UtilityViewModel)?.ReloadTab();
         }
     }
