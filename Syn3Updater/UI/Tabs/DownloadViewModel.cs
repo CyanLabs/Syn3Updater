@@ -112,8 +112,8 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             set => SetProperty(ref _my20Mode, value);
         }
 
-        private string _downloadConnections;
-        public string DownloadConnections
+        private int _downloadConnections;
+        public int DownloadConnections
         {
             get => _downloadConnections;
             set => SetProperty(ref _downloadConnections, value);
@@ -125,7 +125,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
         public void Init()
         {
-            DownloadConnections = AppMan.App.Settings.DownloadConnections.ToString();
+            DownloadConnections = AppMan.App.Settings.DownloadConnections;
             My20Mode = AppMan.App.Settings.My20v2 switch
             {
                 null => LM.GetValue("String.AutoDetect"),
@@ -307,7 +307,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 AppMan.Logger.Info($"Downloading (Attempt #{i}): {item.FileName}");
                             }
 
-                            if (await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct, AppMan.App.Settings.DownloadConnections))
+                            if (await _fileHelper.DownloadFile(item.Url, AppMan.App.DownloadPath + item.FileName, _ct, DownloadConnections))
                             {
                                 _count++;
                             }
@@ -342,12 +342,12 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
 
                             if (i == 2)
                             {
-                                if(AppMan.App.Settings.DownloadConnections != 1)
+                                if(DownloadConnections != 1)
                                 {
-                                    text = $"unable to successfully validate {item.FileName} after 2 attempts, attempting once more with 'connections' forced to 1";
+                                    text = $"Unable to validate {item.FileName} after 2 attempts, attempting once more with 'connections' forced to 1";
                                     Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
                                     AppMan.Logger.Info(text);
-                                    AppMan.App.Settings.DownloadConnections = 1;
+                                    DownloadConnections = 1;
                                 }
                             }
 
