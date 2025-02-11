@@ -340,6 +340,17 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                                 break;
                             }
 
+                            if (i == 2)
+                            {
+                                if(AppMan.App.Settings.DownloadConnections != 1)
+                                {
+                                    text = $"unable to successfully validate {item.FileName} after 2 attempts, attempting once more with 'connections' forced to 1";
+                                    Log += $"[{DateTime.Now}] {text} {Environment.NewLine}";
+                                    AppMan.Logger.Info(text);
+                                    AppMan.App.Settings.DownloadConnections = 1;
+                                }
+                            }
+
                             if (i == 3)
                             {
                                 text = $"Unable to validate {item.FileName} after 3 attempts, ABORTING PROCESS!";

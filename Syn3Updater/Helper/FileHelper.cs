@@ -139,7 +139,7 @@ namespace Cyanlabs.Syn3Updater.Helper
         /// <param name="ct">CancellationToken</param>
         /// <param name="numberOfParallelDownloads"></param>
         /// <returns>bool with True if successful or False if not</returns>
-        public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 0)
+        public async Task<bool> DownloadFile(string fileUrl, string destinationFilePath, CancellationToken ct, int numberOfParallelDownloads = 1)
         {
             try
             {
