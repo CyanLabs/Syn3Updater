@@ -138,6 +138,7 @@ namespace Cyanlabs.Syn3Updater
 
         public void Initialize()
         {
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 128 };
             SystemHelper.WriteRegistryHandler();
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.DefaultConnectionLimit = 8;
