@@ -168,7 +168,7 @@
   "MessageBox.EncryptedDrive": "选中的USB设备已经被Bitlocker或者其他第三方软件加密，请再继续前先关闭此USB设备的加密状态。\n请关闭加密然后点击确定刷新USB设备列表。",
   "MessageBox.NoPackagesSelected": "没有选中文件包，请至少选择一个文件包并继续",
   "MessageBox.NoBrowser": "无法使用默认浏览器打开网页，已将链接复制到剪贴板，请将链接粘贴到浏览器以获取更多指导。",
-  "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 SYNC unit, You can not create a update USB to go from 3.0 or below to 3.4 while My20 Protection is enabled.\n\nPlease recheck your settings and if you need further assistance visit our forum at https://community.cyanlabs.net\n\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!",
+  "MessageBox.MY20InvalidConfiguration": "You have specified that you have a MY20 (Manufacture Year 2020+) SYNC 3 unit\n\nYou can not do the following!\n\n- Upgrade from 3.0 or below to 3.2 or above if applicable\n- Install ESN locked map releases\n- Change region\n\nIf you do not have MY20 please recheck your settings and if you need further assistance visit our forum\nhttps://community.cyanlabs.net\n\nDO NOT DISABLE MY20 PROTECTION IF YOU ARE UNSURE!",
   "Settings.MapKey": "Generator Key",
   "Settings.UpdateLanguages": "Download Latest Localizations",
   "MessageBox.LogUtilityNoModelFound": "The XML file you have selected does not contain a valid 'ECU Delivery Assembly Number' therefore Syn3 Updater can not determine if this is a MY20+ APIM or not!\n\nPost on our Community Forum or our Discord server to see how to proceed from here! \n\nDO NOT CONTINUE WITHOUT GETTING HELP FROM AN EXPERT!",

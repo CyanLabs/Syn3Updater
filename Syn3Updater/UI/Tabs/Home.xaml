@@ -16,6 +16,8 @@
         <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
         <converter:StringMatchToVisibilityConverter x:Key="StringMatchToVisibilityConverter" />
         <converter:InvertedStringMatchToVisibilityConverter x:Key="InvertedStringMatchToVisibilityConverter" />
+        <converter:ESNConverter x:Key="ESNConverter" />
+        <converter:InvertedESNConverter x:Key="InvertedESNConverter" />
     </UserControl.Resources>
     <UserControl.DataContext>
         <tabs:HomeViewModel />
@@ -229,7 +231,7 @@
                          Foreground="{DynamicResource SystemBaseHighColorBrush}"
                          Background="{DynamicResource SystemAltMediumHighColorBrush}" BorderThickness="1"
                          BorderBrush="{DynamicResource SystemBaseMediumColorBrush}" Text="{Binding Notes}"
-                         Height="110" Margin="20,5,10,0"
+                         Height="133" Margin="20,5,10,0"
                          IsReadOnly="True" VerticalScrollBarVisibility="Auto" TextWrapping="WrapWithOverflow"
                          TextAlignment="Left" />
             </StackPanel>
@@ -243,7 +245,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
                     <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="64" />
                 </Grid.RowDefinitions>
                 <iconPacks:PackIconVaadinIcons Kind="Globe" Height="18" Width="18" Foreground="White" Margin="5,0,0,0"
                                                VerticalAlignment="Center" Grid.Row="0"
@@ -270,24 +272,57 @@
                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1"
                            Grid.Column="1"
                            Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.Version, Converter={StaticResource LocConverter}}" />
-                <ComboBox VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                <ComboBox VerticalAlignment="Center" HorizontalAlignment="Stretch" 
                           SelectedIndex="{Binding SelectedReleaseIndex}"
                           IsEnabled="{Binding SVersionsEnabled}" ItemsSource="{Binding SVersion}"
                           SelectedItem="{Binding SelectedRelease}" Grid.Row="1" Grid.Column="2"
                           Grid.ColumnSpan="2" />
 
                 <iconPacks:PackIconVaadinIcons Kind="MapMarker" Height="18" Width="18" Foreground="White"
-                                               Margin="5,0,0,0"
+                                               Margin="5,5,0,0"
                                                VerticalAlignment="Center" Grid.Row="2"
                                                Grid.Column="0" />
-                <TextBlock Margin="10,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
+                <TextBlock Margin="10,5,5,0" VerticalAlignment="Center" HorizontalAlignment="Right"
                            Grid.Row="2" Grid.Column="1"
                            Text="{Binding Language, StringFormat='{}{0}: ', ConverterParameter=Home.MapVersion, Converter={StaticResource LocConverter}}" />
-                <ComboBox VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                <ComboBox VerticalAlignment="Stretch" Margin="0 5 0 5" HorizontalAlignment="Stretch"
                           SelectedIndex="{Binding SelectedMapVersionIndex}"
                           IsEnabled="{Binding SMapVersionsEnabled}" ItemsSource="{Binding SMapVersion}"
-                          Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
-                          SelectedItem="{Binding SelectedMapVersion}" />
+                          Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" SelectedValuePath="Name"
+                          SelectedItem="{Binding SelectedMapVersion}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconVaadinIcons Foreground="{Binding ESN, Converter={StaticResource ESNConverter}, FallbackValue=''}" Kind="Lock" Height="14" Width="14"
+                                VerticalAlignment="Center" Margin="0,5,5,0"  Visibility="{Binding ESN, Converter={StaticResource ESNConverter}}" />
+                                    <iconPacks:PackIconVaadinIcons Foreground="{Binding ESN, Converter={StaticResource ESNConverter}, FallbackValue=''}" Kind="Unlock" Height="14" Width="14"
+VerticalAlignment="Center" Margin="0,5,5,0" Visibility="{Binding ESN, Converter={StaticResource InvertedESNConverter}}" />
+                                    <TextBlock FontSize="12" Margin="0,4,0,0" Text="{Binding ESN, Converter={StaticResource ESNConverter}, FallbackValue=''}" Foreground="{Binding ESN, Converter={StaticResource ESNConverter}, FallbackValue=''}" />
+                                </StackPanel>
+                                
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <!-- Enable ToolTipService -->
+                            <Setter Property="ToolTipService.IsEnabled" Value="True" />
+                            <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                            <Setter Property="ToolTipService.InitialShowDelay" Value="0"/>
+                            <Setter Property="ToolTipService.Placement" Value="Right" />
+                            <Setter Property="ToolTipService.HorizontalOffset" Value="-100" />
+                            <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                    <Setter Property="ToolTip" Value="It is not possible to install this map release on your Sync 3. Only APIMs from 2019 (Pre-My20) vehicles and older can use ESN locked maps. (MY20 Protection is enabled)" />
+                                    <Setter Property="Cursor" Value="No" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
             </Grid>
         </Grid>
 

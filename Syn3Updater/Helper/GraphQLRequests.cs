@@ -50,7 +50,7 @@ namespace Cyanlabs.Syn3Updater.Helper
             };
         }
 
-        public static GraphQLRequest GetMapReleases(string selectedRegion, string license, string esn, string compat)
+        public static GraphQLRequest GetMapReleases(string selectedRegion, string license, string compat)
         {
             return new GraphQLRequest
             {
@@ -60,7 +60,7 @@ namespace Cyanlabs.Syn3Updater.Helper
                         filter: {_and: 
                             [{ _or: [ {licensekeys: { _null: true}}, {licensekeys: { _empty: true}}," + license + @"],
                             status: { _in: [""published"", ""private""] }, regions: {_in: """ + selectedRegion + @"""},
-                            " + esn + @"compatibility: {_contains: """ + compat + @"""} }]
+                            " + "" + @"compatibility: {_contains: """ + compat + @"""} }]
                         }){ name, regions, esn }
                 }"
             };

@@ -92,8 +92,10 @@ namespace Cyanlabs.Syn3Updater.Model
             [JsonProperty("feedbackurl")] public string Feedbackurl { get; set; }
             [JsonProperty("status")] public string Status { get; set; }
             [JsonProperty("ivsus")] public IList<ReleasesIvsus> IvsusList { get; set; }
+            [JsonProperty("esn")] public bool ESN { get; set; }
+            public bool IsEnabled { get; set; } = true;
         }
-        
+
         public class ReleasesIvsus
         {
             [JsonProperty("id")] public int Id { get; set; }
