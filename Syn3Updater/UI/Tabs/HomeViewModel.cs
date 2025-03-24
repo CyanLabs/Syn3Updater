@@ -646,16 +646,19 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
             bool cancelled = false;
             if (!string.IsNullOrWhiteSpace(SelectedMapVersion?.Name) && !string.IsNullOrWhiteSpace(SelectedRelease) && !string.IsNullOrWhiteSpace(SelectedRegion.Code))
             {
-                //LESS THAN 3.2
-                if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
+                //MY20 and Less than 3.2
+                if(AppMan.App.Settings.CurrentVersion < Api.ReformatVersion && AppMan.App.Settings.My20v2 == true)
+                {
+                    InstallMode = "autoinstall"; //Option H
+                    Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.MY20InvalidConfiguration")));
+                    cancelled = true;
+                }
+
+                //Not My20 LESS THAN 3.2
+                else if (AppMan.App.Settings.CurrentVersion < Api.ReformatVersion)
                 {
                     if (!AppMan.App.ModeForced) 
-                        InstallMode = "reformat";
-                    if (AppMan.App.Settings.My20v2 == true)
-                    {
-                        Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.MY20InvalidConfiguration")));
-                        cancelled = true;
-                    };
+                        InstallMode = "reformat"; //Option A
                 }
 
                 //Above 3.2 and  Below 3.4.19274
@@ -667,7 +670,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         SelectedMapVersion.Name == LM.GetValue("String.KeepExistingMaps"))
                     {
                         if (!AppMan.App.ModeForced) 
-                            InstallMode = "autoinstall";
+                            InstallMode = "autoinstall"; //Option B
                     }
                     else if (AppMan.App.Settings.My20v2 == true && SelectedMapVersion.ESN)
                     {
@@ -676,11 +679,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     }
                     else if (AppMan.App.Settings.My20v2 == true)
                     {
-                        InstallMode = "autoinstall";
+                        InstallMode = "autoinstall"; //Option C
                     }
                     else if (!AppMan.App.ModeForced)
                     {
-                        InstallMode = "reformat";
+                        InstallMode = "reformat"; //Option D
                     }
                 }
 
@@ -692,7 +695,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         SelectedMapVersion.Name == LM.GetValue("String.KeepExistingMaps"))
                     {
                         if (!AppMan.App.ModeForced)
-                            InstallMode = "autoinstall";
+                            InstallMode = "autoinstall"; //Option E
                     }
                     else if (AppMan.App.Settings.My20v2 == true && SelectedMapVersion.ESN)
                     {
@@ -701,11 +704,11 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                     }
                     else if (AppMan.App.Settings.My20v2 == true)
                     {
-                        InstallMode = "autoinstall";
+                        InstallMode = "autoinstall"; //Option F
                     }
                     else if (!AppMan.App.ModeForced)
                     {
-                        InstallMode = "downgrade";
+                        InstallMode = "downgrade"; //Option G
                     }
                 }
 
