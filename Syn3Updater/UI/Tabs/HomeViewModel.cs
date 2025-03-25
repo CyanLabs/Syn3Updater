@@ -677,7 +677,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.MY20InvalidConfiguration")));
                         cancelled = true;
                     }
-                    else if (AppMan.App.Settings.My20v2 == true)
+                    else if (AppMan.App.Settings.My20v2 == true || SelectedRelease == LM.GetValue("String.OnlyMaps"))
                     {
                         InstallMode = "autoinstall"; //Option C
                     }
@@ -702,7 +702,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         Application.Current.Dispatcher.Invoke(() => UIHelper.ShowErrorDialog(LM.GetValue("MessageBox.MY20InvalidConfiguration")));
                         cancelled = true;
                     }
-                    else if (AppMan.App.Settings.My20v2 == true)
+                    else if (AppMan.App.Settings.My20v2 == true || SelectedRelease == LM.GetValue("String.OnlyMaps"))
                     {
                         InstallMode = "autoinstall"; //Option F
                     }
