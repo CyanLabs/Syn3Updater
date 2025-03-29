@@ -550,6 +550,7 @@ namespace Cyanlabs.Syn3Updater.UI.Tabs
                         FeedbackUrl = item.Feedbackurl;
                         FeedbackVisibility = true;
                     }
+                if (SelectedRelease == LM.GetValue("String.OnlyMaps")) _stringCompatibility = "3.4";
 
                 if (AppMan.App.Settings.CurrentNav)
                 {
